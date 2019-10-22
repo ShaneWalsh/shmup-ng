@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { KeyboardEventService } from 'src/app/services/keyboard-event.service';
 import { Subscription } from '../../../../node_modules/rxjs';
+import { LevelService } from 'src/app/services/level.service';
 
 @Component({
   selector: 'app-intro-screen',
@@ -16,13 +17,16 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
     private subs:Subscription[] =[];
     public screenId:number = 1;
 
-    constructor(private keyboardEventService:KeyboardEventService) { }
+    constructor(private keyboardEventService:KeyboardEventService, private levelService: LevelService) { }
 
     ngOnInit() {
       this.subs.push(this.keyboardEventService.getKeyDownEventSubject().subscribe(customKeyboardEvent => {
           console.log("customKeyboardEvent",customKeyboardEvent);
           if(customKeyboardEvent.event.keyCode == 13){ //  == 'Enter'
               this.screenId++;
+              if(this.screenId == 5){ // boom, load up level one.
+                  this.levelService.loadLevel(1);
+              }
           }
       }));
     }

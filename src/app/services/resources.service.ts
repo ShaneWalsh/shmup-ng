@@ -6,7 +6,7 @@ import { Subject } from '../../../node_modules/rxjs';
 })
 export class ResourcesService {
 
-    private resourcesToLoad:[{code:string,path:string, type:ResourcesEnum}];
+    private resourcesToLoad:{code:string,path:string, type:ResourcesEnum}[];
     private resourcesLoaded: Subject<boolean>; // all resources loaded
     private resources:Map<string,any>;// could be images, sounds, etc
     private loaderRun:boolean = false;
@@ -14,7 +14,8 @@ export class ResourcesService {
       this.resources = new Map();
       this.resourcesLoaded = new Subject();
       this.resourcesToLoad = [
-          {code:"level-1-background",path:"../../assets/img/levels/level1/level-1-background.png", type:ResourcesEnum.ImageRes}
+          {code:"level-1-background", path:"../../assets/img/levels/level1/level-1-background.png", type:ResourcesEnum.ImageRes},
+          {code:"player-1-ship", path:"../../assets/img/player/player-1-ship.png", type:ResourcesEnum.ImageRes}
       ];
     }
 
