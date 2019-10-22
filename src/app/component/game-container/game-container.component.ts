@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { ResourcesService } from 'src/app/services/resources.service';
 
 @Component({
   selector: 'app-game-container',
@@ -6,6 +7,8 @@ import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
   styleUrls: ['./game-container.component.css']
 })
 export class GameContainerComponent implements OnInit {
+    @Input() public level:number = 1; // which level to load up.
+
     @ViewChild('canvas') public canvas: ElementRef;
 
     canvasEl: any;
@@ -23,10 +26,10 @@ export class GameContainerComponent implements OnInit {
 
     imageObj = new Image();
     //imageName = "../../../assets/img/player/player-1-ship.png";
-    imageName = "../../../assets/img/levels/level1/level-1-background.png";
+    //imageName = "../../../assets/img/levels/level1/level-1-background.png";
 
-    constructor() {
-        this.imageObj.src = this.imageName;
+    constructor(private resourcesService:ResourcesService) {
+        this.imageObj = this.resourcesService.getRes().get("level-1-background");
     }
 
     ngOnInit() {
