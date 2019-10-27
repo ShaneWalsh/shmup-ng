@@ -11,6 +11,8 @@ export class AppComponent {
   title = 'shmup-ng';
   loaded:boolean=false;
 
+  // when doing the ng build make sure to change <base href="./"> in index.html
+
   @HostListener('window:keyup', ['$event'])
   keyupEvent(event: KeyboardEvent) {
       if(this.loaded)

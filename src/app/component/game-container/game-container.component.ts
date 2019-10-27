@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { ResourcesService } from 'src/app/services/resources.service';
-import { LevelService } from 'src/app/services/level.service';
 import { PlayerService } from 'src/app/services/player.service';
+import { LevelManagerService } from 'src/app/manager/level-manager.service';
 
 @Component({
   selector: 'app-game-container',
@@ -19,19 +19,19 @@ export class GameContainerComponent implements OnInit {
     requestAnimFrame: any;
 
 
-    imageObj = new Image();
+//    imageObj = new Image();
     //imageName = "../../../assets/img/player/player-1-ship.png";
     //imageName = "../../../assets/img/levels/level1/level-1-background.png";
 
 
-    constructor(private resourcesService:ResourcesService,private levelService:LevelService, private playerService:PlayerService) {
+    constructor(private resourcesService:ResourcesService,private levelManagerService:LevelManagerService, private playerService:PlayerService) {
         // check if an existing game has been loaded
         // subscribe to the level loader
         this.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || // this redraws the canvas when the browser is updating. Crome 18 is execllent for canvas, makes it much faster by using os
 						   window["mozRequestAnimationFrame"] || window["msRequestAnimationFrame"] || window["oRequestAnimationFrame"]
 						   || function(callback) { window.setTimeout(callback,1000/60);};
 
-       this.imageObj = this.resourcesService.getRes().get("level-1-background");
+       //this.imageObj = this.resourcesService.getRes().get("level-1-background");
     }
 
     ngOnInit() {
@@ -52,11 +52,23 @@ export class GameContainerComponent implements OnInit {
     }
 
     update() {
-        if(this.levelService.getNotPaused()){
-            //clear canvas
+        if(this.levelManagerService.getNotPaused()){
             this.ctx.clearRect(0, 0, this.canvasEl.width, this.canvasEl.height);
-            this.ctx.drawImage(this.imageObj, 0, 0, this.canvasEl.width, this.canvasEl.height);
-            this.playerService.currentPlayer.update(this.levelService,this.ctx);
+            const currentLevel = this.levelManagerService.getCurrentLevel();
+            // have a level manager, that controls the background and the spawning, updates first. 4 levels, controls boss spawn.
+            currentLevel.update(this.ctx);
+            // have a bot manager to move the bots (gen bullets, patterns etc)
+            // update for the player (Gen bullets)
+            // have a bullet manager to move the bullets, do collision detection
+                // some bullets should be destructable.
+                // some cannot be destroyed
+
+            // vertical and horizontal, bare that in mind....
+
+            //clear canvas
+
+
+            this.playerService.currentPlayer.update(currentLevel, this.ctx);
         }
         this.requestAnimFrame(this.update.bind(this)); // takes a function as para, it will keep calling loop over and over again
     }

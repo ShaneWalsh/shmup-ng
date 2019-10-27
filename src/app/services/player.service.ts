@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { KeyboardEventService, CustomKeyboardEvent } from 'src/app/services/keyboard-event.service';
-import { LevelService } from 'src/app/services/level.service';
 import { ResourcesService } from 'src/app/services/resources.service';
+import { LevelManagerService, LevelInstance } from 'src/app/manager/level-manager.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,14 +10,14 @@ export class PlayerService {
 
     public currentPlayer:PlayerObj = new PlayerObj();
 
-    constructor(private keyboardEventService:KeyboardEventService, private levelService:LevelService, private resourcesService:ResourcesService) {
+    constructor(private keyboardEventService:KeyboardEventService, private levelManagerService:LevelManagerService, private resourcesService:ResourcesService) {
       keyboardEventService.getKeyDownEventSubject().subscribe(customKeyboardEvent => {
-          if(this.levelService.getNotPaused()){
+          if(this.levelManagerService.getNotPaused()){
               this.processKeyDown(customKeyboardEvent);
           }
       });
       keyboardEventService.getKeyUpEventSubject().subscribe(customKeyboardEvent => {
-          if(this.levelService.getNotPaused()){
+          if(this.levelManagerService.getNotPaused()){
               this.processKeyUp(customKeyboardEvent);
           }
       });
@@ -67,14 +67,14 @@ export class PlayerObj {
 
     }
 
-    update(levelService:LevelService, ctx:CanvasRenderingContext2D){
-        this.acceleration(levelService);
+    update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D){
+        this.acceleration(levelInstance);
 
         // draw
         ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
     }
 
-    acceleration(levelService:LevelService){
+    acceleration(levelInstance:LevelInstance){
         // this.posXSpeed += this.posXExcel;
         // this.posYSpeed += this.posYExcel;
         //
@@ -89,15 +89,15 @@ export class PlayerObj {
         this.posX += this.posXSpeed;
         this.posY += this.posYSpeed;
 
-        if(this.posX + this.imageSizeX > levelService.mapWidth){
-            this.posX = levelService.mapWidth -  this.imageSizeX;
+        if(this.posX + this.imageSizeX > levelInstance.getMapWidth()){
+            this.posX = levelInstance.getMapWidth() -  this.imageSizeX;
         }
         else if(this.posX < 0){
             this.posX = 0;
         }
 
-        if(this.posY + this.imageSizeY > levelService.mapHeight){
-            this.posY = levelService.mapHeight -  this.imageSizeY;
+        if(this.posY + this.imageSizeY > levelInstance.getMapHeight()){
+            this.posY = levelInstance.getMapHeight() -  this.imageSizeY;
         }
         else if(this.posY < 0){
             this.posY = 0;
