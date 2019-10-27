@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { ResourcesService } from 'src/app/services/resources.service';
 import { PlayerService } from 'src/app/services/player.service';
 import { LevelManagerService } from 'src/app/manager/level-manager.service';
+import { BotManagerService } from 'src/app/manager/bot-manager.service';
 
 @Component({
   selector: 'app-game-container',
@@ -24,7 +25,8 @@ export class GameContainerComponent implements OnInit {
     //imageName = "../../../assets/img/levels/level1/level-1-background.png";
 
 
-    constructor(private resourcesService:ResourcesService,private levelManagerService:LevelManagerService, private playerService:PlayerService) {
+    constructor(private resourcesService:ResourcesService,private levelManagerService:LevelManagerService,
+                private playerService:PlayerService, private botManagerService:BotManagerService) {
         // check if an existing game has been loaded
         // subscribe to the level loader
         this.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || // this redraws the canvas when the browser is updating. Crome 18 is execllent for canvas, makes it much faster by using os
@@ -57,8 +59,13 @@ export class GameContainerComponent implements OnInit {
             const currentLevel = this.levelManagerService.getCurrentLevel();
             // have a level manager, that controls the background and the spawning, updates first. 4 levels, controls boss spawn.
             currentLevel.update(this.ctx);
+
             // have a bot manager to move the bots (gen bullets, patterns etc)
+            this.botManagerService.update(currentLevel, this.ctx);
+
             // update for the player (Gen bullets)
+            this.playerService.currentPlayer.update(currentLevel, this.ctx);
+
             // have a bullet manager to move the bullets, do collision detection
                 // some bullets should be destructable.
                 // some cannot be destroyed
@@ -68,7 +75,7 @@ export class GameContainerComponent implements OnInit {
             //clear canvas
 
 
-            this.playerService.currentPlayer.update(currentLevel, this.ctx);
+
         }
         this.requestAnimFrame(this.update.bind(this)); // takes a function as para, it will keep calling loop over and over again
     }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { KeyboardEventService, CustomKeyboardEvent } from 'src/app/services/keyboard-event.service';
 import { ResourcesService } from 'src/app/services/resources.service';
 import { LevelManagerService, LevelInstance } from 'src/app/manager/level-manager.service';
+import { HitBox } from 'src/app/domain/HitBox';
 
 @Injectable({
   providedIn: 'root'
@@ -27,14 +28,15 @@ export class PlayerService {
 
     processKeyDown(customKeyboardEvent:CustomKeyboardEvent){
         // move the ship about
+        let speed = 6;
         if(customKeyboardEvent.event.keyCode == 65){ // a
-            this.currentPlayer.posXSpeed = -5;
+            this.currentPlayer.posXSpeed = -speed;
         } else if(customKeyboardEvent.event.keyCode == 83){ // w
-            this.currentPlayer.posYSpeed = +5;
+            this.currentPlayer.posYSpeed = +speed;
         } else if(customKeyboardEvent.event.keyCode == 68){ // d
-            this.currentPlayer.posXSpeed = +5;
+            this.currentPlayer.posXSpeed = +speed;
         } else if(customKeyboardEvent.event.keyCode == 87){ // s
-            this.currentPlayer.posYSpeed = -5;
+            this.currentPlayer.posYSpeed = -speed;
         }
     }
 
@@ -102,16 +104,5 @@ export class PlayerObj {
         else if(this.posY < 0){
             this.posY = 0;
         }
-    }
-}
-
-export class HitBox{
-    constructor(
-        public hitBoxX:number=0,
-        public hitBoxY:number=0,
-        public hitBoxSizeX:number=90,
-        public hitBoxSizeY:number=60,
-    ){
-
     }
 }
