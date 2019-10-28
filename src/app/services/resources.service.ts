@@ -16,6 +16,7 @@ export class ResourcesService {
       this.resourcesToLoad = [
           {code:"level-1-background", path:"assets/img/levels/level1/level-1-background.png", type:ResourcesEnum.ImageRes},
           {code:"player-1-ship", path:"assets/img/player/player-1-ship.png", type:ResourcesEnum.ImageRes},
+          {code:"player-1-bullets", path:"assets/img/player/player-1-bullets.png", type:ResourcesEnum.ImageRes},
           {code:"enemy-3-1", path:"assets/img/bots/enemy-3-1.png", type:ResourcesEnum.ImageRes}
       ];
     }

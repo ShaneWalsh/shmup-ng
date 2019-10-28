@@ -3,6 +3,7 @@ import { ResourcesService } from 'src/app/services/resources.service';
 import { PlayerService } from 'src/app/services/player.service';
 import { LevelManagerService } from 'src/app/manager/level-manager.service';
 import { BotManagerService } from 'src/app/manager/bot-manager.service';
+import { BulletManagerService } from 'src/app/manager/bullet-manager.service';
 
 @Component({
   selector: 'app-game-container',
@@ -26,6 +27,7 @@ export class GameContainerComponent implements OnInit {
 
 
     constructor(private resourcesService:ResourcesService,private levelManagerService:LevelManagerService,
+                private bulletManagerService: BulletManagerService,
                 private playerService:PlayerService, private botManagerService:BotManagerService) {
         // check if an existing game has been loaded
         // subscribe to the level loader
@@ -64,11 +66,12 @@ export class GameContainerComponent implements OnInit {
             this.botManagerService.update(currentLevel, this.ctx);
 
             // update for the player (Gen bullets)
-            this.playerService.currentPlayer.update(currentLevel, this.ctx);
+            this.playerService.currentPlayer.update(currentLevel, this.ctx, this.bulletManagerService);
 
             // have a bullet manager to move the bullets, do collision detection
                 // some bullets should be destructable.
                 // some cannot be destroyed
+            this.bulletManagerService.update(currentLevel, this.ctx, this.botManagerService, this.playerService);
 
             // vertical and horizontal, bare that in mind....
 

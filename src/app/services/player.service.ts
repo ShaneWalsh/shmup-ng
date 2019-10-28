@@ -3,6 +3,7 @@ import { KeyboardEventService, CustomKeyboardEvent } from 'src/app/services/keyb
 import { ResourcesService } from 'src/app/services/resources.service';
 import { LevelManagerService, LevelInstance } from 'src/app/manager/level-manager.service';
 import { HitBox } from 'src/app/domain/HitBox';
+import { BulletManagerService, BulletDirection } from 'src/app/manager/bullet-manager.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,27 +30,34 @@ export class PlayerService {
     processKeyDown(customKeyboardEvent:CustomKeyboardEvent){
         // move the ship about
         let speed = 6;
-        if(customKeyboardEvent.event.keyCode == 65){ // a
+        if(customKeyboardEvent.event.keyCode == 65 || customKeyboardEvent.event.keyCode == 37 ){ // a - left
             this.currentPlayer.posXSpeed = -speed;
-        } else if(customKeyboardEvent.event.keyCode == 83){ // w
+        } else if(customKeyboardEvent.event.keyCode == 83 || customKeyboardEvent.event.keyCode == 40){ // s - up
             this.currentPlayer.posYSpeed = +speed;
-        } else if(customKeyboardEvent.event.keyCode == 68){ // d
+        } else if(customKeyboardEvent.event.keyCode == 68 || customKeyboardEvent.event.keyCode == 39){ // d - right
             this.currentPlayer.posXSpeed = +speed;
-        } else if(customKeyboardEvent.event.keyCode == 87){ // s
+        } else if(customKeyboardEvent.event.keyCode == 87 || customKeyboardEvent.event.keyCode == 38){ // w -- down
             this.currentPlayer.posYSpeed = -speed;
+        }
+        if(customKeyboardEvent.event.keyCode == 90 || customKeyboardEvent.event.keyCode == 78){ // z-n
+            this.currentPlayer.setFireBullet();
         }
     }
 
     processKeyUp(customKeyboardEvent:CustomKeyboardEvent){
-        if(customKeyboardEvent.event.keyCode == 65){ // a
+        if(customKeyboardEvent.event.keyCode == 65 || customKeyboardEvent.event.keyCode == 37 ){ // a - left
             this.currentPlayer.posXSpeed = 0;
-        } else if(customKeyboardEvent.event.keyCode == 83){ // w
+        } else if(customKeyboardEvent.event.keyCode == 83 || customKeyboardEvent.event.keyCode == 40){ // s - up
             this.currentPlayer.posYSpeed = 0;
-        } else if(customKeyboardEvent.event.keyCode == 68){ // d
+        } else if(customKeyboardEvent.event.keyCode == 68 || customKeyboardEvent.event.keyCode == 39){ // d - right
             this.currentPlayer.posXSpeed = 0;
-        } else if(customKeyboardEvent.event.keyCode == 87){ // d
+        } else if(customKeyboardEvent.event.keyCode == 87 || customKeyboardEvent.event.keyCode == 38){ // w -- down
             this.currentPlayer.posYSpeed = 0;
         }
+        if(customKeyboardEvent.event.keyCode == 90 || customKeyboardEvent.event.keyCode == 78){ // z-n
+            this.currentPlayer.stopFireBullet();
+        }
+
     }
 
 }
@@ -57,6 +65,13 @@ export class PlayerService {
 export class PlayerObj {
     public posXSpeed:number = 0;
     public posYSpeed:number = 0;
+
+    public bTimer:number = 0; // bullet timer
+    public bTimerLimit:number = 10;
+
+    public bulletsFiring:boolean = false;
+    public bulletsFired:boolean = true;
+
     constructor(
         public lives:number=10,
         public posX:number=320,
@@ -69,24 +84,27 @@ export class PlayerObj {
 
     }
 
-    update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D){
+    update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, bulletManagerService:BulletManagerService){
         this.acceleration(levelInstance);
+
+        // fire weapon
+        // need to put some kind of timer around this, may have to bring back the timer pubsub
+		if(this.bulletsFiring || !this.bulletsFired){
+			if(this.bTimer >= this.bTimerLimit){
+				this.bTimer = 0;
+				this.fireLazer(levelInstance,ctx,bulletManagerService);
+                this.bulletsFired = true;
+			}
+			else{
+				this.bTimer++;
+			}
+		}
 
         // draw
         ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
     }
 
     acceleration(levelInstance:LevelInstance){
-        // this.posXSpeed += this.posXExcel;
-        // this.posYSpeed += this.posYExcel;
-        //
-        // // acceleration extract into function?
-        // if(this.posXSpeed > this.maxSpeed){this.posXSpeed =  this.maxSpeed;}
-        // else if(this.posXSpeed < this.maxSpeedNeg){this.posXSpeed =  this.maxSpeedNeg;}
-        //
-        // if(this.posYSpeed > this.maxSpeed){this.posYSpeed =  this.maxSpeed;}
-        // else if(this.posYSpeed < this.maxSpeedNeg){this.posYSpeed =  this.maxSpeedNeg;}
-        //
         // apply movement
         this.posX += this.posXSpeed;
         this.posY += this.posYSpeed;
@@ -105,4 +123,26 @@ export class PlayerObj {
             this.posY = 0;
         }
     }
+
+    // lazers go straight, nothing fancy so no need to make them do anything fancy, cal a stright direction.
+    fireLazer(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D,bulletManagerService:BulletManagerService){
+        let bullDirection:BulletDirection;
+        if(levelInstance.isVertical()){
+            bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, this.posX, (this.posY-50), 6);
+            // todo gen two bullets, or just one?
+            bulletManagerService.generatePlayerLazer(levelInstance, bullDirection, this.posX+30, this.posY);
+        } else {
+            bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, (this.posX+50), this.posY, 6);
+            bulletManagerService.generatePlayerLazer(levelInstance, bullDirection, this.posX, this.posY);
+        }
+	}
+
+    setFireBullet(){
+		this.bulletsFiring = true;
+		this.bulletsFired = false;
+	}
+
+	stopFireBullet(){
+		this.bulletsFiring = false;
+	}
 }

@@ -23,7 +23,7 @@ export class BotManagerService {
 
     }
 
-    clean(){
+    clean() {
         this.botsArr = [];
     }
 
