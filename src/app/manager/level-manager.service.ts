@@ -52,6 +52,7 @@ export interface LevelInstance {
     getMapWidth():number;
     getMapHeight():number;
     isVertical():boolean;
+    drawHitBox():boolean;
 }
 
 class LevelOneInstance implements LevelInstance{
@@ -117,6 +118,10 @@ class LevelOneInstance implements LevelInstance{
     }
 
     isVertical() {
+        return true;
+    }
+
+    drawHitBox(){
         return true;
     }
 }

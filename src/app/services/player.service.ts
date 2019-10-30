@@ -79,7 +79,7 @@ export class PlayerObj {
         public imageObj:HTMLImageElement=null,
         public imageSizeX:number=90,
         public imageSizeY:number=60,
-        public hitBox:HitBox=new HitBox(0,0,imageSizeX,imageSizeY)
+        public hitBox:HitBox=new HitBox((Math.floor(imageSizeX/2))-5,(Math.floor(imageSizeY/2))-5,10,10)
     ){
 
     }
@@ -102,6 +102,9 @@ export class PlayerObj {
 
         // draw
         ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
+        if(levelInstance.drawHitBox()){
+            this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");
+        }
     }
 
     acceleration(levelInstance:LevelInstance){

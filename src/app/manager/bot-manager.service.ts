@@ -59,4 +59,8 @@ export class BotManagerService {
     getBotRemoved():Subject<BotInstance>{
         return this.botRemoved;
     }
+
+    getBots():BotInstance[]{
+        return this.botsArr;
+    }
 }

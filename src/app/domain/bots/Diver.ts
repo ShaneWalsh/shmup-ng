@@ -14,7 +14,8 @@ export class Diver implements BotInstance{
         public imageObj:HTMLImageElement=null,
         public imageSizeX:number=90,
         public imageSizeY:number=60,
-        public hitBox:HitBox=new HitBox(0,0,imageSizeX,imageSizeY)
+        public hitBox:HitBox=new HitBox(12,0,imageSizeX-24,imageSizeY),
+        public hitBox2:HitBox=new HitBox(0,5,imageSizeX,25)
     ){
 
     }
@@ -28,5 +29,13 @@ export class Diver implements BotInstance{
         } else {
             ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
         }
+        if(levelInstance.drawHitBox()){
+            this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");
+            this.hitBox2.drawBorder(this.posX+this.hitBox2.hitBoxX,this.posY+this.hitBox2.hitBoxY,this.hitBox2.hitBoxSizeX,this.hitBox2.hitBoxSizeY,ctx,"#FF0000");
+        }
+    }
+
+    hasBotBeenHit(hitter:any,hitterBox:HitBox):boolean {
+         return this.hitBox.areCentersToClose(hitter,hitterBox,this,this.hitBox) || this.hitBox.areCentersToClose(hitter,hitterBox,this,this.hitBox2);
     }
 }
