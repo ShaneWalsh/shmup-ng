@@ -63,7 +63,7 @@ export class GameContainerComponent implements OnInit {
             currentLevel.update(this.ctx);
 
             // have a bot manager to move the bots (gen bullets, patterns etc)
-            this.botManagerService.update(currentLevel, this.ctx);
+            this.botManagerService.update(currentLevel, this.ctx, this.bulletManagerService, this.playerService.currentPlayer);
 
             // update for the player (Gen bullets)
             this.playerService.currentPlayer.update(currentLevel, this.ctx, this.bulletManagerService);

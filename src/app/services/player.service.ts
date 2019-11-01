@@ -148,4 +148,12 @@ export class PlayerObj {
 	stopFireBullet(){
 		this.bulletsFiring = false;
 	}
+
+    getCenterX():number{
+        return this.posX+(this.imageSizeX/2);
+    }
+
+    getCenterY():number{
+        return this.posY+(this.imageSizeY/2);
+    }
 }

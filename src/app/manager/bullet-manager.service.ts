@@ -36,7 +36,14 @@ export class BulletManagerService {
 
     generatePlayerLazer(levelInstance:LevelInstance, bulletDirection:BulletDirection, startX, startY): any {
         // make a generaic lazer, isTargetBot? // damage to do
-        let newBullet = new DumbLazer(2,startX, startY, bulletDirection, this.resourcesService.getRes().get("player-1-bullets"), 30,22);
+        let newBullet = new DumbLazer(2,startX, startY, bulletDirection, true, this.resourcesService.getRes().get("player-1-bullets"), 30,22);
+        this.bulletsArr.push(newBullet);
+        this.bulletCreated.next(newBullet);
+    }
+
+    generateBotTrackerBlob(levelInstance:LevelInstance, bulletDirection:BulletDirection, startX, startY): any {
+        // make a generaic lazer, isTargetBot? // damage to do
+        let newBullet = new DumbLazer(1,startX, startY, bulletDirection, false, this.resourcesService.getRes().get("enemy-bullet"), 14,22);
         this.bulletsArr.push(newBullet);
         this.bulletCreated.next(newBullet);
     }
@@ -88,6 +95,24 @@ export class BulletDirection {
         public speed,
         public targetObject
     ){    }
+
+    update(origX=0, origY=0){
+        if(this.targetObject != null && this.targetObject != undefined && this.targetObject.posY && this.targetObject.posX){
+            var directionY = this.targetObject.getCenterY()-origY;
+            var directionX = this.targetObject.getCenterX()-origX;
+            var angle = Math.atan2(directionY,directionX); // bullet angle
+
+            // Normalize the direction
+            var len = Math.sqrt(directionX * directionX + directionY * directionY);
+            directionX /= len;
+            directionY /= len;
+
+            this.len = len;
+            this.angle = angle;
+            this.directionY = directionY;
+            this.directionX = directionX;
+        }
+    }
 }
 
 class DumbLazer implements BulletInstance {
@@ -96,6 +121,7 @@ class DumbLazer implements BulletInstance {
         public posX:number=0,
         public posY:number=0,
         public bulletDirection:BulletDirection=null,
+        public goodBullet:boolean=true,
         public imageObj:HTMLImageElement=null,
         public imageSizeX:number=90,
         public imageSizeY:number=60,
@@ -105,6 +131,7 @@ class DumbLazer implements BulletInstance {
     }
 
     update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, bulletManagerService:BulletManagerService, botManagerService:BotManagerService, playerService:PlayerService ){
+        this.bulletDirection.update(this.posX,this.posY);
 		this.posX += this.bulletDirection.speed * this.bulletDirection.directionX;
 		this.posY += this.bulletDirection.speed * this.bulletDirection.directionY;
 
@@ -116,15 +143,19 @@ class DumbLazer implements BulletInstance {
         if(levelInstance.drawHitBox()){
             this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");
         }
-        // todo collision detection!!
-        let botArrClone = [...botManagerService.getBots()];
-        for(let i = 0; i < botArrClone.length;i++){
-            let bot = botArrClone[i];
-            if(bot.hasBotBeenHit(this,this.hitBox)){
-                botManagerService.removeBot(bot);
-                console.log("Colision");
-            }
-        }
 
+        if(this.goodBullet){ // todo collision detection!!
+            let botArrClone = [...botManagerService.getBots()];
+            for(let i = 0; i < botArrClone.length;i++){
+                let bot = botArrClone[i];
+                if(bot.hasBotBeenHit(this,this.hitBox)){
+                    bot.applyDamage(this.damage, botManagerService);
+                    bulletManagerService.removeBullet(this);
+                    break;
+                }
+            }
+        } else { // colision with the player
+
+        }
     }
 }
