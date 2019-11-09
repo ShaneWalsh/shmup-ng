@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { KeyboardEventService } from 'src/app/services/keyboard-event.service';
 import { Subscription } from '../../../../node_modules/rxjs';
 import { LevelManagerService, LevelEnum } from 'src/app/manager/level-manager.service';
+import { PlayerService } from '../../services/player.service';
 
 @Component({
   selector: 'app-intro-screen',
@@ -16,21 +17,44 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
     }
     private subs:Subscription[] =[];
     public screenId:number = 1;
+    public playerScore:number = 0;
+    public requestAnimFrame:any; // have to ensure this is not created multiple times!
 
-    constructor(private keyboardEventService:KeyboardEventService, private levelManagerService: LevelManagerService) { }
+    constructor(private keyboardEventService:KeyboardEventService, private levelManagerService: LevelManagerService, private playerService:PlayerService) {
+        this.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || // this redraws the canvas when the browser is updating. Crome 18 is execllent for canvas, makes it much faster by using os
+                           window["mozRequestAnimationFrame"] || window["msRequestAnimationFrame"] || window["oRequestAnimationFrame"]
+                           || function(callback) { window.setTimeout(callback,1000/60);};
+       this.update();
 
-    ngOnInit() {
-      this.subs.push(this.keyboardEventService.getKeyDownEventSubject().subscribe(customKeyboardEvent => {
-          console.log("customKeyboardEvent",customKeyboardEvent);
-          if(customKeyboardEvent.event.keyCode == 13){ //  == 'Enter'
-              this.screenId++;
-              if(this.screenId == 5){ // boom, load up level one.
-                  this.levelManagerService.initLevel(LevelEnum.LevelOne);
-              }
-          }
-      }));
     }
 
+    ngOnInit() {
+        this.subs.push(this.keyboardEventService.getKeyDownEventSubject().subscribe(customKeyboardEvent => {
+            console.log("customKeyboardEvent",customKeyboardEvent);
+            if(customKeyboardEvent.event.keyCode == 13){ //  == 'Enter'
+                if(this.screenId < 5){
+                    this.screenId++;
+                    if(this.screenId == 5){ // boom, load up level one.
+                        // lets assume the user picked a player here
+                        this.playerService.initPlayer();
+                        this.levelManagerService.initLevel(LevelEnum.LevelOne);
+                    }
+                } else if(this.screenId == 6 ){
+                    this.screenId = 4;
+                }
+            }
+        }));
+        this.subs.push(this.playerService.getPlayerLivesGoneSubject().subscribe(playerObj => {
+            this.levelManagerService.pauseGame(); // no point in it running for eternity
+            this.playerScore =  playerObj.score;
+            this.screenId = 6;
+        }));
+    }
+
+    update(){
+        this.levelManagerService.getGameTickSubject().next();
+        this.requestAnimFrame(this.update.bind(this)); // takes a function as para, it will keep calling loop over and over again
+    }
 
 
 

@@ -4,13 +4,14 @@ import { ResourcesService } from 'src/app/services/resources.service';
 import { LevelManagerService, LevelInstance } from 'src/app/manager/level-manager.service';
 import { HitBox } from 'src/app/domain/HitBox';
 import { BulletManagerService, BulletDirection } from 'src/app/manager/bullet-manager.service';
+import { Subject } from '../../../node_modules/rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlayerService {
-
     public currentPlayer:PlayerObj = new PlayerObj();
+    private playerLivesGoneSubject:Subject<PlayerObj> = new Subject();
 
     constructor(private keyboardEventService:KeyboardEventService, private levelManagerService:LevelManagerService, private resourcesService:ResourcesService) {
       keyboardEventService.getKeyDownEventSubject().subscribe(customKeyboardEvent => {
@@ -23,8 +24,6 @@ export class PlayerService {
               this.processKeyUp(customKeyboardEvent);
           }
       });
-      this.currentPlayer.imageObj = this.resourcesService.getRes().get("player-1-ship");
-
     }
 
     processKeyDown(customKeyboardEvent:CustomKeyboardEvent){
@@ -60,6 +59,27 @@ export class PlayerService {
 
     }
 
+    killCurrentPlayer(): any {
+        this.currentPlayer.lives--;
+        if(this.currentPlayer.lives > 0){
+            this.currentPlayer.reset();
+        } else { // game over.
+            this.getPlayerLivesGoneSubject().next(this.currentPlayer);
+        }
+    }
+
+    getPlayerLivesGoneSubject(): Subject<PlayerObj> {
+        return this.playerLivesGoneSubject;
+    }
+
+    // creates an entirely new player
+    initPlayer(): any {
+        this.currentPlayer.reset(); // position
+        this.currentPlayer.imageObj = this.resourcesService.getRes().get("player-1-ship");
+        this.currentPlayer.score = 0;
+        this.currentPlayer.lives = 3;
+    }
+
 }
 
 export class PlayerObj {
@@ -72,16 +92,21 @@ export class PlayerObj {
     public bulletsFiring:boolean = false;
     public bulletsFired:boolean = true;
 
+    public resetPositionX:number;
+    public resetPositionY:number;
+
+    public score = 0;
     constructor(
         public lives:number=10,
         public posX:number=320,
-        public posY:number=240,
+        public posY:number=300,
         public imageObj:HTMLImageElement=null,
         public imageSizeX:number=90,
         public imageSizeY:number=60,
         public hitBox:HitBox=new HitBox((Math.floor(imageSizeX/2))-5,(Math.floor(imageSizeY/2))-5,10,10)
     ){
-
+        this.resetPositionX = this.posX;
+        this.resetPositionY = this.posY;
     }
 
     update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, bulletManagerService:BulletManagerService){
@@ -155,5 +180,14 @@ export class PlayerObj {
 
     getCenterY():number{
         return this.posY+(this.imageSizeY/2);
+    }
+
+    hasPlayerBeenHit(hitter:any,hitterBox:HitBox):boolean {
+         return this.hitBox.areCentersToClose(hitter,hitterBox,this,this.hitBox);
+    }
+
+    reset(): any {
+        this.posX = this.resetPositionX;
+        this.posY = this.resetPositionY;
     }
 }

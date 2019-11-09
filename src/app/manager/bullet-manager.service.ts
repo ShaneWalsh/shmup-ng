@@ -155,7 +155,10 @@ class DumbLazer implements BulletInstance {
                 }
             }
         } else { // colision with the player
-
+            if(playerService.currentPlayer && playerService.currentPlayer.hasPlayerBeenHit(this,this.hitBox)){
+                bulletManagerService.removeBullet(this);
+                playerService.killCurrentPlayer();
+            }
         }
     }
 }

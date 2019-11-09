@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Subject } from '../../../node_modules/rxjs';
 import { ResourcesService } from 'src/app/services/resources.service';
 import { BotManagerService } from 'src/app/manager/bot-manager.service';
+import { PlayerService } from '../services/player.service';
+import { BulletManagerService } from './bullet-manager.service';
 
 export enum LevelEnum{
     LevelOne='LevelOne',
@@ -14,19 +16,31 @@ export enum LevelEnum{
   providedIn: 'root'
 })
 export class LevelManagerService {
-
+    private gameTickSubject:Subject<boolean> = new Subject();
     private levelLoaded: Subject<LevelInstance> = new Subject();
+    private levelComplete: Subject<LevelInstance> = new Subject();
     private currentLevel:LevelInstance;
 
     private paused:boolean = false;
 
-    constructor(private resourcesService:ResourcesService, private botManagerService:BotManagerService) { }
+    constructor(private resourcesService:ResourcesService, private botManagerService:BotManagerService, private bulletManagerService: BulletManagerService,) { }
 
     initLevel(level:LevelEnum){
+        // clear down the managers
+        this.botManagerService.clean();
+        this.bulletManagerService.clean();
         if(level == LevelEnum.LevelOne){
-            this.currentLevel = new LevelOneInstance(this.resourcesService, this.botManagerService);
+            this.currentLevel = new LevelOneInstance(this.resourcesService, this.botManagerService, this);
             this.levelLoaded.next(this.currentLevel);
         }
+    }
+
+    pauseGame() {
+        this.paused = true;
+    }
+
+    unPauseGame(){
+        this.paused = false;
     }
 
     getCurrentLevel():LevelInstance{
@@ -45,6 +59,12 @@ export class LevelManagerService {
         return this.levelLoaded;
     }
 
+    getLevelCompleteSubject(): Subject<LevelInstance> {
+        return this.levelComplete;
+    }
+    getGameTickSubject(): Subject<boolean> {
+        return this.gameTickSubject;
+    }
 }
 
 export interface LevelInstance {
@@ -71,7 +91,7 @@ class LevelOneInstance implements LevelInstance{
     private eventArr:any[]=[];
     private eventArrPosition:number=0;
 
-    constructor(public resourcesService:ResourcesService, private botManagerService:BotManagerService){
+    constructor(public resourcesService:ResourcesService, private botManagerService:BotManagerService, private levelManagerService:LevelManagerService){
         this.backgroundImage = this.resourcesService.getRes().get("level-1-background");
     }
 
@@ -101,6 +121,7 @@ class LevelOneInstance implements LevelInstance{
             }
         }
 
+        // temp
         this.ticker++;
         if(seconds > 3){
             //this.stage++;
