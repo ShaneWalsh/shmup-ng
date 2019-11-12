@@ -16,6 +16,9 @@ export enum LevelEnum{
   providedIn: 'root'
 })
 export class LevelManagerService {
+    drawHitBox(): boolean {
+        return false;
+    }
     private gameTickSubject:Subject<boolean> = new Subject();
     private levelLoaded: Subject<LevelInstance> = new Subject();
     private levelComplete: Subject<LevelInstance> = new Subject();
@@ -127,6 +130,7 @@ class LevelOneInstance implements LevelInstance{
             //this.stage++;
             this.ticker = 0;
             this.botManagerService.generateDiver(this);
+            this.botManagerService.generateFighter(this);
         }
     }
 
@@ -143,6 +147,6 @@ class LevelOneInstance implements LevelInstance{
     }
 
     drawHitBox(){
-        return true;
+        return this.levelManagerService.drawHitBox();
     }
 }

@@ -18,7 +18,10 @@ export class ResourcesService {
           {code:"player-1-ship", path:"assets/img/player/player-1-ship.png", type:ResourcesEnum.ImageRes},
           {code:"player-1-bullets", path:"assets/img/player/player-1-bullets.png", type:ResourcesEnum.ImageRes},
           {code:"enemy-3-1", path:"assets/img/bots/enemy-3-1.png", type:ResourcesEnum.ImageRes},
-          {code:"enemy-bullet", path:"assets/img/bots/enemy-bullet.png", type:ResourcesEnum.ImageRes}
+          {code:"enemy-1-1", path:"assets/img/bots/enemy-1-1.png", type:ResourcesEnum.ImageRes},
+          {code:"enemy-1-2", path:"assets/img/bots/enemy-1-2.png", type:ResourcesEnum.ImageRes},
+          {code:"enemy-bullet", path:"assets/img/bots/enemy-bullet.png", type:ResourcesEnum.ImageRes},
+          {code:"enemy-bullet-target", path:"assets/img/bots/enemy-bullet-Target.png", type:ResourcesEnum.ImageRes}
       ];
     }
 

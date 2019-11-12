@@ -98,8 +98,8 @@ export class PlayerObj {
     public score = 0;
     constructor(
         public lives:number=10,
-        public posX:number=320,
-        public posY:number=300,
+        public posX:number=280,
+        public posY:number=500,
         public imageObj:HTMLImageElement=null,
         public imageSizeX:number=90,
         public imageSizeY:number=60,
@@ -184,6 +184,10 @@ export class PlayerObj {
 
     hasPlayerBeenHit(hitter:any,hitterBox:HitBox):boolean {
          return this.hitBox.areCentersToClose(hitter,hitterBox,this,this.hitBox);
+    }
+
+    addScore(arg0: any): any {
+        this.score+= arg0;
     }
 
     reset(): any {

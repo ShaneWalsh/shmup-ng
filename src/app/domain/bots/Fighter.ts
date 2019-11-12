@@ -5,27 +5,32 @@ import { BotManagerService } from "src/app/manager/bot-manager.service";
 import { BulletManagerService, BulletDirection } from "src/app/manager/bullet-manager.service";
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
 
-export class Diver implements BotInstance{
+export class Fighter implements BotInstance{
 
-    public posXSpeed:number = 1.5;
-    public posYSpeed:number = 1.5;
+    public posXSpeed:number = 2;
+    public posYSpeed:number = 2;
 
     public bTimer:number = 0; // bullet timer
-    public bTimerLimit:number = 40;
+    public bTimerLimit:number = 20;
 
-    public score:number = 50;
+    public anaimationTimer:number = 0;
+    public anaimationTimerLimit:number =4;
+
+    public imageObj:HTMLImageElement;
+
+    public score:number = 10;
 
     constructor(
-        public health:number=3,
+        public health:number=1,
         public posX:number=0,
         public posY:number=0,
-        public imageObj:HTMLImageElement=null,
+        public imageObj1:HTMLImageElement=null,
+        public imageObj2:HTMLImageElement=null,
         public imageSizeX:number=90,
         public imageSizeY:number=60,
-        public hitBox:HitBox=new HitBox(12,0,imageSizeX-24,imageSizeY),
-        public hitBox2:HitBox=new HitBox(0,5,imageSizeX,25)
+        public hitBox:HitBox=new HitBox(0,0,imageSizeX,imageSizeY)
     ){
-
+        this.imageObj = imageObj1;
     }
 
     update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, currentPlayer:PlayerObj) {
@@ -37,7 +42,6 @@ export class Diver implements BotInstance{
         }
         if(levelInstance.drawHitBox()){
             this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");
-            this.hitBox2.drawBorder(this.posX+this.hitBox2.hitBoxX,this.posY+this.hitBox2.hitBoxY,this.hitBox2.hitBoxSizeX,this.hitBox2.hitBoxSizeY,ctx,"#FF0000");
         }
 
         // fire weapon
@@ -48,20 +52,29 @@ export class Diver implements BotInstance{
 		else{
 			this.bTimer++;
 		}
+        if(this.anaimationTimer >= this.anaimationTimerLimit){
+			this.anaimationTimer = 0;
+			if(this.imageObj == this.imageObj1){
+                this.imageObj = this.imageObj2;
+            } else {
+                this.imageObj = this.imageObj1;
+            }
+		}
+		else{
+			this.anaimationTimer++;
+		}
     }
 
     hasBotBeenHit(hitter:any,hitterBox:HitBox):boolean {
-         return this.hitBox.areCentersToClose(hitter,hitterBox,this,this.hitBox) || this.hitBox.areCentersToClose(hitter,hitterBox,this,this.hitBox2);
+         return this.hitBox.areCentersToClose(hitter,hitterBox,this,this.hitBox);
     }
 
     // lazers go straight, nothing fancy so no need to make them do anything fancy, cal a stright direction.
     fireTracker(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D,bulletManagerService:BulletManagerService, currentPlayer:PlayerObj){
         let bullDirection:BulletDirection;
         if(levelInstance.isVertical()){
-            // bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, this.posX, (this.posY+50), 6);
-            // bulletManagerService.generateBotBlazer(levelInstance, bullDirection, (this.posX+16), (this.posY+40));
-            bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, currentPlayer.getCenterX(), currentPlayer.getCenterY(), 4, true, currentPlayer);
-            bulletManagerService.generateBotTrackerBlob(levelInstance, bullDirection,  (this.posX+16), (this.posY+40), 120);
+            bullDirection = bulletManagerService.calculateBulletDirection(this.posX+17, this.posY+40,currentPlayer.getCenterX(), currentPlayer.getCenterY(), 6, true);
+            bulletManagerService.generateBotTrackerBlob(levelInstance, bullDirection, this.posX+17, this.posY+40, -1);
         } else {
             // bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, (this.posX+50), this.posY, 6);
             // bulletManagerService.generatePlayerLazer(levelInstance, bullDirection, this.posX, this.posY);

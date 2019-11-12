@@ -6,6 +6,7 @@ import { Diver } from 'src/app/domain/bots/Diver';
 import { ResourcesService } from 'src/app/services/resources.service';
 import { BulletManagerService } from 'src/app/manager/bullet-manager.service';
 import { PlayerObj } from 'src/app/services/player.service';
+import { Fighter } from '../domain/bots/Fighter';
 
 /**
  * Going to manage the created bots, spawned by the level manager. Its going to emit when they are destroyed or when they leave the screen.
@@ -41,6 +42,13 @@ export class BotManagerService {
     generateDiver(levelInstance:LevelInstance): any {
         let pos = Math.floor(Math.random() * Math.floor(levelInstance.getMapWidth()-50))+10;
         let newBot = new Diver(3,pos,-54, this.resourcesService.getRes().get("enemy-3-1"), 46,52);
+        this.botsArr.push(newBot);
+        this.botCreated.next(newBot);
+    }
+
+    generateFighter(levelInstance:LevelInstance): any {
+        let pos = Math.floor(Math.random() * Math.floor(levelInstance.getMapWidth()-50))+10;
+        let newBot = new Fighter(2,pos,-56, this.resourcesService.getRes().get("enemy-1-1"), this.resourcesService.getRes().get("enemy-1-2"), 52,56);
         this.botsArr.push(newBot);
         this.botCreated.next(newBot);
     }
