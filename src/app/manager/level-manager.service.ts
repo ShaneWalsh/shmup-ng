@@ -4,6 +4,8 @@ import { ResourcesService } from 'src/app/services/resources.service';
 import { BotManagerService } from 'src/app/manager/bot-manager.service';
 import { PlayerService } from '../services/player.service';
 import { BulletManagerService } from './bullet-manager.service';
+import { LevelEventsService } from 'src/app/manager/level-events.service';
+import { LevelEvent } from 'src/app/domain/events/level-events';
 
 export enum LevelEnum{
     LevelOne='LevelOne',
@@ -26,14 +28,20 @@ export class LevelManagerService {
 
     private paused:boolean = false;
 
-    constructor(private resourcesService:ResourcesService, private botManagerService:BotManagerService, private bulletManagerService: BulletManagerService,) { }
+    constructor(private resourcesService:ResourcesService, private botManagerService:BotManagerService, private bulletManagerService: BulletManagerService,private levelEventsService:LevelEventsService) {
+        this.loadEvents();
+    }
+
+    loadEvents(): any {
+
+    }
 
     initLevel(level:LevelEnum){
         // clear down the managers
         this.botManagerService.clean();
         this.bulletManagerService.clean();
         if(level == LevelEnum.LevelOne){
-            this.currentLevel = new LevelOneInstance(this.resourcesService, this.botManagerService, this);
+            this.currentLevel = new LevelOneInstance(this.resourcesService, this.botManagerService, this, this.levelEventsService);
             this.levelLoaded.next(this.currentLevel);
         }
     }
@@ -91,11 +99,14 @@ class LevelOneInstance implements LevelInstance{
     private stage:number = 0; // keep track of the different stages in bot generation.
 
     // event array to mark when things should happen. Spawning(fixed/random), Boss, Mini Boss, LevelOver?
-    private eventArr:any[]=[];
-    private eventArrPosition:number=0;
+    private eventArr:LevelEvent[]=[];
+    private repeatEvents:LevelEvent[]=[];
+    private tickCounter:number = 0;
+    private phaseCounter:number = 0; // when phase updates, tick counter goes back to zero
 
-    constructor(public resourcesService:ResourcesService, private botManagerService:BotManagerService, private levelManagerService:LevelManagerService){
+    constructor(public resourcesService:ResourcesService, private botManagerService:BotManagerService, private levelManagerService:LevelManagerService, public levelEventsService:LevelEventsService){
         this.backgroundImage = this.resourcesService.getRes().get("level-1-background");
+        this.eventArr = this.levelEventsService.getLevel1Events();
     }
 
     update(ctx:CanvasRenderingContext2D) {
@@ -113,14 +124,19 @@ class LevelOneInstance implements LevelInstance{
             if(this.scrollerXIncrement > this.mapWidth){this.scrollerXIncrement = 0};
         }
 
-        // this is how I want the spawning etc to be controlled, a level will be an array of events basically.
-        if(this.eventArrPosition < this.eventArr.length) {
-            const event = this.eventArr[this.eventArrPosition];
-            if(event.canFire()){
-                this.eventArrPosition++;
-                // make the event happen
-                // e.g this.botManagerService.generateDiver();
-                // but with position specified etc
+        //todo fire repeat events first.
+        // tickCounter - lastRepeatTickFire == happenAfterTicks then fire again.
+
+        //then fire the normal events
+        for(let i =0 ; i <  this.eventArr.length; i++){
+            let eventI = this.eventArr[i];
+            if(eventI.canTrigger(this.tickCounter, this.phaseCounter)){
+                eventI.triggerEvent(this.botManagerService,this.levelManagerService);
+                if(eventI.repeatUntilPhaseEnd){
+                    eventI.lastRepeatTickFire = this.tickCounter;
+                    this.repeatEvents.push(eventI);
+                }
+                this.eventArr.splice(i,1);
             }
         }
 
@@ -129,9 +145,14 @@ class LevelOneInstance implements LevelInstance{
         if(seconds > 3){
             //this.stage++;
             this.ticker = 0;
-            this.botManagerService.generateDiver(this);
-            this.botManagerService.generateFighter(this);
+            //this.botManagerService.generateDiver(this);
+            //this.botManagerService.generateFighter(this);
         }
+        this.updateTickCounter();
+    }
+
+    updateTickCounter(){
+        this.tickCounter++;
     }
 
     getMapHeight() {

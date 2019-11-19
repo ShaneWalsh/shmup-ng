@@ -12,6 +12,7 @@ export class AppComponent {
   loaded:boolean=false;
 
   // when doing the ng build make sure to change <base href="./"> in index.html
+  // ng build --prod --base-href ./
 
   @HostListener('window:keyup', ['$event'])
   keyupEvent(event: KeyboardEvent) {
