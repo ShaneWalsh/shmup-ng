@@ -7,11 +7,11 @@ import { PlayerObj, PlayerService } from "src/app/services/player.service";
 
 export class Fighter implements BotInstance{
 
-    public posXSpeed:number = 2;
-    public posYSpeed:number = 2;
+    public posXSpeed:number = 3;
+    public posYSpeed:number = 3;
 
     public bTimer:number = 0; // bullet timer
-    public bTimerLimit:number = 20;
+    public bTimerLimit:number = 30;
 
     public anaimationTimer:number = 0;
     public anaimationTimerLimit:number =4;
@@ -45,7 +45,7 @@ export class Fighter implements BotInstance{
         }
 
         // fire weapon
-		if(this.bTimer >= this.bTimerLimit){
+		if(this.bTimer >= this.bTimerLimit && this.canShoot(levelInstance,currentPlayer)){
 			this.bTimer = 0;
 			this.fireTracker(levelInstance,ctx,bulletManagerService,currentPlayer);
 		}
@@ -73,6 +73,7 @@ export class Fighter implements BotInstance{
     fireTracker(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D,bulletManagerService:BulletManagerService, currentPlayer:PlayerObj){
         let bullDirection:BulletDirection;
         if(levelInstance.isVertical()){
+			// to check that the player is not above us, we dont want bullets travelling upwards at him, that makes no sense.
             bullDirection = bulletManagerService.calculateBulletDirection(this.posX+17, this.posY+40,currentPlayer.getCenterX(), currentPlayer.getCenterY(), 6, true);
             bulletManagerService.generateBotTrackerBlob(levelInstance, bullDirection, this.posX+17, this.posY+40, -1);
         } else {
@@ -88,6 +89,15 @@ export class Fighter implements BotInstance{
             botManagerService.removeBot(this);
         }
     }
+
+	canShoot(levelInstance:LevelInstance, currentPlayer:PlayerObj){
+		if(levelInstance.isVertical() && this.getCenterY() < currentPlayer.getCenterY()){
+			return true;
+		} else if(!levelInstance.isVertical() && this.getCenterX() > currentPlayer.getCenterX()){
+			return true;
+		}
+		return false;
+	}
 
     getCenterX():number{
         return this.posX+(this.imageSizeX/2);

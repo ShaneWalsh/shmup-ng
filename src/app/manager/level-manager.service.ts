@@ -100,7 +100,7 @@ class LevelOneInstance implements LevelInstance{
 
     // event array to mark when things should happen. Spawning(fixed/random), Boss, Mini Boss, LevelOver?
     private eventArr:LevelEvent[]=[];
-    private repeatEvents:LevelEvent[]=[];
+    private repeatEvents:LevelEvent[]=[]; // triggered events are removed from the events ary so they dont trigger twce by accident and then reinserted.
     private tickCounter:number = 0;
     private phaseCounter:number = 0; // when phase updates, tick counter goes back to zero
 
@@ -128,6 +128,7 @@ class LevelOneInstance implements LevelInstance{
         // tickCounter - lastRepeatTickFire == happenAfterTicks then fire again.
 
         //then fire the normal events
+		this.repeatEvents = [];
         for(let i =0 ; i <  this.eventArr.length; i++){
             let eventI = this.eventArr[i];
             if(eventI.canTrigger(this.tickCounter, this.phaseCounter)){
@@ -136,9 +137,10 @@ class LevelOneInstance implements LevelInstance{
                     eventI.lastRepeatTickFire = this.tickCounter;
                     this.repeatEvents.push(eventI);
                 }
-                this.eventArr.splice(i,1);
+            	this.eventArr.splice(i--,1);
             }
         }
+		this.eventArr = this.eventArr .concat(...this.repeatEvents);
 
         // temp
         this.ticker++;

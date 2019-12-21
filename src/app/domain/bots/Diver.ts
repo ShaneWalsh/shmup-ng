@@ -41,7 +41,7 @@ export class Diver implements BotInstance{
         }
 
         // fire weapon
-		if(this.bTimer >= this.bTimerLimit){
+		if(this.bTimer >= this.bTimerLimit && this.canShoot(levelInstance,currentPlayer)){
 			this.bTimer = 0;
 			this.fireTracker(levelInstance,ctx,bulletManagerService,currentPlayer);
 		}
@@ -60,8 +60,8 @@ export class Diver implements BotInstance{
         if(levelInstance.isVertical()){
             // bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, this.posX, (this.posY+50), 6);
             // bulletManagerService.generateBotBlazer(levelInstance, bullDirection, (this.posX+16), (this.posY+40));
-            bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, currentPlayer.getCenterX(), currentPlayer.getCenterY(), 4, true, currentPlayer);
-            bulletManagerService.generateBotTrackerBlob(levelInstance, bullDirection,  (this.posX+16), (this.posY+40), 120);
+            bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, currentPlayer.getCenterX(), currentPlayer.getCenterY(), 3, true, currentPlayer);
+            bulletManagerService.generateBotTrackerBlob(levelInstance, bullDirection,  (this.posX+16), (this.posY+40), 60);
         } else {
             // bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, (this.posX+50), this.posY, 6);
             // bulletManagerService.generatePlayerLazer(levelInstance, bullDirection, this.posX, this.posY);
@@ -75,6 +75,15 @@ export class Diver implements BotInstance{
             botManagerService.removeBot(this);
         }
     }
+
+	canShoot(levelInstance:LevelInstance, currentPlayer:PlayerObj){
+		if(levelInstance.isVertical() && this.getCenterY() < currentPlayer.getCenterY()){
+			return true;
+		} else if(!levelInstance.isVertical() && this.getCenterX() > currentPlayer.getCenterX()){
+			return true;
+		}
+		return false;
+	}
 
     getCenterX():number{
         return this.posX+(this.imageSizeX/2);

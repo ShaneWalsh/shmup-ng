@@ -25,7 +25,7 @@ export class LevelEvent {
     }
 
     public triggerEvent(botManagerService:BotManagerService, levelManagerService:LevelManagerService){
-
+		console.log("Not implemented");
     }
 
     public getPhase():number{
@@ -37,7 +37,7 @@ export class LevelEvent {
     }
 
     public canTrigger(tickCounter: number, phaseCounter: number): boolean {
-        return (this.phase == phaseCounter && this.happenAfterTicks == tickCounter);
+        return (this.phase == phaseCounter && (this.happenAfterTicks+this.lastRepeatTickFire) == tickCounter);
     }
 }
 
@@ -47,7 +47,7 @@ export class SpawnBotEvent extends LevelEvent {
         public happenAfterTicks:number=60,
         public repeatUntilPhaseEnd:boolean=false,
         public repeatLoopTicks:number = 60, // only used if repeatUntilPhaseEnd is true
-        public botType:string,
+        public botType:BotType,
         public randomPosition:boolean=true,
         public posX:number = 0,
         public posY:number = 0
@@ -57,7 +57,13 @@ export class SpawnBotEvent extends LevelEvent {
     }
 
     public triggerEvent(botManagerService:BotManagerService, levelManagerService:LevelManagerService){
-
+		if(this.botType == BotType.DIVER){
+			botManagerService.generateDiver(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY);
+		} else if(this.botType == BotType.FIGHTER){
+			botManagerService.generateFighter(levelManagerService.getCurrentLevel(),this.randomPosition, this.posX, this.posY);
+		} else {
+			console.log("Not implemented");
+		}
     }
 }
 
@@ -70,6 +76,6 @@ export class LevelOverEvent extends LevelEvent{
     }
 
     public triggerEvent(botManagerService:BotManagerService, levelManagerService:LevelManagerService){
-
+		console.log("Not implemented");
     }
 }

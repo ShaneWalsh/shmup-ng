@@ -48,7 +48,7 @@ export class BulletManagerService {
         this.bulletCreated.next(newBullet);
     }
 
-    generateBotTrackerBlob(levelInstance:LevelInstance, bulletDirection:BulletDirection, startX, startY, allowedMovement=-1 ): any {
+    generateBotTrackerBlob(levelInstance:LevelInstance, bulletDirection:BulletDirection, startX, startY, allowedMovement=30 ): any {
         // make a generaic lazer, isTargetBot? // damage to do
         let newBullet = new DumbLazer(1,startX, startY, bulletDirection, false, this.resourcesService.getRes().get("enemy-bullet-target"),22,14);
         newBullet.allowedMovement = allowedMovement; // 2 seconds ish
@@ -146,8 +146,10 @@ class DumbLazer implements BulletInstance {
 		this.posX += this.bulletDirection.speed * this.bulletDirection.directionX;
 		this.posY += this.bulletDirection.speed * this.bulletDirection.directionY;
 
+		let removed:boolean =false;
         if(this.posY + this.imageSizeY > (levelInstance.getMapHeight()+this.imageSizeY)){
             bulletManagerService.removeBullet(this);
+			removed = true;
         } else {
             if(this.bulletDirection.performRotation){
                 this.drawRotateImage(ctx,this.bulletDirection.angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY);
@@ -159,7 +161,7 @@ class DumbLazer implements BulletInstance {
             this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");
         }
 
-        let removed:boolean =false;
+
         if(this.goodBullet){ // todo collision detection!!
             let botArrClone = [...botManagerService.getBots()];
             for(let i = 0; i < botArrClone.length;i++){
@@ -183,6 +185,7 @@ class DumbLazer implements BulletInstance {
             this.allowedMovement--;
             if(this.allowedMovement < 1){
                 // todo play an animcation perhaps?
+				removed = true;
                 bulletManagerService.removeBullet(this);
             }
         }

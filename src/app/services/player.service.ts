@@ -28,7 +28,7 @@ export class PlayerService {
 
     processKeyDown(customKeyboardEvent:CustomKeyboardEvent){
         // move the ship about
-        let speed = 6;
+        let speed = 8;
         if(customKeyboardEvent.event.keyCode == 65 || customKeyboardEvent.event.keyCode == 37 ){ // a - left
             this.currentPlayer.posXSpeed = -speed;
         } else if(customKeyboardEvent.event.keyCode == 83 || customKeyboardEvent.event.keyCode == 40){ // s - up
@@ -156,11 +156,11 @@ export class PlayerObj {
     fireLazer(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D,bulletManagerService:BulletManagerService){
         let bullDirection:BulletDirection;
         if(levelInstance.isVertical()){
-            bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, this.posX, (this.posY-50), 6);
+            bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, this.posX, (this.posY-50), 8);
             // todo gen two bullets, or just one?
             bulletManagerService.generatePlayerLazer(levelInstance, bullDirection, this.posX+30, this.posY);
         } else {
-            bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, (this.posX+50), this.posY, 6);
+            bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, (this.posX+50), this.posY, 8);
             bulletManagerService.generatePlayerLazer(levelInstance, bullDirection, this.posX, this.posY);
         }
 	}
