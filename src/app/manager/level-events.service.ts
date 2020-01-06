@@ -15,24 +15,28 @@ export class LevelEventsService {
       // le.push(new SpawnBotEvent(0,90,true,90,BotType.FIGHTER, true));
       // le.push(new SpawnBotEvent(0,90,true,90,BotType.FIGHTER, true));
 
-	  le.push(new SpawnBotEvent(0,120,false,120,BotType.DIVER, false, 200));
-	  le.push(new SpawnBotEvent(0,90,false,90,BotType.FIGHTER, false, 300));
-	  le.push(new SpawnBotEvent(0,85,false,90,BotType.FIGHTER, false, 360));
-	  le.push(new SpawnBotEvent(0,90,false,90,BotType.FIGHTER, false, 420));
+	  le.push(new SpawnBotEvent(0,120,false,0,BotType.DIVER, false, 200, -60));
+	  le.push(new SpawnBotEvent(0,90,false,0,BotType.FIGHTER, false, 300, -60));
+	  le.push(new SpawnBotEvent(0,85,false,0,BotType.FIGHTER, false, 360, -60));
+	  le.push(new SpawnBotEvent(0,90,false,0,BotType.FIGHTER, false, 420, -60));
 
-	  le.push(new SpawnBotEvent(0,190,false,90,BotType.FIGHTER, false, 460));
-	  le.push(new SpawnBotEvent(0,195,false,90,BotType.FIGHTER, false, 520));
-	  le.push(new SpawnBotEvent(0,200,false,90,BotType.FIGHTER, false, 580));
+	  le.push(new SpawnBotEvent(0,190,false,0,BotType.FIGHTER, false, 460, -60));
+	  le.push(new SpawnBotEvent(0,195,false,0,BotType.FIGHTER, false, 520, -60));
+	  le.push(new SpawnBotEvent(0,200,false,0,BotType.FIGHTER, false, 580, -60));
 
- 	  le.push(new SpawnBotEvent(0,250,false,120,BotType.DIVER, false, 500));
+ 	  le.push(new SpawnBotEvent(0,250,false,0,BotType.DIVER, false, 500, -60));
 
-	  le.push(new SpawnBotEvent(0,260,false,90,BotType.FIGHTER, false, 220));
-	  le.push(new SpawnBotEvent(0,265,false,90,BotType.FIGHTER, false, 160));
-	  le.push(new SpawnBotEvent(0,270,false,90,BotType.FIGHTER, false, 100));
+	  le.push(new SpawnBotEvent(0,260,false,0,BotType.FIGHTER, false, 220, -60));
+	  le.push(new SpawnBotEvent(0,265,false,0,BotType.FIGHTER, false, 160, -60));
+	  le.push(new SpawnBotEvent(0,270,false,0,BotType.FIGHTER, false, 100, -60));
 
-	  le.push(new SpawnBotEvent(0,400,true,120,BotType.DIVER, true));
-      le.push(new SpawnBotEvent(0,350,true,90,BotType.FIGHTER, true));
-      le.push(new SpawnBotEvent(0,350,true,90,BotType.FIGHTER, true));
+	  le.push(new SpawnBotEvent(0,400,true,120,BotType.DIVER, true, 0, -60));
+      le.push(new SpawnBotEvent(0,350,true,90,BotType.FIGHTER, true, 0, -60));
+	  le.push(new SpawnBotEvent(0,350,true,90,BotType.FIGHTER, true, 0, -60));
+	  
+	  le.push(new SpawnBotEvent(0, 350, false, 90, BotType.MINIBOSS1, false, 300, -300));
+
+	  
 
       return le;
   }

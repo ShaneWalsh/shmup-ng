@@ -61,7 +61,9 @@ export class SpawnBotEvent extends LevelEvent {
 			botManagerService.generateDiver(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY);
 		} else if(this.botType == BotType.FIGHTER){
 			botManagerService.generateFighter(levelManagerService.getCurrentLevel(),this.randomPosition, this.posX, this.posY);
-		} else {
+        } else if (this.botType == BotType.MINIBOSS1) {
+            botManagerService.generateLevel1SubBoss1(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY);
+        } else {
 			console.log("Not implemented");
 		}
     }
