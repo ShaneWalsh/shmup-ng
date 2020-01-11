@@ -48,6 +48,7 @@ export class SpawnBotEvent extends LevelEvent {
         public repeatUntilPhaseEnd:boolean=false,
         public repeatLoopTicks:number = 60, // only used if repeatUntilPhaseEnd is true
         public botType:BotType,
+		public config:any={},
         public randomPosition:boolean=true,
         public posX:number = 0,
         public posY:number = 0
@@ -58,11 +59,11 @@ export class SpawnBotEvent extends LevelEvent {
 
     public triggerEvent(botManagerService:BotManagerService, levelManagerService:LevelManagerService){
 		if(this.botType == BotType.DIVER){
-			botManagerService.generateDiver(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY);
+			botManagerService.generateDiver(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
 		} else if(this.botType == BotType.FIGHTER){
-			botManagerService.generateFighter(levelManagerService.getCurrentLevel(),this.randomPosition, this.posX, this.posY);
+			botManagerService.generateFighter(levelManagerService.getCurrentLevel(),this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.MINIBOSS1) {
-            botManagerService.generateLevel1SubBoss1(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY);
+            botManagerService.generateLevel1SubBoss1(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
         } else {
 			console.log("Not implemented");
 		}

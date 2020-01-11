@@ -20,8 +20,9 @@ export class Fighter implements BotInstance{
 
     public score:number = 10;
 
+	public health:number=2;
     constructor(
-        public health:number=1,
+		public config:any={},
         public posX:number=0,
         public posY:number=0,
         public imageObj1:HTMLImageElement=null,

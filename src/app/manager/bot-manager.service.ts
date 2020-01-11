@@ -40,23 +40,23 @@ export class BotManagerService {
         }
     }
 
-    generateDiver(levelInstance:LevelInstance, randomPosition:boolean=true, posX:number = 0, posY:number = -60): any {
+    generateDiver(levelInstance:LevelInstance, randomPosition:boolean=true, posX:number = 0, posY:number = -60, config:any = {}): any {
 		let posObj = this.getBotPostion(levelInstance,randomPosition,posX,posY);
-		let newBot = new Diver(3,posObj.posX,posObj.posY, this.resourcesService.getRes().get("enemy-3-1"), 46,52);
+		let newBot = new Diver(config, posObj.posX,posObj.posY, this.resourcesService.getRes().get("enemy-3-1"), 46,52);
         this.botsArr.push(newBot);
         this.botCreated.next(newBot);
     }
 
-    generateFighter(levelInstance:LevelInstance, randomPosition:boolean=true, posX:number = 0, posY:number = -60): any {
+    generateFighter(levelInstance:LevelInstance, randomPosition:boolean=true, posX:number = 0, posY:number = -60, config:any = {}): any {
 		let posObj = this.getBotPostion(levelInstance,randomPosition,posX,posY);
-        let newBot = new Fighter(2,posObj.posX,posObj.posY, this.resourcesService.getRes().get("enemy-1-1"), this.resourcesService.getRes().get("enemy-1-2"), 52,56);
+        let newBot = new Fighter(config, posObj.posX,posObj.posY, this.resourcesService.getRes().get("enemy-1-1"), this.resourcesService.getRes().get("enemy-1-2"), 52,56);
         this.botsArr.push(newBot);
         this.botCreated.next(newBot);
     }
 
-    generateLevel1SubBoss1(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -300): any {
+    generateLevel1SubBoss1(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -300, config:any = {}): any {
         let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
-        let newBot = new Level1SubBoss(35, posObj.posX, posObj.posY, this.resourcesService.getRes().get("boss-sub-1"), this.resourcesService.getRes().get("boss-sub-1_2"), 196, 252);
+        let newBot = new Level1SubBoss(config, posObj.posX, posObj.posY, this.resourcesService.getRes().get("boss-sub-1"), this.resourcesService.getRes().get("boss-sub-1_2"), 196, 252);
         this.botsArr.push(newBot);
         this.botCreated.next(newBot);
     }

@@ -8,21 +8,27 @@ import { PlayerObj, PlayerService } from "src/app/services/player.service";
 export class Level1SubBoss implements BotInstance {
 
     public dirXRight:boolean = true;
-    public posXSpeed:number = 3;
-    public posYSpeed:number = 3;
+    public dirYDown:boolean = true;
 
-    public bTimer:number = 0; // bullet timer
+    public imageObj:HTMLImageElement;
+
+	// todo make these config values
+	public health:number=35;
+	public bulletSpeed:number = 6;
+
+	public posXSpeed:number = 3;
+    public posYSpeed:number = 1.5;
+
+	public bTimer:number = 0; // bullet timer
     public bTimerLimit:number = 30;
 
     public anaimationTimer:number = 0;
     public anaimationTimerLimit:number =4;
 
-    public imageObj:HTMLImageElement;
-
     public score:number = 10;
 
     constructor(
-        public health:number=30,
+		public config:any={},
         public posX:number=0,
         public posY:number=0,
         public imageObj1:HTMLImageElement=null,
@@ -35,9 +41,18 @@ export class Level1SubBoss implements BotInstance {
     }
 
     update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, currentPlayer:PlayerObj) {
-        if(this.posY < -25){
-            this.posY += this.posYSpeed;
-        }
+
+		if (this.dirYDown){
+			this.posY += this.posYSpeed;
+			if(this.posY > 0){
+	            this.dirYDown = false;
+	        }
+		} else {
+			this.posY -= this.posYSpeed;
+			if (this.posY < -75) {
+                this.dirYDown = true;
+            }
+		}
         if (this.dirXRight){
             this.posX += this.posXSpeed;
             if (this.posX > 400){
@@ -49,7 +64,7 @@ export class Level1SubBoss implements BotInstance {
                 this.dirXRight = true;
             }
         }
-        
+
         if(this.posY + this.imageSizeY > (levelInstance.getMapHeight()+this.imageSizeY)){
             botManagerService.removeBot(this);
         } else {
@@ -88,9 +103,10 @@ export class Level1SubBoss implements BotInstance {
     fireTracker(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D,bulletManagerService:BulletManagerService, currentPlayer:PlayerObj){
         let bullDirection:BulletDirection;
         if(levelInstance.isVertical()){
-			// to check that the player is not above us, we dont want bullets travelling upwards at him, that makes no sense.
-            bullDirection = bulletManagerService.calculateBulletDirection(this.posX+17, this.posY+40,currentPlayer.getCenterX(), currentPlayer.getCenterY(), 6, true);
-            bulletManagerService.generateBotTrackerBlob(levelInstance, bullDirection, this.posX+17, this.posY+40, -1);
+            bullDirection = bulletManagerService.calculateBulletDirection(this.posX+170, this.posY+200,currentPlayer.getCenterX(), currentPlayer.getCenterY(), this.bulletSpeed, true);
+            bulletManagerService.generateBotTrackerBlob(levelInstance, bullDirection, this.posX+170, this.posY+200, -1);
+			bullDirection = bulletManagerService.calculateBulletDirection(this.posX+5, this.posY+200,currentPlayer.getCenterX(), currentPlayer.getCenterY(), this.bulletSpeed, true);
+            bulletManagerService.generateBotTrackerBlob(levelInstance, bullDirection, this.posX+5, this.posY+200, -1);
         } else {
             // bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, (this.posX+50), this.posY, 6);
             // bulletManagerService.generatePlayerLazer(levelInstance, bullDirection, this.posX, this.posY);

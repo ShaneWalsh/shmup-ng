@@ -40,7 +40,7 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
                         this.levelManagerService.initLevel(LevelEnum.LevelOne);
                     }
                 } else if(this.screenId == 6 ){
-                    this.screenId = 4;
+                    this.screenId = 3;
                 }
             }
         }));

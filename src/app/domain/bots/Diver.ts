@@ -12,11 +12,12 @@ export class Diver implements BotInstance{
 
     public bTimer:number = 0; // bullet timer
     public bTimerLimit:number = 40;
+	public health:number=3;
 
     public score:number = 50;
 
     constructor(
-        public health:number=3,
+        public config:any={},
         public posX:number=0,
         public posY:number=0,
         public imageObj:HTMLImageElement=null,
