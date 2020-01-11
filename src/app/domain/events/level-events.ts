@@ -79,6 +79,7 @@ export class LevelOverEvent extends LevelEvent{
     }
 
     public triggerEvent(botManagerService:BotManagerService, levelManagerService:LevelManagerService){
-		console.log("Not implemented");
+		console.log("Boom");
+		levelManagerService.getLevelCompleteSubject().next(levelManagerService.getCurrentLevel());
     }
 }

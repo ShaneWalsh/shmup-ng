@@ -1,11 +1,11 @@
-import { BotInstance } from "src/app/domain/bots/BotInstance";
+import { BotInstance, BotInstanceImpl } from "src/app/domain/bots/BotInstance";
 import { LevelInstance } from "src/app/manager/level-manager.service";
 import { HitBox } from "src/app/domain/HitBox";
 import { BotManagerService } from "src/app/manager/bot-manager.service";
 import { BulletManagerService, BulletDirection } from "src/app/manager/bullet-manager.service";
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
 
-export class Level1SubBoss implements BotInstance {
+export class Level1SubBoss extends  BotInstanceImpl {
 
     public dirXRight:boolean = true;
     public dirYDown:boolean = true;
@@ -37,6 +37,7 @@ export class Level1SubBoss implements BotInstance {
         public imageSizeY:number=60,
         public hitBox:HitBox=new HitBox(0,0,imageSizeX,imageSizeY)
     ){
+        super(config);
         this.imageObj = imageObj1;
     }
 
@@ -65,11 +66,7 @@ export class Level1SubBoss implements BotInstance {
             }
         }
 
-        if(this.posY + this.imageSizeY > (levelInstance.getMapHeight()+this.imageSizeY)){
-            botManagerService.removeBot(this);
-        } else {
-            ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
-        }
+        ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
         if(levelInstance.drawHitBox()){
             this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");
         }
@@ -113,11 +110,12 @@ export class Level1SubBoss implements BotInstance {
         }
 	}
 
-    applyDamage(damage: number, botManagerService: BotManagerService, playerService:PlayerService) {
+    applyDamage(damage: number, botManagerService: BotManagerService, playerService:PlayerService, levelInstance:LevelInstance) {
         this.health -= damage;
         if(this.health < 1){
             playerService.currentPlayer.addScore(this.score);
             botManagerService.removeBot(this);
+			levelInstance.updatePhaseCounter();
         }
     }
 

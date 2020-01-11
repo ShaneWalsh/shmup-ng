@@ -127,6 +127,7 @@ export class BulletDirection {
 class DumbLazer implements BulletInstance {
     public allowedMovement = -1; // if a bot has allowed movement it will be removed when that movement runs out
     public outOfMovesAnimation:any; // todo add in future.
+	private pad = 5;
     constructor(
         public damage:number=2,
         public posX:number=0,
@@ -146,50 +147,52 @@ class DumbLazer implements BulletInstance {
 		this.posX += this.bulletDirection.speed * this.bulletDirection.directionX;
 		this.posY += this.bulletDirection.speed * this.bulletDirection.directionY;
 
-		let removed:boolean =false;
-        if(this.posY + this.imageSizeY > (levelInstance.getMapHeight()+this.imageSizeY)){
+		if(this.posY < (-this.pad) || this.posX < (-this.pad) || this.posY > (levelInstance.getMapHeight()+this.imageSizeY+this.pad) || this.posX > (levelInstance.getMapWidth()+this.imageSizeX+this.pad) ){
             bulletManagerService.removeBullet(this);
-			removed = true;
         } else {
-            if(this.bulletDirection.performRotation){
-                this.drawRotateImage(ctx,this.bulletDirection.angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY);
-            } else {
-                ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
-            }
-        }
-        if(levelInstance.drawHitBox()){
-            this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");
-        }
-
-
-        if(this.goodBullet){ // todo collision detection!!
-            let botArrClone = [...botManagerService.getBots()];
-            for(let i = 0; i < botArrClone.length;i++){
-                let bot = botArrClone[i];
-                if(bot.hasBotBeenHit(this,this.hitBox)){
-                    bot.applyDamage(this.damage, botManagerService,playerService);
-                    bulletManagerService.removeBullet(this);
-                    removed = true;
-                    break;
-                }
-            }
-        } else { // colision with the player
-            if(playerService.currentPlayer && playerService.currentPlayer.hasPlayerBeenHit(this,this.hitBox)){
-                bulletManagerService.removeBullet(this);
-                removed = true;
-                playerService.killCurrentPlayer();
-            }
-        }
-
-        if(!removed && this.allowedMovement > -1){
-            this.allowedMovement--;
-            if(this.allowedMovement < 1){
-                // todo play an animcation perhaps?
+			let removed:boolean =false;
+	        if(this.posY + this.imageSizeY > (levelInstance.getMapHeight()+this.imageSizeY)){
+	            bulletManagerService.removeBullet(this);
 				removed = true;
-                bulletManagerService.removeBullet(this);
-            }
-        }
+	        } else {
+	            if(this.bulletDirection.performRotation){
+	                this.drawRotateImage(ctx,this.bulletDirection.angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY);
+	            } else {
+	                ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
+	            }
+	        }
+	        if(levelInstance.drawHitBox()){
+	            this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");
+	        }
 
+	        if(this.goodBullet){ // todo collision detection!!
+	            let botArrClone = [...botManagerService.getBots()];
+	            for(let i = 0; i < botArrClone.length;i++){
+	                let bot = botArrClone[i];
+	                if(bot.hasBotBeenHit(this,this.hitBox)){
+	                    bot.applyDamage(this.damage, botManagerService,playerService,levelInstance);
+	                    bulletManagerService.removeBullet(this);
+	                    removed = true;
+	                    break;
+	                }
+	            }
+	        } else { // colision with the player
+	            if(playerService.currentPlayer && playerService.currentPlayer.hasPlayerBeenHit(this,this.hitBox)){
+	                bulletManagerService.removeBullet(this);
+	                removed = true;
+	                playerService.killCurrentPlayer();
+	            }
+	        }
+
+	        if(!removed && this.allowedMovement > -1){
+	            this.allowedMovement--;
+	            if(this.allowedMovement < 1){
+	                // todo play an animcation perhaps?
+					removed = true;
+	                bulletManagerService.removeBullet(this);
+	            }
+	        }
+		}
     }
 
     drawRotateImage(ctx,rotation, x,y,sx,sy,lx=x,ly=y,lxs=sx,lys=sy,translateX = x+(sx/2),translateY=y+(sy/2)){ // l are the actual canvas positions

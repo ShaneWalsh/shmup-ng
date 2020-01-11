@@ -39,15 +39,20 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
                         this.playerService.initPlayer();
                         this.levelManagerService.initLevel(LevelEnum.LevelOne);
                     }
-                } else if(this.screenId == 6 ){
+                } else if(this.screenId == 6 || this.screenId == 7){
                     this.screenId = 3;
-                }
+                } 
             }
         }));
         this.subs.push(this.playerService.getPlayerLivesGoneSubject().subscribe(playerObj => {
             this.levelManagerService.pauseGame(); // no point in it running for eternity
             this.playerScore =  playerObj.score;
             this.screenId = 6;
+        }));
+		this.subs.push(this.levelManagerService.getLevelCompleteSubject().subscribe(result => {
+			this.levelManagerService.pauseGame(); // no point in it running for eternity
+			this.playerScore =  this.playerService.currentPlayer.score;
+			this.screenId = 7;
         }));
     }
 

@@ -1,12 +1,12 @@
-import { BotInstance } from "src/app/domain/bots/BotInstance";
+import { BotInstance, BotInstanceImpl } from "src/app/domain/bots/BotInstance";
 import { LevelInstance } from "src/app/manager/level-manager.service";
 import { HitBox } from "src/app/domain/HitBox";
 import { BotManagerService } from "src/app/manager/bot-manager.service";
 import { BulletManagerService, BulletDirection } from "src/app/manager/bullet-manager.service";
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
 
-export class Diver implements BotInstance{
-
+export class Diver extends BotInstanceImpl{
+	public bulletSpeed:number = 3;
     public posXSpeed:number = 1.5;
     public posYSpeed:number = 1.5;
 
@@ -26,7 +26,8 @@ export class Diver implements BotInstance{
         public hitBox:HitBox=new HitBox(12,0,imageSizeX-24,imageSizeY),
         public hitBox2:HitBox=new HitBox(0,5,imageSizeX,25)
     ){
-
+        super(config);
+		this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score"]);
     }
 
     update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, currentPlayer:PlayerObj) {
@@ -61,7 +62,7 @@ export class Diver implements BotInstance{
         if(levelInstance.isVertical()){
             // bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, this.posX, (this.posY+50), 6);
             // bulletManagerService.generateBotBlazer(levelInstance, bullDirection, (this.posX+16), (this.posY+40));
-            bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, currentPlayer.getCenterX(), currentPlayer.getCenterY(), 3, true, currentPlayer);
+            bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, currentPlayer.getCenterX(), currentPlayer.getCenterY(), this.bulletSpeed, true, currentPlayer);
             bulletManagerService.generateBotTrackerBlob(levelInstance, bullDirection,  (this.posX+16), (this.posY+40), 60);
         } else {
             // bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, (this.posX+50), this.posY, 6);
@@ -69,7 +70,7 @@ export class Diver implements BotInstance{
         }
 	}
 
-    applyDamage(damage: number, botManagerService: BotManagerService, playerService:PlayerService) {
+    applyDamage(damage: number, botManagerService: BotManagerService, playerService:PlayerService, levelInstance:LevelInstance) {
         this.health -= damage;
         if(this.health < 1){
             playerService.currentPlayer.addScore(this.score);

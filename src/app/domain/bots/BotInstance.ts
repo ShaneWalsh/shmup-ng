@@ -9,9 +9,42 @@ export interface BotInstance {
     // checks if the provided hitbox has intersected with this bot
     hasBotBeenHit(hitter:any,hitterBox:HitBox);
 
-    applyDamage(damage:number, botManagerService:BotManagerService, playerService:PlayerService);
+    applyDamage(damage:number, botManagerService:BotManagerService, playerService:PlayerService, levelInstance:LevelInstance);
 
     getCenterX():number;
 
     getCenterY():number;
+}
+
+
+export class BotInstanceImpl implements BotInstance {
+
+	constructor(public config:any={}){
+
+	}
+
+	getCenterY(): number {
+        throw new Error("Method not implemented.");
+    }
+    getCenterX(): number {
+        throw new Error("Method not implemented.");
+    }
+    applyDamage(damage: number, botManagerService: BotManagerService, playerService: PlayerService, levelInstance:LevelInstance) {
+        throw new Error("Method not implemented.");
+    }
+    hasBotBeenHit(hitter: any, hitterBox: HitBox) {
+        throw new Error("Method not implemented.");
+    }
+    update(levelInstance: LevelInstance, ctx: CanvasRenderingContext2D, botManagerService: BotManagerService, bulletManagerService: BulletManagerService, currentPlayer: PlayerObj) {
+        throw new Error("Method not implemented.");
+    }
+
+	tryConfigValues(params){
+		for(let param of params){
+			if(this.config[param]){
+				this[param] = this.config[param];
+			}
+		}
+	}
+
 }

@@ -84,6 +84,7 @@ export interface LevelInstance {
     getMapHeight():number;
     isVertical():boolean;
     drawHitBox():boolean;
+	updatePhaseCounter();
 }
 
 class LevelOneInstance implements LevelInstance{
@@ -94,9 +95,6 @@ class LevelOneInstance implements LevelInstance{
     // keeps track of the infinite scrolling of the background.
     private scrollerXIncrement:number = 0;
     private scrollerYIncrement:number = 0;
-
-    private ticker:number = 0;
-    private stage:number = 0; // keep track of the different stages in bot generation.
 
     // event array to mark when things should happen. Spawning(fixed/random), Boss, Mini Boss, LevelOver?
     private eventArr:LevelEvent[]=[];
@@ -111,8 +109,6 @@ class LevelOneInstance implements LevelInstance{
 
     update(ctx:CanvasRenderingContext2D) {
         // infinite scroller
-        const seconds:number = this.ticker/60;
-
         ctx.drawImage(this.backgroundImage, this.scrollerXIncrement, this.scrollerYIncrement, this.mapWidth, this.mapHeight);
         if(this.isVertical()) {
             ctx.drawImage(this.backgroundImage, this.scrollerXIncrement, (this.scrollerYIncrement - this.mapHeight), this.mapWidth, this.mapHeight);
@@ -140,21 +136,18 @@ class LevelOneInstance implements LevelInstance{
             	this.eventArr.splice(i--,1);
             }
         }
-		this.eventArr = this.eventArr .concat(...this.repeatEvents);
+		this.eventArr = this.eventArr.concat(...this.repeatEvents);
 
-        // temp
-        this.ticker++;
-        if(seconds > 3){
-            //this.stage++;
-            this.ticker = 0;
-            //this.botManagerService.generateDiver(this);
-            //this.botManagerService.generateFighter(this);
-        }
         this.updateTickCounter();
     }
 
     updateTickCounter(){
         this.tickCounter++;
+    }
+
+	updatePhaseCounter(){
+		this.phaseCounter++;
+        this.tickCounter = 0;
     }
 
     getMapHeight() {

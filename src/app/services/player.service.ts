@@ -16,47 +16,14 @@ export class PlayerService {
     constructor(private keyboardEventService:KeyboardEventService, private levelManagerService:LevelManagerService, private resourcesService:ResourcesService) {
       keyboardEventService.getKeyDownEventSubject().subscribe(customKeyboardEvent => {
           if(this.levelManagerService.getNotPaused()){
-              this.processKeyDown(customKeyboardEvent);
+              this.currentPlayer.processKeyDown(customKeyboardEvent);
           }
       });
       keyboardEventService.getKeyUpEventSubject().subscribe(customKeyboardEvent => {
           if(this.levelManagerService.getNotPaused()){
-              this.processKeyUp(customKeyboardEvent);
+              this.currentPlayer.processKeyUp(customKeyboardEvent);
           }
       });
-    }
-
-    processKeyDown(customKeyboardEvent:CustomKeyboardEvent){
-        // move the ship about
-        let speed = 8;
-        if(customKeyboardEvent.event.keyCode == 65 || customKeyboardEvent.event.keyCode == 37 ){ // a - left
-            this.currentPlayer.posXSpeed = -speed;
-        } else if(customKeyboardEvent.event.keyCode == 83 || customKeyboardEvent.event.keyCode == 40){ // s - up
-            this.currentPlayer.posYSpeed = +speed;
-        } else if(customKeyboardEvent.event.keyCode == 68 || customKeyboardEvent.event.keyCode == 39){ // d - right
-            this.currentPlayer.posXSpeed = +speed;
-        } else if(customKeyboardEvent.event.keyCode == 87 || customKeyboardEvent.event.keyCode == 38){ // w -- down
-            this.currentPlayer.posYSpeed = -speed;
-        }
-        if(customKeyboardEvent.event.keyCode == 90 || customKeyboardEvent.event.keyCode == 78){ // z-n
-            this.currentPlayer.setFireBullet();
-        }
-    }
-
-    processKeyUp(customKeyboardEvent:CustomKeyboardEvent){
-        if(customKeyboardEvent.event.keyCode == 65 || customKeyboardEvent.event.keyCode == 37 ){ // a - left
-            this.currentPlayer.posXSpeed = 0;
-        } else if(customKeyboardEvent.event.keyCode == 83 || customKeyboardEvent.event.keyCode == 40){ // s - up
-            this.currentPlayer.posYSpeed = 0;
-        } else if(customKeyboardEvent.event.keyCode == 68 || customKeyboardEvent.event.keyCode == 39){ // d - right
-            this.currentPlayer.posXSpeed = 0;
-        } else if(customKeyboardEvent.event.keyCode == 87 || customKeyboardEvent.event.keyCode == 38){ // w -- down
-            this.currentPlayer.posYSpeed = 0;
-        }
-        if(customKeyboardEvent.event.keyCode == 90 || customKeyboardEvent.event.keyCode == 78){ // z-n
-            this.currentPlayer.stopFireBullet();
-        }
-
     }
 
     killCurrentPlayer(): any {
@@ -83,8 +50,8 @@ export class PlayerService {
 }
 
 export class PlayerObj {
-    public posXSpeed:number = 0;
-    public posYSpeed:number = 0;
+	public speed = 8;
+	public pressedKeys = {"left":false,"up":false,"right":false,"down":false};
 
     public bTimer:number = 0; // bullet timer
     public bTimerLimit:number = 10;
@@ -134,8 +101,14 @@ export class PlayerObj {
 
     acceleration(levelInstance:LevelInstance){
         // apply movement
-        this.posX += this.posXSpeed;
-        this.posY += this.posYSpeed;
+		if(this.pressedKeys["left"])
+			this.posX -= this.speed;
+		if(this.pressedKeys["up"])
+			this.posY += this.speed;
+		if(this.pressedKeys["right"])
+			this.posX += this.speed;
+		if(this.pressedKeys["down"])
+			this.posY -= this.speed;
 
         if(this.posX + this.imageSizeX > levelInstance.getMapWidth()){
             this.posX = levelInstance.getMapWidth() -  this.imageSizeX;
@@ -193,5 +166,41 @@ export class PlayerObj {
     reset(): any {
         this.posX = this.resetPositionX;
         this.posY = this.resetPositionY;
+    }
+
+	processKeyDown(customKeyboardEvent:CustomKeyboardEvent){
+        // move the ship about
+        if(customKeyboardEvent.event.keyCode == 65 || customKeyboardEvent.event.keyCode == 37 ){ // a - left
+			this.pressedKeys["left"] = true;
+
+        } else if(customKeyboardEvent.event.keyCode == 83 || customKeyboardEvent.event.keyCode == 40){ // s - up
+			this.pressedKeys["up"] = true;
+
+        } else if(customKeyboardEvent.event.keyCode == 68 || customKeyboardEvent.event.keyCode == 39){ // d - right
+			this.pressedKeys["right"] = true;
+
+        } else if(customKeyboardEvent.event.keyCode == 87 || customKeyboardEvent.event.keyCode == 38){ // w -- down
+			this.pressedKeys["down"] = true;
+
+        }
+        if(customKeyboardEvent.event.keyCode == 90 || customKeyboardEvent.event.keyCode == 78){ // z-n
+            this.setFireBullet();
+        }
+    }
+
+    processKeyUp(customKeyboardEvent:CustomKeyboardEvent){
+        if(customKeyboardEvent.event.keyCode == 65 || customKeyboardEvent.event.keyCode == 37 ){ // a - left
+			this.pressedKeys["left"] = false;
+        } else if(customKeyboardEvent.event.keyCode == 83 || customKeyboardEvent.event.keyCode == 40){ // s - up
+			this.pressedKeys["up"] = false;
+        } else if(customKeyboardEvent.event.keyCode == 68 || customKeyboardEvent.event.keyCode == 39){ // d - right
+			this.pressedKeys["right"] = false;
+        } else if(customKeyboardEvent.event.keyCode == 87 || customKeyboardEvent.event.keyCode == 38){ // w -- down
+			this.pressedKeys["down"] = false;
+        }
+        if(customKeyboardEvent.event.keyCode == 90 || customKeyboardEvent.event.keyCode == 78){ // z-n
+            this.stopFireBullet();
+        }
+
     }
 }

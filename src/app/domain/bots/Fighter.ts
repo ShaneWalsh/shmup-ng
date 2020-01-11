@@ -1,12 +1,12 @@
-import { BotInstance } from "src/app/domain/bots/BotInstance";
+import { BotInstance, BotInstanceImpl } from "src/app/domain/bots/BotInstance";
 import { LevelInstance } from "src/app/manager/level-manager.service";
 import { HitBox } from "src/app/domain/HitBox";
 import { BotManagerService } from "src/app/manager/bot-manager.service";
 import { BulletManagerService, BulletDirection } from "src/app/manager/bullet-manager.service";
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
 
-export class Fighter implements BotInstance{
-
+export class Fighter extends BotInstanceImpl{
+	public bulletSpeed:number = 6;
     public posXSpeed:number = 3;
     public posYSpeed:number = 3;
 
@@ -31,6 +31,7 @@ export class Fighter implements BotInstance{
         public imageSizeY:number=60,
         public hitBox:HitBox=new HitBox(0,0,imageSizeX,imageSizeY)
     ){
+        super(config);
         this.imageObj = imageObj1;
     }
 
@@ -75,7 +76,7 @@ export class Fighter implements BotInstance{
         let bullDirection:BulletDirection;
         if(levelInstance.isVertical()){
 			// to check that the player is not above us, we dont want bullets travelling upwards at him, that makes no sense.
-            bullDirection = bulletManagerService.calculateBulletDirection(this.posX+17, this.posY+40,currentPlayer.getCenterX(), currentPlayer.getCenterY(), 6, true);
+            bullDirection = bulletManagerService.calculateBulletDirection(this.posX+17, this.posY+40,currentPlayer.getCenterX(), currentPlayer.getCenterY(), this.bulletSpeed, true);
             bulletManagerService.generateBotTrackerBlob(levelInstance, bullDirection, this.posX+17, this.posY+40, -1);
         } else {
             // bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, (this.posX+50), this.posY, 6);
@@ -83,7 +84,7 @@ export class Fighter implements BotInstance{
         }
 	}
 
-    applyDamage(damage: number, botManagerService: BotManagerService, playerService:PlayerService) {
+    applyDamage(damage: number, botManagerService: BotManagerService, playerService:PlayerService, levelInstance:LevelInstance) {
         this.health -= damage;
         if(this.health < 1){
             playerService.currentPlayer.addScore(this.score);
