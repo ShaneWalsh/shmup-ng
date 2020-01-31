@@ -7,6 +7,7 @@ import { BotManagerService } from "src/app/manager/bot-manager.service";
 export enum BotType {
     DIVER="diver",
     FIGHTER="fighter",
+    DRONE="drone",
 
     MINIBOSS1="miniBoss1", // move on a phase after a mini boss dies.
 
@@ -62,6 +63,8 @@ export class SpawnBotEvent extends LevelEvent {
 			botManagerService.generateDiver(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
 		} else if(this.botType == BotType.FIGHTER){
 			botManagerService.generateFighter(levelManagerService.getCurrentLevel(),this.randomPosition, this.posX, this.posY, this.config);
+        } else if (this.botType == BotType.DRONE) {
+            botManagerService.generateDrone(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.MINIBOSS1) {
             botManagerService.generateLevel1SubBoss1(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
         } else {

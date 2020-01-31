@@ -58,6 +58,8 @@ export class LevelEventsService {
 	  };
 
 	  le.push(new SpawnBotEvent(0,120,false,0,BotType.DIVER,diverConfig, false, 200, -60));
+	  le.push(new SpawnBotEvent(0, 120, false, 0, BotType.DRONE, diverConfig, false, 160, -60));
+
 	  le.push(new SpawnBotEvent(0,90,false,0,BotType.FIGHTER,fighterConfig, false, 300, -60));
 	  le.push(new SpawnBotEvent(0,85,false,0,BotType.FIGHTER,fighterConfig, false, 360, -60));
 	  le.push(new SpawnBotEvent(0,90,false,0,BotType.FIGHTER,fighterConfig, false, 420, -60));

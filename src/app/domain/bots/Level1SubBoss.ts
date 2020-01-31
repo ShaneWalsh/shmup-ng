@@ -100,10 +100,12 @@ export class Level1SubBoss extends  BotInstanceImpl {
     fireTracker(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D,bulletManagerService:BulletManagerService, currentPlayer:PlayerObj){
         let bullDirection:BulletDirection;
         if(levelInstance.isVertical()){
-            bullDirection = bulletManagerService.calculateBulletDirection(this.posX+170, this.posY+200,currentPlayer.getCenterX(), currentPlayer.getCenterY(), this.bulletSpeed, true);
-            bulletManagerService.generateBotTrackerBlob(levelInstance, bullDirection, this.posX+170, this.posY+200, -1);
-			bullDirection = bulletManagerService.calculateBulletDirection(this.posX+5, this.posY+200,currentPlayer.getCenterX(), currentPlayer.getCenterY(), this.bulletSpeed, true);
-            bulletManagerService.generateBotTrackerBlob(levelInstance, bullDirection, this.posX+5, this.posY+200, -1);
+            //bullDirection = bulletManagerService.calculateBulletDirection(this.posX+170, this.posY+200,currentPlayer.getCenterX(), currentPlayer.getCenterY(), this.bulletSpeed, true);
+            bullDirection = bulletManagerService.calculateBulletDirection(this.posX + 170, this.posY + 200, this.posX + 170, this.posY + 250, this.bulletSpeed, true);
+            bulletManagerService.generateBotBlazer(levelInstance, bullDirection, this.posX+170, this.posY+200);
+            //bullDirection = bulletManagerService.calculateBulletDirection(this.posX+5, this.posY+200,currentPlayer.getCenterX(), currentPlayer.getCenterY(), this.bulletSpeed, true);
+            bullDirection = bulletManagerService.calculateBulletDirection(this.posX + 5, this.posY + 200, this.posX + 5, this.posY + 250, this.bulletSpeed, true);
+            bulletManagerService.generateBotBlazer(levelInstance, bullDirection, this.posX+5, this.posY+200);
         } else {
             // bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, (this.posX+50), this.posY, 6);
             // bulletManagerService.generatePlayerLazer(levelInstance, bullDirection, this.posX, this.posY);

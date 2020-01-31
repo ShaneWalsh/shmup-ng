@@ -8,6 +8,7 @@ import { BulletManagerService } from 'src/app/manager/bullet-manager.service';
 import { PlayerObj } from 'src/app/services/player.service';
 import { Fighter } from '../domain/bots/Fighter';
 import { Level1SubBoss } from '../domain/bots/Level1SubBoss';
+import { Drone } from '../domain/bots/Drone';
 
 /**
  * Going to manage the created bots, spawned by the level manager. Its going to emit when they are destroyed or when they leave the screen.
@@ -50,6 +51,13 @@ export class BotManagerService {
     generateFighter(levelInstance:LevelInstance, randomPosition:boolean=true, posX:number = 0, posY:number = -60, config:any = {}): any {
 		let posObj = this.getBotPostion(levelInstance,randomPosition,posX,posY);
         let newBot = new Fighter(config, posObj.posX,posObj.posY, this.resourcesService.getRes().get("enemy-1-1"), this.resourcesService.getRes().get("enemy-1-2"), 52,56);
+        this.botsArr.push(newBot);
+        this.botCreated.next(newBot);
+    }
+
+    generateDrone(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
+        let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
+        let newBot = new Drone(config, posObj.posX, posObj.posY, this.resourcesService.getRes().get("enemy-2-1"), this.resourcesService.getRes().get("enemy-2-2"), 56, 78);
         this.botsArr.push(newBot);
         this.botCreated.next(newBot);
     }
