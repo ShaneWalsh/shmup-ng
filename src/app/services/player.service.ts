@@ -28,6 +28,7 @@ export class PlayerService {
 
     killCurrentPlayer(): any {
         this.currentPlayer.lives--;
+        this.currentPlayer.invincibilityTimer = 30;
         if(this.currentPlayer.lives > 0){
             this.currentPlayer.reset();
         } else { // game over.
@@ -42,6 +43,7 @@ export class PlayerService {
     // creates an entirely new player
     initPlayer(): any {
         this.currentPlayer.reset(); // position
+        this.currentPlayer.invincibilityTimer = 0;
         this.currentPlayer.imageObj = this.resourcesService.getRes().get("player-1-ship");
         this.currentPlayer.score = 0;
         this.currentPlayer.lives = 3;
@@ -62,11 +64,13 @@ export class PlayerObj {
     public resetPositionX:number;
     public resetPositionY:number;
 
+    public invincibilityTimer:number = 0;
+
     public score = 0;
     constructor(
         public lives:number=10,
         public posX:number=280,
-        public posY:number=500,
+        public posY:number=400,
         public imageObj:HTMLImageElement=null,
         public imageSizeX:number=90,
         public imageSizeY:number=60,
@@ -93,10 +97,25 @@ export class PlayerObj {
 		}
 
         // draw
-        ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
-        if(levelInstance.drawHitBox()){
-            this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");
-        }
+        if (this.invincibilityTimer > 0) {
+            this.invincibilityTimer--;
+            if (this.invincibilityTimer % 2 == 0) {// draw every second draw, to get an invincible effect
+                ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY, this.imageSizeX, this.imageSizeY);
+                if (levelInstance.drawHitBox()) {
+                    this.hitBox.drawBorder(this.posX + this.hitBox.hitBoxX, this.posY + this.hitBox.hitBoxY, this.hitBox.hitBoxSizeX, this.hitBox.hitBoxSizeY, ctx, "#FF0000");
+                }
+            }  
+        } else {
+            ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY, this.imageSizeX, this.imageSizeY);
+            if (levelInstance.drawHitBox()) {
+                this.hitBox.drawBorder(this.posX + this.hitBox.hitBoxX, this.posY + this.hitBox.hitBoxY, this.hitBox.hitBoxSizeX, this.hitBox.hitBoxSizeY, ctx, "#FF0000");
+            }
+        }  
+    }
+
+    updateIntro(ctx: CanvasRenderingContext2D, animationTimer:number) {
+        let sizeY = 4 + (4 * animationTimer);
+        ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, sizeY, this.posX, this.posY, this.imageSizeX, sizeY);
     }
 
     acceleration(levelInstance:LevelInstance){
@@ -155,8 +174,16 @@ export class PlayerObj {
         return this.posY+(this.imageSizeY/2);
     }
 
+    isInvincible():boolean{
+        return this.invincibilityTimer > 0;
+    }
+
     hasPlayerBeenHit(hitter:any,hitterBox:HitBox):boolean {
-         return this.hitBox.areCentersToClose(hitter,hitterBox,this,this.hitBox);
+        if (!this.isInvincible()){
+            return this.hitBox.areCentersToClose(hitter,hitterBox,this,this.hitBox);
+        } else {
+            return false;
+        }
     }
 
     addScore(arg0: any): any {

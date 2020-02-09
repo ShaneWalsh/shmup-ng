@@ -43,7 +43,7 @@ export class BulletManagerService {
 
     generateBotBlazer(levelInstance:LevelInstance, bulletDirection:BulletDirection, startX, startY): any {
         // make a generaic lazer, isTargetBot? // damage to do
-        let newBullet = new DumbLazer(1,startX, startY, bulletDirection, false, this.resourcesService.getRes().get("enemy-bullet"), 14,22);
+        let newBullet = new DumbLazer(1, startX, startY, bulletDirection, false, this.resourcesService.getRes().get("enemy-bullet-target"), 22, 14);
         this.bulletsArr.push(newBullet);
         this.bulletCreated.next(newBullet);
     }
@@ -155,6 +155,7 @@ class DumbLazer implements BulletInstance {
 	            bulletManagerService.removeBullet(this);
 				removed = true;
 	        } else {
+                console.log("boop" + this.bulletDirection.performRotation);
 	            if(this.bulletDirection.performRotation){
 	                this.drawRotateImage(ctx,this.bulletDirection.angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY);
 	            } else {

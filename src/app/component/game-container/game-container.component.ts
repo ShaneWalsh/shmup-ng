@@ -21,6 +21,12 @@ export class GameContainerComponent implements OnInit, OnDestroy {
 
     @ViewChild('canvas') public canvas: ElementRef;
 
+    introOver:boolean = false;
+    introTicker:number = 0;
+    introAnimation:number = 0;
+    introAnimationLimit: number = 15;
+    introAnimationTimer: number = 0;
+    introAnimationBlackScreen : number = 0;
     tickComplete:boolean=true;
     canvasEl: any;
     ctx: CanvasRenderingContext2D;
@@ -28,7 +34,8 @@ export class GameContainerComponent implements OnInit, OnDestroy {
     @Input() public height = 480;
     @Input() public requestAnimFrame: any;
 
-    constructor(private resourcesService:ResourcesService,private levelManagerService:LevelManagerService,
+    constructor(private resourcesService:ResourcesService,
+                private levelManagerService:LevelManagerService,
                 private bulletManagerService: BulletManagerService,
                 private playerService:PlayerService, private botManagerService:BotManagerService) {
         // check if an existing game has been loaded
@@ -58,31 +65,68 @@ export class GameContainerComponent implements OnInit, OnDestroy {
         this.canvasEl.width = this.width;
         this.canvasEl.height = this.height;
 
-        this.levelManagerService.unPauseGame();
+        if (this.introOver) {
+            this.levelManagerService.unPauseGame();
+        }
     }
 
     update() {
         this.tickComplete = false; 
-        if(this.levelManagerService.getNotPaused()){
-            this.ctx.clearRect(0, 0, this.canvasEl.width, this.canvasEl.height);
-            const currentLevel = this.levelManagerService.getCurrentLevel();
-            // have a level manager, that controls the background and the spawning, updates first. 4 levels, controls boss spawn.
-            currentLevel.update(this.ctx);
+        if(!this.introOver){
+            this.levelManagerService.pauseGame();
+            if (this.introAnimationTimer == this.introAnimationLimit) {
+                this.introAnimation++;
+                this.introAnimationTimer = 0;
+            }
+            this.introAnimationTimer++;
+            this.introTicker++;
+            if (this.introTicker > 325){
+                this.introOver = true;
+                this.levelManagerService.unPauseGame();
+            } else {
+                this.ctx.clearRect(0, 0, this.canvasEl.width, this.canvasEl.height);
+                const currentLevel = this.levelManagerService.getCurrentLevel();
+                // have a level manager, that controls the background and the spawning, updates first. 4 levels, controls boss spawn.
+                currentLevel.updateIntro(this.ctx);
+                if (this.introTicker < 275) {
+                    this.ctx.fillRect(0, 0, 640, 480);
+                    this.ctx.fillRect(320, 240, 320, 240);
+                } else {
+                    this.introAnimationBlackScreen += 10; 
+                    this.ctx.fillRect((-1) * this.introAnimationBlackScreen, 0, 320, 480);
+                    this.ctx.fillRect(320 + this.introAnimationBlackScreen, 0, 320, 480);
+                }
 
-            // have a bot manager to move the bots (gen bullets, patterns etc)
-            this.botManagerService.update(currentLevel, this.ctx, this.bulletManagerService, this.playerService.currentPlayer);
+                let res = this.resourcesService.getRes().get("intro0");
+                this.ctx.drawImage(res, 70, 100, 500, 60, 70, 100, 500, 70);
+                let fullInit = this.resourcesService.getRes().get("intro15");
+                const xSize = (70) + (this.introAnimation * 25);
+                this.ctx.drawImage(fullInit, 70, 100, xSize, 60,    70, 100, xSize, 70);
+                
+                this.playerService.currentPlayer.updateIntro(this.ctx, this.introAnimation);
+            } 
+        } else {
+            if(this.levelManagerService.getNotPaused()){
+                this.ctx.clearRect(0, 0, this.canvasEl.width, this.canvasEl.height);
+                const currentLevel = this.levelManagerService.getCurrentLevel();
+                // have a level manager, that controls the background and the spawning, updates first. 4 levels, controls boss spawn.
+                currentLevel.update(this.ctx);
 
-            // update for the player (Gen bullets)
-            this.playerService.currentPlayer.update(currentLevel, this.ctx, this.bulletManagerService);
+                // have a bot manager to move the bots (gen bullets, patterns etc)
+                this.botManagerService.update(currentLevel, this.ctx, this.bulletManagerService, this.playerService.currentPlayer);
 
-            // have a bullet manager to move the bullets, do collision detection
-                // some bullets should be destructable.
-                // some cannot be destroyed
-            this.bulletManagerService.update(currentLevel, this.ctx, this.botManagerService, this.playerService);
+                // update for the player (Gen bullets)
+                this.playerService.currentPlayer.update(currentLevel, this.ctx, this.bulletManagerService);
 
-            // vertical and horizontal, bare that in mind....
+                // have a bullet manager to move the bullets, do collision detection
+                    // some bullets should be destructable.
+                    // some cannot be destroyed
+                this.bulletManagerService.update(currentLevel, this.ctx, this.botManagerService, this.playerService);
 
-            //clear canvas
+                // vertical and horizontal, bare that in mind....
+
+                //clear canvas
+            }
         }
         this.tickComplete = true;
     }

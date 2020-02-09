@@ -9,6 +9,7 @@ import { PlayerObj } from 'src/app/services/player.service';
 import { Fighter } from '../domain/bots/Fighter';
 import { Level1SubBoss } from '../domain/bots/Level1SubBoss';
 import { Drone } from '../domain/bots/Drone';
+import { SpriteSheet } from '../domain/SpriteSheet';
 
 /**
  * Going to manage the created bots, spawned by the level manager. Its going to emit when they are destroyed or when they leave the screen.
@@ -23,6 +24,7 @@ export class BotManagerService {
     private botRemoved: Subject<BotInstance> = new Subject();
 
     private botsArr:BotInstance[] = [];
+    private spriteSheetArr: SpriteSheet[] = [];
 
     constructor(private resourcesService:ResourcesService) {
 
@@ -30,6 +32,7 @@ export class BotManagerService {
 
     clean() {
         this.botsArr = [];
+        this.spriteSheetArr = [];
     }
 
     update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, bulletManagerService:BulletManagerService, currentPlayer:PlayerObj): any {
@@ -37,6 +40,12 @@ export class BotManagerService {
         let botArrClone = [...this.botsArr]; // why clone it? So I can update the original array without effecting the for loop.
         for(let i = 0; i< botArrClone.length; i++){
             const bot = botArrClone[i];
+            bot.update(levelInstance, ctx, this, bulletManagerService, currentPlayer);
+        }
+        
+        let spriteSheetArrClone = [...this.spriteSheetArr]; // why clone it? So I can update the original array without effecting the for loop.
+        for (let i = 0; i < spriteSheetArrClone.length; i++) {
+            const bot = spriteSheetArrClone[i];
             bot.update(levelInstance, ctx, this, bulletManagerService, currentPlayer);
         }
     }
@@ -77,11 +86,19 @@ export class BotManagerService {
 			let pos = (randomPosition)? Math.floor(Math.random() * Math.floor(levelInstance.getMapHeight()-50))+10:posY;
 			return {posX:levelInstance.getMapHeight()+60,posY:pos};
 		}
-	}
+    }
+    
+    addSpriteSheet(bot: SpriteSheet){
+        this.spriteSheetArr.push(bot);
+    }
 
     removeBot(bot:BotInstance){
         this.botsArr.splice(this.botsArr.indexOf(bot),1);
         this.botRemoved.next(bot);
+    }
+
+    removeSpriteSheet(bot: SpriteSheet) {
+        this.spriteSheetArr.splice(this.spriteSheetArr.indexOf(bot), 1);
     }
 
     getBotDestroyed():Subject<BotInstance>{

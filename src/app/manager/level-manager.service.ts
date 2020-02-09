@@ -6,6 +6,7 @@ import { PlayerService } from '../services/player.service';
 import { BulletManagerService } from './bullet-manager.service';
 import { LevelEventsService } from 'src/app/manager/level-events.service';
 import { LevelEvent } from 'src/app/domain/events/level-events';
+import { SpriteSheet } from '../domain/SpriteSheet';
 
 export enum LevelEnum{
     LevelOne='LevelOne',
@@ -80,6 +81,7 @@ export class LevelManagerService {
 
 export interface LevelInstance {
     update(ctx:CanvasRenderingContext2D);
+    updateIntro(ctx: CanvasRenderingContext2D);
     getMapWidth():number;
     getMapHeight():number;
     isVertical():boolean;
@@ -139,6 +141,20 @@ class LevelOneInstance implements LevelInstance{
 		this.eventArr = this.eventArr.concat(...this.repeatEvents);
 
         this.updateTickCounter();
+    }
+
+    updateIntro(ctx: CanvasRenderingContext2D) {
+        // just for the intro for displaying the background
+        ctx.drawImage(this.backgroundImage, this.scrollerXIncrement, this.scrollerYIncrement, this.mapWidth, this.mapHeight);
+        if (this.isVertical()) {
+            ctx.drawImage(this.backgroundImage, this.scrollerXIncrement, (this.scrollerYIncrement - this.mapHeight), this.mapWidth, this.mapHeight);
+            this.scrollerYIncrement++;
+            if (this.scrollerYIncrement > this.mapHeight) { this.scrollerYIncrement = 0 };
+        } else {
+            ctx.drawImage(this.backgroundImage, (this.scrollerXIncrement - this.mapWidth), this.scrollerYIncrement, this.mapWidth, this.mapHeight);
+            this.scrollerXIncrement++;
+            if (this.scrollerXIncrement > this.mapWidth) { this.scrollerXIncrement = 0 };
+        }
     }
 
     updateTickCounter(){
