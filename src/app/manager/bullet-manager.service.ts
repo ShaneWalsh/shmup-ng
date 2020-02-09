@@ -155,7 +155,6 @@ class DumbLazer implements BulletInstance {
 	            bulletManagerService.removeBullet(this);
 				removed = true;
 	        } else {
-                console.log("boop" + this.bulletDirection.performRotation);
 	            if(this.bulletDirection.performRotation){
 	                this.drawRotateImage(ctx,this.bulletDirection.angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY);
 	            } else {
