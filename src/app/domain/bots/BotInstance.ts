@@ -45,6 +45,6 @@ export class BotInstanceImpl implements BotInstance {
 				this[param] = this.config[param];
 			}
 		}
-	}
-
+    }
+    
 }

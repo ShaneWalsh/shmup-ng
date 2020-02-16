@@ -42,6 +42,12 @@ export class BulletManagerService {
     }
 
     generateBotBlazer(levelInstance:LevelInstance, bulletDirection:BulletDirection, startX, startY): any {
+        let newBullet = new DumbLazer(1, startX, startY, bulletDirection, false, this.resourcesService.getRes().get("miniboss-2-bullet"), 36, 20);
+        this.bulletsArr.push(newBullet);
+        this.bulletCreated.next(newBullet);
+    }
+
+    generateMuzzleBlazer(levelInstance: LevelInstance, bulletDirection: BulletDirection, startX, startY): any {
         // make a generaic lazer, isTargetBot? // damage to do
         let newBullet = new DumbLazer(1, startX, startY, bulletDirection, false, this.resourcesService.getRes().get("enemy-bullet-target"), 22, 14);
         this.bulletsArr.push(newBullet);

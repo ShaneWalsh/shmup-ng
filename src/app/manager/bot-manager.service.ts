@@ -10,6 +10,8 @@ import { Fighter } from '../domain/bots/Fighter';
 import { Level1SubBoss } from '../domain/bots/Level1SubBoss';
 import { Drone } from '../domain/bots/Drone';
 import { SpriteSheet } from '../domain/SpriteSheet';
+import { Level1SubBoss2 } from '../domain/bots/Level1SubBoss2';
+import { HitBox } from '../domain/HitBox';
 
 /**
  * Going to manage the created bots, spawned by the level manager. Its going to emit when they are destroyed or when they leave the screen.
@@ -77,6 +79,21 @@ export class BotManagerService {
         this.botsArr.push(newBot);
         this.botCreated.next(newBot);
     }
+
+    generateLevel1SubBoss2(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -300, config: any = {}): any {
+        let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
+        let hitz = new HitBox(44,0,192,190);
+        let newBot = new Level1SubBoss2(config, posObj.posX, posObj.posY, 
+            this.resourcesService.getRes().get("miniboss-2"), 
+            this.resourcesService.getRes().get("miniboss-2-1"),
+            this.resourcesService.getRes().get("miniboss-2-2"),
+            224, 236, hitz);
+        this.botsArr.push(newBot);
+        this.botCreated.next(newBot);
+    }
+    
+
+
 
 	getBotPostion(levelInstance:LevelInstance, randomPosition:boolean=true, posX:number = 0, posY:number = 0){
 		if(levelInstance.isVertical()){
