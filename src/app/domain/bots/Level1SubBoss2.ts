@@ -4,6 +4,7 @@ import { HitBox } from "src/app/domain/HitBox";
 import { BotManagerService } from "src/app/manager/bot-manager.service";
 import { BulletManagerService, BulletDirection } from "src/app/manager/bullet-manager.service";
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
+import { LogicService } from "src/app/services/logic.service";
 
 export class Level1SubBoss2 extends  BotInstanceImpl {
 
@@ -16,11 +17,11 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
 
 	// todo make these config values
 	public health:number=35;
-    public bulletSpeed:number = 6;
-    public moveSpeed: number = 6;
+    public bulletSpeed:number = 6; // 6
+    public moveSpeed: number = 5; // 6
 
 	public bTimer:number = 0; // bullet timer
-    public bTimerLimit:number = 30;
+    public bTimerLimit:number = 20; // 30
 
     public anaimationTimer:number = 0;
     public anaimationTimerLimit:number =4;
@@ -29,6 +30,7 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
 
     public angle:number;
     public turnDirection: BulletDirection;
+    public rotationCordsCenter: { x: number, y: number };
     public moveDirection: BulletDirection;
     public movePositions: {x:number,y:number}[] = [
         { x: 540, y: 120 },
@@ -53,13 +55,10 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
         public hitBox:HitBox=new HitBox(0,0,imageSizeX,imageSizeY)
     ){
         super(config);
-        this.imageObj = imageObj1;
+        this.imageObj = imageObj2;
     }
 
     update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, currentPlayer:PlayerObj) {
-        this.turnDirection = bulletManagerService.calculateBulletDirection(
-            this.posX + 112, this.posY + 118, 320, 240, this.bulletSpeed, true);
-
         if (this.phaseCounter == -1){
             this.posY += this.moveSpeed;
             if(this.posY > -10){
@@ -77,8 +76,13 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
                     this.phaseCounter = 0;
             }
         } 
+        this.turnDirection = bulletManagerService.calculateBulletDirection(
+            this.posX + 112, this.posY + 118, 320, 240, this.bulletSpeed, true);
 
-        this.drawRotateImage(ctx, this.turnDirection.angle, this.posX, this.posY, this.imageSizeX, this.imageSizeY);
+        this.rotationCordsCenter = LogicService.pointAfterRotation(this.posX + 112, this.posY + 118,
+            this.posX + 236, this.posY + 95, this.turnDirection.angle)
+
+        this.drawRotateImage(this.imageObj, ctx, this.turnDirection.angle, this.posX, this.posY, this.imageSizeX, this.imageSizeY);
         //ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
         if(levelInstance.drawHitBox()){
             this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");
@@ -87,25 +91,26 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
         // fire weapon
 		if(this.bTimer >= this.bTimerLimit){
             this.bTimer = 0;
-            // draw muzzle flash before firing, this.resourcesService.getRes().get("miniboss-2-bullet")
 			this.fireTracker(levelInstance,ctx,bulletManagerService,currentPlayer);
 		}
 		else{
-			this.bTimer++;
+            this.bTimer++;
+            if (this.bTimer >= this.bTimerLimit){
+                // todo get this position calc right, might need its own center rotation
+                this.drawRotateImage(this.imageObj1, ctx, this.turnDirection.angle, this.rotationCordsCenter.x - 14, this.rotationCordsCenter.y - 10, 28, 44);
+            }
 		}
         if(this.anaimationTimer >= this.anaimationTimerLimit){
 			this.anaimationTimer = 0;
-			if(this.imageObj == this.imageObj1){
-                this.imageObj = this.imageObj2;
-            } else if (this.imageObj == this.imageObj2) {
+			if (this.imageObj == this.imageObj2) {
                 this.imageObj = this.imageObj3;
             } else if (this.imageObj == this.imageObj3){
-                this.imageObj = this.imageObj1;
+                this.imageObj = this.imageObj2;
             }
 		}
 		else{
 			this.anaimationTimer++;
-		}
+        }
     }
 
     hasBotBeenHit(hitter:any,hitterBox:HitBox):boolean {
@@ -116,9 +121,9 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
     fireTracker(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D,bulletManagerService:BulletManagerService, currentPlayer:PlayerObj){
         let bullDirection:BulletDirection;
         if(levelInstance.isVertical()){
-            //bullDirection = bulletManagerService.calculateBulletDirection(this.posX+170, this.posY+200,currentPlayer.getCenterX(), currentPlayer.getCenterY(), this.bulletSpeed, true);
-            bullDirection = bulletManagerService.calculateBulletDirection(this.posX + 224, this.posY + 95, 320, 240, this.bulletSpeed, true);
-            bulletManagerService.generateBotBlazer(levelInstance, bullDirection, this.posX+224, this.posY+95);
+            // this.hitBox.drawBorder(cords.x, cords.y, 5, 5, ctx, "#FFFF00");
+            bullDirection = bulletManagerService.calculateBulletDirection(this.rotationCordsCenter.x - 18, this.rotationCordsCenter.y-10, 320, 240, this.bulletSpeed, true);
+            bulletManagerService.generateMuzzleBlazer(levelInstance, bullDirection, this.rotationCordsCenter.x - 18, this.rotationCordsCenter.y-10);
         } else {
             
         }
@@ -150,7 +155,7 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
         return this.posY+(this.imageSizeY/2);
     }
 
-    drawRotateImage(ctx, rotation, x, y, sx, sy, lx = x, ly = y, lxs = sx, lys = sy, translateX = x + (sx / 2), translateY = y + (sy / 2)) { // l are the actual canvas positions
+    drawRotateImage(imageObj, ctx, rotation, x, y, sx, sy, lx = x, ly = y, lxs = sx, lys = sy, translateX = x + (sx / 2), translateY = y + (sy / 2)) { // l are the actual canvas positions
         // bitwise transformations to remove floating point values, canvas drawimage is faster with integers
         lx = (0.5 + lx) << 0;
         ly = (0.5 + ly) << 0;
@@ -162,10 +167,9 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
         ctx.translate(translateX, translateY); // this moves the point of drawing and rotation to the center.
         ctx.rotate(rotation);
         ctx.translate(translateX * -1, translateY * -1); // this moves the point of drawing and rotation to the center.
-        ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY, this.imageSizeX, this.imageSizeY);
+        ctx.drawImage(imageObj, 0, 0, sx, sy, x, y, sx, sy);
 
         ctx.restore();
-        //drawBorder(lx,ly,lxs,lys,window.ctxNPC,"#FF0000"); // uncomment for debugging sprites
     }
 
     isWithin(sourceX,tarX, distance):boolean{

@@ -21,7 +21,7 @@ export class GameContainerComponent implements OnInit, OnDestroy {
 
     @ViewChild('canvas') public canvas: ElementRef;
 
-    introOver:boolean = false;
+    introOver:boolean = true; // set to true for testing to skip the intro
     introTicker:number = 0;
     introAnimation:number = 0;
     introAnimationLimit: number = 15;
