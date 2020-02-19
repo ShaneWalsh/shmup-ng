@@ -18,7 +18,7 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
 	// todo make these config values
 	public health:number=35;
     public bulletSpeed:number = 6; // 6
-    public moveSpeed: number = 5; // 6
+    public moveSpeed: number = 5; // 5
 
 	public bTimer:number = 0; // bullet timer
     public bTimerLimit:number = 20; // 30
@@ -79,6 +79,7 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
         this.turnDirection = bulletManagerService.calculateBulletDirection(
             this.posX + 112, this.posY + 118, 320, 240, this.bulletSpeed, true);
 
+        //    28 44
         this.rotationCordsCenter = LogicService.pointAfterRotation(this.posX + 112, this.posY + 118,
             this.posX + 236, this.posY + 95, this.turnDirection.angle)
 
@@ -91,13 +92,12 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
         // fire weapon
 		if(this.bTimer >= this.bTimerLimit){
             this.bTimer = 0;
-			this.fireTracker(levelInstance,ctx,bulletManagerService,currentPlayer);
-		}
-		else{
+            this.fireTracker(levelInstance,ctx,bulletManagerService,currentPlayer);
+		} else {
             this.bTimer++;
-            if (this.bTimer >= this.bTimerLimit){
+            if (this.bTimer >= (this.bTimerLimit-5)){
                 // todo get this position calc right, might need its own center rotation
-                this.drawRotateImage(this.imageObj1, ctx, this.turnDirection.angle, this.rotationCordsCenter.x - 14, this.rotationCordsCenter.y - 10, 28, 44);
+                this.drawRotateImage(this.imageObj1, ctx, this.turnDirection.angle, this.rotationCordsCenter.x - 14, this.rotationCordsCenter.y - 22, 28, 44);
             }
 		}
         if(this.anaimationTimer >= this.anaimationTimerLimit){

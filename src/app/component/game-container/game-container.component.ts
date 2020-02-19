@@ -21,10 +21,10 @@ export class GameContainerComponent implements OnInit, OnDestroy {
 
     @ViewChild('canvas') public canvas: ElementRef;
 
-    introOver:boolean = true; // set to true for testing to skip the intro
+    introOver:boolean = false; // set to true for testing to skip the intro
     introTicker:number = 0;
     introAnimation:number = 0;
-    introAnimationLimit: number = 15;
+    introAnimationLimit: number = 9; // 15
     introAnimationTimer: number = 0;
     introAnimationBlackScreen : number = 0;
     tickComplete:boolean=true;
@@ -80,7 +80,7 @@ export class GameContainerComponent implements OnInit, OnDestroy {
             }
             this.introAnimationTimer++;
             this.introTicker++;
-            if (this.introTicker > 325){
+            if (this.introTicker > 250){ // 325
                 this.introOver = true;
                 this.levelManagerService.unPauseGame();
             } else {
@@ -88,7 +88,7 @@ export class GameContainerComponent implements OnInit, OnDestroy {
                 const currentLevel = this.levelManagerService.getCurrentLevel();
                 // have a level manager, that controls the background and the spawning, updates first. 4 levels, controls boss spawn.
                 currentLevel.updateIntro(this.ctx);
-                if (this.introTicker < 275) {
+                if (this.introTicker < 200) {// 275
                     this.ctx.fillRect(0, 0, 640, 480);
                     this.ctx.fillRect(320, 240, 320, 240);
                 } else {
