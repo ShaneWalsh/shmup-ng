@@ -43,6 +43,8 @@ export class PlayerService {
     // creates an entirely new player
     initPlayer(): any {
         this.currentPlayer.reset(); // position
+        this.currentPlayer.pressedKeys = {"left":false,"up":false,"right":false,"down":false};
+        this.currentPlayer.bulletsFiring = false;
         this.currentPlayer.invincibilityTimer = 0;
         this.currentPlayer.imageObj = this.resourcesService.getRes().get("player-1-ship");
         this.currentPlayer.score = 0;
@@ -104,13 +106,13 @@ export class PlayerObj {
                 if (levelInstance.drawHitBox()) {
                     this.hitBox.drawBorder(this.posX + this.hitBox.hitBoxX, this.posY + this.hitBox.hitBoxY, this.hitBox.hitBoxSizeX, this.hitBox.hitBoxSizeY, ctx, "#FF0000");
                 }
-            }  
+            }
         } else {
             ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY, this.imageSizeX, this.imageSizeY);
             if (levelInstance.drawHitBox()) {
                 this.hitBox.drawBorder(this.posX + this.hitBox.hitBoxX, this.posY + this.hitBox.hitBoxY, this.hitBox.hitBoxSizeX, this.hitBox.hitBoxSizeY, ctx, "#FF0000");
             }
-        }  
+        }
     }
 
     updateIntro(ctx: CanvasRenderingContext2D, animationTimer:number) {
