@@ -44,7 +44,7 @@ export class BotManagerService {
             const bot = botArrClone[i];
             bot.update(levelInstance, ctx, this, bulletManagerService, currentPlayer);
         }
-        
+
         let spriteSheetArrClone = [...this.spriteSheetArr]; // why clone it? So I can update the original array without effecting the for loop.
         for (let i = 0; i < spriteSheetArrClone.length; i++) {
             const bot = spriteSheetArrClone[i];
@@ -83,15 +83,16 @@ export class BotManagerService {
     generateLevel1SubBoss2(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -300, config: any = {}): any {
         let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
         let hitz = new HitBox(44,0,192,190);
-        let newBot = new Level1SubBoss2(config, posObj.posX, posObj.posY, 
-            this.resourcesService.getRes().get("miniboss-2-muzzle-flash"), 
+        let newBot = new Level1SubBoss2(config, posObj.posX, posObj.posY,
+            this.resourcesService.getRes().get("miniboss-2-muzzle-flash"),
             this.resourcesService.getRes().get("miniboss-2-1"),
             this.resourcesService.getRes().get("miniboss-2-2"),
+            this.resourcesService.getRes().get("miniboss-2-damaged"),
             224, 236, hitz);
         this.botsArr.push(newBot);
         this.botCreated.next(newBot);
     }
-    
+
 
 
 
@@ -104,7 +105,7 @@ export class BotManagerService {
 			return {posX:levelInstance.getMapHeight()+60,posY:pos};
 		}
     }
-    
+
     addSpriteSheet(bot: SpriteSheet){
         this.spriteSheetArr.push(bot);
     }

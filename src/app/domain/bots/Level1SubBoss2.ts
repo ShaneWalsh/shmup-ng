@@ -7,7 +7,6 @@ import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { LogicService } from "src/app/services/logic.service";
 
 export class Level1SubBoss2 extends  BotInstanceImpl {
-
     public phaseCounter = -1;
 
     public dirXRight:boolean = true;
@@ -25,6 +24,9 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
 
     public anaimationTimer:number = 0;
     public anaimationTimerLimit:number =4;
+
+	public damAnaimationTimer:number = 8;
+	public damAnaimationTimerLimit:number =8;
 
     public score:number = 10;
 
@@ -50,6 +52,7 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
         public imageObj1: HTMLImageElement = null,
         public imageObj2: HTMLImageElement = null,
         public imageObj3: HTMLImageElement = null,
+        public imageObj4Damaged: HTMLImageElement = null,
         public imageSizeX:number=90,
         public imageSizeY:number=60,
         public hitBox:HitBox=new HitBox(0,0,imageSizeX,imageSizeY)
@@ -75,7 +78,7 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
                 if(this.phaseCounter == 8)
                     this.phaseCounter = 0;
             }
-        } 
+        }
         this.turnDirection = bulletManagerService.calculateBulletDirection(
             this.posX + 112, this.posY + 118, 320, 240, this.bulletSpeed, true);
 
@@ -84,6 +87,12 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
             this.posX + 236, this.posY + 95, this.turnDirection.angle)
 
         this.drawRotateImage(this.imageObj, ctx, this.turnDirection.angle, this.posX, this.posY, this.imageSizeX, this.imageSizeY);
+		if(this.damAnaimationTimer < this.damAnaimationTimerLimit){
+			this.damAnaimationTimer++;
+			if(this.damAnaimationTimer %2 == 1){
+				this.drawRotateImage(this.imageObj4Damaged, ctx, this.turnDirection.angle, this.posX, this.posY, this.imageSizeX, this.imageSizeY);
+			}
+		}
         //ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
         if(levelInstance.drawHitBox()){
             this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");
@@ -125,17 +134,22 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
             bullDirection = bulletManagerService.calculateBulletDirection(this.rotationCordsCenter.x - 18, this.rotationCordsCenter.y-10, 320, 240, this.bulletSpeed, true);
             bulletManagerService.generateMuzzleBlazer(levelInstance, bullDirection, this.rotationCordsCenter.x - 18, this.rotationCordsCenter.y-10);
         } else {
-            
+
         }
 	}
 
     applyDamage(damage: number, botManagerService: BotManagerService, playerService:PlayerService, levelInstance:LevelInstance) {
         this.health -= damage;
+		this.triggerDamagedAnimation();
         if(this.health < 1){
             playerService.currentPlayer.addScore(this.score);
             botManagerService.removeBot(this);
 			levelInstance.updatePhaseCounter();
         }
+    }
+
+	triggerDamagedAnimation(): any {
+        this.damAnaimationTimer = 1;// trigger damage animation
     }
 
 	canShoot(levelInstance:LevelInstance, currentPlayer:PlayerObj){
