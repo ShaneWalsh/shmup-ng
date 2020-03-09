@@ -155,6 +155,7 @@ class DumbLazer implements BulletInstance {
 
 		if(this.posY < (-this.pad) || this.posX < (-this.pad) || this.posY > (levelInstance.getMapHeight()+this.imageSizeY+this.pad) || this.posX > (levelInstance.getMapWidth()+this.imageSizeX+this.pad) ){
             bulletManagerService.removeBullet(this);
+			console.log("removed bullet");
         } else {
 			let removed:boolean =false;
 	        if(this.posY + this.imageSizeY > (levelInstance.getMapHeight()+this.imageSizeY)){

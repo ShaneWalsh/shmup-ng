@@ -24,6 +24,15 @@ export class ResourcesService {
     //       {code:"enemy-bullet-target", path:"assets/img/bots/enemy-bullet-Target.png", type:ResourcesEnum.ImageRes}
     //   ];
         this.resourcesToLoad = [
+			{code:"enemy-07", path:"assets/img/bots/enemy-07/enemy-07.png", type:ResourcesEnum.ImageRes},
+			{code:"enemy-07-damaged", path:"assets/img/bots/enemy-07/enemy-07-damaged.png", type:ResourcesEnum.ImageRes},
+			{code:"enemy-07-firing-1", path:"assets/img/bots/enemy-07/enemy-07-firing-1.png", type:ResourcesEnum.ImageRes},
+			{code:"enemy-07-firing-2", path:"assets/img/bots/enemy-07/enemy-07-firing-2.png", type:ResourcesEnum.ImageRes},
+			{code:"enemy-07-firing-3", path:"assets/img/bots/enemy-07/enemy-07-firing-3.png", type:ResourcesEnum.ImageRes},
+			{code:"enemy-07-firing-4", path:"assets/img/bots/enemy-07/enemy-07-firing-4.png", type:ResourcesEnum.ImageRes},
+			{code:"enemy-07-firing-5", path:"assets/img/bots/enemy-07/enemy-07-firing-5.png", type:ResourcesEnum.ImageRes},
+			{code:"enemy-07-firing-6", path:"assets/img/bots/enemy-07/enemy-07-firing-6.png", type:ResourcesEnum.ImageRes},
+
 			{code:"miniboss-2", path:"assets/img/boss/bos2/miniboss-2.png", type:ResourcesEnum.ImageRes},
 			{code:"miniboss-2-1", path:"assets/img/boss/bos2/miniboss-2-1.png", type:ResourcesEnum.ImageRes},
 			{code:"miniboss-2-2", path:"assets/img/boss/bos2/miniboss-2-2.png", type:ResourcesEnum.ImageRes},

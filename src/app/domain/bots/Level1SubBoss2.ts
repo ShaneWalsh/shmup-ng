@@ -61,7 +61,8 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
         this.imageObj = imageObj2;
     }
 
-    update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, currentPlayer:PlayerObj) {
+	update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {
+		let currentPlayer = playerService.currentPlayer;
         if (this.phaseCounter == -1){
             this.posY += this.moveSpeed;
             if(this.posY > -10){

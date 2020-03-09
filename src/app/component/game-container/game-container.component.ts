@@ -71,7 +71,7 @@ export class GameContainerComponent implements OnInit, OnDestroy {
     }
 
     update() {
-        this.tickComplete = false; 
+        this.tickComplete = false;
         if(!this.introOver){
             this.levelManagerService.pauseGame();
             if (this.introAnimationTimer == this.introAnimationLimit) {
@@ -92,7 +92,7 @@ export class GameContainerComponent implements OnInit, OnDestroy {
                     this.ctx.fillRect(0, 0, 640, 480);
                     this.ctx.fillRect(320, 240, 320, 240);
                 } else {
-                    this.introAnimationBlackScreen += 10; 
+                    this.introAnimationBlackScreen += 10;
                     this.ctx.fillRect((-1) * this.introAnimationBlackScreen, 0, 320, 480);
                     this.ctx.fillRect(320 + this.introAnimationBlackScreen, 0, 320, 480);
                 }
@@ -102,9 +102,9 @@ export class GameContainerComponent implements OnInit, OnDestroy {
                 let fullInit = this.resourcesService.getRes().get("intro15");
                 const xSize = (70) + (this.introAnimation * 25);
                 this.ctx.drawImage(fullInit, 70, 100, xSize, 60,    70, 100, xSize, 70);
-                
+
                 this.playerService.currentPlayer.updateIntro(this.ctx, this.introAnimation);
-            } 
+            }
         } else {
             if(this.levelManagerService.getNotPaused()){
                 this.ctx.clearRect(0, 0, this.canvasEl.width, this.canvasEl.height);
@@ -113,7 +113,7 @@ export class GameContainerComponent implements OnInit, OnDestroy {
                 currentLevel.update(this.ctx);
 
                 // have a bot manager to move the bots (gen bullets, patterns etc)
-                this.botManagerService.update(currentLevel, this.ctx, this.bulletManagerService, this.playerService.currentPlayer);
+                this.botManagerService.update(currentLevel, this.ctx, this.bulletManagerService, this.playerService);
 
                 // update for the player (Gen bullets)
                 this.playerService.currentPlayer.update(currentLevel, this.ctx, this.bulletManagerService);

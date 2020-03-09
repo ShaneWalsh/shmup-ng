@@ -5,13 +5,14 @@ import { LevelInstance } from 'src/app/manager/level-manager.service';
 import { Diver } from 'src/app/domain/bots/Diver';
 import { ResourcesService } from 'src/app/services/resources.service';
 import { BulletManagerService } from 'src/app/manager/bullet-manager.service';
-import { PlayerObj } from 'src/app/services/player.service';
+import { PlayerObj, PlayerService } from 'src/app/services/player.service';
 import { Fighter } from '../domain/bots/Fighter';
 import { Level1SubBoss } from '../domain/bots/Level1SubBoss';
 import { Drone } from '../domain/bots/Drone';
 import { SpriteSheet } from '../domain/SpriteSheet';
 import { Level1SubBoss2 } from '../domain/bots/Level1SubBoss2';
 import { HitBox } from '../domain/HitBox';
+import { Creeper } from 'src/app/domain/bots/Creeper';
 
 /**
  * Going to manage the created bots, spawned by the level manager. Its going to emit when they are destroyed or when they leave the screen.
@@ -37,18 +38,18 @@ export class BotManagerService {
         this.spriteSheetArr = [];
     }
 
-    update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, bulletManagerService:BulletManagerService, currentPlayer:PlayerObj): any {
+    update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, bulletManagerService:BulletManagerService, playerService:PlayerService): any {
         //throw new Error("Method not implemented.");
         let botArrClone = [...this.botsArr]; // why clone it? So I can update the original array without effecting the for loop.
         for(let i = 0; i< botArrClone.length; i++){
             const bot = botArrClone[i];
-            bot.update(levelInstance, ctx, this, bulletManagerService, currentPlayer);
+            bot.update(levelInstance, ctx, this, bulletManagerService, playerService);
         }
 
         let spriteSheetArrClone = [...this.spriteSheetArr]; // why clone it? So I can update the original array without effecting the for loop.
         for (let i = 0; i < spriteSheetArrClone.length; i++) {
             const bot = spriteSheetArrClone[i];
-            bot.update(levelInstance, ctx, this, bulletManagerService, currentPlayer);
+            bot.update(levelInstance, ctx, this, bulletManagerService, playerService);
         }
     }
 
@@ -73,6 +74,24 @@ export class BotManagerService {
         this.botCreated.next(newBot);
     }
 
+	generateCreeper(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
+        let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
+        let newBot = new Creeper(config, posObj.posX, posObj.posY,
+		this.resourcesService.getRes().get("enemy-07"),
+		this.resourcesService.getRes().get("enemy-07-damaged"),
+
+		[this.resourcesService.getRes().get("enemy-07-firing-1"),
+		this.resourcesService.getRes().get("enemy-07-firing-2"),
+		this.resourcesService.getRes().get("enemy-07-firing-3")],
+
+		this.resourcesService.getRes().get("enemy-07-firing-4"),
+
+		[this.resourcesService.getRes().get("enemy-07-firing-5"),
+		this.resourcesService.getRes().get("enemy-07-firing-6")]);
+        this.botsArr.push(newBot);
+        this.botCreated.next(newBot);
+    }
+
     generateLevel1SubBoss1(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -300, config:any = {}): any {
         let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
         let newBot = new Level1SubBoss(config, posObj.posX, posObj.posY, this.resourcesService.getRes().get("boss-sub-1"), this.resourcesService.getRes().get("boss-sub-1_2"), 196, 252);
@@ -92,9 +111,6 @@ export class BotManagerService {
         this.botsArr.push(newBot);
         this.botCreated.next(newBot);
     }
-
-
-
 
 	getBotPostion(levelInstance:LevelInstance, randomPosition:boolean=true, posX:number = 0, posY:number = 0){
 		if(levelInstance.isVertical()){

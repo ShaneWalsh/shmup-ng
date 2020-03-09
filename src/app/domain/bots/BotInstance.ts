@@ -5,7 +5,7 @@ import { BulletManagerService } from "src/app/manager/bullet-manager.service";
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
 
 export interface BotInstance {
-    update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, currentPlayer:PlayerObj);
+    update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService);
     // checks if the provided hitbox has intersected with this bot
     hasBotBeenHit(hitter:any,hitterBox:HitBox);
 
@@ -35,7 +35,7 @@ export class BotInstanceImpl implements BotInstance {
     hasBotBeenHit(hitter: any, hitterBox: HitBox) {
         throw new Error("Method not implemented.");
     }
-    update(levelInstance: LevelInstance, ctx: CanvasRenderingContext2D, botManagerService: BotManagerService, bulletManagerService: BulletManagerService, currentPlayer: PlayerObj) {
+    update(levelInstance: LevelInstance, ctx: CanvasRenderingContext2D, botManagerService: BotManagerService, bulletManagerService: BulletManagerService, playerService: PlayerService) {
         throw new Error("Method not implemented.");
     }
 
@@ -46,5 +46,5 @@ export class BotInstanceImpl implements BotInstance {
 			}
 		}
     }
-    
+
 }

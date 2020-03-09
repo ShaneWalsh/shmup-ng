@@ -8,6 +8,7 @@ export enum BotType {
     DIVER="diver",
     FIGHTER="fighter",
     DRONE="drone",
+    CREEPER="creeper",
 
     MINIBOSS1="miniBoss1", // move on a phase after a mini boss dies.
     MINIBOSS2 = "miniBoss2",
@@ -66,6 +67,8 @@ export class SpawnBotEvent extends LevelEvent {
 			botManagerService.generateFighter(levelManagerService.getCurrentLevel(),this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.DRONE) {
             botManagerService.generateDrone(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
+        } else if (this.botType == BotType.CREEPER) {
+            botManagerService.generateCreeper(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.MINIBOSS1) {
             botManagerService.generateLevel1SubBoss1(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.MINIBOSS2) {

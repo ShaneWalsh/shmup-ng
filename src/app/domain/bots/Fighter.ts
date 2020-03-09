@@ -35,7 +35,8 @@ export class Fighter extends BotInstanceImpl{
         this.imageObj = imageObj1;
     }
 
-    update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, currentPlayer:PlayerObj) {
+	update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {
+		let currentPlayer = playerService.currentPlayer;
         this.posY += this.posYSpeed;
         if(this.posY + this.imageSizeY > (levelInstance.getMapHeight()+this.imageSizeY)){
             botManagerService.removeBot(this);

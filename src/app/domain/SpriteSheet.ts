@@ -1,7 +1,7 @@
 import { LevelInstance } from "../manager/level-manager.service";
 import { BotManagerService } from "../manager/bot-manager.service";
 import { BulletManagerService } from "../manager/bullet-manager.service";
-import { PlayerObj } from "../services/player.service";
+import { PlayerObj, PlayerService } from "../services/player.service";
 
 export class SpriteSheet {
     public animationTimer: number = 0;
@@ -18,11 +18,11 @@ export class SpriteSheet {
         public animationTimerLimit: number = 10,
         public holdLastFrameLimit:number = 10,
     ) {
-        
+
     }
 
-    update(levelInstance: LevelInstance, ctx: CanvasRenderingContext2D, botManagerService: BotManagerService, bulletManagerService: BulletManagerService, currentPlayer: PlayerObj) {
-        
+    update(levelInstance: LevelInstance, ctx: CanvasRenderingContext2D, botManagerService: BotManagerService, bulletManagerService: BulletManagerService, playerService: PlayerService) {
+        let currentPlayer = playerService.currentPlayer;
         // fire weapon
         if (this.animationTimer >= this.animationTimerLimit) {
             this.animationTimer = 0;

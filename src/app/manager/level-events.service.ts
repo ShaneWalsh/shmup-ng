@@ -42,7 +42,7 @@ export class LevelEventsService {
 		  bulletSpeed: 3,
 		  posXSpeed: 1.5,
 		  posYSpeed: 1.5,
-		  bTimerLimit: 40, 
+		  bTimerLimit: 40,
 		  score: 25,
 		  health: 3,
 	  };
@@ -73,8 +73,12 @@ export class LevelEventsService {
 		  health: 35,
 	  };
 
+
+
 	  le.push(new SpawnBotEvent(0,120,false,0,BotType.DIVER,diverConfig, false, 200, -60));
 	  le.push(new SpawnBotEvent(0, 120, false, 0, BotType.DRONE, droneConfig, false, 160, -60));
+
+	  le.push(new SpawnBotEvent(0,105,false,0,BotType.CREEPER,fighterConfig, false, 250, -60));
 
 	  le.push(new SpawnBotEvent(0,90,false,0,BotType.FIGHTER,fighterConfig, false, 300, -60));
 	  le.push(new SpawnBotEvent(0,85,false,0,BotType.FIGHTER,fighterConfig, false, 360, -60));
