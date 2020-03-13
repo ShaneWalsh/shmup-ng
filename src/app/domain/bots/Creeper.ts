@@ -16,7 +16,7 @@ export class Creeper extends BotInstanceImpl{
 	public firingPhase2 = false;
 
 	public bTimerLoading:number = 0;
-	public bTimerLoadingLimit:number = 40;
+	public bTimerLoadingLimit:number = 60;
 	public loadingIndex:number = 0;
 
 	public bTimerFiring:number = 0;
@@ -75,7 +75,7 @@ export class Creeper extends BotInstanceImpl{
 		if(this.firingLoading){
 			if(this.bTimerLoading < this.bTimerLoadingLimit) {
 				this.bTimerLoading++;
-				if(this.bTimerLoading % 2 == 0){
+				if(this.bTimerLoading % 3 == 0){
 					this.loadingIndex++;
 					if(this.loadingIndex == this.loadingImages.length )
 						this.loadingIndex = 0;
