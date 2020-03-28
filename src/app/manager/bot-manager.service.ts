@@ -44,6 +44,10 @@ export class BotManagerService {
         for(let i = 0; i< botArrClone.length; i++){
             const bot = botArrClone[i];
             bot.update(levelInstance, ctx, this, bulletManagerService, playerService);
+            if(playerService.currentPlayer && playerService.currentPlayer.hasPlayerBeenHit(bot,bot.getPlayerCollisionHitBox())){
+                this.removeBot(bot); // trigger death todo
+                playerService.killCurrentPlayer();
+            }
         }
 
         let spriteSheetArrClone = [...this.spriteSheetArr]; // why clone it? So I can update the original array without effecting the for loop.
@@ -116,10 +120,10 @@ export class BotManagerService {
 		if(levelInstance.isVertical()){
 	        let pos = (randomPosition)? Math.floor(Math.random() * Math.floor(levelInstance.getMapWidth()-50))+10:posX;
 	        return {posX:pos,posY:posY};
-		} else {
-			let pos = (randomPosition)? Math.floor(Math.random() * Math.floor(levelInstance.getMapHeight()-50))+10:posY;
-			return {posX:levelInstance.getMapHeight()+60,posY:pos};
-		}
+  		} else {
+  			let pos = (randomPosition)? Math.floor(Math.random() * Math.floor(levelInstance.getMapHeight()-50))+10:posY;
+  			return {posX:levelInstance.getMapHeight()+60,posY:pos};
+  		}
     }
 
     addSpriteSheet(bot: SpriteSheet){

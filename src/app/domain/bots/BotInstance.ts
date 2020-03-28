@@ -14,6 +14,8 @@ export interface BotInstance {
     getCenterX():number;
 
     getCenterY():number;
+
+    getPlayerCollisionHitBox(): HitBox;
 }
 
 
@@ -38,6 +40,9 @@ export class BotInstanceImpl implements BotInstance {
     update(levelInstance: LevelInstance, ctx: CanvasRenderingContext2D, botManagerService: BotManagerService, bulletManagerService: BulletManagerService, playerService: PlayerService) {
         throw new Error("Method not implemented.");
     }
+    getPlayerCollisionHitBox(): HitBox {
+        throw new Error("Method not implemented.");
+    }
 
 	tryConfigValues(params){
 		for(let param of params){
@@ -45,6 +50,6 @@ export class BotInstanceImpl implements BotInstance {
 				this[param] = this.config[param];
 			}
 		}
-    }
+  }
 
 }

@@ -34,4 +34,8 @@ export class Drone extends Fighter {
             // bulletManagerService.generatePlayerLazer(levelInstance, bullDirection, this.posX, this.posY);
         }
     }
+
+    getPlayerCollisionHitBox(): HitBox {
+        return this.hitBox;
+    }
 }
