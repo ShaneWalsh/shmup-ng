@@ -30,8 +30,8 @@ export class GameContainerComponent implements OnInit, OnDestroy {
     tickComplete:boolean=true;
     canvasEl: any;
     ctx: CanvasRenderingContext2D;
-    @Input() public width = 640;
-    @Input() public height = 480;
+    @Input() public width = 480;
+    @Input() public height = 640;
     @Input() public requestAnimFrame: any;
 
     constructor(private resourcesService:ResourcesService,
@@ -89,12 +89,12 @@ export class GameContainerComponent implements OnInit, OnDestroy {
                 // have a level manager, that controls the background and the spawning, updates first. 4 levels, controls boss spawn.
                 currentLevel.updateIntro(this.ctx);
                 if (this.introTicker < 200) {// 275
-                    this.ctx.fillRect(0, 0, 640, 480);
+                    this.ctx.fillRect(0, 0, 640, 640);
                     this.ctx.fillRect(320, 240, 320, 240);
                 } else {
                     this.introAnimationBlackScreen += 10;
-                    this.ctx.fillRect((-1) * this.introAnimationBlackScreen, 0, 320, 480);
-                    this.ctx.fillRect(320 + this.introAnimationBlackScreen, 0, 320, 480);
+                    this.ctx.fillRect((-1) * this.introAnimationBlackScreen, 0, 320, 640);
+                    this.ctx.fillRect(320 + this.introAnimationBlackScreen, 0, 320, 640);
                 }
 
                 let res = this.resourcesService.getRes().get("intro0");

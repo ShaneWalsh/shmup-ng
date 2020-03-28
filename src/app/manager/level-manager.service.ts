@@ -90,8 +90,8 @@ export interface LevelInstance {
 }
 
 class LevelOneInstance implements LevelInstance{
-    public mapWidth:number=640;
-    public mapHeight:number=480;
+    public mapWidth:number=480;
+    public mapHeight:number=640;
     private backgroundImage = new Image();
 
     // keeps track of the infinite scrolling of the background.

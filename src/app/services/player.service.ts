@@ -71,8 +71,8 @@ export class PlayerObj {
     public score = 0;
     constructor(
         public lives:number=10,
-        public posX:number=280,
-        public posY:number=400,
+        public posX:number=210,
+        public posY:number=530,
         public imageObj:HTMLImageElement=null,
         public imageSizeX:number=90,
         public imageSizeY:number=60,
