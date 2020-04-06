@@ -194,4 +194,7 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
         return (val < distance)
     }
 
+    getPlayerCollisionHitBox(): HitBox {
+        return this.hitBox;
+    }
 }

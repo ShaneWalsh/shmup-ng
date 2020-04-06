@@ -16,9 +16,10 @@ export class Drone extends Fighter {
         public imageObj2: HTMLImageElement = null,
         public imageSizeX: number = 56,
         public imageSizeY: number = 78,
-        public hitBox: HitBox = new HitBox(0, 0, imageSizeX, imageSizeY)
+        public hitBox: HitBox = new HitBox(0, 0, imageSizeX, imageSizeY),
+        public imageObjDamaged: HTMLImageElement = imageObj1
     ) {
-        super(config, posX,posY,imageObj1,imageObj2,imageSizeX,imageSizeY,hitBox);
+        super(config, posX,posY,imageObj1,imageObj2,imageSizeX,imageSizeY,hitBox,imageObjDamaged);
         this.imageObj = imageObj1;
     }
 
@@ -27,8 +28,8 @@ export class Drone extends Fighter {
         let bullDirection: BulletDirection;
         if (levelInstance.isVertical()) {
             // to check that the player is not above us, we dont want bullets travelling upwards at him, that makes no sense.
-            bullDirection = bulletManagerService.calculateBulletDirection(this.posX + 17, this.posY + 40, this.posX + 17, this.posY + 60, this.bulletSpeed, true);
-            bulletManagerService.generateBotTrackerBlob(levelInstance, bullDirection, this.posX + 17, this.posY + 40, -1);
+            bullDirection = bulletManagerService.calculateBulletDirection(this.posX + 14, this.posY + 70, this.posX + 14, this.posY + 90, this.bulletSpeed, true);
+            bulletManagerService.generateBotTrackerBlob(levelInstance, bullDirection, this.posX + 14, this.posY + 70, -1);
         } else {
             // bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, (this.posX+50), this.posY, 6);
             // bulletManagerService.generatePlayerLazer(levelInstance, bullDirection, this.posX, this.posY);

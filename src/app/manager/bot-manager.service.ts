@@ -7,6 +7,7 @@ import { ResourcesService } from 'src/app/services/resources.service';
 import { BulletManagerService } from 'src/app/manager/bullet-manager.service';
 import { PlayerObj, PlayerService } from 'src/app/services/player.service';
 import { Fighter } from '../domain/bots/Fighter';
+import { Rock } from '../domain/bots/Rock';
 import { Level1SubBoss } from '../domain/bots/Level1SubBoss';
 import { Drone } from '../domain/bots/Drone';
 import { SpriteSheet } from '../domain/SpriteSheet';
@@ -65,8 +66,22 @@ export class BotManagerService {
     }
 
     generateFighter(levelInstance:LevelInstance, randomPosition:boolean=true, posX:number = 0, posY:number = -60, config:any = {}): any {
-		let posObj = this.getBotPostion(levelInstance,randomPosition,posX,posY);
+	      let posObj = this.getBotPostion(levelInstance,randomPosition,posX,posY);
         let newBot = new Fighter(config, posObj.posX,posObj.posY, this.resourcesService.getRes().get("enemy-1-1"), this.resourcesService.getRes().get("enemy-1-2"), 52,56);
+        this.botsArr.push(newBot);
+        this.botCreated.next(newBot);
+    }
+
+    generateFighterV2(levelInstance:LevelInstance, randomPosition:boolean=true, posX:number = 0, posY:number = -60, config:any = {}): any {
+        let posObj = this.getBotPostion(levelInstance,randomPosition,posX,posY);
+        let newBot = new Drone(config, posObj.posX,posObj.posY, this.resourcesService.getRes().get("enemy-1-1-v2"), this.resourcesService.getRes().get("enemy-1-2-v2"), 48,78, new HitBox(0, 0, 48, 78), this.resourcesService.getRes().get("enemy-1-damaged-v2"));
+        this.botsArr.push(newBot);
+        this.botCreated.next(newBot);
+    }
+
+    generateRock(levelInstance:LevelInstance, randomPosition:boolean=true, posX:number = 0, posY:number = -60, config:any = {}): any {
+        let posObj = this.getBotPostion(levelInstance,randomPosition,posX,posY);
+        let newBot = new Rock(config, posObj.posX,posObj.posY, this.resourcesService.getRes().get("enemy-2-1-v2"), this.resourcesService.getRes().get("enemy-2-2-v2"), 108,140, new HitBox(0, 0, 108, 140), this.resourcesService.getRes().get("enemy-2-damaged-v2"));
         this.botsArr.push(newBot);
         this.botCreated.next(newBot);
     }

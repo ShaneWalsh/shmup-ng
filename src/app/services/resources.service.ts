@@ -24,6 +24,15 @@ export class ResourcesService {
     //       {code:"enemy-bullet-target", path:"assets/img/bots/enemy-bullet-Target.png", type:ResourcesEnum.ImageRes}
     //   ];
         this.resourcesToLoad = [
+
+      {code:"enemy-1-1-v2", path:"assets/img/bots/redesign/enemy-1-1.png", type:ResourcesEnum.ImageRes},
+      {code:"enemy-1-2-v2", path:"assets/img/bots/redesign/enemy-1-2.png", type:ResourcesEnum.ImageRes},
+      {code:"enemy-1-damaged-v2", path:"assets/img/bots/redesign/enemy-1-damaged.png", type:ResourcesEnum.ImageRes},
+
+      {code:"enemy-2-1-v2", path:"assets/img/bots/redesign/enemy-2-1.png", type:ResourcesEnum.ImageRes},
+      {code:"enemy-2-2-v2", path:"assets/img/bots/redesign/enemy-2-2.png", type:ResourcesEnum.ImageRes},
+      {code:"enemy-2-damaged-v2", path:"assets/img/bots/redesign/enemy-2-damaged.png", type:ResourcesEnum.ImageRes},
+
 			{code:"enemy-07", path:"assets/img/bots/enemy-07/enemy-07.png", type:ResourcesEnum.ImageRes},
 			{code:"enemy-07-damaged", path:"assets/img/bots/enemy-07/enemy-07-damaged.png", type:ResourcesEnum.ImageRes},
 			{code:"enemy-07-firing-1", path:"assets/img/bots/enemy-07/enemy-07-firing-1.png", type:ResourcesEnum.ImageRes},

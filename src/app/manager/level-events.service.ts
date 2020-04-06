@@ -50,7 +50,7 @@ export class LevelEventsService {
 		  bulletSpeed: 6,
 		  posXSpeed: 3,
 		  posYSpeed: 3,
-		  bTimerLimit: 45,
+		  bTimerLimit: 85,
 		  anaimationTimerLimit:4, // the bot has an animation for its engine, this animation swaps every 4 ticks.
 		  score: 10,
 		  health:2,
@@ -84,9 +84,10 @@ export class LevelEventsService {
 	  le.push(new SpawnBotEvent(0,85,false,0,BotType.FIGHTER,fighterConfig, false, 360, -60));
 	  le.push(new SpawnBotEvent(0,90,false,0,BotType.FIGHTER,fighterConfig, false, 420, -60));
 
-	  le.push(new SpawnBotEvent(0,190,false,0,BotType.FIGHTER,fighterConfig, false, 460, -60));
-	  le.push(new SpawnBotEvent(0,195,false,0,BotType.FIGHTER,fighterConfig, false, 520, -60));
-	  le.push(new SpawnBotEvent(0,200,false,0,BotType.FIGHTER,fighterConfig, false, 580, -60));
+    le.push(new SpawnBotEvent(0,190,false,0,BotType.ROCK,fighterConfig, false, 120, -60));
+	  // le.push(new SpawnBotEvent(0,190,false,0,BotType.FIGHTER,fighterConfig, false, 460, -60));
+	  // le.push(new SpawnBotEvent(0,195,false,0,BotType.FIGHTER,fighterConfig, false, 520, -60));
+	  // le.push(new SpawnBotEvent(0,200,false,0,BotType.FIGHTER,fighterConfig, false, 580, -60));
 
  	  le.push(new SpawnBotEvent(0,250,false,0,BotType.DIVER,diverConfig, false, 500, -60));
 

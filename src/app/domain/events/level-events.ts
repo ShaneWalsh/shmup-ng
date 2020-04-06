@@ -9,6 +9,7 @@ export enum BotType {
     FIGHTER="fighter",
     DRONE="drone",
     CREEPER="creeper",
+    ROCK="rock",
 
     MINIBOSS1="miniBoss1", // move on a phase after a mini boss dies.
     MINIBOSS2 = "miniBoss2",
@@ -51,7 +52,7 @@ export class SpawnBotEvent extends LevelEvent {
         public repeatUntilPhaseEnd:boolean=false,
         public repeatLoopTicks:number = 60, // only used if repeatUntilPhaseEnd is true
         public botType:BotType,
-		public config:any={},
+		    public config:any={},
         public randomPosition:boolean=true,
         public posX:number = 0,
         public posY:number = 0
@@ -64,7 +65,9 @@ export class SpawnBotEvent extends LevelEvent {
 		if(this.botType == BotType.DIVER){
 			botManagerService.generateDiver(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
 		} else if(this.botType == BotType.FIGHTER){
-			botManagerService.generateFighter(levelManagerService.getCurrentLevel(),this.randomPosition, this.posX, this.posY, this.config);
+			botManagerService.generateFighterV2(levelManagerService.getCurrentLevel(),this.randomPosition, this.posX, this.posY, this.config);
+      } else if(this.botType == BotType.ROCK){
+			     botManagerService.generateRock(levelManagerService.getCurrentLevel(),this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.DRONE) {
             botManagerService.generateDrone(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.CREEPER) {
@@ -75,7 +78,8 @@ export class SpawnBotEvent extends LevelEvent {
             botManagerService.generateLevel1SubBoss2(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
         } else {
 			console.log("Not implemented");
-		}
+		    }
+
     }
 }
 

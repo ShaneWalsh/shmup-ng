@@ -16,6 +16,9 @@ export class Fighter extends BotInstanceImpl{
     public anaimationTimer:number = 0;
     public anaimationTimerLimit:number =4;
 
+		public damAnaimationTimer:number = 8;
+		public damAnaimationTimerLimit:number =8;
+
     public imageObj:HTMLImageElement;
 
     public score:number = 10;
@@ -29,7 +32,8 @@ export class Fighter extends BotInstanceImpl{
         public imageObj2:HTMLImageElement=null,
         public imageSizeX:number=90,
         public imageSizeY:number=60,
-        public hitBox:HitBox=new HitBox(0,0,imageSizeX,imageSizeY)
+        public hitBox:HitBox=new HitBox(0,0,imageSizeX,imageSizeY),
+				public imageObjDamaged: HTMLImageElement = imageObj1
     ){
         super(config);
         this.imageObj = imageObj1;
@@ -42,6 +46,12 @@ export class Fighter extends BotInstanceImpl{
             botManagerService.removeBot(this);
         } else {
             ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
+						if(this.damAnaimationTimer < this.damAnaimationTimerLimit){
+							this.damAnaimationTimer++;
+							if(this.damAnaimationTimer %2 == 1){
+								ctx.drawImage(this.imageObjDamaged, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
+							}
+						}
         }
         if(levelInstance.drawHitBox()){
             this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");
@@ -55,13 +65,13 @@ export class Fighter extends BotInstanceImpl{
 		else{
 			this.bTimer++;
 		}
-        if(this.anaimationTimer >= this.anaimationTimerLimit){
+    if(this.anaimationTimer >= this.anaimationTimerLimit){
 			this.anaimationTimer = 0;
 			if(this.imageObj == this.imageObj1){
-                this.imageObj = this.imageObj2;
-            } else {
-                this.imageObj = this.imageObj1;
-            }
+          this.imageObj = this.imageObj2;
+      } else {
+          this.imageObj = this.imageObj1;
+      }
 		}
 		else{
 			this.anaimationTimer++;
@@ -87,6 +97,7 @@ export class Fighter extends BotInstanceImpl{
 
     applyDamage(damage: number, botManagerService: BotManagerService, playerService:PlayerService, levelInstance:LevelInstance) {
         this.health -= damage;
+				this.triggerDamagedAnimation();
         if(this.health < 1){
             playerService.currentPlayer.addScore(this.score);
             botManagerService.removeBot(this);
@@ -112,5 +123,11 @@ export class Fighter extends BotInstanceImpl{
 
 		getPlayerCollisionHitBox(): HitBox {
 				return this.hitBox;
+		}
+
+		triggerDamagedAnimation(): any {
+			if(this.imageObjDamaged != null){
+				this.damAnaimationTimer = 1;// trigger damage animation
+			}
 		}
 }

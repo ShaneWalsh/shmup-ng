@@ -80,7 +80,7 @@ export class Level1SubBoss extends  BotInstanceImpl {
 		else{
 			this.bTimer++;
 		}
-        if(this.anaimationTimer >= this.anaimationTimerLimit){
+    if(this.anaimationTimer >= this.anaimationTimerLimit){
 			this.anaimationTimer = 0;
 			if(this.imageObj == this.imageObj1){
                 this.imageObj = this.imageObj2;
@@ -138,4 +138,8 @@ export class Level1SubBoss extends  BotInstanceImpl {
     getCenterY():number{
         return this.posY+(this.imageSizeY/2);
     }
+
+    getPlayerCollisionHitBox(): HitBox {
+				return this.hitBox;
+		}
 }
