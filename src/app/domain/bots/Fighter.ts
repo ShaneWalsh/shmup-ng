@@ -23,7 +23,7 @@ export class Fighter extends BotInstanceImpl{
 
     public score:number = 10;
 
-	public health:number=2;
+	public health:number=3;
     constructor(
 		public config:any={},
         public posX:number=0,

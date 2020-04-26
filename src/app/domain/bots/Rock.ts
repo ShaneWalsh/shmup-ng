@@ -12,9 +12,9 @@ export class Rock extends Fighter {
     public driftXDistanceCounter = this.driftXDistance/2;
     public driftXDistanceRight = true;
 
-    public posYSpeed:number = 1;
+    public posYSpeed:number = 2;
     public posXSpeed:number = 1.5;
-    public health:number=10;
+    public health:number=20;
     constructor(
         public config: any = {},
         public posX: number = 0,

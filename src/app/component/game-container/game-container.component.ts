@@ -92,16 +92,16 @@ export class GameContainerComponent implements OnInit, OnDestroy {
                     this.ctx.fillRect(0, 0, 640, 640);
                     this.ctx.fillRect(320, 240, 320, 240);
                 } else {
-                    this.introAnimationBlackScreen += 10;
-                    this.ctx.fillRect((-1) * this.introAnimationBlackScreen, 0, 320, 640);
-                    this.ctx.fillRect(320 + this.introAnimationBlackScreen, 0, 320, 640);
+                    this.introAnimationBlackScreen += 5;
+                    this.ctx.fillRect((-1) * this.introAnimationBlackScreen, 0, 240, 640);
+                    this.ctx.fillRect(240 + this.introAnimationBlackScreen, 0, 240, 640);
                 }
 
-                let res = this.resourcesService.getRes().get("intro0");
-                this.ctx.drawImage(res, 70, 100, 500, 60, 70, 100, 500, 70);
-                let fullInit = this.resourcesService.getRes().get("intro15");
-                const xSize = (70) + (this.introAnimation * 25);
-                this.ctx.drawImage(fullInit, 70, 100, xSize, 60,    70, 100, xSize, 70);
+                let res = this.resourcesService.getRes().get("new-intro-1");
+                this.ctx.drawImage(res, 70, 90, 500, 60, 70, 100, 500, 70);
+                let fullInit = this.resourcesService.getRes().get("new-intro-16");
+                const xSize = (70) + (this.introAnimation * 15);
+                this.ctx.drawImage(fullInit, 70, 90, xSize, 60,    70, 100, xSize, 70);
 
                 this.playerService.currentPlayer.updateIntro(this.ctx, this.introAnimation);
             }
