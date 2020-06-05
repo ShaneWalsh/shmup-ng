@@ -14,6 +14,7 @@ import { SpriteSheet } from '../domain/SpriteSheet';
 import { Level1SubBoss2 } from '../domain/bots/Level1SubBoss2';
 import { HitBox } from '../domain/HitBox';
 import { Creeper } from 'src/app/domain/bots/Creeper';
+import { Level1Boss1 } from 'src/app/domain/bots/Level1Boss1';
 
 /**
  * Going to manage the created bots, spawned by the level manager. Its going to emit when they are destroyed or when they leave the screen.
@@ -127,6 +128,15 @@ export class BotManagerService {
             this.resourcesService.getRes().get("miniboss-2-2"),
             this.resourcesService.getRes().get("miniboss-2-damaged"),
             224, 236, hitz);
+        this.botsArr.push(newBot);
+        this.botCreated.next(newBot);
+    }
+
+    generateLevel1Boss1(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -300, config: any = {}): any {
+      let newBot = new Level1Boss1(config, 0,0,
+            this.resourcesService.getRes().get("boss1-main-boss-1-weakpoint"),
+            this.resourcesService.getRes().get("boss1-main-boss-armor-1"),
+            224, 236);
         this.botsArr.push(newBot);
         this.botCreated.next(newBot);
     }
