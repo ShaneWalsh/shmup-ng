@@ -20,7 +20,7 @@ import { Level1Boss1 } from 'src/app/domain/bots/Level1Boss1';
  * Going to manage the created bots, spawned by the level manager. Its going to emit when they are destroyed or when they leave the screen.
  */
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class BotManagerService {
 
@@ -28,10 +28,10 @@ export class BotManagerService {
     private botCreated: Subject<BotInstance> = new Subject();
     private botRemoved: Subject<BotInstance> = new Subject();
 
-    private botsArr:BotInstance[] = [];
+    private botsArr: BotInstance[] = [];
     private spriteSheetArr: SpriteSheet[] = [];
 
-    constructor(private resourcesService:ResourcesService) {
+    constructor(private resourcesService: ResourcesService) {
 
     }
 
@@ -40,13 +40,13 @@ export class BotManagerService {
         this.spriteSheetArr = [];
     }
 
-    update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, bulletManagerService:BulletManagerService, playerService:PlayerService): any {
+    update(levelInstance: LevelInstance, ctx: CanvasRenderingContext2D, bulletManagerService: BulletManagerService, playerService: PlayerService): any {
         //throw new Error("Method not implemented.");
         let botArrClone = [...this.botsArr]; // why clone it? So I can update the original array without effecting the for loop.
-        for(let i = 0; i< botArrClone.length; i++){
+        for (let i = 0; i < botArrClone.length; i++) {
             const bot = botArrClone[i];
             bot.update(levelInstance, ctx, this, bulletManagerService, playerService);
-            if(playerService.currentPlayer && playerService.currentPlayer.hasPlayerBeenHit(bot,bot.getPlayerCollisionHitBox())){
+            if (playerService.currentPlayer && playerService.currentPlayer.hasPlayerBeenHit(bot, bot.getPlayerCollisionHitBox())) {
                 this.removeBot(bot); // trigger death todo
                 playerService.killCurrentPlayer();
             }
@@ -59,30 +59,30 @@ export class BotManagerService {
         }
     }
 
-    generateDiver(levelInstance:LevelInstance, randomPosition:boolean=true, posX:number = 0, posY:number = -60, config:any = {}): any {
-		let posObj = this.getBotPostion(levelInstance,randomPosition,posX,posY);
-		let newBot = new Diver(config, posObj.posX,posObj.posY, this.resourcesService.getRes().get("enemy-3-1"), 46,52);
+    generateDiver(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
+        let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
+        let newBot = new Diver(config, posObj.posX, posObj.posY, this.resourcesService.getRes().get("enemy-3-1"), 46, 52);
         this.botsArr.push(newBot);
         this.botCreated.next(newBot);
     }
 
-    generateFighter(levelInstance:LevelInstance, randomPosition:boolean=true, posX:number = 0, posY:number = -60, config:any = {}): any {
-	      let posObj = this.getBotPostion(levelInstance,randomPosition,posX,posY);
-        let newBot = new Fighter(config, posObj.posX,posObj.posY, this.resourcesService.getRes().get("enemy-1-1"), this.resourcesService.getRes().get("enemy-1-2"), 52,56);
+    generateFighter(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
+        let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
+        let newBot = new Fighter(config, posObj.posX, posObj.posY, this.resourcesService.getRes().get("enemy-1-1"), this.resourcesService.getRes().get("enemy-1-2"), 52, 56);
         this.botsArr.push(newBot);
         this.botCreated.next(newBot);
     }
 
-    generateFighterV2(levelInstance:LevelInstance, randomPosition:boolean=true, posX:number = 0, posY:number = -60, config:any = {}): any {
-        let posObj = this.getBotPostion(levelInstance,randomPosition,posX,posY);
-        let newBot = new Drone(config, posObj.posX,posObj.posY, this.resourcesService.getRes().get("enemy-1-1-v2"), this.resourcesService.getRes().get("enemy-1-2-v2"), 48,78, new HitBox(0, 0, 48, 78), this.resourcesService.getRes().get("enemy-1-damaged-v2"));
+    generateFighterV2(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
+        let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
+        let newBot = new Drone(config, posObj.posX, posObj.posY, this.resourcesService.getRes().get("enemy-1-1-v2"), this.resourcesService.getRes().get("enemy-1-2-v2"), 48, 78, new HitBox(0, 0, 48, 78), this.resourcesService.getRes().get("enemy-1-damaged-v2"));
         this.botsArr.push(newBot);
         this.botCreated.next(newBot);
     }
 
-    generateRock(levelInstance:LevelInstance, randomPosition:boolean=true, posX:number = 0, posY:number = -60, config:any = {}): any {
-        let posObj = this.getBotPostion(levelInstance,randomPosition,posX,posY);
-        let newBot = new Rock(config, posObj.posX,posObj.posY, this.resourcesService.getRes().get("enemy-2-1-v2"), this.resourcesService.getRes().get("enemy-2-2-v2"), 108,140, new HitBox(0, 0, 108, 140), this.resourcesService.getRes().get("enemy-2-damaged-v2"));
+    generateRock(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
+        let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
+        let newBot = new Rock(config, posObj.posX, posObj.posY, this.resourcesService.getRes().get("enemy-2-1-v2"), this.resourcesService.getRes().get("enemy-2-2-v2"), 108, 140, new HitBox(0, 0, 108, 140), this.resourcesService.getRes().get("enemy-2-damaged-v2"));
         this.botsArr.push(newBot);
         this.botCreated.next(newBot);
     }
@@ -94,25 +94,25 @@ export class BotManagerService {
         this.botCreated.next(newBot);
     }
 
-	generateCreeper(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
+    generateCreeper(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
         let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
         let newBot = new Creeper(config, posObj.posX, posObj.posY,
-		this.resourcesService.getRes().get("enemy-07"),
-		this.resourcesService.getRes().get("enemy-07-damaged"),
+            this.resourcesService.getRes().get("enemy-07"),
+            this.resourcesService.getRes().get("enemy-07-damaged"),
 
-		[this.resourcesService.getRes().get("enemy-07-firing-1"),
-		this.resourcesService.getRes().get("enemy-07-firing-2"),
-		this.resourcesService.getRes().get("enemy-07-firing-3")],
+            [this.resourcesService.getRes().get("enemy-07-firing-1"),
+            this.resourcesService.getRes().get("enemy-07-firing-2"),
+            this.resourcesService.getRes().get("enemy-07-firing-3")],
 
-		this.resourcesService.getRes().get("enemy-07-firing-4"),
+            this.resourcesService.getRes().get("enemy-07-firing-4"),
 
-		[this.resourcesService.getRes().get("enemy-07-firing-5"),
-		this.resourcesService.getRes().get("enemy-07-firing-6")]);
+            [this.resourcesService.getRes().get("enemy-07-firing-5"),
+            this.resourcesService.getRes().get("enemy-07-firing-6")]);
         this.botsArr.push(newBot);
         this.botCreated.next(newBot);
     }
 
-    generateLevel1SubBoss1(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -300, config:any = {}): any {
+    generateLevel1SubBoss1(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -300, config: any = {}): any {
         let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
         let newBot = new Level1SubBoss(config, posObj.posX, posObj.posY, this.resourcesService.getRes().get("boss-sub-1"), this.resourcesService.getRes().get("boss-sub-1_2"), 196, 252);
         this.botsArr.push(newBot);
@@ -121,7 +121,7 @@ export class BotManagerService {
 
     generateLevel1SubBoss2(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -300, config: any = {}): any {
         let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
-        let hitz = new HitBox(44,0,192,190);
+        let hitz = new HitBox(44, 0, 192, 190);
         let newBot = new Level1SubBoss2(config, posObj.posX, posObj.posY,
             this.resourcesService.getRes().get("miniboss-2-muzzle-flash"),
             this.resourcesService.getRes().get("miniboss-2-1"),
@@ -133,30 +133,51 @@ export class BotManagerService {
     }
 
     generateLevel1Boss1(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -300, config: any = {}): any {
-      let newBot = new Level1Boss1(config, 0,0,
+        let newBot = new Level1Boss1(config, 0, 0,
             this.resourcesService.getRes().get("boss1-main-boss-1-weakpoint"),
+            this.resourcesService.getRes().get("boss1-main-boss-1-weakpoint-damag"),
+
             this.resourcesService.getRes().get("boss1-main-boss-armor-1"),
-            224, 236);
+            this.resourcesService.getRes().get("boss1-main-boss-armor-2"),
+            this.resourcesService.getRes().get("boss1-main-boss-armor-3"),
+            this.resourcesService.getRes().get("boss1-main-boss-armor-4"),
+            this.resourcesService.getRes().get("boss1-main-boss-armor-5"),
+            this.resourcesService.getRes().get("boss1-main-boss-armor-6"),
+            this.resourcesService.getRes().get("boss1-main-boss-armor-7"),
+            this.resourcesService.getRes().get("boss1-main-boss-armor-8"),
+
+            this.resourcesService.getRes().get("boss1-laser-1"),
+            this.resourcesService.getRes().get("boss1-laser-2"),
+            this.resourcesService.getRes().get("boss1-laser-3"),
+            this.resourcesService.getRes().get("boss1-laser-4"),
+            this.resourcesService.getRes().get("boss1-laser-5"),
+            this.resourcesService.getRes().get("boss1-laser-6"),
+            this.resourcesService.getRes().get("boss1-laser-7"),
+            this.resourcesService.getRes().get("boss1-laser-8"),
+            this.resourcesService.getRes().get("boss1-laser-9"),
+            this.resourcesService.getRes().get("boss1-laser-9-1"),
+            this.resourcesService.getRes().get("boss1-laser-9-2"),
+            this.resourcesService.getRes().get("boss1-laser-10"));
         this.botsArr.push(newBot);
         this.botCreated.next(newBot);
     }
 
-	getBotPostion(levelInstance:LevelInstance, randomPosition:boolean=true, posX:number = 0, posY:number = 0){
-		if(levelInstance.isVertical()){
-	        let pos = (randomPosition)? Math.floor(Math.random() * Math.floor(levelInstance.getMapWidth()-50))+10:posX;
-	        return {posX:pos,posY:posY};
-  		} else {
-  			let pos = (randomPosition)? Math.floor(Math.random() * Math.floor(levelInstance.getMapHeight()-50))+10:posY;
-  			return {posX:levelInstance.getMapHeight()+60,posY:pos};
-  		}
+    getBotPostion(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = 0) {
+        if (levelInstance.isVertical()) {
+            let pos = (randomPosition) ? Math.floor(Math.random() * Math.floor(levelInstance.getMapWidth() - 50)) + 10 : posX;
+            return { posX: pos, posY: posY };
+        } else {
+            let pos = (randomPosition) ? Math.floor(Math.random() * Math.floor(levelInstance.getMapHeight() - 50)) + 10 : posY;
+            return { posX: levelInstance.getMapHeight() + 60, posY: pos };
+        }
     }
 
-    addSpriteSheet(bot: SpriteSheet){
+    addSpriteSheet(bot: SpriteSheet) {
         this.spriteSheetArr.push(bot);
     }
 
-    removeBot(bot:BotInstance){
-        this.botsArr.splice(this.botsArr.indexOf(bot),1);
+    removeBot(bot: BotInstance) {
+        this.botsArr.splice(this.botsArr.indexOf(bot), 1);
         this.botRemoved.next(bot);
     }
 
@@ -164,19 +185,19 @@ export class BotManagerService {
         this.spriteSheetArr.splice(this.spriteSheetArr.indexOf(bot), 1);
     }
 
-    getBotDestroyed():Subject<BotInstance>{
+    getBotDestroyed(): Subject<BotInstance> {
         return this.botDestroyed;
     }
 
-    getBotCreated():Subject<BotInstance>{
+    getBotCreated(): Subject<BotInstance> {
         return this.botCreated;
     }
 
-    getBotRemoved():Subject<BotInstance>{
+    getBotRemoved(): Subject<BotInstance> {
         return this.botRemoved;
     }
 
-    getBots():BotInstance[]{
+    getBots(): BotInstance[] {
         return this.botsArr;
     }
 }
