@@ -67,7 +67,7 @@ export class Level1Boss1 extends BotInstanceImpl {
         public hitBoxArmor2: HitBox = new HitBox(240, 0, 100, 300)
     ) {
         super(config);
-		this.boss1State = new Boss1State(this);
+        this.setState(new Boss1State(this));
     }
 
     update(levelInstance: LevelInstance, ctx: CanvasRenderingContext2D, botManagerService: BotManagerService, bulletManagerService: BulletManagerService, playerService: PlayerService, ) {
@@ -77,6 +77,15 @@ export class Level1Boss1 extends BotInstanceImpl {
 
     hasBotBeenHit(hitter: any, hitterBox: HitBox): boolean {
         return this.boss1State.hasBotBeenHit(hitter, hitterBox);
+    }
+
+    hasBotArmorBeenHit(hitter: any, hitterBox: HitBox) {
+        return this.boss1State.hasBotArmorBeenHit(hitter, hitterBox);
+    }
+
+    setState(boss1State:Boss1State){
+      boss1State.setup();
+      this.boss1State = boss1State;
     }
 
     // lazers go straight, nothing fancy so no need to make them do anything fancy, cal a stright direction.
@@ -129,45 +138,176 @@ export class Level1Boss1 extends BotInstanceImpl {
 
 class Boss1State {
 
+    // todo add this behaviour
+    public moveSide:boolean =false;
+
     constructor(public level1Boss1: Level1Boss1) {
-        level1Boss1.imageObjCore = level1Boss1.imageObjWeakpoint;
-        level1Boss1.imageObjArmor = level1Boss1.imageObjArmor1;
-        level1Boss1.imageObjLazor = null;
+
+    }
+
+    setup(){
+      let level1Boss1 = this.level1Boss1;
+      level1Boss1.imageObjCore = level1Boss1.imageObjWeakpoint;
+      level1Boss1.imageObjArmor = level1Boss1.imageObjArmor1;
+      level1Boss1.imageObjLazor = null;
+      level1Boss1.hitBoxArmor1 = new HitBox(140, 0, 100, 300);
+      level1Boss1.hitBoxArmor2 = new HitBox(240, 0, 100, 300);
     }
 
     update(levelInstance: LevelInstance, ctx: CanvasRenderingContext2D, botManagerService: BotManagerService, bulletManagerService: BulletManagerService, playerService: PlayerService) {
         let level1Boss1 = this.level1Boss1;
 
-        level1Boss1.imageObjCore = level1Boss1.imageObjWeakpoint;
-        if (level1Boss1.damAnaimationTimer < level1Boss1.damAnaimationTimerLimit) {
-            level1Boss1.damAnaimationTimer++;
-            if (level1Boss1.damAnaimationTimer % 2 == 1) {
-                level1Boss1.imageObjCore = level1Boss1.imageObjWeakpointDamanged;
-            }
+        if(level1Boss1.posY < 1){
+          level1Boss1.posY++;
+        } else {
+          level1Boss1.posY = 0;
+          level1Boss1.boss1State = new Boss1StateOpening(level1Boss1);
         }
 
-        ctx.drawImage(level1Boss1.imageObjCore, 0, 0, level1Boss1.imageSizeX, level1Boss1.imageSizeY, level1Boss1.posX, level1Boss1.posY, level1Boss1.imageSizeX, level1Boss1.imageSizeY);
-        ctx.drawImage(level1Boss1.imageObjArmor, 0, 0, level1Boss1.imageSizeX, level1Boss1.imageSizeY, level1Boss1.posX, level1Boss1.posY, level1Boss1.imageSizeX, level1Boss1.imageSizeY);
-		if(level1Boss1.imageObjLazor != null){
-        	ctx.drawImage(level1Boss1.imageObjLazor, 0, 0, level1Boss1.imageSizeX, level1Boss1.imageSizeY, level1Boss1.posX, level1Boss1.posY, level1Boss1.imageSizeX, level1Boss1.imageSizeY);
-		}
-        if (levelInstance.drawHitBox()) {
-            level1Boss1.hitBoxWeakPoint.drawBorder(level1Boss1.posX + level1Boss1.hitBoxWeakPoint.hitBoxX, level1Boss1.posY + level1Boss1.hitBoxWeakPoint.hitBoxY, level1Boss1.hitBoxWeakPoint.hitBoxSizeX, level1Boss1.hitBoxWeakPoint.hitBoxSizeY, ctx, "#FF0000");
-            level1Boss1.hitBoxArmor1.drawBorder(level1Boss1.posX + level1Boss1.hitBoxArmor1.hitBoxX, level1Boss1.posY + level1Boss1.hitBoxArmor1.hitBoxY, level1Boss1.hitBoxArmor1.hitBoxSizeX, level1Boss1.hitBoxArmor1.hitBoxSizeY, ctx, "#FF0000");
-            level1Boss1.hitBoxArmor2.drawBorder(level1Boss1.posX + level1Boss1.hitBoxArmor2.hitBoxX, level1Boss1.posY + level1Boss1.hitBoxArmor2.hitBoxY, level1Boss1.hitBoxArmor2.hitBoxSizeX, level1Boss1.hitBoxArmor2.hitBoxSizeY, ctx, "#FF0000");
-            level1Boss1.hitBox.drawBorder(level1Boss1.posX + level1Boss1.hitBox.hitBoxX, level1Boss1.posY + level1Boss1.hitBox.hitBoxY, level1Boss1.hitBox.hitBoxSizeX, level1Boss1.hitBox.hitBoxSizeY, ctx, "#FFFF00");
-        }
+        this.defaultUpdate(levelInstance,ctx,botManagerService,bulletManagerService,playerService);
     }
 
+    defaultUpdate(levelInstance: LevelInstance, ctx: CanvasRenderingContext2D, botManagerService: BotManagerService, bulletManagerService: BulletManagerService, playerService: PlayerService) {
+      let level1Boss1 = this.level1Boss1;
+      level1Boss1.imageObjCore = level1Boss1.imageObjWeakpoint;
+      if (level1Boss1.damAnaimationTimer < level1Boss1.damAnaimationTimerLimit) {
+          level1Boss1.damAnaimationTimer++;
+          if (level1Boss1.damAnaimationTimer % 2 == 1) {
+              level1Boss1.imageObjCore = level1Boss1.imageObjWeakpointDamanged;
+          }
+      }
+
+      ctx.drawImage(level1Boss1.imageObjCore, 0, 0, level1Boss1.imageSizeX, level1Boss1.imageSizeY, level1Boss1.posX, level1Boss1.posY, level1Boss1.imageSizeX, level1Boss1.imageSizeY);
+      ctx.drawImage(level1Boss1.imageObjArmor, 0, 0, level1Boss1.imageSizeX, level1Boss1.imageSizeY, level1Boss1.posX, level1Boss1.posY, level1Boss1.imageSizeX, level1Boss1.imageSizeY);
+      if(level1Boss1.imageObjLazor != null){
+            ctx.drawImage(level1Boss1.imageObjLazor, 0, 0, level1Boss1.imageSizeX, level1Boss1.imageSizeY, level1Boss1.posX, level1Boss1.posY, level1Boss1.imageSizeX, level1Boss1.imageSizeY);
+      }
+      if (levelInstance.drawHitBox()) {
+          level1Boss1.hitBoxWeakPoint.drawBorder(level1Boss1.posX + level1Boss1.hitBoxWeakPoint.hitBoxX, level1Boss1.posY + level1Boss1.hitBoxWeakPoint.hitBoxY, level1Boss1.hitBoxWeakPoint.hitBoxSizeX, level1Boss1.hitBoxWeakPoint.hitBoxSizeY, ctx, "#FF0000");
+          level1Boss1.hitBoxArmor1.drawBorder(level1Boss1.posX + level1Boss1.hitBoxArmor1.hitBoxX, level1Boss1.posY + level1Boss1.hitBoxArmor1.hitBoxY, level1Boss1.hitBoxArmor1.hitBoxSizeX, level1Boss1.hitBoxArmor1.hitBoxSizeY, ctx, "#FF0000");
+          level1Boss1.hitBoxArmor2.drawBorder(level1Boss1.posX + level1Boss1.hitBoxArmor2.hitBoxX, level1Boss1.posY + level1Boss1.hitBoxArmor2.hitBoxY, level1Boss1.hitBoxArmor2.hitBoxSizeX, level1Boss1.hitBoxArmor2.hitBoxSizeY, ctx, "#FF0000");
+          level1Boss1.hitBox.drawBorder(level1Boss1.posX + level1Boss1.hitBox.hitBoxX, level1Boss1.posY + level1Boss1.hitBox.hitBoxY, level1Boss1.hitBox.hitBoxSizeX, level1Boss1.hitBox.hitBoxSizeY, ctx, "#FFFF00");
+      }
+    }
+
+    hasBotArmorBeenHit(hitter: any, hitterBox: HitBox) {
+      let level1Boss1 = this.level1Boss1;
+      if (level1Boss1.hitBoxArmor1.areCentersToClose(hitter, hitterBox, level1Boss1, level1Boss1.hitBoxArmor1) ||
+          level1Boss1.hitBoxArmor2.areCentersToClose(hitter, hitterBox, level1Boss1, level1Boss1.hitBoxArmor2)) {
+          return true;
+      } else {
+          return false;
+      }
+    }
 
     hasBotBeenHit(hitter: any, hitterBox: HitBox): boolean {
         let level1Boss1 = this.level1Boss1;
-        if (!level1Boss1.hitBoxArmor1.areCentersToClose(hitter, hitterBox, level1Boss1, level1Boss1.hitBoxArmor1) &&
-            !level1Boss1.hitBoxArmor2.areCentersToClose(hitter, hitterBox, level1Boss1, level1Boss1.hitBoxArmor2)) {
-            return level1Boss1.hitBoxWeakPoint.areCentersToClose(hitter, hitterBox, level1Boss1, level1Boss1.hitBoxWeakPoint);
-        } else {
-            return false;
-        }
+        return level1Boss1.hitBoxWeakPoint.areCentersToClose(hitter, hitterBox, level1Boss1, level1Boss1.hitBoxWeakPoint);
     }
+
+}
+
+
+class Boss1StateOpening extends Boss1State {
+  armorCount = 1;
+  armorCountLimit = 8;
+  armorTransitionTime = 0;
+  armorTransitionTimeLimit = 10;
+
+  constructor(level1Boss1 : Level1Boss1){
+    super(level1Boss1);
+  }
+
+  setup(){
+    let level1Boss1 = this.level1Boss1;
+    level1Boss1.imageObjCore = level1Boss1.imageObjWeakpoint;
+    level1Boss1.imageObjArmor = level1Boss1.imageObjArmor1;
+    level1Boss1.imageObjLazor = null;
+    level1Boss1.hitBoxArmor1 = new HitBox(140, 0, 100, 300);
+    level1Boss1.hitBoxArmor2 = new HitBox(240, 0, 100, 300);
+  }
+
+  update(levelInstance: LevelInstance, ctx: CanvasRenderingContext2D, botManagerService: BotManagerService, bulletManagerService: BulletManagerService, playerService: PlayerService) {
+      let level1Boss1 = this.level1Boss1;
+
+      this.armorTransitionTime++;
+      if(this.armorTransitionTime == this.armorTransitionTimeLimit){
+        this.armorTransitionTime = 0;
+        this.armorCount+= 1;
+        this.changeArmor(this.armorCount);
+      }
+      if(this.armorCount == this.armorCountLimit){
+        level1Boss1.boss1State = new Boss1StateCharging(level1Boss1);
+      }
+
+      this.defaultUpdate(levelInstance,ctx,botManagerService,bulletManagerService,playerService);
+  }
+
+  changeArmor(num){
+    let level1Boss1 = this.level1Boss1;
+    level1Boss1.imageObjArmor = level1Boss1["imageObjArmor"+num];
+    let cal = num -1;
+    level1Boss1.hitBoxArmor1 = new HitBox(140-(cal*12), 0, 100, 300);
+    level1Boss1.hitBoxArmor2 = new HitBox(240+(cal*12), 0, 100, 300);
+  }
+
+}
+
+class Boss1StateCharging extends Boss1State {
+  armorCount = 0;
+  armorCountLimit = 12;
+
+  armorTransitionTime = 0;
+  armorTransitionTimeLimit = 6;
+
+  phases =[
+    "imageObjLazer1",
+    "imageObjLazer2",
+    "imageObjLazer3",
+    "imageObjLazer4",
+    "imageObjLazer1",
+    "imageObjLazer2",
+    "imageObjLazer3",
+    "imageObjLazer4",
+    "imageObjLazer5",
+    "imageObjLazer6",
+    "imageObjLazer7",
+    "imageObjLazer8",
+  ]
+
+  constructor(level1Boss1 : Level1Boss1) {
+    super(level1Boss1);
+    level1Boss1.imageObjCore = level1Boss1.imageObjWeakpoint;
+    level1Boss1.imageObjLazor = null;
+  }
+
+  setup(){
+    let level1Boss1 = this.level1Boss1;
+    level1Boss1.imageObjCore = level1Boss1.imageObjWeakpoint;
+    level1Boss1.imageObjLazor = null;
+  }
+
+  update(levelInstance: LevelInstance, ctx: CanvasRenderingContext2D, botManagerService: BotManagerService, bulletManagerService: BulletManagerService, playerService: PlayerService) {
+      let level1Boss1 = this.level1Boss1;
+
+      this.armorTransitionTime++;
+      if(this.armorTransitionTime == this.armorTransitionTimeLimit){
+        this.armorTransitionTime = 0;
+        this.armorCount+= 1;
+        if(this.armorCount < this.armorCountLimit){
+          this.changeArmor(this.armorCount);
+        } else {
+          // onto the next phase! which is firing
+          // I have already got time in there so the next phase it should fire straight away
+        }
+      }
+
+      this.defaultUpdate(levelInstance,ctx,botManagerService,bulletManagerService,playerService);
+  }
+
+  changeArmor(num){
+    let level1Boss1 = this.level1Boss1;
+    level1Boss1.imageObjLazor = level1Boss1[this.phases[num]];
+  }
 
 }

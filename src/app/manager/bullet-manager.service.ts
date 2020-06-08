@@ -176,6 +176,12 @@ class DumbLazer implements BulletInstance {
 	            let botArrClone = [...botManagerService.getBots()];
 	            for(let i = 0; i < botArrClone.length;i++){
 	                let bot = botArrClone[i];
+                  if(bot.hasBotArmorBeenHit(this,this.hitBox)){
+                    // todo make noise or show anumation of failed hit
+                     bulletManagerService.removeBullet(this);
+                     removed = true;
+                     break;
+                 }
 	                if(bot.hasBotBeenHit(this,this.hitBox)){
 	                    bot.applyDamage(this.damage, botManagerService,playerService,levelInstance);
 	                    bulletManagerService.removeBullet(this);

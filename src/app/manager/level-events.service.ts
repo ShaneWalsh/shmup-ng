@@ -102,7 +102,7 @@ export class LevelEventsService {
 
 	  // when a mini boss dies, the Phase moves forward by One.
 	  //le.push(new SpawnBotEvent(0, 350, false, 90, BotType.MINIBOSS2, level1MiniBoss1, false, 200, -300));
-	  le.push(new SpawnBotEvent(0, 350, false, 90, BotType.MAINBOSS1, level1MiniBoss1, false, 200, -300));
+	  le.push(new SpawnBotEvent(0, 350, false, 90, BotType.MAINBOSS1, level1MiniBoss1, false, 0, -300));
 
 	  // these are Phase 1 events, it will become phase 1 when MINIBOSS1 dies
 	  le.push(new SpawnBotEvent(1,120,false,0,BotType.DIVER,diverConfig, false, 200, -60));

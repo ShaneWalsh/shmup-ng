@@ -7,6 +7,7 @@ import { PlayerObj, PlayerService } from "src/app/services/player.service";
 export interface BotInstance {
     update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService);
     // checks if the provided hitbox has intersected with this bot
+    hasBotArmorBeenHit(hitter:any,hitterBox:HitBox);
     hasBotBeenHit(hitter:any,hitterBox:HitBox);
 
     applyDamage(damage:number, botManagerService:BotManagerService, playerService:PlayerService, levelInstance:LevelInstance);
@@ -20,7 +21,6 @@ export interface BotInstance {
 
 
 export class BotInstanceImpl implements BotInstance {
-
 	constructor(public config:any={}){
 
 	}
@@ -50,6 +50,10 @@ export class BotInstanceImpl implements BotInstance {
 				this[param] = this.config[param];
 			}
 		}
+  }
+
+  hasBotArmorBeenHit(hitter: any, hitterBox: HitBox) {
+    return false;
   }
 
 }
