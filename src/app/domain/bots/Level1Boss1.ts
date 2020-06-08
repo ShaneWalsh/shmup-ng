@@ -169,16 +169,21 @@ class Boss1State {
 
     defaultUpdate(levelInstance: LevelInstance, ctx: CanvasRenderingContext2D, botManagerService: BotManagerService, bulletManagerService: BulletManagerService, playerService: PlayerService) {
       let level1Boss1 = this.level1Boss1;
-      level1Boss1.imageObjCore = level1Boss1.imageObjWeakpoint;
+
       if (level1Boss1.damAnaimationTimer < level1Boss1.damAnaimationTimerLimit) {
           level1Boss1.damAnaimationTimer++;
           if (level1Boss1.damAnaimationTimer % 2 == 1) {
               level1Boss1.imageObjCore = level1Boss1.imageObjWeakpointDamanged;
+          } else {
+            ctx.drawImage(level1Boss1.imageObjCore, 0, 0, level1Boss1.imageSizeX, level1Boss1.imageSizeY, level1Boss1.posX, level1Boss1.posY, level1Boss1.imageSizeX, level1Boss1.imageSizeY);
           }
+      } else {
+          ctx.drawImage(level1Boss1.imageObjCore, 0, 0, level1Boss1.imageSizeX, level1Boss1.imageSizeY, level1Boss1.posX, level1Boss1.posY, level1Boss1.imageSizeX, level1Boss1.imageSizeY);
       }
 
-      ctx.drawImage(level1Boss1.imageObjCore, 0, 0, level1Boss1.imageSizeX, level1Boss1.imageSizeY, level1Boss1.posX, level1Boss1.posY, level1Boss1.imageSizeX, level1Boss1.imageSizeY);
-      ctx.drawImage(level1Boss1.imageObjArmor, 0, 0, level1Boss1.imageSizeX, level1Boss1.imageSizeY, level1Boss1.posX, level1Boss1.posY, level1Boss1.imageSizeX, level1Boss1.imageSizeY);
+      if(level1Boss1.imageObjArmor != null){
+        ctx.drawImage(level1Boss1.imageObjArmor, 0, 0, level1Boss1.imageSizeX, level1Boss1.imageSizeY, level1Boss1.posX, level1Boss1.posY, level1Boss1.imageSizeX, level1Boss1.imageSizeY);
+      }
       if(level1Boss1.imageObjLazor != null){
             ctx.drawImage(level1Boss1.imageObjLazor, 0, 0, level1Boss1.imageSizeX, level1Boss1.imageSizeY, level1Boss1.posX, level1Boss1.posY, level1Boss1.imageSizeX, level1Boss1.imageSizeY);
       }
@@ -277,8 +282,6 @@ class Boss1StateCharging extends Boss1State {
 
   constructor(level1Boss1 : Level1Boss1) {
     super(level1Boss1);
-    level1Boss1.imageObjCore = level1Boss1.imageObjWeakpoint;
-    level1Boss1.imageObjLazor = null;
   }
 
   setup(){
@@ -297,8 +300,7 @@ class Boss1StateCharging extends Boss1State {
         if(this.armorCount < this.armorCountLimit){
           this.changeArmor(this.armorCount);
         } else {
-          // onto the next phase! which is firing
-          // I have already got time in there so the next phase it should fire straight away
+          level1Boss1.setState(new Boss1StateAttack(level1Boss1));
         }
       }
 
@@ -308,6 +310,98 @@ class Boss1StateCharging extends Boss1State {
   changeArmor(num){
     let level1Boss1 = this.level1Boss1;
     level1Boss1.imageObjLazor = level1Boss1[this.phases[num]];
+  }
+
+}
+
+class Boss1StateAttack extends Boss1State {
+  armorCount = 0;
+  armorCountLimit = 2;
+
+  armorTransitionTime = 0;
+  armorTransitionTimeLimit = 20;
+
+//imageObjLazer9
+
+  phases =[
+    "imageObjLazer9_2",
+    "imageObjLazer10"
+  ]
+
+  constructor(level1Boss1 : Level1Boss1) {
+    super(level1Boss1);
+  }
+
+  setup(){
+    let level1Boss1 = this.level1Boss1;
+    level1Boss1.imageObjCore = level1Boss1.imageObjLazer9;
+    level1Boss1.imageObjArmor = null;
+    level1Boss1.imageObjLazor = level1Boss1.imageObjLazer9_1;
+  }
+
+  update(levelInstance: LevelInstance, ctx: CanvasRenderingContext2D, botManagerService: BotManagerService, bulletManagerService: BulletManagerService, playerService: PlayerService) {
+      let level1Boss1 = this.level1Boss1;
+
+      this.armorTransitionTime++;
+      if(this.armorTransitionTime == this.armorTransitionTimeLimit){
+        this.armorTransitionTime = 0;
+        this.armorCount+= 1;
+        if(this.armorCount < this.armorCountLimit){
+          this.changeArmor(this.armorCount);
+        } else {
+          level1Boss1.setState(new Boss1StateClosing(level1Boss1));
+        }
+      }
+
+      this.defaultUpdate(levelInstance,ctx,botManagerService,bulletManagerService,playerService);
+  }
+
+  changeArmor(num){
+    let level1Boss1 = this.level1Boss1;
+    level1Boss1.imageObjLazor = level1Boss1[this.phases[num]];
+  }
+
+}
+
+class Boss1StateClosing extends Boss1State {
+  armorCount = 8;
+  armorCountLimit = 0;
+  armorTransitionTime = 0;
+  armorTransitionTimeLimit = 10;
+
+  constructor(level1Boss1 : Level1Boss1){
+    super(level1Boss1);
+  }
+
+  setup(){
+    let level1Boss1 = this.level1Boss1;
+    level1Boss1.imageObjCore = level1Boss1.imageObjWeakpoint;
+    level1Boss1.imageObjArmor = level1Boss1.imageObjArmor8;
+    level1Boss1.imageObjLazor = null;
+  }
+
+  update(levelInstance: LevelInstance, ctx: CanvasRenderingContext2D, botManagerService: BotManagerService, bulletManagerService: BulletManagerService, playerService: PlayerService) {
+      let level1Boss1 = this.level1Boss1;
+
+      this.armorTransitionTime++;
+      if(this.armorTransitionTime == this.armorTransitionTimeLimit){
+        this.armorTransitionTime = 0;
+        this.armorCount-= 1;
+        this.changeArmor(this.armorCount);
+      }
+      if(this.armorCount == this.armorCountLimit){
+        level1Boss1.boss1State = new Boss1StateOpening(level1Boss1);
+      }
+
+      this.defaultUpdate(levelInstance,ctx,botManagerService,bulletManagerService,playerService);
+  }
+
+  changeArmor(num){
+    let level1Boss1 = this.level1Boss1;
+    level1Boss1.imageObjArmor = level1Boss1["imageObjArmor"+num];
+    let cal = num -1;
+    level1Boss1.hitBoxArmor1 = new HitBox(140-(cal*12), 0, 100, 300);
+    level1Boss1.hitBoxArmor2 = new HitBox(240+(cal*12), 0, 100, 300);
   }
 
 }
