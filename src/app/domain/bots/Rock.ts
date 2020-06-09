@@ -77,7 +77,7 @@ export class Rock extends Fighter {
         // this chap dont fire
     }
 
-    getPlayerCollisionHitBox(): HitBox {
-        return this.hitBox;
+    getPlayerCollisionHitBoxes(): HitBox[] {
+        return [this.hitBox];
     }
 }

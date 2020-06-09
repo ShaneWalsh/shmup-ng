@@ -36,7 +36,7 @@ export class Drone extends Fighter {
         }
     }
 
-    getPlayerCollisionHitBox(): HitBox {
-        return this.hitBox;
+    getPlayerCollisionHitBoxes(): HitBox[] {
+        return [this.hitBox];
     }
 }

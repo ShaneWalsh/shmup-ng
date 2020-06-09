@@ -16,7 +16,9 @@ export interface BotInstance {
 
     getCenterY():number;
 
-    getPlayerCollisionHitBox(): HitBox;
+    getPlayerCollisionHitBoxes() : HitBox[];
+
+    isDeathOnColision():boolean;
 }
 
 
@@ -40,8 +42,12 @@ export class BotInstanceImpl implements BotInstance {
     update(levelInstance: LevelInstance, ctx: CanvasRenderingContext2D, botManagerService: BotManagerService, bulletManagerService: BulletManagerService, playerService: PlayerService) {
         throw new Error("Method not implemented.");
     }
-    getPlayerCollisionHitBox(): HitBox {
+    getPlayerCollisionHitBoxes(): HitBox[] {
         throw new Error("Method not implemented.");
+    }
+
+    isDeathOnColision():boolean{
+      return true;
     }
 
 	tryConfigValues(params){

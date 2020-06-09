@@ -156,7 +156,7 @@ export class Creeper extends BotInstanceImpl{
         return this.posY+(this.imageSizeY/2);
     }
 
-    getPlayerCollisionHitBox(): HitBox {
-        return this.hitBox;
+    getPlayerCollisionHitBoxes(): HitBox[] {
+        return [this.hitBox];
     }
 }

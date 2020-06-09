@@ -46,9 +46,17 @@ export class BotManagerService {
         for (let i = 0; i < botArrClone.length; i++) {
             const bot = botArrClone[i];
             bot.update(levelInstance, ctx, this, bulletManagerService, playerService);
-            if (playerService.currentPlayer && playerService.currentPlayer.hasPlayerBeenHit(bot, bot.getPlayerCollisionHitBox())) {
-                this.removeBot(bot); // trigger death todo
-                playerService.killCurrentPlayer();
+            if (playerService.currentPlayer && bot.getPlayerCollisionHitBoxes() != null && bot.getPlayerCollisionHitBoxes().length > 0){
+              const collsionBoxes = bot.getPlayerCollisionHitBoxes();
+              for(let i = 0; i < collsionBoxes.length;i++){
+                if(playerService.currentPlayer.hasPlayerBeenHit(bot,collsionBoxes[i] )) {
+                  if(bot.isDeathOnColision()){
+                    this.removeBot(bot); // trigger death todo
+                  }
+                  playerService.killCurrentPlayer();
+                  break;
+                }
+              }
             }
         }
 

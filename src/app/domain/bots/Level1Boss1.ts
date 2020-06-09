@@ -131,8 +131,12 @@ export class Level1Boss1 extends BotInstanceImpl {
         return (val < distance)
     }
 
-    getPlayerCollisionHitBox(): HitBox {
-        return this.hitBox;
+    getPlayerCollisionHitBoxes(): HitBox[] {
+        return this.boss1State.getPlayerCollisionHitBoxes();
+    }
+
+    isDeathOnColision():boolean{
+      return false;
     }
 }
 
@@ -209,6 +213,11 @@ class Boss1State {
     hasBotBeenHit(hitter: any, hitterBox: HitBox): boolean {
         let level1Boss1 = this.level1Boss1;
         return level1Boss1.hitBoxWeakPoint.areCentersToClose(hitter, hitterBox, level1Boss1, level1Boss1.hitBoxWeakPoint);
+    }
+
+    getPlayerCollisionHitBoxes(): any {
+      let level1Boss1 = this.level1Boss1;
+      return [level1Boss1.hitBoxWeakPoint,level1Boss1.hitBoxArmor1,level1Boss1.hitBoxArmor2];
     }
 
 }
