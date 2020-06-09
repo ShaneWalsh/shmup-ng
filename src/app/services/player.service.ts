@@ -72,7 +72,7 @@ export class PlayerObj {
     constructor(
         public lives:number=10,
         public posX:number=210,
-        public posY:number=580,
+        public posY:number=480,
         public imageObj:HTMLImageElement=null,
         public imageSizeX:number=90,
         public imageSizeY:number=60,

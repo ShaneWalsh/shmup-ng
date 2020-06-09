@@ -20,7 +20,7 @@ export enum LevelEnum{
 })
 export class LevelManagerService {
     drawHitBox(): boolean {
-        return true;
+        return false;
     }
     private gameTickSubject:Subject<boolean> = new Subject();
     private levelLoaded: Subject<LevelInstance> = new Subject();
@@ -161,8 +161,8 @@ class LevelOneInstance implements LevelInstance{
         this.tickCounter++;
     }
 
-	updatePhaseCounter(){
-		this.phaseCounter++;
+  	updatePhaseCounter(){
+  		  this.phaseCounter++;
         this.tickCounter = 0;
     }
 
