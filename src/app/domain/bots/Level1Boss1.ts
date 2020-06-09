@@ -10,7 +10,7 @@ export class Level1Boss1 extends BotInstanceImpl {
     public boss1State: Boss1State = null;
 
     // todo make these config values
-    public health: number = 35;
+    public health: number = 50;
     public bulletSpeed: number = 6; // 6
     public moveSpeed: number = 5; // 5
 
@@ -175,11 +175,12 @@ class Boss1State {
           if (level1Boss1.damAnaimationTimer % 2 == 1) {
               level1Boss1.imageObjCore = level1Boss1.imageObjWeakpointDamanged;
           } else {
-            ctx.drawImage(level1Boss1.imageObjCore, 0, 0, level1Boss1.imageSizeX, level1Boss1.imageSizeY, level1Boss1.posX, level1Boss1.posY, level1Boss1.imageSizeX, level1Boss1.imageSizeY);
+            level1Boss1.imageObjCore = level1Boss1.imageObjWeakpoint;
           }
       } else {
-          ctx.drawImage(level1Boss1.imageObjCore, 0, 0, level1Boss1.imageSizeX, level1Boss1.imageSizeY, level1Boss1.posX, level1Boss1.posY, level1Boss1.imageSizeX, level1Boss1.imageSizeY);
+        level1Boss1.imageObjCore = level1Boss1.imageObjWeakpoint;
       }
+      ctx.drawImage(level1Boss1.imageObjCore, 0, 0, level1Boss1.imageSizeX, level1Boss1.imageSizeY, level1Boss1.posX, level1Boss1.posY, level1Boss1.imageSizeX, level1Boss1.imageSizeY);
 
       if(level1Boss1.imageObjArmor != null){
         ctx.drawImage(level1Boss1.imageObjArmor, 0, 0, level1Boss1.imageSizeX, level1Boss1.imageSizeY, level1Boss1.posX, level1Boss1.posY, level1Boss1.imageSizeX, level1Boss1.imageSizeY);
@@ -319,14 +320,14 @@ class Boss1StateAttack extends Boss1State {
   armorCountLimit = 2;
 
   armorTransitionTime = 0;
-  armorTransitionTimeLimit = 20;
-
-//imageObjLazer9
+  armorTransitionTimeLimit = 6;
 
   phases =[
     "imageObjLazer9_2",
     "imageObjLazer10"
   ]
+
+  beamHitBox :HitBox = new HitBox(156, 0, 164, 640);
 
   constructor(level1Boss1 : Level1Boss1) {
     super(level1Boss1);
@@ -334,31 +335,39 @@ class Boss1StateAttack extends Boss1State {
 
   setup(){
     let level1Boss1 = this.level1Boss1;
-    level1Boss1.imageObjCore = level1Boss1.imageObjLazer9;
-    level1Boss1.imageObjArmor = null;
+    level1Boss1.imageObjCore = level1Boss1.imageObjWeakpoint;
+    level1Boss1.imageObjArmor = level1Boss1.imageObjLazer9;
     level1Boss1.imageObjLazor = level1Boss1.imageObjLazer9_1;
   }
 
   update(levelInstance: LevelInstance, ctx: CanvasRenderingContext2D, botManagerService: BotManagerService, bulletManagerService: BulletManagerService, playerService: PlayerService) {
+	   let currentPlayer = playerService.currentPlayer;
       let level1Boss1 = this.level1Boss1;
 
       this.armorTransitionTime++;
       if(this.armorTransitionTime == this.armorTransitionTimeLimit){
         this.armorTransitionTime = 0;
         this.armorCount+= 1;
-        if(this.armorCount < this.armorCountLimit){
+        if(this.armorCount <= this.armorCountLimit){
           this.changeArmor(this.armorCount);
         } else {
           level1Boss1.setState(new Boss1StateClosing(level1Boss1));
         }
       }
-
+      ctx.fillRect(0, 0, level1Boss1.imageSizeX,level1Boss1.imageSizeY);
       this.defaultUpdate(levelInstance,ctx,botManagerService,bulletManagerService,playerService);
+      // if we hit the player here, we need to kill them
+      if (levelInstance.drawHitBox()) {
+          this.beamHitBox.drawBorder(level1Boss1.posX + this.beamHitBox.hitBoxX, level1Boss1.posY + this.beamHitBox.hitBoxY, this.beamHitBox.hitBoxSizeX, this.beamHitBox.hitBoxSizeY, ctx, "#FF0000");
+      }
+      if(currentPlayer && currentPlayer.hasPlayerBeenHit(level1Boss1,this.beamHitBox)){
+          playerService.killCurrentPlayer();
+      }
   }
 
   changeArmor(num){
     let level1Boss1 = this.level1Boss1;
-    level1Boss1.imageObjLazor = level1Boss1[this.phases[num]];
+    level1Boss1.imageObjLazor = level1Boss1[this.phases[num-1]];
   }
 
 }
@@ -387,7 +396,9 @@ class Boss1StateClosing extends Boss1State {
       if(this.armorTransitionTime == this.armorTransitionTimeLimit){
         this.armorTransitionTime = 0;
         this.armorCount-= 1;
-        this.changeArmor(this.armorCount);
+        if(this.armorCount > this.armorCountLimit){
+          this.changeArmor(this.armorCount);
+        }
       }
       if(this.armorCount == this.armorCountLimit){
         level1Boss1.boss1State = new Boss1StateOpening(level1Boss1);
