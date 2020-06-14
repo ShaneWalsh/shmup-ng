@@ -25,6 +25,9 @@ export class Level1SubBoss extends  BotInstanceImpl {
     public anaimationTimer:number = 0;
     public anaimationTimerLimit:number =4;
 
+    public damAnaimationTimer:number = 8;
+    public damAnaimationTimerLimit:number =8;
+
     public score:number = 10;
 
     constructor(
@@ -33,6 +36,7 @@ export class Level1SubBoss extends  BotInstanceImpl {
         public posY:number=0,
         public imageObj1:HTMLImageElement=null,
         public imageObj2:HTMLImageElement=null,
+        public imageObjDamaged:HTMLImageElement=null,
         public imageSizeX:number=90,
         public imageSizeY:number=60,
         public hitBox:HitBox=new HitBox(0,0,imageSizeX,imageSizeY)
@@ -68,6 +72,12 @@ export class Level1SubBoss extends  BotInstanceImpl {
         }
 
         ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
+        if(this.damAnaimationTimer < this.damAnaimationTimerLimit){
+          this.damAnaimationTimer++;
+          if(this.damAnaimationTimer %2 == 1){
+            ctx.drawImage(this.imageObjDamaged, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
+          }
+        }
         if(levelInstance.drawHitBox()){
             this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");
         }
@@ -115,6 +125,7 @@ export class Level1SubBoss extends  BotInstanceImpl {
 
     applyDamage(damage: number, botManagerService: BotManagerService, playerService:PlayerService, levelInstance:LevelInstance) {
         this.health -= damage;
+        this.triggerDamagedAnimation();
         if(this.health < 1){
             playerService.currentPlayer.addScore(this.score);
             botManagerService.removeBot(this);
@@ -130,6 +141,10 @@ export class Level1SubBoss extends  BotInstanceImpl {
 		}
 		return false;
 	}
+
+  triggerDamagedAnimation(): any {
+        this.damAnaimationTimer = 1;// trigger damage animation
+    }
 
     getCenterX():number{
         return this.posX+(this.imageSizeX/2);

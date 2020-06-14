@@ -69,7 +69,7 @@ export class BotManagerService {
 
     generateDiver(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
         let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
-        let newBot = new Diver(config, posObj.posX, posObj.posY, this.resourcesService.getRes().get("enemy-3-1"), 46, 52);
+        let newBot = new Diver(config, posObj.posX, posObj.posY, this.resourcesService.getRes().get("enemy-3-1"), this.resourcesService.getRes().get("enemy-3-1-damaged"), 46, 52);
         this.botsArr.push(newBot);
         this.botCreated.next(newBot);
     }
@@ -122,7 +122,7 @@ export class BotManagerService {
 
     generateLevel1SubBoss1(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -300, config: any = {}): any {
         let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
-        let newBot = new Level1SubBoss(config, posObj.posX, posObj.posY, this.resourcesService.getRes().get("boss-sub-1"), this.resourcesService.getRes().get("boss-sub-1_2"), 196, 252);
+        let newBot = new Level1SubBoss(config, posObj.posX, posObj.posY, this.resourcesService.getRes().get("boss-sub-1"), this.resourcesService.getRes().get("boss-sub-1_2"), this.resourcesService.getRes().get("miniboss-1-damaged"),196, 252);
         this.botsArr.push(newBot);
         this.botCreated.next(newBot);
     }

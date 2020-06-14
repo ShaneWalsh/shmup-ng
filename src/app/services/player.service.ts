@@ -47,6 +47,7 @@ export class PlayerService {
         this.currentPlayer.bulletsFiring = false;
         this.currentPlayer.invincibilityTimer = 0;
         this.currentPlayer.imageObj = this.resourcesService.getRes().get("player-1-ship");
+        this.currentPlayer.imageObjMuzzle = this.resourcesService.getRes().get("player-1-muzzle-flash");
         this.currentPlayer.score = 0;
         this.currentPlayer.lives = 3;
     }
@@ -68,12 +69,14 @@ export class PlayerObj {
 
     public invincibilityTimer:number = 0;
 
+    public firingSequence = 1;
     public score = 0;
     constructor(
         public lives:number=10,
         public posX:number=210,
         public posY:number=480,
         public imageObj:HTMLImageElement=null,
+        public imageObjMuzzle:HTMLImageElement=null,
         public imageSizeX:number=90,
         public imageSizeY:number=60,
         public hitBox:HitBox=new HitBox((Math.floor(imageSizeX/2))-5,(Math.floor(imageSizeY/2))-5,10,10)
@@ -90,13 +93,22 @@ export class PlayerObj {
 		if(this.bulletsFiring || !this.bulletsFired){
 			if(this.bTimer >= this.bTimerLimit){
 				this.bTimer = 0;
-				this.fireLazer(levelInstance,ctx,bulletManagerService);
-                this.bulletsFired = true;
+        this.firingSequence = 1;
 			}
 			else{
 				this.bTimer++;
 			}
 		}
+
+    if(this.firingSequence < 5){
+      ctx.drawImage(this.imageObjMuzzle, 0, 0, 30,17, this.posX+30, this.posY-10, 30,17);
+      this.firingSequence++;
+    } else if(this.firingSequence == 5){
+      this.fireLazer(levelInstance,ctx,bulletManagerService);
+      this.bulletsFired = true;
+      this.firingSequence++;
+    } 
+
 
         // draw
         if (this.invincibilityTimer > 0) {
@@ -152,7 +164,8 @@ export class PlayerObj {
         if(levelInstance.isVertical()){
             bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, this.posX, (this.posY-50), 8);
             // todo gen two bullets, or just one?
-            bulletManagerService.generatePlayerLazer(levelInstance, bullDirection, this.posX+30, this.posY);
+
+            bulletManagerService.generatePlayerLazer(levelInstance, bullDirection, this.posX+30, this.posY-10);
         } else {
             bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, (this.posX+50), this.posY, 8);
             bulletManagerService.generatePlayerLazer(levelInstance, bullDirection, this.posX, this.posY);

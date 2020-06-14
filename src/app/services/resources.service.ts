@@ -25,6 +25,10 @@ export class ResourcesService {
     //   ];
         this.resourcesToLoad = [
 
+      {code:"miniboss-1-damaged", path:"assets/img/boss/miniboss-1-damaged.png", type:ResourcesEnum.ImageRes},
+      {code:"player-1-muzzle-flash", path:"assets/img/bots/redesign/player-1-muzzle-flash.png", type:ResourcesEnum.ImageRes},
+      {code:"enemy-3-1-damaged", path:"assets/img/bots/redesign/enemy-3-1-damaged.png", type:ResourcesEnum.ImageRes},
+
       {code:"enemy-1-1-v2", path:"assets/img/bots/redesign/enemy-1-1.png", type:ResourcesEnum.ImageRes},
       {code:"enemy-1-2-v2", path:"assets/img/bots/redesign/enemy-1-2.png", type:ResourcesEnum.ImageRes},
       {code:"enemy-1-damaged-v2", path:"assets/img/bots/redesign/enemy-1-damaged.png", type:ResourcesEnum.ImageRes},

@@ -14,6 +14,9 @@ export class Diver extends BotInstanceImpl{
     public bTimerLimit:number = 40;
 	public health:number=3;
 
+	public damAnaimationTimer:number = 8;
+	public damAnaimationTimerLimit:number =8;
+
     public score:number = 50;
 
     constructor(
@@ -21,6 +24,7 @@ export class Diver extends BotInstanceImpl{
         public posX:number=0,
         public posY:number=0,
         public imageObj:HTMLImageElement=null,
+        public imageObjDamaged:HTMLImageElement=null,
         public imageSizeX:number=90,
         public imageSizeY:number=60,
         public hitBox:HitBox=new HitBox(12,0,imageSizeX-24,imageSizeY),
@@ -36,7 +40,13 @@ export class Diver extends BotInstanceImpl{
         if(this.posY + this.imageSizeY > (levelInstance.getMapHeight()+this.imageSizeY)){
             botManagerService.removeBot(this);
         } else {
-            ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
+					ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
+					if(this.damAnaimationTimer < this.damAnaimationTimerLimit){
+						this.damAnaimationTimer++;
+						if(this.damAnaimationTimer %2 == 1){
+							ctx.drawImage(this.imageObjDamaged, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
+						}
+					}
         }
         if(levelInstance.drawHitBox()){
             this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");
@@ -73,6 +83,7 @@ export class Diver extends BotInstanceImpl{
 
     applyDamage(damage: number, botManagerService: BotManagerService, playerService:PlayerService, levelInstance:LevelInstance) {
         this.health -= damage;
+				this.triggerDamagedAnimation();
         if(this.health < 1){
             playerService.currentPlayer.addScore(this.score);
             botManagerService.removeBot(this);
@@ -98,5 +109,11 @@ export class Diver extends BotInstanceImpl{
 
 		getPlayerCollisionHitBoxes(): HitBox[] {
 				return [this.hitBox];
+		}
+
+		triggerDamagedAnimation(): any {
+			if(this.imageObjDamaged != null){
+				this.damAnaimationTimer = 1;// trigger damage animation
+			}
 		}
 }

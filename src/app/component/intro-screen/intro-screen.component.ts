@@ -41,7 +41,7 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
                     }
                 } else if(this.screenId == 6 || this.screenId == 7){
                     this.screenId = 3;
-                } 
+                }
             }
         }));
         this.subs.push(this.playerService.getPlayerLivesGoneSubject().subscribe(playerObj => {
