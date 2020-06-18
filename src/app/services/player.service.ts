@@ -69,7 +69,7 @@ export class PlayerObj {
 
     public invincibilityTimer:number = 0;
 
-    public firingSequence = 1;
+    public firingSequence = 6;
     public score = 0;
     constructor(
         public lives:number=10,
@@ -107,7 +107,7 @@ export class PlayerObj {
       this.fireLazer(levelInstance,ctx,bulletManagerService);
       this.bulletsFired = true;
       this.firingSequence++;
-    } 
+    }
 
 
         // draw

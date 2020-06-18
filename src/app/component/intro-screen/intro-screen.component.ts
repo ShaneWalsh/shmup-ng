@@ -16,6 +16,8 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
         })
     }
     private subs:Subscription[] =[];
+	public gifTimer:number = 0;
+	public difficulty:number = 0;
     public screenId:number = 1;
     public playerScore:number = 0;
     public requestAnimFrame:any; // have to ensure this is not created multiple times!
@@ -32,31 +34,38 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
         this.subs.push(this.keyboardEventService.getKeyDownEventSubject().subscribe(customKeyboardEvent => {
             console.log("customKeyboardEvent",customKeyboardEvent);
             if(customKeyboardEvent.event.keyCode == 13){ //  == 'Enter'
-                if(this.screenId < 5){
+                if(this.screenId < 6){
                     this.screenId++;
-                    if(this.screenId == 5){ // boom, load up level one.
+                    if(this.screenId == 6){ // boom, load up level one.
                         // lets assume the user picked a player here
                         this.playerService.initPlayer();
                         this.levelManagerService.initLevel(LevelEnum.LevelOne);
                     }
-                } else if(this.screenId == 6 || this.screenId == 7){
+                } else if(this.screenId == 20 || this.screenId == 30){
                     this.screenId = 3;
                 }
             }
+			if(customKeyboardEvent.event.keyCode == 38 || customKeyboardEvent.event.keyCode == 40 || customKeyboardEvent.event.keyCode == 87 || customKeyboardEvent.event.keyCode == 83){ //  == 'Enter'
+				if(this.screenId == 3){
+					this.difficulty = (this.difficulty==0)?1:0;
+				}
+			}
         }));
         this.subs.push(this.playerService.getPlayerLivesGoneSubject().subscribe(playerObj => {
             this.levelManagerService.pauseGame(); // no point in it running for eternity
             this.playerScore =  playerObj.score;
-            this.screenId = 6;
+            this.screenId = 20;
         }));
 		this.subs.push(this.levelManagerService.getLevelCompleteSubject().subscribe(result => {
 			this.levelManagerService.pauseGame(); // no point in it running for eternity
 			this.playerScore =  this.playerService.currentPlayer.score;
-			this.screenId = 7;
+			this.screenId = 30;
         }));
     }
 
     update(){
+		this.gifTimer++;
+		if(this.gifTimer > 60){this.gifTimer=0}
         this.levelManagerService.getGameTickSubject().next();
         this.requestAnimFrame(this.update.bind(this)); // takes a function as para, it will keep calling loop over and over again
     }

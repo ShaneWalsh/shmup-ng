@@ -2,23 +2,33 @@
     <img [src]="'assets/img/desc/new-title-gif.gif'">
 </div>
 <div class="screen-container" *ngIf="screenId==2">
-    <img [src]="'assets/img/desc/main-intro.png'">
+    <img [src]="'assets/img/desc/new-story.png'">
 </div>
 <div class="screen-container" *ngIf="screenId==3">
-    <img [src]="'assets/img/desc/character-select-MICS.png'">
+	<span *ngIf="difficulty==0">
+	    <img *ngIf="gifTimer < 40" [src]="'assets/img/desc/difficulty-select/easy-1.png'">
+	    <img *ngIf="gifTimer >= 40" [src]="'assets/img/desc/difficulty-select/easy-2.png'">
+	</span>
+	<span *ngIf="difficulty==1">
+	    <img *ngIf="gifTimer < 40" [src]="'assets/img/desc/difficulty-select/normal-1.png'">
+	    <img *ngIf="gifTimer >= 40" [src]="'assets/img/desc/difficulty-select/normal-2.png'">
+	</span>
 </div>
 <div class="screen-container" *ngIf="screenId==4">
-    <img [src]="'assets/img/desc/MICS-intro.png'">
+    <img [src]="'assets/img/desc/character-select-MICS.png'">
 </div>
 <div class="screen-container" *ngIf="screenId==5">
+    <img [src]="'assets/img/desc/MICS-intro.png'">
+</div>
+<div class="screen-container" *ngIf="screenId==6">
     <app-game-container [requestAnimFrame]="requestAnimFrame"></app-game-container>
 </div>
-<div class="screen-container pink-text" *ngIf="screenId==6">
+<div class="screen-container pink-text" *ngIf="screenId==20">
     <h1>Game over</h1>
     <p>Score: {{playerScore}}</p>
     <p>Press Enter to Restart</p>
 </div>
-<div class="screen-container pink-text" *ngIf="screenId==7">
+<div class="screen-container pink-text" *ngIf="screenId==30">
     <h1>Victory!</h1>
     <p>Score: {{playerScore}}</p>
     <p>Press Enter to Restart</p>
