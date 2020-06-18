@@ -15,6 +15,7 @@ import { Level1SubBoss2 } from '../domain/bots/Level1SubBoss2';
 import { HitBox } from '../domain/HitBox';
 import { Creeper } from 'src/app/domain/bots/Creeper';
 import { Level1Boss1 } from 'src/app/domain/bots/Level1Boss1';
+import { Guardian1 } from 'src/app/domain/bots/Guardian1';
 
 /**
  * Going to manage the created bots, spawned by the level manager. Its going to emit when they are destroyed or when they leave the screen.
@@ -73,6 +74,14 @@ export class BotManagerService {
         this.botsArr.push(newBot);
         this.botCreated.next(newBot);
     }
+
+	generateGuardian1(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
+        let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
+        let newBot = new Guardian1(config, posObj.posX, posObj.posY, this.resourcesService.getRes().get("main-boss-1-guardian"), this.resourcesService.getRes().get("main-boss-1-guardian-damage"));
+        this.botsArr.push(newBot);
+        this.botCreated.next(newBot);
+    }
+
 
     generateFighter(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
         let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);

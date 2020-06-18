@@ -30,7 +30,16 @@ export class LevelEventsService {
 			ninth value is the bots spawning Y cordinate
 	  */
 
+
 	  const diverConfig = {
+		  bulletSpeed: 3, // how fast this bots buttets travel every tick
+		  posXSpeed: 1.5,
+		  posYSpeed: 1.5, // the speed the bot moves in the X and y Directions every Tick
+		  bTimerLimit: 40, // this means that a diver fires a button once every 40 ticks, e.g 3 times in 2 seconds.
+		  score: 50, // this is only added to the players score if they kill the bot, if it leaves the screen the bot is simply removed.
+  		  health:3, // health, when 0 Diver is dead.
+	  };
+	  const guardian1Config = {
 		  bulletSpeed: 3, // how fast this bots buttets travel every tick
 		  posXSpeed: 1.5,
 		  posYSpeed: 1.5, // the speed the bot moves in the X and y Directions every Tick
@@ -74,6 +83,7 @@ export class LevelEventsService {
 	  };
 
 
+	  le.push(new SpawnBotEvent(0,60,false,0,BotType.GUARDIAN1,guardian1Config, false, 320, -60));
 
 	  le.push(new SpawnBotEvent(0,120,false,0,BotType.DIVER,diverConfig, false, 200, -60));
 	  le.push(new SpawnBotEvent(0, 120, false, 0, BotType.DRONE, droneConfig, false, 160, -60));
