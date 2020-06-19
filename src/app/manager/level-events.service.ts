@@ -43,9 +43,9 @@ export class LevelEventsService {
 		  bulletSpeed: 3, // how fast this bots buttets travel every tick
 		  posXSpeed: 1.5,
 		  posYSpeed: 1.5, // the speed the bot moves in the X and y Directions every Tick
-		  bTimerLimit: 40, // this means that a diver fires a button once every 40 ticks, e.g 3 times in 2 seconds.
-		  score: 50, // this is only added to the players score if they kill the bot, if it leaves the screen the bot is simply removed.
-  		  health:3, // health, when 0 Diver is dead.
+		  bTimerLimit: 80, // this means that a diver fires a button once every 40 ticks, e.g 3 times in 2 seconds.
+		  score: 80, // this is only added to the players score if they kill the bot, if it leaves the screen the bot is simply removed.
+  		  health:30, // health, when 0 Diver is dead.
 	  };
 	  const droneConfig = {
 		  bulletSpeed: 3,
@@ -83,8 +83,6 @@ export class LevelEventsService {
 	  };
 
 
-	  le.push(new SpawnBotEvent(0,60,false,0,BotType.GUARDIAN1,guardian1Config, false, 320, -60));
-
 	  le.push(new SpawnBotEvent(0,120,false,0,BotType.DIVER,diverConfig, false, 200, -60));
 	  le.push(new SpawnBotEvent(0, 120, false, 0, BotType.DRONE, droneConfig, false, 160, -60));
 
@@ -112,6 +110,8 @@ export class LevelEventsService {
 
 	  // when a mini boss dies, the Phase moves forward by One.
 	  //le.push(new SpawnBotEvent(0, 350, false, 90, BotType.MINIBOSS2, level1MiniBoss1, false, 200, -300));
+	  le.push(new SpawnBotEvent(0,430,false,0,BotType.GUARDIAN1,guardian1Config, false, 380, -60));
+	  le.push(new SpawnBotEvent(0,430,false,0,BotType.GUARDIAN1,guardian1Config, false, 5, -60));
 	  le.push(new SpawnBotEvent(0, 350, false, 90, BotType.MAINBOSS1, level1MiniBoss1, false, 0, -300));
 
 	  // these are Phase 1 events, it will become phase 1 when MINIBOSS1 dies
