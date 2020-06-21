@@ -13,7 +13,7 @@ export class LevelEventsService {
 
 	  /*
 	  	GAME MECHANICS
-		difficulty = is a number and its either 0 (easy) or 1 (normal)
+		difficulty = is a number and its either 0 (easy) or 1 (normal), see if/else just below the configs
 		There is 60 ticks in a second, so most of the numbers in the configs are based off of these ticks.
 		SpawnBotEvent
 			first value is the phase this event will occur in. 0 is the default phase. When a Phase changes, the phaseTicks reset to 0
@@ -28,7 +28,8 @@ export class LevelEventsService {
 	  */
 
 	  // these are the default normal settings, I suggest you override the specific values you want to change in the difficulty if/else
-	  let diverConfig = { // slow bot that fires the tracking bullets enemy-3-1
+	  // slow bot that fires the tracking bullets enemy-3-1
+	  let diverConfig = {
 		  bulletSpeed: 3, // how fast this bots buttets travel every tick
 		  posXSpeed: 1.5,
 		  posYSpeed: 1.5, // the speed the bot moves in the X and y Directions every Tick, X = Left/Right Y=Up/Down
@@ -36,6 +37,7 @@ export class LevelEventsService {
 		  score: 50, // this is only added to the players score if they kill the bot, if it leaves the screen the bot is simply removed.
   		  health:3, // health, when 0 Diver is dead.
 	  };
+	  // main boss guardian
 	  let guardian1Config = {
 		  bulletSpeed: 3, // how fast this bots buttets travel every tick
 		  posXSpeed: 1.5,
@@ -44,7 +46,8 @@ export class LevelEventsService {
 		  score: 80, // this is only added to the players score if they kill the bot, if it leaves the screen the bot is simply removed.
   		  health:30, // health, when 0 Diver is dead.
 	  };
-	  let droneConfig = { // original fast moving fast shooting figher enemy-2-2
+	   // original fast moving fast shooting figher enemy-2-2
+	  let droneConfig = {
 		  bulletSpeed: 6,
 		  posXSpeed: 1.5,
 		  posYSpeed: 1.5,
@@ -52,7 +55,8 @@ export class LevelEventsService {
 		  score: 25,
 		  health: 3,
 	  };
-	  let fighterConfig = { // basic fast moving fast shooting redesigned figher enemy-1-1
+	  // basic fast moving fast shooting redesigned figher enemy-1-1
+	  let fighterConfig = {
 		  bulletSpeed: 6,
 		  posXSpeed: 3,
 		  posYSpeed: 3,
@@ -61,20 +65,23 @@ export class LevelEventsService {
 		  score: 10,
 		  health:3,
 	  };
-	  let creeperConfig = { // top of the screen creeper enemy-07
+	  // top of the screen creeper enemy-07
+	  let creeperConfig = {
 		  posXSpeed: 1.5,
 		  posYSpeed: 1.5,
 		  bTimerLimit: 60,
 		  score: 50,
 		  health:5,
 	  };
-	  let rockConfig = { // big fat slow guy, enemy-2-1
+	  // big fat slow guy, enemy-2-1
+	  let rockConfig = {
 		  posXSpeed: 2,
 		  posYSpeed: 1.5,
 		  score: 100,
 		  health:24,
 	  };
-	  let level1MiniBoss1 = { // giant fighter with two bullets
+	  // giant fighter with two bullets
+	  let level1MiniBoss1 = {
 		  bulletSpeed: 6,
 		  posXSpeed: 3,
 		  posYSpeed: 1.5,
@@ -83,35 +90,35 @@ export class LevelEventsService {
 		  score: 250,
 		  health:200,
 	  };
-	  let level1MiniBoss2 = { // spinning guy
+	   // spinning boss guy
+	  let level1MiniBoss2 = {
 		  bulletSpeed: 6,
 		  moveSpeed: 5,
 		  bTimerLimit: 20,
 		  score: 250,
 		  health: 150,
 	  };
-	  let level1MainBoss1 = { // big boss with the bog laser
+	  // big boss with the bog laser
+	  let level1MainBoss1 = {
 	  	score: 500,
 	  	health:300,
 	  };
 
-	  if(difficulty == 0){ // easy so reducing the bots health
-		  fighterConfig = {...fighterConfig, health:1} // here I am overiding the fighters health and reducing it to one.
-	  } else if(difficulty == 1){
+	  if(difficulty == 0){ // easy difficulty, so reducing the bots health
+		   // here I am overiding the fighters health and reducing it to one, and keeping all of the other values defined above.
+		  fighterConfig = {...fighterConfig, health:1}
+		  // reducing rocks health, and uping his score value
+		  rockConfig = {...rockConfig, health:16, score:150}
+	  } else if(difficulty == 1){ // normal, can just use the default settings above.
 		  // use the defaults defined above
 	  } else { //todo hard one day I assume
-
+		  // todo
 	  }
 
-	  // le.push(new SpawnBotEvent(0,120,false,0,BotType.DIVER,diverConfig, false, 200, -60));
-	  // le.push(new SpawnBotEvent(0, 120, false, 0, BotType.DRONE, droneConfig, false, 160, -60));
-	  //
-	  // le.push(new SpawnBotEvent(0,105,false,0,BotType.CREEPER,creeperConfig, false, 250, -60));
+	  //#########################################################################################
+	  //######################          Phase Zero        #######################################
+	  //#########################################################################################
 
-	  // wings right
-	  // le.push(new SpawnBotEvent(0,90,false,0,BotType.FIGHTER,fighterConfig, false, 300, -60));
-	  // le.push(new SpawnBotEvent(0,85,false,0,BotType.FIGHTER,fighterConfig, false, 360, -60));
-	  // le.push(new SpawnBotEvent(0,90,false,0,BotType.FIGHTER,fighterConfig, false, 420, -60));
 	  // wings middle
 	  le.push(new SpawnBotEvent(0,90,false,0,BotType.FIGHTER,fighterConfig, false, 180, -60));
 	  le.push(new SpawnBotEvent(0,85,false,0,BotType.FIGHTER,fighterConfig, false, 240, -60));
@@ -184,6 +191,9 @@ export class LevelEventsService {
 	  le.push(new SpawnBotEvent(0,2200,true,120,BotType.FIGHTER,fighterConfig, false, 70, -60));
 	  //le.push(new NextPhaseEvent(0,1600));
 
+	  //#########################################################################################
+	  //######################          Phase One        #######################################
+	  //#########################################################################################
 
 	  // these are Phase 1 events, it will become phase 1 when MINIBOSS1 dies
 	  le.push(new SpawnBotEvent(1,120,false,0,BotType.DIVER,diverConfig, false, 200, -60));
@@ -206,6 +216,10 @@ export class LevelEventsService {
 	  le.push(new SpawnBotEvent(1,350,true,90,BotType.FIGHTER,fighterConfig, true, 0, -60));
 
 	  le.push(new SpawnBotEvent(1, 350, false, 0, BotType.MINIBOSS2,level1MiniBoss2, false, 300, -300));
+
+	  //#########################################################################################
+	  //######################          Phase Two       #######################################
+	  //#########################################################################################
 
 	  // these are Phase 2 events, it will become phase 2 when MINIBOSS2 dies
 	  le.push(new SpawnBotEvent(2,230,false,0,BotType.GUARDIAN1,guardian1Config, false, 380, -60));
