@@ -16,8 +16,8 @@ export class Fighter extends BotInstanceImpl{
     public anaimationTimer:number = 0;
     public anaimationTimerLimit:number =4;
 
-		public damAnaimationTimer:number = 8;
-		public damAnaimationTimerLimit:number =8;
+	public damAnaimationTimer:number = 8;
+	public damAnaimationTimerLimit:number =8;
 
     public imageObj:HTMLImageElement;
 
@@ -36,6 +36,8 @@ export class Fighter extends BotInstanceImpl{
 				public imageObjDamaged: HTMLImageElement = imageObj1
     ){
         super(config);
+		this.tryConfigValues(["bulletSpeed","posXSpeed","posYSpeed","bTimer","bTimerLimit","score","health"]);
+		this.bTimer = this.bTimerLimit/2;
         this.imageObj = imageObj1;
     }
 

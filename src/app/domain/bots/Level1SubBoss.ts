@@ -25,8 +25,8 @@ export class Level1SubBoss extends  BotInstanceImpl {
     public anaimationTimer:number = 0;
     public anaimationTimerLimit:number =4;
 
-    public damAnaimationTimer:number = 8;
-    public damAnaimationTimerLimit:number =8;
+    public damAnaimationTimer:number = 4;
+    public damAnaimationTimerLimit:number =4;
 
     public score:number = 10;
 

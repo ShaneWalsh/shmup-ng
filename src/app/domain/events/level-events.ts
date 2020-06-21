@@ -5,18 +5,18 @@ import { BotManagerService } from "src/app/manager/bot-manager.service";
 // to prove it all works. Then can think about how to expose this to yourman,
 // how to get past the cors, the problem is my images are from file :/ not included in the pollyfils due to the way i load them.
 export enum BotType {
-    DIVER="diver",
-    FIGHTER="fighter",
-    DRONE="drone",
-    CREEPER="creeper",
-    ROCK="rock",
-	GUARDIAN1="guardian1",
+    DIVER="DIVER",
+    FIGHTER="FIGHTER",
+    DRONE="DRONE",
+    CREEPER="CREEPER",
+    ROCK="ROCK",
+	GUARDIAN1="GUARDIAN1",
 
-    MINIBOSS1="miniBoss1", // move on a phase after a mini boss dies.
-    MINIBOSS2 = "miniBoss2",
-    MAINBOSS1 = "mainBoss1",
+    MINIBOSS1="MINIBOSS1", // move on a phase after a mini boss dies.
+    MINIBOSS2 = "MINIBOSS2",
+    MAINBOSS1 = "MAINBOSS1",
 
-    BOSS1="boss1" // move on a phase after a mini boss dies.
+    BOSS1="BOSS1" // move on a phase after a mini boss dies.
 }
 
 // Extract Events to an events class.

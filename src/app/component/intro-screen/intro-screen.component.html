@@ -5,11 +5,11 @@
     <img [src]="'assets/img/desc/new-story.png'">
 </div>
 <div class="screen-container" *ngIf="screenId==3">
-	<span *ngIf="difficulty==0">
+	<span *ngIf="levelManagerService.difficulty==0">
 	    <img *ngIf="gifTimer < 40" [src]="'assets/img/desc/difficulty-select/easy-1.png'">
 	    <img *ngIf="gifTimer >= 40" [src]="'assets/img/desc/difficulty-select/easy-2.png'">
 	</span>
-	<span *ngIf="difficulty==1">
+	<span *ngIf="levelManagerService.difficulty==1">
 	    <img *ngIf="gifTimer < 40" [src]="'assets/img/desc/difficulty-select/normal-1.png'">
 	    <img *ngIf="gifTimer >= 40" [src]="'assets/img/desc/difficulty-select/normal-2.png'">
 	</span>

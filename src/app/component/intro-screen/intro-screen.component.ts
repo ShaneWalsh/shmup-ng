@@ -17,7 +17,6 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
     }
     private subs:Subscription[] =[];
 	public gifTimer:number = 0;
-	public difficulty:number = 0;
     public screenId:number = 1;
     public playerScore:number = 0;
     public requestAnimFrame:any; // have to ensure this is not created multiple times!
@@ -47,7 +46,7 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
             }
 			if(customKeyboardEvent.event.keyCode == 38 || customKeyboardEvent.event.keyCode == 40 || customKeyboardEvent.event.keyCode == 87 || customKeyboardEvent.event.keyCode == 83){ //  == 'Enter'
 				if(this.screenId == 3){
-					this.difficulty = (this.difficulty==0)?1:0;
+					this.levelManagerService.difficulty = (this.levelManagerService.difficulty==0)?1:0;
 				}
 			}
         }));

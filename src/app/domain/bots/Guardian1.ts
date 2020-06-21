@@ -33,12 +33,12 @@ export class Guardian1 extends BotInstanceImpl{
 		public targetY:number=posY+300
     ){
         super(config);
-		this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score","targetX","targetY"]);
+		this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score","targetX","targetY","posXSpeed","posYSpeed"]);
     }
 
     update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {
 		let currentPlayer = playerService.currentPlayer;
-		this.angleDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, currentPlayer.getCenterX(), currentPlayer.getCenterY(), this.bulletSpeed, true, currentPlayer);
+		this.angleDirection = bulletManagerService.calculateBulletDirection(this.posX+(this.imageSizeX/2), this.posY+(this.imageSizeY/2), currentPlayer.getCenterX(), currentPlayer.getCenterY(), this.bulletSpeed, true, currentPlayer);
 
 		if(this.posY < (this.targetY-3) || this.posY > (this.targetY+3)){
 			this.posY += (this.posY < (this.targetY-3) )? this.posYSpeed:(this.posYSpeed * -1);

@@ -49,7 +49,7 @@ export class Creeper extends BotInstanceImpl{
     ){
         super(config);
 		this.tryConfigValues(["bTimer","bTimerLimit","bTimerLoading","bTimerLoadingLimit","bTimerFiring","bTimerFiringPase2",
-			"bTimerFiringPase3", "bTimerFiringLimit", "health", "score", "firingPhasesToComplete"]);
+			"bTimerFiringPase3", "bTimerFiringLimit", "health", "score", "firingPhasesToComplete","posYSpeed","posXSpeed"]);
     }
 
 	update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {

@@ -28,6 +28,7 @@ export class LevelManagerService {
     private currentLevel:LevelInstance;
 
     private paused:boolean = false;
+	public difficulty:number = 0;
 
     constructor(private resourcesService:ResourcesService, private botManagerService:BotManagerService, private bulletManagerService: BulletManagerService,private levelEventsService:LevelEventsService) {
         this.loadEvents();
@@ -106,7 +107,7 @@ class LevelOneInstance implements LevelInstance{
 
     constructor(public resourcesService:ResourcesService, private botManagerService:BotManagerService, private levelManagerService:LevelManagerService, public levelEventsService:LevelEventsService){
         this.backgroundImage = this.resourcesService.getRes().get("level-1-background");
-        this.eventArr = this.levelEventsService.getLevel1Events();
+        this.eventArr = this.levelEventsService.getLevel1Events(levelManagerService.difficulty);
     }
 
     update(ctx:CanvasRenderingContext2D) {
