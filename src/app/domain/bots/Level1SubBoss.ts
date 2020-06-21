@@ -43,6 +43,7 @@ export class Level1SubBoss extends  BotInstanceImpl {
     ){
         super(config);
         this.imageObj = imageObj1;
+		this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score","posYSpeed","posXSpeed","bulletSpeed"]);
     }
 
 	update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {
@@ -61,12 +62,12 @@ export class Level1SubBoss extends  BotInstanceImpl {
 		}
         if (this.dirXRight){
             this.posX += this.posXSpeed;
-            if (this.posX > 400){
+            if (this.posX > 300){
                 this.dirXRight = false;
             }
         } else {
             this.posX -= this.posXSpeed;
-            if (this.posX < 50) {
+            if (this.posX < 10) {
                 this.dirXRight = true;
             }
         }

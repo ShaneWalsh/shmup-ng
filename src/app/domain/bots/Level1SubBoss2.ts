@@ -59,6 +59,7 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
     ){
         super(config);
         this.imageObj = imageObj2;
+		this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score","moveSpeed","posXSpeed","bulletSpeed"]);
     }
 
 	update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {

@@ -26,6 +26,7 @@ export class LevelEvent {
         public phase:number = 0,
         public happenAfterTicks:number=60, // roughly sixty ticks in a second.
         public repeatUntilPhaseEnd:boolean=false,
+		public repeatLoopTicks:number = happenAfterTicks
     ){
 
     }
@@ -45,6 +46,10 @@ export class LevelEvent {
     public canTrigger(tickCounter: number, phaseCounter: number): boolean {
         return (this.phase == phaseCounter && (this.happenAfterTicks+this.lastRepeatTickFire) == tickCounter);
     }
+
+	public getRepeatLoopTicks():number {
+		return this.repeatLoopTicks;
+	}
 }
 
 export class SpawnBotEvent extends LevelEvent {
@@ -52,14 +57,14 @@ export class SpawnBotEvent extends LevelEvent {
         public phase:number = 0,
         public happenAfterTicks:number=60,
         public repeatUntilPhaseEnd:boolean=false,
-        public repeatLoopTicks:number = 60, // only used if repeatUntilPhaseEnd is true
+		public repeatLoopTicks:number=happenAfterTicks,
         public botType:BotType,
-		    public config:any={},
+		public config:any={},
         public randomPosition:boolean=true,
         public posX:number = 0,
         public posY:number = 0
     ){
-        super(phase, happenAfterTicks,repeatUntilPhaseEnd);
+        super(phase, happenAfterTicks,repeatUntilPhaseEnd,repeatLoopTicks);
 
     }
 
@@ -86,6 +91,19 @@ export class SpawnBotEvent extends LevelEvent {
 			console.log("Not implemented");
 		    }
 
+    }
+}
+
+export class NextPhaseEvent extends LevelEvent{
+    constructor(
+        public phase:number = 1, // this would be the phase after the boss or mini boss forms
+        public happenAfterTicks:number=120
+    ){
+        super(phase, happenAfterTicks, false);
+    }
+
+    public triggerEvent(botManagerService:BotManagerService, levelManagerService:LevelManagerService){
+		levelManagerService.getCurrentLevel().updatePhaseCounter();
     }
 }
 

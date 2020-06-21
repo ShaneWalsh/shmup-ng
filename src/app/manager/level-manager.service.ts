@@ -133,7 +133,9 @@ class LevelOneInstance implements LevelInstance{
             if(eventI.canTrigger(this.tickCounter, this.phaseCounter)){
                 eventI.triggerEvent(this.botManagerService,this.levelManagerService);
                 if(eventI.repeatUntilPhaseEnd){
+					eventI.happenAfterTicks = eventI.getRepeatLoopTicks();
                     eventI.lastRepeatTickFire = this.tickCounter;
+					// now next time canTrigger is called, lastRepeatTickFire + happenAfterTicks(now RepeatLoopTicks) will be used
                     this.repeatEvents.push(eventI);
                 }
             	this.eventArr.splice(i--,1);

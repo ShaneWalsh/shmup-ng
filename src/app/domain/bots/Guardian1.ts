@@ -33,7 +33,7 @@ export class Guardian1 extends BotInstanceImpl{
 		public targetY:number=posY+300
     ){
         super(config);
-		this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score","targetX","targetY","posXSpeed","posYSpeed"]);
+		this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score","targetX","targetY","posXSpeed","posYSpeed","bulletSpeed"]);
     }
 
     update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {

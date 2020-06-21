@@ -31,7 +31,7 @@ export class Diver extends BotInstanceImpl{
         public hitBox2:HitBox=new HitBox(0,5,imageSizeX,25)
     ){
         super(config);
-		this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score"]);
+		this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score","posYSpeed","posXSpeed","bulletSpeed"]);
     }
 
     update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {

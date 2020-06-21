@@ -67,6 +67,7 @@ export class Level1Boss1 extends BotInstanceImpl {
         public hitBoxArmor2: HitBox = new HitBox(240, 0, 100, 300)
     ) {
         super(config);
+		this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score"]);
         this.setState(new Boss1State(this));
     }
 

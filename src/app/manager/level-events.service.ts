@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LevelEvent, SpawnBotEvent, BotType, LevelOverEvent } from 'src/app/domain/events/level-events';
+import { LevelEvent, SpawnBotEvent, BotType, LevelOverEvent, NextPhaseEvent } from 'src/app/domain/events/level-events';
 
 @Injectable({
   providedIn: 'root'
@@ -72,30 +72,28 @@ export class LevelEventsService {
 		  posXSpeed: 2,
 		  posYSpeed: 1.5,
 		  score: 50,
-		  health:20,
+		  health:24,
 	  };
 	  let level1MiniBoss1 = { // giant fighter with two bullets
 		  bulletSpeed: 6,
 		  posXSpeed: 3,
 		  posYSpeed: 1.5,
 		  bTimerLimit: 30,
-		  anaimationTimerLimit:4,
 		  score: 200,
-		  health:35,
+		  health:300,
 	  };
 	  let level1MiniBoss2 = { // spinning guy
 		  bulletSpeed: 6,
 		  moveSpeed: 2,
 		  bTimerLimit: 30,
-		  anaimationTimerLimit: 4,
 		  score: 200,
-		  health: 50,
+		  health: 150,
 	  };
 	  let level1MainBoss1 = { // big boss with the bog laser
 	  	posXSpeed: 3,
 	  	posYSpeed: 1.5,
 	  	score: 500,
-	  	health:100,
+	  	health:200,
 	  };
 
 	  if(difficulty == 0){ // easy so reducing the bots health
@@ -106,34 +104,87 @@ export class LevelEventsService {
 
 	  }
 
-	  le.push(new SpawnBotEvent(0,120,false,0,BotType.DIVER,diverConfig, false, 200, -60));
-	  le.push(new SpawnBotEvent(0, 120, false, 0, BotType.DRONE, droneConfig, false, 160, -60));
+	  // le.push(new SpawnBotEvent(0,120,false,0,BotType.DIVER,diverConfig, false, 200, -60));
+	  // le.push(new SpawnBotEvent(0, 120, false, 0, BotType.DRONE, droneConfig, false, 160, -60));
+	  //
+	  // le.push(new SpawnBotEvent(0,105,false,0,BotType.CREEPER,creeperConfig, false, 250, -60));
 
-	  le.push(new SpawnBotEvent(0,105,false,0,BotType.CREEPER,creeperConfig, false, 250, -60));
-
+	  // wings right
+	  // le.push(new SpawnBotEvent(0,90,false,0,BotType.FIGHTER,fighterConfig, false, 300, -60));
+	  // le.push(new SpawnBotEvent(0,85,false,0,BotType.FIGHTER,fighterConfig, false, 360, -60));
+	  // le.push(new SpawnBotEvent(0,90,false,0,BotType.FIGHTER,fighterConfig, false, 420, -60));
+	  // wings middle
+	  le.push(new SpawnBotEvent(0,90,false,0,BotType.FIGHTER,fighterConfig, false, 180, -60));
+	  le.push(new SpawnBotEvent(0,85,false,0,BotType.FIGHTER,fighterConfig, false, 240, -60));
 	  le.push(new SpawnBotEvent(0,90,false,0,BotType.FIGHTER,fighterConfig, false, 300, -60));
-	  le.push(new SpawnBotEvent(0,85,false,0,BotType.FIGHTER,fighterConfig, false, 360, -60));
-	  le.push(new SpawnBotEvent(0,90,false,0,BotType.FIGHTER,fighterConfig, false, 420, -60));
 
-	  le.push(new SpawnBotEvent(0,190,false,0,BotType.FIGHTER,fighterConfig, false, 460, -60));
-	  le.push(new SpawnBotEvent(0,195,false,0,BotType.FIGHTER,fighterConfig, false, 520, -60));
-	  le.push(new SpawnBotEvent(0,200,false,0,BotType.FIGHTER,fighterConfig, false, 580, -60));
+	  // blade right
+	  le.push(new SpawnBotEvent(0,190,false,0,BotType.FIGHTER,fighterConfig, false, 300, -60));
+	  le.push(new SpawnBotEvent(0,195,false,0,BotType.FIGHTER,fighterConfig, false, 360, -60));
+	  le.push(new SpawnBotEvent(0,200,false,0,BotType.FIGHTER,fighterConfig, false, 420, -60));
 
-      le.push(new SpawnBotEvent(0,190,false,0,BotType.ROCK,rockConfig, false, 120, -60));
+	  // blade left
+	  le.push(new SpawnBotEvent(0,260,false,0,BotType.FIGHTER,fighterConfig, false, 130, -60));
+	  le.push(new SpawnBotEvent(0,265,false,0,BotType.FIGHTER,fighterConfig, false, 70, -60));
+	  le.push(new SpawnBotEvent(0,270,false,0,BotType.FIGHTER,fighterConfig, false, 10, -60));
 
- 	  le.push(new SpawnBotEvent(0,250,false,0,BotType.DIVER,diverConfig, false, 500, -60));
 
-	  le.push(new SpawnBotEvent(0,260,false,0,BotType.FIGHTER,fighterConfig, false, 220, -60));
-	  le.push(new SpawnBotEvent(0,265,false,0,BotType.FIGHTER,fighterConfig, false, 160, -60));
-	  le.push(new SpawnBotEvent(0,270,false,0,BotType.FIGHTER,fighterConfig, false, 100, -60));
+	  le.push(new SpawnBotEvent(0,400,false,0,BotType.ROCK,rockConfig, false, 200, -80));
+	  le.push(new SpawnBotEvent(0,400,false,0,BotType.DIVER,diverConfig, false, 60, -60));
+	  le.push(new SpawnBotEvent(0,400,false,0,BotType.DIVER,diverConfig, false, 380, -60));
+
+	  le.push(new SpawnBotEvent(0,500,false,0,BotType.CREEPER,creeperConfig, false, 220, -60));
+
+	  le.push(new SpawnBotEvent(0, 700, false, 0, BotType.DRONE, droneConfig, false, 100, -60));
+	  le.push(new SpawnBotEvent(0, 720, false, 0, BotType.DRONE, droneConfig, false, 160, -60));
+	  le.push(new SpawnBotEvent(0, 740, false, 0, BotType.DRONE, droneConfig, false, 220, -60));
+	  le.push(new SpawnBotEvent(0, 720, false, 0, BotType.DRONE, droneConfig, false, 280, -60));
+	  le.push(new SpawnBotEvent(0, 700, false, 0, BotType.DRONE, droneConfig, false, 340, -60));
+
+
+	  le.push(new SpawnBotEvent(0,1000,false,0,BotType.ROCK,rockConfig, false, 60, -80));
+	  le.push(new SpawnBotEvent(0,1150,false,0,BotType.CREEPER,creeperConfig, false, 200, -60));
+	  le.push(new SpawnBotEvent(0,1000,false,0,BotType.ROCK,rockConfig, false, 310, -80));
+
+	  le.push(new SpawnBotEvent(0,1200,false,0,BotType.FIGHTER,fighterConfig, false, 180, -60));
+	  le.push(new SpawnBotEvent(0,1205,false,0,BotType.FIGHTER,fighterConfig, false, 240, -60));
+	  le.push(new SpawnBotEvent(0,1200,false,0,BotType.FIGHTER,fighterConfig, false, 300, -60));
+
+	  le.push(new SpawnBotEvent(0,1260,false,0,BotType.FIGHTER,fighterConfig, false, 140, -60));
+	  le.push(new SpawnBotEvent(0,1265,false,0,BotType.FIGHTER,fighterConfig, false, 240, -60));
+	  le.push(new SpawnBotEvent(0,1260,false,0,BotType.FIGHTER,fighterConfig, false, 340, -60));
+
+
+
+	  le.push(new SpawnBotEvent(0,1320,false,0,BotType.FIGHTER,fighterConfig, false, 180, -60));
+	  le.push(new SpawnBotEvent(0,1325,false,0,BotType.FIGHTER,fighterConfig, false, 240, -60));
+	  le.push(new SpawnBotEvent(0,1320,false,0,BotType.FIGHTER,fighterConfig, false, 300, -60));
+
+	  le.push(new SpawnBotEvent(0,1380,false,0,BotType.FIGHTER,fighterConfig, false, 140, -60));
+	  le.push(new SpawnBotEvent(0,1385,false,0,BotType.FIGHTER,fighterConfig, false, 240, -60));
+	  le.push(new SpawnBotEvent(0,1380,false,0,BotType.FIGHTER,fighterConfig, false, 340, -60));
+
+
+	  le.push(new SpawnBotEvent(0,1540,false,0,BotType.DIVER,diverConfig, false, 200, -60));
+  	  le.push(new SpawnBotEvent(0,1500,false,0,BotType.ROCK,rockConfig, false, 200, -80));
+	  le.push(new SpawnBotEvent(0,1540,false,0,BotType.DIVER,diverConfig, false, 280, -60));
+
+	  le.push(new SpawnBotEvent(0, 1620, false, 0, BotType.DRONE, droneConfig, false, 10, -60));
+	  le.push(new SpawnBotEvent(0, 1620, false, 0, BotType.DRONE, droneConfig, false, 70, -60));
+	  le.push(new SpawnBotEvent(0, 1620, false, 0, BotType.DRONE, droneConfig, false, 360, -60));
+	  le.push(new SpawnBotEvent(0, 1620, false, 0, BotType.DRONE, droneConfig, false, 420, -60));
 
 	  // these are repeat events that will keep spawning while you fight the mini boss. They spawn at random positions.
-	  le.push(new SpawnBotEvent(0,400,true,120,BotType.DIVER,diverConfig, true, 0, -60));
-      le.push(new SpawnBotEvent(0,350,true,90,BotType.FIGHTER,fighterConfig, true, 0, -60));
-	  le.push(new SpawnBotEvent(0,350,true,90,BotType.FIGHTER,fighterConfig, true, 0, -60));
+	  // le.push(new SpawnBotEvent(0,400,true,120,BotType.DIVER,diverConfig, true, 0, -60));
+      // le.push(new SpawnBotEvent(0,350,true,90,BotType.FIGHTER,fighterConfig, true, 0, -60));
+	  // le.push(new SpawnBotEvent(0,350,true,90,BotType.FIGHTER,fighterConfig, true, 0, -60));
 
 	  // when a mini boss dies, the Phase moves forward by One.
-	  le.push(new SpawnBotEvent(0, 350, false, 90, BotType.MINIBOSS1, level1MiniBoss2, false, 200, -300));
+	  le.push(new SpawnBotEvent(0, 2000, false, 0, BotType.MINIBOSS1, level1MiniBoss2, false, 200, -300));
+	  le.push(new SpawnBotEvent(0,2200,true,120,BotType.FIGHTER,fighterConfig, false, 360, -60));
+	  le.push(new SpawnBotEvent(0,2200,true,120,BotType.FIGHTER,fighterConfig, false, 70, -60));
+	  //le.push(new NextPhaseEvent(0,1600));
+
 
 	  // these are Phase 1 events, it will become phase 1 when MINIBOSS1 dies
 	  le.push(new SpawnBotEvent(1,120,false,0,BotType.DIVER,diverConfig, false, 200, -60));
