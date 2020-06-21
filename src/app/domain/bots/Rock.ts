@@ -14,7 +14,7 @@ export class Rock extends Fighter {
 
     public posYSpeed:number = 2;
     public posXSpeed:number = 1.5;
-    public health:number=20;
+    public health:number=24;
     constructor(
         public config: any = {},
         public posX: number = 0,

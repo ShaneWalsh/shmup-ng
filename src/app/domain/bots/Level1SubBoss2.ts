@@ -15,7 +15,7 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
     public imageObj:HTMLImageElement;
 
 	// todo make these config values
-	public health:number=35;
+	public health:number=150;
     public bulletSpeed:number = 6; // 6
     public moveSpeed: number = 5; // 5
 
@@ -28,7 +28,7 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
 	public damAnaimationTimer:number = 8;
 	public damAnaimationTimerLimit:number =8;
 
-    public score:number = 10;
+    public score:number = 200;
 
     public angle:number;
     public turnDirection: BulletDirection;
@@ -59,7 +59,7 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
     ){
         super(config);
         this.imageObj = imageObj2;
-		this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score","moveSpeed","posXSpeed","bulletSpeed"]);
+		this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score","moveSpeed","bulletSpeed"]);
     }
 
 	update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {

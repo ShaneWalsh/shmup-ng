@@ -11,7 +11,7 @@ export class Diver extends BotInstanceImpl{
     public posYSpeed:number = 1.5;
 
     public bTimer:number = 0; // bullet timer
-    public bTimerLimit:number = 40;
+    public bTimerLimit:number = 60;
 	public health:number=3;
 
 	public damAnaimationTimer:number = 8;

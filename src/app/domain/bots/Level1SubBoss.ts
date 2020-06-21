@@ -13,7 +13,7 @@ export class Level1SubBoss extends  BotInstanceImpl {
     public imageObj:HTMLImageElement;
 
 	// todo make these config values
-	public health:number=35;
+	public health:number=200;
 	public bulletSpeed:number = 6;
 
 	public posXSpeed:number = 3;
@@ -43,7 +43,7 @@ export class Level1SubBoss extends  BotInstanceImpl {
     ){
         super(config);
         this.imageObj = imageObj1;
-		this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score","posYSpeed","posXSpeed","bulletSpeed"]);
+		this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score","posYSpeed","posXSpeed","bulletSpeed", "anaimationTimerLimit"]);
     }
 
 	update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {

@@ -11,7 +11,7 @@ export class Creeper extends BotInstanceImpl{
 	public movedIn:boolean = false;
 
     public bTimer:number = 0; // bullet timer
-    public bTimerLimit:number = 40;
+    public bTimerLimit:number = 60;
 	public firingLoading = false;
 	public firingPhase2 = false;
 
@@ -27,7 +27,7 @@ export class Creeper extends BotInstanceImpl{
 	public firingPhasesComplete = 0;
 	public firingPhasesToComplete = 1;
 
-	public health:number=3;
+	public health:number=5;
 
     public score:number = 50;
 

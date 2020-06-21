@@ -71,7 +71,7 @@ export class LevelEventsService {
 	  let rockConfig = { // big fat slow guy, enemy-2-1
 		  posXSpeed: 2,
 		  posYSpeed: 1.5,
-		  score: 50,
+		  score: 100,
 		  health:24,
 	  };
 	  let level1MiniBoss1 = { // giant fighter with two bullets
@@ -79,25 +79,24 @@ export class LevelEventsService {
 		  posXSpeed: 3,
 		  posYSpeed: 1.5,
 		  bTimerLimit: 30,
-		  score: 200,
-		  health:300,
+		  anaimationTimerLimit:4, // the bot has an animation for its engine, this animation swaps every 4 ticks.
+		  score: 250,
+		  health:200,
 	  };
 	  let level1MiniBoss2 = { // spinning guy
 		  bulletSpeed: 6,
-		  moveSpeed: 2,
-		  bTimerLimit: 30,
-		  score: 200,
+		  moveSpeed: 5,
+		  bTimerLimit: 20,
+		  score: 250,
 		  health: 150,
 	  };
 	  let level1MainBoss1 = { // big boss with the bog laser
-	  	posXSpeed: 3,
-	  	posYSpeed: 1.5,
 	  	score: 500,
-	  	health:200,
+	  	health:300,
 	  };
 
 	  if(difficulty == 0){ // easy so reducing the bots health
-		  fighterConfig = {...fighterConfig,health:1}
+		  fighterConfig = {...fighterConfig, health:1} // here I am overiding the fighters health and reducing it to one.
 	  } else if(difficulty == 1){
 		  // use the defaults defined above
 	  } else { //todo hard one day I assume
@@ -206,12 +205,12 @@ export class LevelEventsService {
 	  le.push(new SpawnBotEvent(1,350,true,90,BotType.FIGHTER,fighterConfig, true, 0, -60));
 	  le.push(new SpawnBotEvent(1,350,true,90,BotType.FIGHTER,fighterConfig, true, 0, -60));
 
-	  le.push(new SpawnBotEvent(1, 350, false, 90, BotType.MINIBOSS2,level1MiniBoss2, false, 300, -300));
+	  le.push(new SpawnBotEvent(1, 350, false, 0, BotType.MINIBOSS2,level1MiniBoss2, false, 300, -300));
 
 	  // these are Phase 2 events, it will become phase 2 when MINIBOSS2 dies
 	  le.push(new SpawnBotEvent(2,230,false,0,BotType.GUARDIAN1,guardian1Config, false, 380, -60));
 	  le.push(new SpawnBotEvent(2,230,false,0,BotType.GUARDIAN1,guardian1Config, false, 5, -60));
-	  le.push(new SpawnBotEvent(2,150, false, 90, BotType.MAINBOSS1, level1MainBoss1, false, 0, -300));
+	  le.push(new SpawnBotEvent(2,150, false, 0, BotType.MAINBOSS1, level1MainBoss1, false, 0, -300));
 
 	  // after 100 ticks of Phase 2, level over is triggered.
 	  le.push(new LevelOverEvent(3,100));

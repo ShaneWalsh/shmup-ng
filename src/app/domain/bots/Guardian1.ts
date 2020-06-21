@@ -12,13 +12,13 @@ export class Guardian1 extends BotInstanceImpl{
     public posYSpeed:number = 1.5;
 
     public bTimer:number = 0; // bullet timer
-    public bTimerLimit:number = 40;
+    public bTimerLimit:number = 80;
 	public health:number=30;
 
 	public damAnaimationTimer:number = 8;
 	public damAnaimationTimerLimit:number =8;
 
-    public score:number = 25;
+    public score:number = 80;
 	public angleDirection:BulletDirection;
     constructor(
         public config:any={},
