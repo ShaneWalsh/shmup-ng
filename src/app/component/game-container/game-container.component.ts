@@ -21,7 +21,7 @@ export class GameContainerComponent implements OnInit, OnDestroy {
 
     @ViewChild('canvas') public canvas: ElementRef;
 
-    introOver:boolean = false; // set to true for testing to skip the intro
+    introOver:boolean = true; // set to true for testing to skip the intro
     introTicker:number = 0;
     introAnimation:number = 0;
     introAnimationLimit: number = 9; // 15
@@ -116,7 +116,7 @@ export class GameContainerComponent implements OnInit, OnDestroy {
                 this.botManagerService.update(currentLevel, this.ctx, this.bulletManagerService, this.playerService);
 
                 // update for the player (Gen bullets)
-                this.playerService.currentPlayer.update(currentLevel, this.ctx, this.bulletManagerService);
+                this.playerService.currentPlayer.update(currentLevel, this.ctx, this.bulletManagerService, this.botManagerService);
 
                 // have a bullet manager to move the bullets, do collision detection
                     // some bullets should be destructable.

@@ -8,12 +8,12 @@ import { BotManagerService } from "src/app/manager/bot-manager.service";
 
 export class Rock extends Fighter {
 
-    public driftXDistance = 40;
+    public driftXDistance = 50;
     public driftXDistanceCounter = this.driftXDistance/2;
     public driftXDistanceRight = true;
 
     public posYSpeed:number = 2;
-    public posXSpeed:number = 1.5;
+    public posXSpeed:number = 3;
     public health:number=24;
     constructor(
         public config: any = {},
@@ -28,6 +28,7 @@ export class Rock extends Fighter {
     ) {
         super(config, posX,posY,imageObj1,imageObj2,imageSizeX,imageSizeY,hitBox,imageObjDamaged);
         this.imageObj = imageObj1;
+		this.tryConfigValues(["driftXDistance","driftXDistanceCounter","driftXDistanceRight","posYSpeed","bTimerLimit","score","health"]);
     }
 
     update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {

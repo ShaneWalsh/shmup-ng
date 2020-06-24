@@ -33,10 +33,11 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
         this.subs.push(this.keyboardEventService.getKeyDownEventSubject().subscribe(customKeyboardEvent => {
             console.log("customKeyboardEvent",customKeyboardEvent);
             if(customKeyboardEvent.event.keyCode == 13){ //  == 'Enter'
-                if(this.screenId < 6){
+                if(this.screenId < 4){
                     this.screenId++;
-                    if(this.screenId == 6){ // boom, load up level one.
+                    if(this.screenId == 4){ // used to be 6 for screen 4+5 but those have been removed
                         // lets assume the user picked a player here
+						this.screenId = 6;
                         this.playerService.initPlayer();
                         this.levelManagerService.initLevel(LevelEnum.LevelOne);
                     }

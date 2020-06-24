@@ -5,6 +5,7 @@ import { LevelManagerService, LevelInstance } from 'src/app/manager/level-manage
 import { HitBox } from 'src/app/domain/HitBox';
 import { BulletManagerService, BulletDirection } from 'src/app/manager/bullet-manager.service';
 import { Subject } from '../../../node_modules/rxjs';
+import { BotManagerService } from 'src/app/manager/bot-manager.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class PlayerService {
     public currentPlayer:PlayerObj = new PlayerObj();
     private playerLivesGoneSubject:Subject<PlayerObj> = new Subject();
 
-    constructor(private keyboardEventService:KeyboardEventService, private levelManagerService:LevelManagerService, private resourcesService:ResourcesService) {
+    constructor(private keyboardEventService:KeyboardEventService, private levelManagerService:LevelManagerService, private resourcesService:ResourcesService, private botManagerService:BotManagerService) {
       keyboardEventService.getKeyDownEventSubject().subscribe(customKeyboardEvent => {
           if(this.levelManagerService.getNotPaused()){
               this.currentPlayer.processKeyDown(customKeyboardEvent);
@@ -29,6 +30,7 @@ export class PlayerService {
     killCurrentPlayer(): any {
         this.currentPlayer.lives--;
         this.currentPlayer.invincibilityTimer = 30;
+		this.botManagerService.createPlayerDeath(this.currentPlayer.getCenterX(),this.currentPlayer.getCenterY());
         if(this.currentPlayer.lives > 0){
             this.currentPlayer.reset();
         } else { // game over.
@@ -56,6 +58,7 @@ export class PlayerService {
 
 export class PlayerObj {
 	public speed = 8;
+	public bulletSpeed:number = 10;
 	public pressedKeys = {"left":false,"up":false,"right":false,"down":false};
 
     public bTimer:number = 0; // bullet timer
@@ -85,7 +88,7 @@ export class PlayerObj {
         this.resetPositionY = this.posY;
     }
 
-    update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, bulletManagerService:BulletManagerService){
+    update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, bulletManagerService:BulletManagerService, botManagerService:BotManagerService){
         this.acceleration(levelInstance);
 
         // fire weapon
@@ -162,12 +165,12 @@ export class PlayerObj {
     fireLazer(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D,bulletManagerService:BulletManagerService){
         let bullDirection:BulletDirection;
         if(levelInstance.isVertical()){
-            bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, this.posX, (this.posY-50), 8);
+            bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, this.posX, (this.posY-50), this.bulletSpeed);
             // todo gen two bullets, or just one?
 
             bulletManagerService.generatePlayerLazer(levelInstance, bullDirection, this.posX+30, this.posY-10);
         } else {
-            bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, (this.posX+50), this.posY, 8);
+            bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, (this.posX+50), this.posY, this.bulletSpeed);
             bulletManagerService.generatePlayerLazer(levelInstance, bullDirection, this.posX, this.posY);
         }
 	}

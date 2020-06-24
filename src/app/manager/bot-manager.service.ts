@@ -28,6 +28,7 @@ export class BotManagerService {
     private botDestroyed: Subject<BotInstance> = new Subject();
     private botCreated: Subject<BotInstance> = new Subject();
     private botRemoved: Subject<BotInstance> = new Subject();
+	private deathAnimtionTimer:number=4;
 
     private botsArr: BotInstance[] = [];
     private spriteSheetArr: SpriteSheet[] = [];
@@ -179,6 +180,26 @@ export class BotManagerService {
         this.botCreated.next(newBot);
     }
 
+	createBotDeath(x,y){
+		this.spriteSheetArr.push(new SpriteSheet(x-40,y-40,
+			[this.resourcesService.getRes().get("bot-explosion-1"),
+			this.resourcesService.getRes().get("bot-explosion-2"),
+			this.resourcesService.getRes().get("bot-explosion-3"),
+			this.resourcesService.getRes().get("bot-explosion-4")],
+			80,80,this.deathAnimtionTimer,this.deathAnimtionTimer)
+		);
+	}
+
+	createPlayerDeath(x,y){
+		this.spriteSheetArr.push(new SpriteSheet(x-40,y-40,
+			[this.resourcesService.getRes().get("player-explosion-1"),
+			this.resourcesService.getRes().get("player-explosion-2"),
+			this.resourcesService.getRes().get("player-explosion-3"),
+			this.resourcesService.getRes().get("player-explosion-4")],
+			80,80,this.deathAnimtionTimer,this.deathAnimtionTimer)
+		);
+	}
+
     getBotPostion(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = 0) {
         if (levelInstance.isVertical()) {
             let pos = (randomPosition) ? Math.floor(Math.random() * Math.floor(levelInstance.getMapWidth() - 50)) + 10 : posX;
@@ -194,6 +215,7 @@ export class BotManagerService {
     }
 
     removeBot(bot: BotInstance) {
+		this.createBotDeath(bot.getCenterX(),bot.getCenterY());
         this.botsArr.splice(this.botsArr.indexOf(bot), 1);
         this.botRemoved.next(bot);
     }
