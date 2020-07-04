@@ -19,8 +19,12 @@ export class LogicService {
 
     return { x: newX, y: newY }; // so i can drop it straight into assignments
   }
-
-  public static drawRotateImage(imageObj, ctx, rotation, x, y, sx, sy, lx = x, ly = y, lxs = sx, lys = sy, translateX = x + (sx / 2), translateY = y + (sy / 2)) { // l are the actual canvas positions
+	/**
+	 * l are the actual canvas positions
+	 * the translateX + Y when drawing something that is its own source of truth, e.g a turret, the defaults are fine.
+	 * the translateX + Y sometimes need to be calcualted by rotating the center by the top left by the angle, e.g when you fire from a rotating turret.
+	 */
+  public static drawRotateImage(imageObj, ctx, rotation, x, y, sx, sy, lx = x, ly = y, lxs = sx, lys = sy, translateX = x + (sx / 2), translateY = y + (sy / 2)) {
     // bitwise transformations to remove floating point values, canvas drawimage is faster with integers
     lx = (0.5 + lx) << 0;
     ly = (0.5 + ly) << 0;

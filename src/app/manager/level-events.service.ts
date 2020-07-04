@@ -53,7 +53,7 @@ export class LevelEventsService {
 		  bTimerLimit: 60, // this means that a diver fires a button once every 40 ticks, e.g 3 times in 2 seconds.
 		  score: 200, // this is only added to the players score if they kill the bot, if it leaves the screen the bot is simply removed.
   		health:50, // health, when 0 Diver is dead.
-			retreatAfterShotsFiredLimit:30
+			retreatAfterShotsFiredLimit:3
 	  };
 	   // original fast moving fast shooting figher enemy-2-2
 	  let droneConfig = {

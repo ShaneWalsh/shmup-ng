@@ -64,10 +64,9 @@ export class BulletManagerService {
     }
 
 		// the x+y passed into the tracker are middle point of the bullet, so I have to then workout where the top left x+y is and rotate that by the bullet angle, giving me the actual x+y cord
-		generateGuardianTracker(levelInstance:LevelInstance, bulletDirection:BulletDirection, centerX, centerY, allowedMovement=30 ): any {
-				let cords :{x:number,y:number} = {x:centerX,y:centerY};
+		generateGuardianTracker(levelInstance:LevelInstance, bulletDirection:BulletDirection, startX, startY, allowedMovement=30 ): any {
 				//let cords :{x:number,y:number} = LogicService.pointAfterRotation(centerX, centerY, centerX-7, centerY-10, bulletDirection.angle)
-				let newBullet = new DumbLazer(1,cords.x, cords.y, bulletDirection, false, this.resourcesService.getRes().get("enemy-bullet-target"),22,14);
+				let newBullet = new DumbLazer(1,startX, startY, bulletDirection, false, this.resourcesService.getRes().get("enemy-bullet-target"),22,14);
 				newBullet.allowedMovement = allowedMovement; // 2 seconds ish
 				this.bulletsArr.push(newBullet);
 				this.bulletCreated.next(newBullet);
@@ -174,7 +173,11 @@ class DumbLazer implements BulletInstance {
 				removed = true;
 	        } else {
 	            if(this.bulletDirection.performRotation){
-	                this.drawRotateImage(ctx,this.bulletDirection.angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY);
+								let rotatedCenterCords:{x:number,y:number} = LogicService.pointAfterRotation(this.posX, this.posY, this.posX+(this.imageSizeX/2), this.posY+(this.imageSizeY/2), this.bulletDirection.angle)
+	                LogicService.drawRotateImage(this.imageObj, ctx,this.bulletDirection.angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY,
+										this.posX,this.posY,this.imageSizeX,this.imageSizeY,
+										rotatedCenterCords.x,rotatedCenterCords.y
+									);
 	            } else {
 	                ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
 	            }
@@ -217,23 +220,5 @@ class DumbLazer implements BulletInstance {
 	            }
 	        }
 		}
-    }
-
-    drawRotateImage(ctx,rotation, x,y,sx,sy,lx=x,ly=y,lxs=sx,lys=sy,translateX = x+(sx/2),translateY=y+(sy/2)){ // l are the actual canvas positions
-    	// bitwise transformations to remove floating point values, canvas drawimage is faster with integers
-    	lx = (0.5 + lx) << 0;
-    	ly = (0.5 + ly) << 0;
-
-    	translateX = (0.5 + translateX) << 0;
-    	translateY = (0.5 + translateY) << 0;
-
-    	ctx.save();
-    	ctx.translate(translateX, translateY); // this moves the point of drawing and rotation to the center.
-    	ctx.rotate(rotation);
-    	ctx.translate(translateX*-1, translateY *-1); // this moves the point of drawing and rotation to the center.
-        ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
-
-    	ctx.restore();
-    	//drawBorder(lx,ly,lxs,lys,window.ctxNPC,"#FF0000"); // uncomment for debugging sprites
     }
 }
