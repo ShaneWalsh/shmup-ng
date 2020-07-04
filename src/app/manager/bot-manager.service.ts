@@ -16,6 +16,7 @@ import { HitBox } from '../domain/HitBox';
 import { Creeper } from 'src/app/domain/bots/Creeper';
 import { Level1Boss1 } from 'src/app/domain/bots/Level1Boss1';
 import { Guardian1 } from 'src/app/domain/bots/Guardian1';
+import { GuardianCreeper } from 'src/app/domain/bots/GuardianCreeper';
 
 /**
  * Going to manage the created bots, spawned by the level manager. Its going to emit when they are destroyed or when they leave the screen.
@@ -83,6 +84,17 @@ export class BotManagerService {
         this.botCreated.next(newBot);
     }
 
+		generateGuardianCreeper(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
+					let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
+
+					let newBot = new GuardianCreeper(config, posObj.posX, posObj.posY,
+						this.resourcesService.getRes().get("enemy-08-1"),
+						this.resourcesService.getRes().get("enemy-08-2"),
+						this.resourcesService.getRes().get("enemy-08-damaged"));
+					this.botsArr.push(newBot);
+					this.botCreated.next(newBot);
+			}
+
 
     generateFighter(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
         let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
@@ -107,7 +119,9 @@ export class BotManagerService {
 
     generateDrone(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
         let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
-        let newBot = new Drone(config, posObj.posX, posObj.posY, this.resourcesService.getRes().get("enemy-2-1"), this.resourcesService.getRes().get("enemy-2-2"), 56, 78);
+				let newBot = new Drone(config, posObj.posX, posObj.posY, this.resourcesService.getRes().get("enemy-2-1"),
+				this.resourcesService.getRes().get("enemy-2-2"), 56, 78,new HitBox(0, 0, 56, 78),this.resourcesService.getRes().get("drone-damaged"));
+
         this.botsArr.push(newBot);
         this.botCreated.next(newBot);
     }

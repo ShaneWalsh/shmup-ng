@@ -6,6 +6,7 @@ import { BotManagerService } from 'src/app/manager/bot-manager.service';
 import { PlayerService } from 'src/app/services/player.service';
 import { BulletInstance } from 'src/app/domain/bullet/BulletInstance';
 import { HitBox } from 'src/app/domain/HitBox';
+import { LogicService } from 'src/app/services/logic.service';
 
 @Injectable({
   providedIn: 'root'
@@ -61,6 +62,16 @@ export class BulletManagerService {
         this.bulletsArr.push(newBullet);
         this.bulletCreated.next(newBullet);
     }
+
+		// the x+y passed into the tracker are middle point of the bullet, so I have to then workout where the top left x+y is and rotate that by the bullet angle, giving me the actual x+y cord
+		generateGuardianTracker(levelInstance:LevelInstance, bulletDirection:BulletDirection, centerX, centerY, allowedMovement=30 ): any {
+				let cords :{x:number,y:number} = {x:centerX,y:centerY};
+				//let cords :{x:number,y:number} = LogicService.pointAfterRotation(centerX, centerY, centerX-7, centerY-10, bulletDirection.angle)
+				let newBullet = new DumbLazer(1,cords.x, cords.y, bulletDirection, false, this.resourcesService.getRes().get("enemy-bullet-target"),22,14);
+				newBullet.allowedMovement = allowedMovement; // 2 seconds ish
+				this.bulletsArr.push(newBullet);
+				this.bulletCreated.next(newBullet);
+		}
 
     removeBullet(bullet:BulletInstance){
         this.bulletsArr.splice(this.bulletsArr.indexOf(bullet),1);

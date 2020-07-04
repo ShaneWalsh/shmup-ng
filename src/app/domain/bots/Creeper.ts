@@ -43,7 +43,7 @@ export class Creeper extends BotInstanceImpl{
 		public imageSizeX:number=64,
 		public imageSizeY:number=52,
 		public imageFiringSizeX:number=64,
-        public imageFiringSizeY:number=480,
+        public imageFiringSizeY:number=640,
 		public hitBox:HitBox=new HitBox(4,0,imageSizeX-8,imageSizeY),
 		public beamHitBox:HitBox=new HitBox(0,0,imageFiringSizeX,imageFiringSizeY),
     ){

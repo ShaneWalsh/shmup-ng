@@ -18,7 +18,7 @@ export class LogicService {
     var newY = y2 + centerY;
 
     return { x: newX, y: newY }; // so i can drop it straight into assignments
-  } 
+  }
 
   public static drawRotateImage(imageObj, ctx, rotation, x, y, sx, sy, lx = x, ly = y, lxs = sx, lys = sy, translateX = x + (sx / 2), translateY = y + (sy / 2)) { // l are the actual canvas positions
     // bitwise transformations to remove floating point values, canvas drawimage is faster with integers
@@ -37,5 +37,10 @@ export class LogicService {
     ctx.restore();
   }
 
-}
+	public static drawBorder(x,y,sizeX,sizeY,ctx,color){
+    ctx.lineWidth = 1;
+  	ctx.strokeStyle = color;
+  	ctx.strokeRect(x,y,sizeX,sizeY);
+  }
 
+}

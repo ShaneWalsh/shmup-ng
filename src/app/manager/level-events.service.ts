@@ -46,6 +46,15 @@ export class LevelEventsService {
 		  score: 200, // this is only added to the players score if they kill the bot, if it leaves the screen the bot is simply removed.
   		  health:50, // health, when 0 Diver is dead.
 	  };
+	  let guardianCreeperConfig = {
+		  bulletSpeed: 3, // how fast this bots buttets travel every tick
+		  posXSpeed: 1.5,
+		  posYSpeed: 1.5, // the speed the bot moves in the X and y Directions every Tick
+		  bTimerLimit: 60, // this means that a diver fires a button once every 40 ticks, e.g 3 times in 2 seconds.
+		  score: 200, // this is only added to the players score if they kill the bot, if it leaves the screen the bot is simply removed.
+  		health:50, // health, when 0 Diver is dead.
+			retreatAfterShotsFiredLimit:30
+	  };
 	   // original fast moving fast shooting figher enemy-2-2
 	  let droneConfig = {
 		  bulletSpeed: 6,
@@ -124,6 +133,8 @@ export class LevelEventsService {
         le.push(new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));
         le.push(new SpawnBotEvent(0, 80, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));
         le.push(new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
+        le.push(new SpawnBotEvent(0, 130, false, 0, BotType.CREEPER, creeperConfig, false, 220, -60));
+        le.push(new SpawnBotEvent(0, 130, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 130, -100));
         // blade right
         le.push(new SpawnBotEvent(0, 190, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
         le.push(new SpawnBotEvent(0, 200, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
