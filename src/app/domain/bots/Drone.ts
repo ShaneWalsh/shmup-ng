@@ -28,8 +28,8 @@ export class Drone extends Fighter {
         let bullDirection: BulletDirection;
         if (levelInstance.isVertical()) {
             // to check that the player is not above us, we dont want bullets travelling upwards at him, that makes no sense.
-            bullDirection = bulletManagerService.calculateBulletDirection(this.posX + 14, this.posY + 70, this.posX + 14, this.posY + 90, this.bulletSpeed, true);
-            bulletManagerService.generateBotTrackerBlob(levelInstance, bullDirection, this.posX + 14, this.posY + 70, -1);
+            bullDirection = bulletManagerService.calculateBulletDirection(this.posX + 30, this.posY + 50, this.posX + 30, this.posY + 90, this.bulletSpeed, true);
+            bulletManagerService.generateBotTrackerBlob(levelInstance, bullDirection, this.posX + 30, this.posY + 50, -1);
         } else {
             // bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, (this.posX+50), this.posY, 6);
             // bulletManagerService.generatePlayerLazer(levelInstance, bullDirection, this.posX, this.posY);

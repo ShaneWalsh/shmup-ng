@@ -113,11 +113,11 @@ export class Level1SubBoss extends  BotInstanceImpl {
         let bullDirection:BulletDirection;
         if(levelInstance.isVertical()){
             //bullDirection = bulletManagerService.calculateBulletDirection(this.posX+170, this.posY+200,currentPlayer.getCenterX(), currentPlayer.getCenterY(), this.bulletSpeed, true);
-            bullDirection = bulletManagerService.calculateBulletDirection(this.posX + 170, this.posY + 200, this.posX + 170, this.posY + 1550, this.bulletSpeed, true);
-            bulletManagerService.generateBotBlazer(levelInstance, bullDirection, this.posX+170, this.posY+200);
+            bullDirection = bulletManagerService.calculateBulletDirection(this.posX + 182, this.posY + 180, this.posX + 182, this.posY + 1550, this.bulletSpeed, true);
+            bulletManagerService.generateBotBlazer(levelInstance, bullDirection, this.posX+182, this.posY+180);
             //bullDirection = bulletManagerService.calculateBulletDirection(this.posX+5, this.posY+200,currentPlayer.getCenterX(), currentPlayer.getCenterY(), this.bulletSpeed, true);
-            bullDirection = bulletManagerService.calculateBulletDirection(this.posX + 5, this.posY + 200, this.posX + 5, this.posY + 1550, this.bulletSpeed, true);
-            bulletManagerService.generateBotBlazer(levelInstance, bullDirection, this.posX+5, this.posY+200);
+            bullDirection = bulletManagerService.calculateBulletDirection(this.posX + 17, this.posY + 180, this.posX + 17, this.posY + 1550, this.bulletSpeed, true);
+            bulletManagerService.generateBotBlazer(levelInstance, bullDirection, this.posX+17, this.posY+180);
         } else {
             // bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, (this.posX+50), this.posY, 6);
             // bulletManagerService.generatePlayerLazer(levelInstance, bullDirection, this.posX, this.posY);
