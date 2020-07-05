@@ -64,65 +64,63 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
 
 	update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {
 		let currentPlayer = playerService.currentPlayer;
-        if (this.phaseCounter == -1){
-            this.posY += this.moveSpeed;
-            if(this.posY > -10){
-                this.phaseCounter++;
-            }
-        } else {
-            let positions = this.movePositions[this.phaseCounter];
-            this.moveDirection = bulletManagerService.calculateBulletDirection(
-                this.posX + 112, this.posY + 118, positions.x, positions.y, this.moveSpeed, true);
-            this.posX += this.moveDirection.speed * this.moveDirection.directionX;
-            this.posY += this.moveDirection.speed * this.moveDirection.directionY;
-            if (this.isWithin(this.posX + 112, positions.x, 10) && this.isWithin(this.posY + 118, positions.y, 10)){
-                this.phaseCounter++;
-                if(this.phaseCounter == 8)
-                    this.phaseCounter = 0;
-            }
-        }
-        this.turnDirection = bulletManagerService.calculateBulletDirection(
-            this.posX + 112, this.posY + 118, 320, 240, this.bulletSpeed, true);
-
-        //    28 44
-        this.rotationCordsCenter = LogicService.pointAfterRotation(this.posX + 112, this.posY + 118,
-            this.posX + 236, this.posY + 95, this.turnDirection.angle)
-
-        this.drawRotateImage(this.imageObj, ctx, this.turnDirection.angle, this.posX, this.posY, this.imageSizeX, this.imageSizeY);
-		if(this.damAnaimationTimer < this.damAnaimationTimerLimit){
-			this.damAnaimationTimer++;
-			if(this.damAnaimationTimer %2 == 1){
-				this.drawRotateImage(this.imageObj4Damaged, ctx, this.turnDirection.angle, this.posX, this.posY, this.imageSizeX, this.imageSizeY);
+		if (this.phaseCounter == -1){
+			this.posY += this.moveSpeed;
+			if(this.posY > -10){
+				this.phaseCounter++;
+			}
+		} else {
+			let positions = this.movePositions[this.phaseCounter];
+			this.moveDirection = bulletManagerService.calculateBulletDirection(this.posX + 112, this.posY + 118, positions.x, positions.y, this.moveSpeed, true);
+			this.posX += this.moveDirection.speed * this.moveDirection.directionX;
+			this.posY += this.moveDirection.speed * this.moveDirection.directionY;
+			if (this.isWithin(this.posX + 112, positions.x, 10) && this.isWithin(this.posY + 118, positions.y, 10)){
+				this.phaseCounter++;
+				if(this.phaseCounter == 8)
+				this.phaseCounter = 0;
 			}
 		}
-        //ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
-        if(levelInstance.drawHitBox()){
-            this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");
-        }
+			this.turnDirection = bulletManagerService.calculateBulletDirection(
+			this.posX + 112, this.posY + 118, 320, 240, this.bulletSpeed, true);
+
+			//    28 44
+			this.rotationCordsCenter = LogicService.pointAfterRotation(this.posX + 112, this.posY + 118,this.posX + 236, this.posY + 95, this.turnDirection.angle)
+
+			this.drawRotateImage(this.imageObj, ctx, this.turnDirection.angle, this.posX, this.posY, this.imageSizeX, this.imageSizeY);
+			if(this.damAnaimationTimer < this.damAnaimationTimerLimit){
+				this.damAnaimationTimer++;
+				if(this.damAnaimationTimer %2 == 1){
+					this.drawRotateImage(this.imageObj4Damaged, ctx, this.turnDirection.angle, this.posX, this.posY, this.imageSizeX, this.imageSizeY);
+				}
+			}
+			//ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
+			if(levelInstance.drawHitBox()){
+				this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");
+			}
 
         // fire weapon
-		if(this.bTimer >= this.bTimerLimit){
-            this.bTimer = 0;
-            this.fireTracker(levelInstance,ctx,bulletManagerService,currentPlayer);
-		} else {
-            this.bTimer++;
-            if (this.bTimer >= (this.bTimerLimit-5)){
-                // todo get this position calc right, might need its own center rotation
-                this.drawRotateImage(this.imageObj1, ctx, this.turnDirection.angle, this.rotationCordsCenter.x - 14, this.rotationCordsCenter.y - 22, 28, 44);
-            }
+			if(this.bTimer >= this.bTimerLimit){
+				this.bTimer = 0;
+				this.fireTracker(levelInstance,ctx,bulletManagerService,currentPlayer);
+			} else {
+				this.bTimer++;
+				if (this.bTimer >= (this.bTimerLimit-5)){
+					// todo get this position calc right, might need its own center rotation
+					this.drawRotateImage(this.imageObj1, ctx, this.turnDirection.angle, this.rotationCordsCenter.x - 14, this.rotationCordsCenter.y - 22, 28, 44);
+				}
+			}
+			if(this.anaimationTimer >= this.anaimationTimerLimit){
+				this.anaimationTimer = 0;
+				if (this.imageObj == this.imageObj2) {
+					this.imageObj = this.imageObj3;
+				} else if (this.imageObj == this.imageObj3){
+					this.imageObj = this.imageObj2;
+				}
+			}
+			else{
+				this.anaimationTimer++;
+			}
 		}
-        if(this.anaimationTimer >= this.anaimationTimerLimit){
-			this.anaimationTimer = 0;
-			if (this.imageObj == this.imageObj2) {
-                this.imageObj = this.imageObj3;
-            } else if (this.imageObj == this.imageObj3){
-                this.imageObj = this.imageObj2;
-            }
-		}
-		else{
-			this.anaimationTimer++;
-        }
-    }
 
     hasBotBeenHit(hitter:any,hitterBox:HitBox):boolean {
          return this.hitBox.areCentersToClose(hitter,hitterBox,this,this.hitBox);
@@ -133,8 +131,8 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
         let bullDirection:BulletDirection;
         if(levelInstance.isVertical()){
             // this.hitBox.drawBorder(cords.x, cords.y, 5, 5, ctx, "#FFFF00");
-            bullDirection = bulletManagerService.calculateBulletDirection(this.rotationCordsCenter.x - 18, this.rotationCordsCenter.y-10, 320, 240, this.bulletSpeed, true);
-            bulletManagerService.generateMuzzleBlazer(levelInstance, bullDirection, this.rotationCordsCenter.x - 18, this.rotationCordsCenter.y-10);
+            bullDirection = bulletManagerService.calculateBulletDirection(this.rotationCordsCenter.x, this.rotationCordsCenter.y, 320, 240, this.bulletSpeed, true);
+            bulletManagerService.generateMuzzleBlazer(levelInstance, bullDirection, this.rotationCordsCenter.x, this.rotationCordsCenter.y);
         } else {
 
         }

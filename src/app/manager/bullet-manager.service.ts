@@ -50,7 +50,7 @@ export class BulletManagerService {
 
     generateMuzzleBlazer(levelInstance: LevelInstance, bulletDirection: BulletDirection, startX, startY): any {
         // make a generaic lazer, isTargetBot? // damage to do
-        let newBullet = new DumbLazer(1, startX, startY, bulletDirection, false, this.resourcesService.getRes().get("miniboss-2-bullet"), 36, 20);
+        let newBullet = new RotationLazer(1, startX, startY, bulletDirection, false, this.resourcesService.getRes().get("miniboss-2-bullet"), 36, 20);
         this.bulletsArr.push(newBullet);
         this.bulletCreated.next(newBullet);
     }
@@ -66,7 +66,7 @@ export class BulletManagerService {
 		// the x+y passed into the tracker are middle point of the bullet, so I have to then workout where the top left x+y is and rotate that by the bullet angle, giving me the actual x+y cord
 		generateGuardianTracker(levelInstance:LevelInstance, bulletDirection:BulletDirection, startX, startY, allowedMovement=30 ): any {
 				//let cords :{x:number,y:number} = LogicService.pointAfterRotation(centerX, centerY, centerX-7, centerY-10, bulletDirection.angle)
-				let newBullet = new DumbLazer(1,startX, startY, bulletDirection, false, this.resourcesService.getRes().get("enemy-bullet-target"),22,14);
+				let newBullet = new RotationLazer(1,startX, startY, bulletDirection, false, this.resourcesService.getRes().get("enemy-bullet-target"),22,14);
 				newBullet.allowedMovement = allowedMovement; // 2 seconds ish
 				this.bulletsArr.push(newBullet);
 				this.bulletCreated.next(newBullet);
@@ -141,9 +141,11 @@ export class BulletDirection {
 }
 
 class DumbLazer implements BulletInstance {
+
     public allowedMovement = -1; // if a bot has allowed movement it will be removed when that movement runs out
     public outOfMovesAnimation:any; // todo add in future.
-	private pad = 5;
+		private pad = 5;
+
     constructor(
         public damage:number=2,
         public posX:number=0,
@@ -173,11 +175,7 @@ class DumbLazer implements BulletInstance {
 				removed = true;
 	        } else {
 	            if(this.bulletDirection.performRotation){
-								let rotatedCenterCords:{x:number,y:number} = LogicService.pointAfterRotation(this.posX, this.posY, this.posX+(this.imageSizeX/2), this.posY+(this.imageSizeY/2), this.bulletDirection.angle)
-	                LogicService.drawRotateImage(this.imageObj, ctx,this.bulletDirection.angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY,
-										this.posX,this.posY,this.imageSizeX,this.imageSizeY,
-										rotatedCenterCords.x,rotatedCenterCords.y
-									);
+								this.performRotation(ctx);
 	            } else {
 	                ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
 	            }
@@ -221,4 +219,33 @@ class DumbLazer implements BulletInstance {
 	        }
 		}
     }
+
+		performRotation(ctx): any {
+			let rotatedCenterCords:{x:number,y:number} = LogicService.pointAfterRotation(this.posX, this.posY, this.posX+(this.imageSizeX/2), this.posY+(this.imageSizeY/2), this.bulletDirection.angle)
+				LogicService.drawRotateImage(this.imageObj, ctx,this.bulletDirection.angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY,
+					this.posX,this.posY,this.imageSizeX,this.imageSizeY,
+					rotatedCenterCords.x,rotatedCenterCords.y
+				);
+	  }
+}
+
+class RotationLazer extends DumbLazer {
+	constructor(
+		public damage:number=2,
+		public posX:number=0,
+		public posY:number=0,
+		public bulletDirection:BulletDirection=null,
+		public goodBullet:boolean=true,
+		public imageObj:HTMLImageElement=null,
+		public imageSizeX:number=90,
+		public imageSizeY:number=60,
+		public hitBox:HitBox=new HitBox(0,0,imageSizeX,imageSizeY)
+	){
+		super(damage,posX,posY,bulletDirection,goodBullet,imageObj,imageSizeX,imageSizeY,hitBox);
+	}
+	// in a roation lazer, the x+y are actually in the center of the bullet, so we have to workout the top left cords.
+	performRotation(ctx): any {
+		let topLeftCords={x:this.posX-(this.imageSizeX/2),y:this.posY-(this.imageSizeY/2)}
+		LogicService.drawRotateImage(this.imageObj, ctx,this.bulletDirection.angle,topLeftCords.x,topLeftCords.y,this.imageSizeX,this.imageSizeY);
+	}
 }

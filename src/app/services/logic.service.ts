@@ -22,7 +22,10 @@ export class LogicService {
 	/**
 	 * l are the actual canvas positions
 	 * the translateX + Y when drawing something that is its own source of truth, e.g a turret, the defaults are fine.
-	 * the translateX + Y sometimes need to be calcualted by rotating the center by the top left by the angle, e.g when you fire from a rotating turret.
+	 * When calcualting the rotation of an object based off the rotation of another, eg. a bullet from a turret
+	 * the translateX + Y need to be calcualted by rotating the center of the bullet, and use this rotated ceneter as the translateX + Y
+	 * and workout the x,y from the translateX + Y - sx+sy. 
+	 *
 	 */
   public static drawRotateImage(imageObj, ctx, rotation, x, y, sx, sy, lx = x, ly = y, lxs = sx, lys = sy, translateX = x + (sx / 2), translateY = y + (sy / 2)) {
     // bitwise transformations to remove floating point values, canvas drawimage is faster with integers
