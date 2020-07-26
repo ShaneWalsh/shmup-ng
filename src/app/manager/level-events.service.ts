@@ -231,10 +231,11 @@ export class LevelEventsService {
         // le.push(new SpawnBotEvent(1, 350, true, 90, BotType.FIGHTER, fighterConfig, true, 0, -60));
         // le.push(new SpawnBotEvent(1, 350, true, 90, BotType.FIGHTER, fighterConfig, true, 0, -60));
         le.push(new SpawnBotEvent(1, 350, false, 0, BotType.MINIBOSS2, level1MiniBoss2, false, 300, -300));
+
 	  //#########################################################################################
 	  //######################          Phase Two       #######################################
 	  //#########################################################################################
-
+		le.push(new SpawnBotEvent(2, 20, false, 0, BotType.MINIBOSS1L2, level1MiniBoss2, false, 100, -250));
 	  // these are Phase 2 events, it will become phase 2 when MINIBOSS2 dies
 	  le.push(new SpawnBotEvent(2,230,false,0,BotType.GUARDIAN1,guardian1Config, false, 380, -60));
 	  le.push(new SpawnBotEvent(2,230,false,0,BotType.GUARDIAN1,guardian1Config, false, 5, -60));

@@ -17,6 +17,7 @@ import { Creeper } from 'src/app/domain/bots/Creeper';
 import { Level1Boss1 } from 'src/app/domain/bots/Level1Boss1';
 import { Guardian1 } from 'src/app/domain/bots/Guardian1';
 import { GuardianCreeper } from 'src/app/domain/bots/GuardianCreeper';
+import { Level2SubBoss1 } from 'src/app/domain/bots/Level2SubBoss1';
 
 /**
  * Going to manage the created bots, spawned by the level manager. Its going to emit when they are destroyed or when they leave the screen.
@@ -164,6 +165,13 @@ export class BotManagerService {
         this.botCreated.next(newBot);
     }
 
+		generateLevel2SubBoss1(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 250, posY: number = -300, config: any = {}): any {
+			let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
+			let newBot = new Level2SubBoss1(config, posObj.posX, posObj.posY, this.resourcesService.getRes().get("miniboss-3-muzzle-flash"), this.resourcesService.getRes().get("miniboss-3"), this.resourcesService.getRes().get("miniboss-3-damaged"),304,242);
+			this.botsArr.push(newBot);
+			this.botCreated.next(newBot);
+	  }
+
     generateLevel1Boss1(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -300, config: any = {}): any {
         let newBot = new Level1Boss1(config, posX, posY,
             this.resourcesService.getRes().get("boss1-main-boss-1-weakpoint"),
@@ -201,6 +209,16 @@ export class BotManagerService {
 			this.resourcesService.getRes().get("bot-explosion-3"),
 			this.resourcesService.getRes().get("bot-explosion-4")],
 			80,80,this.deathAnimtionTimer,this.deathAnimtionTimer)
+		);
+	}
+
+	createMisslePlume(x,y){
+		this.spriteSheetArr.push(new SpriteSheet(x-20,y-20,
+			[this.resourcesService.getRes().get("explosion-small-1"),
+			this.resourcesService.getRes().get("explosion-small-2"),
+			this.resourcesService.getRes().get("explosion-small-3"),
+			this.resourcesService.getRes().get("explosion-small-4")],
+			40,40,this.deathAnimtionTimer,this.deathAnimtionTimer)
 		);
 	}
 

@@ -72,6 +72,14 @@ export class BulletManagerService {
 				this.bulletCreated.next(newBullet);
 		}
 
+		generateHoming(levelInstance:LevelInstance, bulletDirection:BulletDirection, startX, startY, allowedMovement=60 ): any {
+        // make a generaic lazer, isTargetBot? // damage to do
+        let newBullet = new DumbLazer(1,startX, startY, bulletDirection, false, this.resourcesService.getRes().get("miniboss-3-missile"),22,10);
+        newBullet.allowedMovement = allowedMovement; // 2 seconds ish
+        this.bulletsArr.push(newBullet);
+        this.bulletCreated.next(newBullet);
+    }
+
     removeBullet(bullet:BulletInstance){
         this.bulletsArr.splice(this.bulletsArr.indexOf(bullet),1);
         this.bulletRemoved.next(bullet);
