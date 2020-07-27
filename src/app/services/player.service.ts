@@ -29,7 +29,7 @@ export class PlayerService {
 
     killCurrentPlayer(): any {
         this.currentPlayer.lives--;
-        this.currentPlayer.invincibilityTimer = 30;
+        this.currentPlayer.invincibilityTimer = 120;
 		this.botManagerService.createPlayerDeath(this.currentPlayer.getCenterX(),this.currentPlayer.getCenterY());
         if(this.currentPlayer.lives > 0){
             this.currentPlayer.reset();
@@ -58,11 +58,11 @@ export class PlayerService {
 
 export class PlayerObj {
 	public speed = 8;
-	public bulletSpeed:number = 10;
+	public bulletSpeed:number = 20;
 	public pressedKeys = {"left":false,"up":false,"right":false,"down":false};
 
     public bTimer:number = 0; // bullet timer
-    public bTimerLimit:number = 10;
+    public bTimerLimit:number = 4;
 
     public bulletsFiring:boolean = false;
     public bulletsFired:boolean = true;
