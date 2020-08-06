@@ -6,4 +6,8 @@ import { BotManagerService } from "src/app/manager/bot-manager.service";
 export interface BulletInstance {
     update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, bulletManagerService:BulletManagerService, botManagerService:BotManagerService, playerService:PlayerService );
 
+    getPosX():number;
+    getPosY():number;
+    getCurrentRotation():number;
+
 }

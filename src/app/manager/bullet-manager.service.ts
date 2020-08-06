@@ -74,13 +74,14 @@ export class BulletManagerService {
 
 		generateHoming(levelInstance:LevelInstance, bulletDirection:BulletDirection, startX, startY, allowedMovement=60 ): any {
         // make a generaic lazer, isTargetBot? // damage to do
-        let newBullet = new DumbLazer(1,startX, startY, bulletDirection, false, this.resourcesService.getRes().get("miniboss-3-missile"),22,10);
+        let newBullet = new DumbLazer(1,startX, startY, bulletDirection, false, this.resourcesService.getRes().get("miniboss-3-missile-no-cannon"),22,13);
         newBullet.allowedMovement = allowedMovement; // 2 seconds ish
         this.bulletsArr.push(newBullet);
         this.bulletCreated.next(newBullet);
     }
 
-    removeBullet(bullet:BulletInstance){
+    removeBullet(bullet:BulletInstance, botManagerService:BotManagerService){
+        botManagerService.createMisslePlume(bullet.getPosX(),bullet.getPosY(), bullet.getCurrentRotation());
         this.bulletsArr.splice(this.bulletsArr.indexOf(bullet),1);
         this.bulletRemoved.next(bullet);
     }
@@ -101,19 +102,11 @@ export class BulletManagerService {
         var directionY = targetY-origY;
         var directionX = targetX-origX;
         var angle = Math.atan2(directionY,directionX); // bullet angle
-
         // Normalize the direction
         var len = Math.sqrt(directionX * directionX + directionY * directionY);
         directionX /= len;
         directionY /= len;
-
         return new BulletDirection(directionY,directionX,angle,len,speed, performRotation,targetObject);
-        // let xw = origX+this.hWidth;
-        // let yh = origY+this.hHeight;
-        // let leftGun = pointAfterRotation( xw, yh, origX + 16,origY+5,  this.angle );
-        // let rightGun = pointAfterRotation( xw, yh, origX + 16,origY+27,  this.angle );
-        //
-        // this.missiles[id]=new Missile({x:leftGun.x,y:leftGun.y,angle,id, speed:6, dirX:directionX, dirY:directionY, targetObject});
     }
 
 }
@@ -130,7 +123,7 @@ export class BulletDirection {
     ){    }
 
     update(origX=0, origY=0){
-        if(this.targetObject != null && this.targetObject != undefined && this.targetObject.posY && this.targetObject.posX){
+        if(this.targetObject != null && this.targetObject != undefined && this.targetObject.posY != undefined && this.targetObject.posX != undefined){
             var directionY = this.targetObject.getCenterY()-origY;
             var directionX = this.targetObject.getCenterX()-origX;
             var angle = Math.atan2(directionY,directionX); // bullet angle
@@ -144,6 +137,8 @@ export class BulletDirection {
             this.angle = angle;
             this.directionY = directionY;
             this.directionX = directionX;
+        } else {
+          //console.error("Cannot target this object.",this.targetObject);
         }
     }
 }
@@ -152,7 +147,7 @@ class DumbLazer implements BulletInstance {
 
     public allowedMovement = -1; // if a bot has allowed movement it will be removed when that movement runs out
     public outOfMovesAnimation:any; // todo add in future.
-		private pad = 5;
+		private pad = 25;
 
     constructor(
         public damage:number=2,
@@ -168,72 +163,85 @@ class DumbLazer implements BulletInstance {
 
     }
 
+    getPosX():number {
+      return this.posX;
+    }
+
+    getPosY():number {
+      return this.posY;
+    }
+
+    getCurrentRotation():number {
+      return this.bulletDirection.angle;
+    }
+
     update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, bulletManagerService:BulletManagerService, botManagerService:BotManagerService, playerService:PlayerService ){
         this.bulletDirection.update(this.posX,this.posY);
-		this.posX += this.bulletDirection.speed * this.bulletDirection.directionX;
-		this.posY += this.bulletDirection.speed * this.bulletDirection.directionY;
+      this.posX += this.bulletDirection.speed * this.bulletDirection.directionX;
+      this.posY += this.bulletDirection.speed * this.bulletDirection.directionY;
 
-		if(this.posY < (-this.pad) || this.posX < (0) || this.posY > (levelInstance.getMapHeight()+this.imageSizeY+this.pad) || this.posX > (levelInstance.getMapWidth()+this.imageSizeX+this.pad) ){
-            bulletManagerService.removeBullet(this);
-			console.log("removed bullet");
+      if(this.posY < (-this.pad) || this.posX < (0) || this.posY > (levelInstance.getMapHeight()+this.imageSizeY+this.pad) || this.posX > (levelInstance.getMapWidth()+this.imageSizeX+this.pad) ){
+        bulletManagerService.removeBullet(this, botManagerService);
+        console.log("removed bullet");
+      } else {
+        let removed:boolean =false;
+        if(this.posY + this.imageSizeY > (levelInstance.getMapHeight()+this.imageSizeY)){
+          bulletManagerService.removeBullet(this, botManagerService);
+          removed = true;
         } else {
-			let removed:boolean =false;
-	        if(this.posY + this.imageSizeY > (levelInstance.getMapHeight()+this.imageSizeY)){
-	            bulletManagerService.removeBullet(this);
-				removed = true;
-	        } else {
-	            if(this.bulletDirection.performRotation){
-								this.performRotation(ctx);
-	            } else {
-	                ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
-	            }
-	        }
-	        if(levelInstance.drawHitBox()){
-	            this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");
-	        }
+          if(this.bulletDirection.performRotation){
+            this.performRotation(ctx);
+          } else {
+              ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
+          }
+        }
+        if(levelInstance.drawHitBox()){
+            this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");
+        }
 
-	        if(this.goodBullet){ // todo collision detection!!
-	            let botArrClone = [...botManagerService.getBots()];
-	            for(let i = 0; i < botArrClone.length;i++){
-	                let bot = botArrClone[i];
-                  if(bot.hasBotArmorBeenHit(this,this.hitBox)){
-                    // todo make noise or show anumation of failed hit
-                     bulletManagerService.removeBullet(this);
-                     removed = true;
-                     break;
-                 }
-	                if(bot.hasBotBeenHit(this,this.hitBox)){
-	                    bot.applyDamage(this.damage, botManagerService,playerService,levelInstance);
-	                    bulletManagerService.removeBullet(this);
-	                    removed = true;
-	                    break;
-	                }
-	            }
-	        } else { // colision with the player
-	            if(playerService.currentPlayer && playerService.currentPlayer.hasPlayerBeenHit(this,this.hitBox)){
-	                bulletManagerService.removeBullet(this);
-	                removed = true;
-	                playerService.killCurrentPlayer();
-	            }
-	        }
+        if(this.goodBullet){ // todo collision detection!!
+          let botArrClone = [...botManagerService.getBots()];
+          for(let i = 0; i < botArrClone.length;i++){
+            let bot = botArrClone[i];
+            if(bot.hasBotArmorBeenHit(this,this.hitBox)){
+              // todo make noise or show anumation of failed hit
+              bulletManagerService.removeBullet(this, botManagerService);
+              removed = true;
+              break;
+            }
+            if(bot.hasBotBeenHit(this,this.hitBox)){
+              bot.applyDamage(this.damage, botManagerService,playerService,levelInstance);
+              bulletManagerService.removeBullet(this, botManagerService);
+              removed = true;
+              break;
+            }
+          }
+        } else { // colision with the player
+          if(playerService.currentPlayer && playerService.currentPlayer.hasPlayerBeenHit(this,this.hitBox)){
+            bulletManagerService.removeBullet(this, botManagerService);
+            removed = true;
+            playerService.killCurrentPlayer();
+          }
+        }
 
-	        if(!removed && this.allowedMovement > -1){
-	            this.allowedMovement--;
-	            if(this.allowedMovement < 1){
-	                // todo play an animcation perhaps?
-					removed = true;
-	                bulletManagerService.removeBullet(this);
-	            }
-	        }
-		}
+        if(!removed && this.allowedMovement > -1){
+          this.allowedMovement--;
+          if(this.allowedMovement < 1){
+            // todo play an animcation perhaps?
+            removed = true;
+            bulletManagerService.removeBullet(this, botManagerService);
+          }
+        }
+      }
     }
 
 		performRotation(ctx): any {
-			let rotatedCenterCords:{x:number,y:number} = LogicService.pointAfterRotation(this.posX, this.posY, this.posX+(this.imageSizeX/2), this.posY+(this.imageSizeY/2), this.bulletDirection.angle)
-				LogicService.drawRotateImage(this.imageObj, ctx,this.bulletDirection.angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY,
-					this.posX,this.posY,this.imageSizeX,this.imageSizeY,
-					rotatedCenterCords.x,rotatedCenterCords.y
-				);
+			// let rotatedCenterCords:{x:number,y:number} = LogicService.pointAfterRotation(this.posX, this.posY, this.posX+(this.imageSizeX/2), this.posY+(this.imageSizeY/2), this.bulletDirection.angle)
+      // LogicService.drawRotateImage(this.imageObj, ctx,this.bulletDirection.angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY,
+      //   this.posX,this.posY,this.imageSizeX,this.imageSizeY,
+      //   rotatedCenterCords.x,rotatedCenterCords.y
+      // );
+      LogicService.drawRotateImage(this.imageObj, ctx,this.bulletDirection.angle,this.getPosX(),this.getPosY(),this.imageSizeX,this.imageSizeY);
 	  }
 }
 
@@ -247,11 +255,23 @@ class RotationLazer extends DumbLazer {
 		public imageObj:HTMLImageElement=null,
 		public imageSizeX:number=90,
 		public imageSizeY:number=60,
-		public hitBox:HitBox=new HitBox(0,0,imageSizeX,imageSizeY)
+		public hitBox:HitBox=new HitBox(-(imageSizeX/2),-(imageSizeY/2),imageSizeX,imageSizeY)
 	){
 		super(damage,posX,posY,bulletDirection,goodBullet,imageObj,imageSizeX,imageSizeY,hitBox);
-	}
-	// in a roation lazer, the x+y are actually in the center of the bullet, so we have to workout the top left cords.
+  }
+
+  getPosX():number {
+    return this.posX-(this.imageSizeX/2);
+  }
+
+  getPosY():number {
+    return this.posY-(this.imageSizeY/2);
+  }
+
+  getCurrentRotation():number {
+    return this.bulletDirection.angle;
+  }
+	// in a rotation lazer, the x+y are actually in the center of the bullet, so we have to workout the top left cords.
 	performRotation(ctx): any {
 		let topLeftCords={x:this.posX-(this.imageSizeX/2),y:this.posY-(this.imageSizeY/2)}
 		LogicService.drawRotateImage(this.imageObj, ctx,this.bulletDirection.angle,topLeftCords.x,topLeftCords.y,this.imageSizeX,this.imageSizeY);

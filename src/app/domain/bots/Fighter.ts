@@ -88,8 +88,8 @@ export class Fighter extends BotInstanceImpl{
     fireTracker(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D,bulletManagerService:BulletManagerService, currentPlayer:PlayerObj){
         let bullDirection:BulletDirection;
         if(levelInstance.isVertical()){
-						bullDirection = bulletManagerService.calculateBulletDirection(this.posX + 26, this.posY + 50, this.posX + 26, this.posY + 90, this.bulletSpeed, true);
-						bulletManagerService.generateBotTrackerBlob(levelInstance, bullDirection, this.posX + 26, this.posY + 50, -1);
+						bullDirection = bulletManagerService.calculateBulletDirection(this.posX + 15, this.posY + 55, this.posX + 15, this.posY + 90, this.bulletSpeed, true);
+						bulletManagerService.generateBotTrackerBlob(levelInstance, bullDirection, this.posX + 15, this.posY + 55, -1);
         } else {
 
         }

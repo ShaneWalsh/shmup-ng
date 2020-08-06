@@ -63,8 +63,8 @@ export class Level1Boss1 extends BotInstanceImpl {
         public imageSizeX: number = 480,
         public imageSizeY: number = 640,
         public hitBoxWeakPoint: HitBox = new HitBox(140, 0, 200, 70),
-        public hitBoxArmor1: HitBox = new HitBox(140, 0, 100, 300),
-        public hitBoxArmor2: HitBox = new HitBox(240, 0, 100, 300)
+        public hitBoxArmor1: HitBox = new HitBox(140, 0, 100, 200),
+        public hitBoxArmor2: HitBox = new HitBox(240, 0, 100, 200)
     ) {
         super(config);
 		this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score"]);
@@ -155,8 +155,8 @@ class Boss1State {
       level1Boss1.imageObjCore = level1Boss1.imageObjWeakpoint;
       level1Boss1.imageObjArmor = level1Boss1.imageObjArmor1;
       level1Boss1.imageObjLazor = null;
-      level1Boss1.hitBoxArmor1 = new HitBox(140, 0, 100, 300);
-      level1Boss1.hitBoxArmor2 = new HitBox(240, 0, 100, 300);
+      level1Boss1.hitBoxArmor1 = new HitBox(160, 0, 80, 270);
+      level1Boss1.hitBoxArmor2 = new HitBox(240, 0, 80, 270);
     }
 
     update(levelInstance: LevelInstance, ctx: CanvasRenderingContext2D, botManagerService: BotManagerService, bulletManagerService: BulletManagerService, playerService: PlayerService) {
@@ -263,8 +263,8 @@ class Boss1StateOpening extends Boss1State {
     let level1Boss1 = this.level1Boss1;
     level1Boss1.imageObjArmor = level1Boss1["imageObjArmor"+num];
     let cal = num -1;
-    level1Boss1.hitBoxArmor1 = new HitBox(140-(cal*12), 0, 100, 300);
-    level1Boss1.hitBoxArmor2 = new HitBox(240+(cal*12), 0, 100, 300);
+    level1Boss1.hitBoxArmor1 = new HitBox(160-(cal*12), 0, 80, 270);
+    level1Boss1.hitBoxArmor2 = new HitBox(240+(cal*12), 0, 80, 270);
   }
 
 }
@@ -417,12 +417,12 @@ class Boss1StateClosing extends Boss1State {
       this.defaultUpdate(levelInstance,ctx,botManagerService,bulletManagerService,playerService);
   }
 
-  changeArmor(num){
+  changeArmor(num) {
     let level1Boss1 = this.level1Boss1;
     level1Boss1.imageObjArmor = level1Boss1["imageObjArmor"+num];
     let cal = num -1;
-    level1Boss1.hitBoxArmor1 = new HitBox(140-(cal*12), 0, 100, 300);
-    level1Boss1.hitBoxArmor2 = new HitBox(240+(cal*12), 0, 100, 300);
+    level1Boss1.hitBoxArmor1 = new HitBox(160-(cal*12), 0, 80, 270);
+    level1Boss1.hitBoxArmor2 = new HitBox(240+(cal*12), 0, 80, 270);
   }
 
 }

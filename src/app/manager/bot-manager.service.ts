@@ -18,6 +18,7 @@ import { Level1Boss1 } from 'src/app/domain/bots/Level1Boss1';
 import { Guardian1 } from 'src/app/domain/bots/Guardian1';
 import { GuardianCreeper } from 'src/app/domain/bots/GuardianCreeper';
 import { Level2SubBoss1 } from 'src/app/domain/bots/Level2SubBoss1';
+import { Level2SubBoss1V2 } from '../domain/bots/Level2SubBoss1V2';
 
 /**
  * Going to manage the created bots, spawned by the level manager. Its going to emit when they are destroyed or when they leave the screen.
@@ -154,7 +155,7 @@ export class BotManagerService {
 
     generateLevel1SubBoss2(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -300, config: any = {}): any {
         let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
-        let hitz = new HitBox(44, 0, 192, 190);
+        let hitz = new HitBox(44, 0, 162, 160);
         let newBot = new Level1SubBoss2(config, posObj.posX, posObj.posY,
             this.resourcesService.getRes().get("miniboss-2-muzzle-flash"),
             this.resourcesService.getRes().get("miniboss-2-1"),
@@ -167,7 +168,11 @@ export class BotManagerService {
 
 		generateLevel2SubBoss1(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 250, posY: number = -300, config: any = {}): any {
 			let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
-			let newBot = new Level2SubBoss1(config, posObj.posX, posObj.posY, this.resourcesService.getRes().get("miniboss-3-muzzle-flash"), this.resourcesService.getRes().get("miniboss-3"), this.resourcesService.getRes().get("miniboss-3-damaged"),304,242);
+      let newBot = new Level2SubBoss1V2(config, posObj.posX, posObj.posY,
+        this.resourcesService.getRes().get("miniboss-3-muzzle-flash"),
+        this.resourcesService.getRes().get("miniboss-3-1-cannon"),
+        this.resourcesService.getRes().get("miniboss-3-no-cannon"),
+        this.resourcesService.getRes().get("miniboss-3-no-cannon-damage"),242,302);
 			this.botsArr.push(newBot);
 			this.botCreated.next(newBot);
 	  }
@@ -212,13 +217,13 @@ export class BotManagerService {
 		);
 	}
 
-	createMisslePlume(x,y){
+	createMisslePlume(x,y,angle=null){
 		this.spriteSheetArr.push(new SpriteSheet(x-20,y-20,
 			[this.resourcesService.getRes().get("explosion-small-1"),
 			this.resourcesService.getRes().get("explosion-small-2"),
 			this.resourcesService.getRes().get("explosion-small-3"),
 			this.resourcesService.getRes().get("explosion-small-4")],
-			40,40,this.deathAnimtionTimer,this.deathAnimtionTimer)
+			40,40,this.deathAnimtionTimer,this.deathAnimtionTimer,angle)
 		);
 	}
 

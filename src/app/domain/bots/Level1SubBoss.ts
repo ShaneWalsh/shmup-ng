@@ -39,7 +39,8 @@ export class Level1SubBoss extends  BotInstanceImpl {
         public imageObjDamaged:HTMLImageElement=null,
         public imageSizeX:number=90,
         public imageSizeY:number=60,
-        public hitBox:HitBox=new HitBox(0,0,imageSizeX,imageSizeY)
+        public hitBox:HitBox=new HitBox(72,0,50,imageSizeY),
+        public hitBox2:HitBox=new HitBox(0,160,imageSizeX,30)
     ){
         super(config);
         this.imageObj = imageObj1;
@@ -81,6 +82,7 @@ export class Level1SubBoss extends  BotInstanceImpl {
         }
         if(levelInstance.drawHitBox()){
             this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");
+            this.hitBox2.drawBorder(this.posX+this.hitBox2.hitBoxX,this.posY+this.hitBox2.hitBoxY,this.hitBox2.hitBoxSizeX,this.hitBox2.hitBoxSizeY,ctx,"#FF0000");
         }
 
         // fire weapon
@@ -105,19 +107,19 @@ export class Level1SubBoss extends  BotInstanceImpl {
     }
 
     hasBotBeenHit(hitter:any,hitterBox:HitBox):boolean {
-         return this.hitBox.areCentersToClose(hitter,hitterBox,this,this.hitBox);
+         return this.hitBox.areCentersToClose(hitter,hitterBox,this,this.hitBox) || this.hitBox2.areCentersToClose(hitter,hitterBox,this,this.hitBox2);
     }
 
     // lazers go straight, nothing fancy so no need to make them do anything fancy, cal a stright direction.
     fireTracker(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D,bulletManagerService:BulletManagerService, currentPlayer:PlayerObj){
         let bullDirection:BulletDirection;
         if(levelInstance.isVertical()){
-            //bullDirection = bulletManagerService.calculateBulletDirection(this.posX+170, this.posY+200,currentPlayer.getCenterX(), currentPlayer.getCenterY(), this.bulletSpeed, true);
-            bullDirection = bulletManagerService.calculateBulletDirection(this.posX + 182, this.posY + 180, this.posX + 182, this.posY + 1550, this.bulletSpeed, true);
-            bulletManagerService.generateBotBlazer(levelInstance, bullDirection, this.posX+182, this.posY+180);
-            //bullDirection = bulletManagerService.calculateBulletDirection(this.posX+5, this.posY+200,currentPlayer.getCenterX(), currentPlayer.getCenterY(), this.bulletSpeed, true);
-            bullDirection = bulletManagerService.calculateBulletDirection(this.posX + 17, this.posY + 180, this.posX + 17, this.posY + 1550, this.bulletSpeed, true);
-            bulletManagerService.generateBotBlazer(levelInstance, bullDirection, this.posX+17, this.posY+180);
+
+            bullDirection = bulletManagerService.calculateBulletDirection(this.posX + 170, this.posY + 180, this.posX + 170, this.posY + 1550, this.bulletSpeed, true);
+            bulletManagerService.generateBotBlazer(levelInstance, bullDirection, this.posX+170, this.posY+180);
+
+            bullDirection = bulletManagerService.calculateBulletDirection(this.posX + 5, this.posY + 180, this.posX + 5, this.posY + 1550, this.bulletSpeed, true);
+            bulletManagerService.generateBotBlazer(levelInstance, bullDirection, this.posX+5, this.posY+180);
         } else {
             // bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, (this.posX+50), this.posY, 6);
             // bulletManagerService.generatePlayerLazer(levelInstance, bullDirection, this.posX, this.posY);
@@ -144,22 +146,22 @@ export class Level1SubBoss extends  BotInstanceImpl {
 	}
 
   triggerDamagedAnimation(): any {
-        this.damAnaimationTimer = 1;// trigger damage animation
-    }
+      this.damAnaimationTimer = 1;// trigger damage animation
+  }
 
-    getCenterX():number{
-        return this.posX+(this.imageSizeX/2);
-    }
+  getCenterX():number{
+      return this.posX+(this.imageSizeX/2);
+  }
 
-    getCenterY():number{
-        return this.posY+(this.imageSizeY/2);
-    }
+  getCenterY():number{
+      return this.posY+(this.imageSizeY/2);
+  }
 
-    getPlayerCollisionHitBoxes(): HitBox[] {
-        return [this.hitBox];
-    }
+  getPlayerCollisionHitBoxes(): HitBox[] {
+      return [this.hitBox, this.hitBox2];
+  }
 
-    isDeathOnColision():boolean{
-      return false;
-    }
+  isDeathOnColision():boolean{
+    return false;
+  }
 }

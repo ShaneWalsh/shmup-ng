@@ -121,7 +121,7 @@ export class LevelEventsService {
 		  bTimerLimit: 30,
 		  mTimerLimit: 60,
 		  missileSpeed: 4.5,
-		  destinationY: 50,
+		  destinationY: 1,
 		  anaimationTimerLimit:4, // the bot has an animation for its engine, this animation swaps every 4 ticks.
 		  score: 20000,
 		  health:200,
@@ -150,7 +150,7 @@ export class LevelEventsService {
 		  // use the defaults defined above
 	  } else { //todo hard one day I assume
 		  // todo
-	  }
+    }
 
 	  //#########################################################################################
 	  //######################          Phase Zero        #######################################
@@ -234,7 +234,7 @@ export class LevelEventsService {
 		// when a mini boss dies, the Phase moves forward by One.
 		//le.push(new SpawnBotEvent(0, 3700, false, 0, BotType.MINIBOSS1, level1MiniBoss1, false, 240, -300));
 
-		// I've put in the new boss here so you can see him in action! 
+		// I've put in the new boss here so you can see him in action!
 		le.push(new SpawnBotEvent(0, 3700, false, 0, BotType.MINIBOSS1L2, level2MiniBoss1, false, 100, -300));
 
 		// le.push(new SpawnBotEvent(0, 2200, true, 120, BotType.FIGHTER, fighterConfig, false, 360, -60));

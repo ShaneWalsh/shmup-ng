@@ -55,7 +55,7 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
         public imageObj4Damaged: HTMLImageElement = null,
         public imageSizeX:number=90,
         public imageSizeY:number=60,
-        public hitBox:HitBox=new HitBox(0,0,imageSizeX,imageSizeY)
+        public hitBox:HitBox=new HitBox(0,0,50,50)
     ){
         super(config);
         this.imageObj = imageObj2;
@@ -93,7 +93,6 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
 					this.drawRotateImage(this.imageObj4Damaged, ctx, this.turnDirection.angle, this.posX, this.posY, this.imageSizeX, this.imageSizeY);
 				}
 			}
-			//ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
 			if(levelInstance.drawHitBox()){
 				this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");
 			}
