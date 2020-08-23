@@ -6,6 +6,21 @@
 }
 
 .pink-text {
-    color: palevioletred;
+    color: #ff00ff;
     background-color: black;
+}
+
+.player-score-vic{
+  position: absolute;
+  left: 280px;
+  top: 150px;
+  color: #ff00ff;
+}
+
+
+.player-lives-vic{
+  position: absolute;
+  left: 280px;
+  top: 208px;
+  color: #ff00ff;
 }

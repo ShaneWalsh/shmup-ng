@@ -4,6 +4,7 @@ import { LevelInstance } from "src/app/manager/level-manager.service";
 import { BulletDirection, BulletManagerService } from "src/app/manager/bullet-manager.service";
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { BotManagerService } from "src/app/manager/bot-manager.service";
+import { CanvasContainer } from "../CanvasContainer";
 
 
 export class Rock extends Fighter {
@@ -31,8 +32,9 @@ export class Rock extends Fighter {
 		this.tryConfigValues(["driftXDistance","driftXDistanceCounter","driftXDistanceRight","posYSpeed","bTimerLimit","score","health"]);
     }
 
-    update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {
-  		let currentPlayer = playerService.currentPlayer;
+    update(levelInstance:LevelInstance, canvasContainer:CanvasContainer, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {
+      let currentPlayer = playerService.currentPlayer;
+      let ctx = canvasContainer.mainCtx;
       this.posY += this.posYSpeed;
       if(this.posY + this.imageSizeY > (levelInstance.getMapHeight()+this.imageSizeY)){
           botManagerService.removeBot(this);

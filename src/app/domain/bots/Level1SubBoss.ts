@@ -4,6 +4,7 @@ import { HitBox } from "src/app/domain/HitBox";
 import { BotManagerService } from "src/app/manager/bot-manager.service";
 import { BulletManagerService, BulletDirection } from "src/app/manager/bullet-manager.service";
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
+import { CanvasContainer } from "../CanvasContainer";
 
 export class Level1SubBoss extends  BotInstanceImpl {
 
@@ -47,8 +48,9 @@ export class Level1SubBoss extends  BotInstanceImpl {
 		this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score","posYSpeed","posXSpeed","bulletSpeed", "anaimationTimerLimit"]);
     }
 
-	update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {
-		let currentPlayer = playerService.currentPlayer;
+	update(levelInstance:LevelInstance, canvasContainer:CanvasContainer, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {
+    let currentPlayer = playerService.currentPlayer;
+    let ctx = canvasContainer.mainCtx;
 
 		if (this.dirYDown){
 			this.posY += this.posYSpeed;

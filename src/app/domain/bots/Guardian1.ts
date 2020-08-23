@@ -5,6 +5,7 @@ import { BotManagerService } from "src/app/manager/bot-manager.service";
 import { BulletManagerService, BulletDirection } from "src/app/manager/bullet-manager.service";
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { LogicService } from "src/app/services/logic.service";
+import { CanvasContainer } from "../CanvasContainer";
 
 export class Guardian1 extends BotInstanceImpl{
 	public bulletSpeed:number = 3;
@@ -36,8 +37,9 @@ export class Guardian1 extends BotInstanceImpl{
 		this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score","targetX","targetY","posXSpeed","posYSpeed","bulletSpeed"]);
     }
 
-    update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {
-		let currentPlayer = playerService.currentPlayer;
+    update(levelInstance:LevelInstance, canvasContainer:CanvasContainer, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {
+    let currentPlayer = playerService.currentPlayer;
+    let ctx = canvasContainer.mainCtx;
 		this.angleDirection = bulletManagerService.calculateBulletDirection(this.posX+(this.imageSizeX/2), this.posY+(this.imageSizeY/2), currentPlayer.getCenterX(), currentPlayer.getCenterY(), this.bulletSpeed, true, currentPlayer);
 
 		if(this.posY < (this.targetY-3) || this.posY > (this.targetY+3)){

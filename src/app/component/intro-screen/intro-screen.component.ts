@@ -16,9 +16,10 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
         })
     }
     private subs:Subscription[] =[];
-	public gifTimer:number = 0;
+	  public gifTimer:number = 0;
     public screenId:number = 1;
     public playerScore:number = 0;
+    public playerLives:number = 0;
     public requestAnimFrame:any; // have to ensure this is not created multiple times!
 
     constructor(private keyboardEventService:KeyboardEventService, private levelManagerService: LevelManagerService, private playerService:PlayerService) {
@@ -30,35 +31,43 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
     }
 
     ngOnInit() {
-        this.subs.push(this.keyboardEventService.getKeyDownEventSubject().subscribe(customKeyboardEvent => {
-            console.log("customKeyboardEvent",customKeyboardEvent);
-            if(customKeyboardEvent.event.keyCode == 13){ //  == 'Enter'
-                if(this.screenId < 4){
-                    this.screenId++;
-                    if(this.screenId == 4){ // used to be 6 for screen 4+5 but those have been removed
-                        // lets assume the user picked a player here
-						this.screenId = 6;
-                        this.playerService.initPlayer();
-                        this.levelManagerService.initLevel(LevelEnum.LevelOne);
-                    }
-                } else if(this.screenId == 20 || this.screenId == 30){
-                    this.screenId = 3;
+      this.subs.push(this.keyboardEventService.getKeyDownEventSubject().subscribe(customKeyboardEvent => {
+        console.log("customKeyboardEvent",customKeyboardEvent);
+        if(customKeyboardEvent.event.keyCode == 13) { //  == 'Enter'
+            if(this.screenId < 4) {
+                this.screenId++;
+                if(this.screenId == 4) { // used to be 6 for screen 4+5 but those have been removed
+                    // lets assume the user picked a player here
+                    this.screenId = 6;
+                    this.playerService.initPlayer();
+                    this.levelManagerService.initLevel(LevelEnum.LevelOne);
                 }
+            } else if(this.screenId == 20) {
+                this.screenId = 3;
+            } else if(this.screenId == 30) {
+              this.screenId = 35;
+              this.playerService.initPlayer(this.playerScore, this.playerLives);
+              this.levelManagerService.initLevel(LevelEnum.LevelTwo);
             }
-			if(customKeyboardEvent.event.keyCode == 38 || customKeyboardEvent.event.keyCode == 40 || customKeyboardEvent.event.keyCode == 87 || customKeyboardEvent.event.keyCode == 83){ //  == 'Enter'
-				if(this.screenId == 3){
-					this.levelManagerService.difficulty = (this.levelManagerService.difficulty==0)?1:0;
-				}
-			}
-        }));
+        }
+        if(customKeyboardEvent.event.keyCode == 38 || customKeyboardEvent.event.keyCode == 40 || customKeyboardEvent.event.keyCode == 87 || customKeyboardEvent.event.keyCode == 83){ //  == 'Enter'
+          if(this.screenId == 3){
+            let diff =  this.levelManagerService.difficulty +1;
+            if(diff > 2) diff = 0;
+            this.levelManagerService.difficulty = diff;
+          }
+        }
+      }));
         this.subs.push(this.playerService.getPlayerLivesGoneSubject().subscribe(playerObj => {
             this.levelManagerService.pauseGame(); // no point in it running for eternity
             this.playerScore =  playerObj.score;
+            this.playerLives =  playerObj.lives;
             this.screenId = 20;
         }));
 		this.subs.push(this.levelManagerService.getLevelCompleteSubject().subscribe(result => {
 			this.levelManagerService.pauseGame(); // no point in it running for eternity
 			this.playerScore =  this.playerService.currentPlayer.score;
+			this.playerLives =  this.playerService.currentPlayer.lives;
 			this.screenId = 30;
         }));
     }

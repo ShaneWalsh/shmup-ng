@@ -24,7 +24,7 @@ export class LogicService {
 	 * the translateX + Y when drawing something that is its own source of truth, e.g a turret, the defaults are fine.
 	 * When calcualting the rotation of an object based off the rotation of another, eg. a bullet from a turret
 	 * the translateX + Y need to be calcualted by rotating the center of the bullet, and use this rotated ceneter as the translateX + Y
-	 * and workout the x,y from the translateX + Y - sx+sy. 
+	 * and workout the x,y from the translateX + Y - sx+sy.
 	 *
 	 */
   public static drawRotateImage(imageObj, ctx, rotation, x, y, sx, sy, lx = x, ly = y, lxs = sx, lys = sy, translateX = x + (sx / 2), translateY = y + (sy / 2)) {
@@ -48,6 +48,13 @@ export class LogicService {
     ctx.lineWidth = 1;
   	ctx.strokeStyle = color;
   	ctx.strokeRect(x,y,sizeX,sizeY);
+  }
+
+  public static writeOnCanvas(x,y,text,size,color1,ctx){
+    ctx.font = size + "px 'Century Gothic'"; // Supertext 01
+    ctx.fillStyle = color1;
+    ctx.fillText(text, x, y);
+    //ctx.fill();
   }
 
 }

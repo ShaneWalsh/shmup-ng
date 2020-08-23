@@ -6,6 +6,7 @@ import { BulletManagerService, BulletDirection } from "src/app/manager/bullet-ma
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { LogicService } from "src/app/services/logic.service";
 import { Guardian1 } from "src/app/domain/bots/Guardian1";
+import { CanvasContainer } from "../CanvasContainer";
 
 export class GuardianCreeper extends Guardian1 {
 
@@ -34,8 +35,9 @@ export class GuardianCreeper extends Guardian1 {
 		this.imageObj = imageObj1;
 	}
 
-	update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {
-		let currentPlayer = playerService.currentPlayer;
+	update(levelInstance:LevelInstance, canvasContainer:CanvasContainer, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {
+    let currentPlayer = playerService.currentPlayer;
+    let ctx = canvasContainer.mainCtx;
 		this.angleDirection = bulletManagerService.calculateBulletDirection(this.posX+(this.imageSizeX/2), this.posY+(this.imageSizeY/2), currentPlayer.getCenterX(), currentPlayer.getCenterY(), this.bulletSpeed, true, currentPlayer);
 
 		if(this.canShootNow == false && (this.retreatAfterShotsFired < this.retreatAfterShotsFiredLimit)) {

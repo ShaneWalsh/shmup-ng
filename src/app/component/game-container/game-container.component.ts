@@ -5,6 +5,7 @@ import { LevelManagerService } from 'src/app/manager/level-manager.service';
 import { BotManagerService } from 'src/app/manager/bot-manager.service';
 import { BulletManagerService } from 'src/app/manager/bullet-manager.service';
 import { Subscription } from '../../../../node_modules/rxjs';
+import { CanvasContainer } from 'src/app/domain/CanvasContainer';
 
 @Component({
   selector: 'app-game-container',
@@ -19,7 +20,9 @@ export class GameContainerComponent implements OnInit, OnDestroy {
     }
     private subs:Subscription[] = [];
 
-    @ViewChild('canvas') public canvas: ElementRef;
+    @ViewChild('canvasBG') public canvasBG: ElementRef;
+    @ViewChild('canvasShadow') public canvasShadow: ElementRef;
+    @ViewChild('canvas') public canvasMain: ElementRef;
 
     introOver:boolean = true; // set to true for testing to skip the intro
     introTicker:number = 0;
@@ -28,8 +31,16 @@ export class GameContainerComponent implements OnInit, OnDestroy {
     introAnimationTimer: number = 0;
     introAnimationBlackScreen : number = 0;
     tickComplete:boolean=true;
-    canvasEl: any;
-    ctx: CanvasRenderingContext2D;
+
+    bgCanvasEl: any;
+    bgCtx: CanvasRenderingContext2D;
+    shadowCanvasEl: any;
+    shadowCtx: CanvasRenderingContext2D;
+    mainCanvasEl: any;
+    mainCtx: CanvasRenderingContext2D;
+
+    canvasContainer:CanvasContainer;
+
     @Input() public width = 480;
     @Input() public height = 640;
     @Input() public requestAnimFrame: any;
@@ -59,12 +70,25 @@ export class GameContainerComponent implements OnInit, OnDestroy {
 
 //https://stackoverflow.com/questions/51214548/angular-5-with-canvas-drawimage-not-showing-up
     public ngAfterViewInit() {
-        this.canvasEl = this.canvas.nativeElement;
-        this.ctx = this.canvasEl.getContext('2d');
+        this.bgCanvasEl = this.canvasBG.nativeElement;
+        this.bgCtx = this.bgCanvasEl.getContext('2d');
 
-        this.canvasEl.width = this.width;
-        this.canvasEl.height = this.height;
+        this.bgCanvasEl.width = this.width;
+        this.bgCanvasEl.height = this.height;
 
+        this.shadowCanvasEl = this.canvasShadow.nativeElement;
+        this.shadowCtx = this.shadowCanvasEl.getContext('2d');
+
+        this.shadowCanvasEl.width = this.width;
+        this.shadowCanvasEl.height = this.height;
+
+        this.mainCanvasEl = this.canvasMain.nativeElement;
+        this.mainCtx = this.mainCanvasEl.getContext('2d');
+
+        this.mainCanvasEl.width = this.width;
+        this.mainCanvasEl.height = this.height;
+
+        this.canvasContainer = new CanvasContainer(this.bgCanvasEl,this.bgCtx,this.shadowCanvasEl,this.shadowCtx,this.mainCanvasEl,this.mainCtx);
         if (this.introOver) {
             this.levelManagerService.unPauseGame();
         }
@@ -84,44 +108,49 @@ export class GameContainerComponent implements OnInit, OnDestroy {
                 this.introOver = true;
                 this.levelManagerService.unPauseGame();
             } else {
-                this.ctx.clearRect(0, 0, this.canvasEl.width, this.canvasEl.height);
+                this.bgCtx.clearRect(0, 0, this.bgCanvasEl.width, this.bgCanvasEl.height);
+                this.shadowCtx.clearRect(0, 0, this.shadowCanvasEl.width, this.shadowCanvasEl.height);
+                this.mainCtx.clearRect(0, 0, this.mainCanvasEl.width, this.mainCanvasEl.height);
                 const currentLevel = this.levelManagerService.getCurrentLevel();
                 // have a level manager, that controls the background and the spawning, updates first. 4 levels, controls boss spawn.
-                currentLevel.updateIntro(this.ctx);
+                currentLevel.updateIntro(this.mainCtx);
                 if (this.introTicker < 200) {// 275
-                    this.ctx.fillRect(0, 0, 640, 640);
-                    this.ctx.fillRect(320, 240, 320, 240);
+                    this.mainCtx.fillRect(0, 0, 640, 640);
+                    this.mainCtx.fillRect(320, 240, 320, 240);
                 } else {
                     this.introAnimationBlackScreen += 5;
-                    this.ctx.fillRect((-1) * this.introAnimationBlackScreen, 0, 240, 640);
-                    this.ctx.fillRect(240 + this.introAnimationBlackScreen, 0, 240, 640);
+                    this.mainCtx.fillRect((-1) * this.introAnimationBlackScreen, 0, 240, 640);
+                    this.mainCtx.fillRect(240 + this.introAnimationBlackScreen, 0, 240, 640);
                 }
 
                 let res = this.resourcesService.getRes().get("new-intro-1");
-                this.ctx.drawImage(res, 70, 90, 500, 60, 70, 100, 500, 70);
+                this.mainCtx.drawImage(res, 70, 90, 500, 60, 70, 100, 500, 70);
                 let fullInit = this.resourcesService.getRes().get("new-intro-16");
                 const xSize = (70) + (this.introAnimation * 15);
-                this.ctx.drawImage(fullInit, 70, 90, xSize, 60,    70, 100, xSize, 70);
+                this.mainCtx.drawImage(fullInit, 70, 90, xSize, 60,    70, 100, xSize, 70);
 
-                this.playerService.currentPlayer.updateIntro(this.ctx, this.introAnimation);
+                this.playerService.currentPlayer.updateIntro(this.mainCtx, this.introAnimation);
             }
         } else {
             if(this.levelManagerService.getNotPaused()){
-                this.ctx.clearRect(0, 0, this.canvasEl.width, this.canvasEl.height);
+                this.bgCtx.clearRect(0, 0, this.bgCanvasEl.width, this.bgCanvasEl.height);
+                this.shadowCtx.clearRect(0, 0, this.shadowCanvasEl.width, this.shadowCanvasEl.height);
+                this.mainCtx.clearRect(0, 0, this.mainCanvasEl.width, this.mainCanvasEl.height);
+
                 const currentLevel = this.levelManagerService.getCurrentLevel();
                 // have a level manager, that controls the background and the spawning, updates first. 4 levels, controls boss spawn.
-                currentLevel.update(this.ctx);
+                currentLevel.update(this.canvasContainer,this.playerService);
 
                 // have a bot manager to move the bots (gen bullets, patterns etc)
-                this.botManagerService.update(currentLevel, this.ctx, this.bulletManagerService, this.playerService);
+                this.botManagerService.update(currentLevel, this.canvasContainer, this.bulletManagerService, this.playerService);
 
                 // update for the player (Gen bullets)
-                this.playerService.currentPlayer.update(currentLevel, this.ctx, this.bulletManagerService, this.botManagerService);
+                this.playerService.currentPlayer.update(currentLevel, this.canvasContainer, this.bulletManagerService, this.botManagerService);
 
                 // have a bullet manager to move the bullets, do collision detection
                     // some bullets should be destructable.
                     // some cannot be destroyed
-                this.bulletManagerService.update(currentLevel, this.ctx, this.botManagerService, this.playerService);
+                this.bulletManagerService.update(currentLevel, this.canvasContainer, this.botManagerService, this.playerService);
 
                 // vertical and horizontal, bare that in mind....
 

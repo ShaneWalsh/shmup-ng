@@ -5,6 +5,7 @@ import { BotManagerService } from "src/app/manager/bot-manager.service";
 import { BulletManagerService, BulletDirection } from "src/app/manager/bullet-manager.service";
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { LogicService } from "src/app/services/logic.service";
+import { CanvasContainer } from "../CanvasContainer";
 
 export class Level1Boss1 extends BotInstanceImpl {
     public boss1State: Boss1State = null;
@@ -71,8 +72,9 @@ export class Level1Boss1 extends BotInstanceImpl {
         this.setState(new Boss1State(this));
     }
 
-    update(levelInstance: LevelInstance, ctx: CanvasRenderingContext2D, botManagerService: BotManagerService, bulletManagerService: BulletManagerService, playerService: PlayerService, ) {
-        this.boss1State.update(levelInstance, ctx, botManagerService, bulletManagerService, playerService);
+    update(levelInstance: LevelInstance, canvasContainer:CanvasContainer, botManagerService: BotManagerService, bulletManagerService: BulletManagerService, playerService: PlayerService, ) {
+      let ctx = canvasContainer.mainCtx;
+      this.boss1State.update(levelInstance, ctx, botManagerService, bulletManagerService, playerService);
     }
 
 

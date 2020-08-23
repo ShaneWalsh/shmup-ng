@@ -7,6 +7,7 @@ import { PlayerService } from 'src/app/services/player.service';
 import { BulletInstance } from 'src/app/domain/bullet/BulletInstance';
 import { HitBox } from 'src/app/domain/HitBox';
 import { LogicService } from 'src/app/services/logic.service';
+import { CanvasContainer } from '../domain/CanvasContainer';
 
 @Injectable({
   providedIn: 'root'
@@ -26,12 +27,12 @@ export class BulletManagerService {
         this.bulletsArr = [];
     }
 
-    update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, botManagerService:BotManagerService, playerService:PlayerService): any {
+    update(levelInstance:LevelInstance, canvasContainer:CanvasContainer, botManagerService:BotManagerService, playerService:PlayerService): any {
         //throw new Error("Method not implemented.");
         let bulletArrClone = [...this.bulletsArr]; // why clone it? So I can update the original array without effecting the for loop.
         for(let i = 0; i< bulletArrClone.length; i++){
             const bullet = bulletArrClone[i];
-            bullet.update(levelInstance, ctx, this, botManagerService, playerService);
+            bullet.update(levelInstance, canvasContainer, this, botManagerService, playerService);
         }
     }
 
@@ -175,17 +176,18 @@ class DumbLazer implements BulletInstance {
       return this.bulletDirection.angle;
     }
 
-    update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, bulletManagerService:BulletManagerService, botManagerService:BotManagerService, playerService:PlayerService ){
+    update(levelInstance:LevelInstance, canvasContainer:CanvasContainer, bulletManagerService:BulletManagerService, botManagerService:BotManagerService, playerService:PlayerService ){
         this.bulletDirection.update(this.posX,this.posY);
       this.posX += this.bulletDirection.speed * this.bulletDirection.directionX;
       this.posY += this.bulletDirection.speed * this.bulletDirection.directionY;
+      let ctx = canvasContainer.mainCtx;
 
       if(this.posY < (-this.pad) || this.posX < (0) || this.posY > (levelInstance.getMapHeight()+this.imageSizeY+this.pad) || this.posX > (levelInstance.getMapWidth()+this.imageSizeX+this.pad) ){
         bulletManagerService.removeBullet(this, botManagerService);
         console.log("removed bullet");
       } else {
         let removed:boolean =false;
-        if(this.posY + this.imageSizeY > (levelInstance.getMapHeight()+this.imageSizeY)){
+        if(this.posY + this.imageSizeY > (levelInstance.getMapHeight()+this.imageSizeY + this.pad)){
           bulletManagerService.removeBullet(this, botManagerService);
           removed = true;
         } else {

@@ -4,6 +4,7 @@ import { HitBox } from "src/app/domain/HitBox";
 import { BotManagerService } from "src/app/manager/bot-manager.service";
 import { BulletManagerService, BulletDirection } from "src/app/manager/bullet-manager.service";
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
+import { CanvasContainer } from "../CanvasContainer";
 
 export class Creeper extends BotInstanceImpl{
     public posXSpeed:number = 1.5;
@@ -52,8 +53,9 @@ export class Creeper extends BotInstanceImpl{
 			"bTimerFiringPase3", "bTimerFiringLimit", "health", "score", "firingPhasesToComplete","posYSpeed","posXSpeed"]);
     }
 
-	update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {
-		let currentPlayer = playerService.currentPlayer;
+	update(levelInstance:LevelInstance, canvasContainer:CanvasContainer, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {
+    let currentPlayer = playerService.currentPlayer;
+    let ctx = canvasContainer.mainCtx;
 		if(!this.movedIn){
 			this.posY += this.posYSpeed;
 			if(this.posY > 5){

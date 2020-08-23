@@ -5,20 +5,22 @@ import { BotManagerService } from "src/app/manager/bot-manager.service";
 // to prove it all works. Then can think about how to expose this to yourman,
 // how to get past the cors, the problem is my images are from file :/ not included in the pollyfils due to the way i load them.
 export enum BotType {
-    DIVER="DIVER",
-    FIGHTER="FIGHTER",
-    DRONE="DRONE",
-    CREEPER="CREEPER",
-    ROCK="ROCK",
+  DIVER="DIVER",
+  FIGHTER="FIGHTER",
+  DRONE="DRONE",
+  CREEPER="CREEPER",
+  ROCK="ROCK",
 	GUARDIAN1="GUARDIAN1",
-	GUARDIANCREEPER="GUARDIANCREEPER",
+  GUARDIANCREEPER="GUARDIANCREEPER",
 
-    MINIBOSS1="MINIBOSS1", // move on a phase after a mini boss dies.
-    MINIBOSS2 = "MINIBOSS2",
-    MAINBOSS1 = "MAINBOSS1",
-		MINIBOSS1L2 = "MINIBOSS1L2",
+  BUGGY="BUGGY",
 
-    BOSS1="BOSS1" // move on a phase after a mini boss dies.
+  MINIBOSS1="MINIBOSS1", // move on a phase after a mini boss dies.
+  MINIBOSS2 = "MINIBOSS2",
+  MAINBOSS1 = "MAINBOSS1",
+  MINIBOSS1L2 = "MINIBOSS1L2",
+
+  BOSS1="BOSS1" // move on a phase after a mini boss dies.
 }
 
 // Extract Events to an events class.
@@ -85,6 +87,8 @@ export class SpawnBotEvent extends LevelEvent {
             botManagerService.generateGuardian1(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.GUARDIANCREEPER) {
             botManagerService.generateGuardianCreeper(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
+        } else if (this.botType == BotType.BUGGY) {
+            botManagerService.generateBuggy(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.MINIBOSS1) {
             botManagerService.generateLevel1SubBoss1(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.MINIBOSS2) {
@@ -122,7 +126,6 @@ export class LevelOverEvent extends LevelEvent{
     }
 
     public triggerEvent(botManagerService:BotManagerService, levelManagerService:LevelManagerService){
-		console.log("Boom");
-		levelManagerService.getLevelCompleteSubject().next(levelManagerService.getCurrentLevel());
+		  levelManagerService.getLevelCompleteSubject().next(levelManagerService.getCurrentLevel());
     }
 }

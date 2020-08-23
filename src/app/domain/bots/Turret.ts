@@ -40,7 +40,7 @@ export class Turret {
     this.posY = posY;
     if(this.targetObject != null) {
       this.angleDirection = bulletManagerService.calculateBulletDirection(this.posX+this.rotationXOffset, this.posY+this.rotationYOffset, this.targetObject.getCenterX(), this.targetObject.getCenterY(), this.bulletSpeed, true, this.targetObject);
-      LogicService.drawRotateImage(this.imageObjTurret,ctx,this.angleDirection.angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY,this.posX,this.posY,this.imageSizeX,this.imageSizeY,this.posX+8,this.posY+8);
+      LogicService.drawRotateImage(this.imageObjTurret,ctx,this.angleDirection.angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY,this.posX,this.posY,this.imageSizeX,this.imageSizeY,this.posX+this.rotationXOffset,this.posY+this.rotationYOffset);
     } else { // will always point straight ahead
       this.angleDirection = bulletManagerService.calculateBulletDirection(this.posX+this.rotationXOffset, this.posY+this.rotationYOffset, this.posX+this.rotationXOffset, this.posY+this.rotationYOffset+100, this.bulletSpeed, true, null);
       LogicService.drawRotateImage(this.imageObjTurret,ctx,this.angleDirection.angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY);
@@ -78,9 +78,7 @@ export class Turret {
 	}
 
 	canShoot(levelInstance:LevelInstance, currentPlayer:PlayerObj){
-		if(levelInstance.isVertical() && this.getCenterY() > 0){
-			return true;
-		} else if(!levelInstance.isVertical() && this.getCenterX() > currentPlayer.getCenterX()){
+		if(this.getCenterY() < levelInstance.getMapHeight()){
 			return true;
 		}
 		return false;

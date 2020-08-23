@@ -5,6 +5,7 @@ import { BotManagerService } from "src/app/manager/bot-manager.service";
 import { BulletManagerService, BulletDirection } from "src/app/manager/bullet-manager.service";
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { LogicService } from "src/app/services/logic.service";
+import { CanvasContainer } from "../CanvasContainer";
 
 export class Level1SubBoss2 extends  BotInstanceImpl {
     public phaseCounter = -1;
@@ -62,8 +63,9 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
 		this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score","moveSpeed","bulletSpeed"]);
     }
 
-	update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {
-		let currentPlayer = playerService.currentPlayer;
+	update(levelInstance:LevelInstance, canvasContainer:CanvasContainer, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {
+    let currentPlayer = playerService.currentPlayer;
+    let ctx = canvasContainer.mainCtx;
 		if (this.phaseCounter == -1){
 			this.posY += this.moveSpeed;
 			if(this.posY > -10){

@@ -162,7 +162,7 @@ export class LevelEventsService {
 		// blade right
 		le.push(new SpawnBotEvent(0, 190, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
 		le.push(new SpawnBotEvent(0, 200, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
-		le.push(new SpawnBotEvent(0, 210, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
+    le.push(new SpawnBotEvent(0, 210, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
 		// blade left
 		le.push(new SpawnBotEvent(0, 260, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
 		le.push(new SpawnBotEvent(0, 270, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
@@ -373,4 +373,226 @@ export class LevelEventsService {
 
       return le;
   }
+
+	getLevel2Events(difficulty:number):LevelEvent[] {
+		let le = [];
+
+    // buggy will move to the moveToXCord after it spawns, using the posXSpeed. posYSpeed should match the screen scroll speed of 1.
+    let buggyConfig = {
+			bulletSpeed: 6,
+			posXSpeed: 1.5,
+			posYSpeed: 1,
+      bTimerLimit: 90,
+      moveToXCord: 80,
+			score: 1000,
+			health:5,
+		};
+
+		let diverConfig = {
+			bulletSpeed: 3, // how fast this bots buttets travel every tick
+			posXSpeed: 1.5,
+			posYSpeed: 2, // the speed the bot moves in the X and y Directions every Tick, X = Left/Right Y=Up/Down
+			bTimerLimit: 60, // this means that a diver fires a button once every 40 ticks, e.g 3 times in 2 seconds.
+			score: 2000, // this is only added to the players score if they kill the bot, if it leaves the screen the bot is simply removed.
+			health:7, // health, when 0 Diver is dead.
+		};
+		// main boss guardian
+		let guardian1Config = {
+			bulletSpeed: 3, // how fast this bots buttets travel every tick
+			posXSpeed: 1.5,
+			posYSpeed: 1.5, // the speed the bot moves in the X and y Directions every Tick
+			bTimerLimit: 60, // this means that a diver fires a button once every 40 ticks, e.g 3 times in 2 seconds.
+			score: 2000, // this is only added to the players score if they kill the bot, if it leaves the screen the bot is simply removed.
+			health:100, // health, when 0 Diver is dead.
+		};
+		let guardianCreeperConfig = {
+			bulletSpeed: 6, // how fast this bots buttets travel every tick
+			posXSpeed: 1.5,
+			posYSpeed: 2, // the speed the bot moves in the X and y Directions every Tick
+			bTimerLimit: 60, // this means that a diver fires a button once every 40 ticks, e.g 3 times in 2 seconds.
+			score: 2000, // this is only added to the players score if they kill the bot, if it leaves the screen the bot is simply removed.
+			health:30, // health, when 0 Diver is dead.
+			retreatAfterShotsFiredLimit:5
+		};
+		// original fast moving fast shooting fighter enemy-2-2
+		let droneConfig = {
+			bulletSpeed: 6,
+			posXSpeed: 2,
+			posYSpeed: 2,
+			bTimerLimit: 60,
+			score: 1500,
+			health: 5,
+		};
+		// basic fast moving fast shooting redesigned fighter enemy-1-1
+		let fighterConfig = {
+			bulletSpeed: 6,
+			posXSpeed: 3,
+			posYSpeed: 3,
+			bTimerLimit: 90,
+			anaimationTimerLimit:4, // the bot has an animation for its engine, this animation swaps every 4 ticks.
+			score: 1000,
+			health:5,
+		};
+		// top of the screen creeper enemy-07
+		let creeperConfig = {
+			posXSpeed: 1.5,
+			posYSpeed: 1.5,
+			bTimerLimit: 60,
+			score: 2500,
+			health:12,
+		};
+		// big fat slow guy, enemy-2-1
+		let rockConfig = {
+			posXSpeed: 3,
+			posYSpeed: 2,
+			score: 5000,
+			health:36,
+			driftXDistance:50
+		};
+		// giant fighter with two bullets
+		let level1MiniBoss1 = {
+			bulletSpeed: 6,
+			posXSpeed: 3,
+			posYSpeed: 1.5,
+			bTimerLimit: 30,
+			anaimationTimerLimit:4, // the bot has an animation for its engine, this animation swaps every 4 ticks.
+			score: 20000,
+			health:400,
+		};
+		// spinning boss guy
+		let level1MiniBoss2 = {
+			bulletSpeed: 6,
+			moveSpeed: 5,
+			bTimerLimit: 20,
+			score: 25000,
+			health: 300,
+		};
+		// big boss with the big laser
+		let level1MainBoss1 = {
+			score: 50000,
+			health:250,
+		};
+
+		let level2MiniBoss1 = {
+			bulletSpeed: 6,
+			posXSpeed: 3,
+			posYSpeed: 1.5,
+			bTimerLimit: 30,
+			mTimerLimit: 60,
+			missileSpeed: 4.5,
+			destinationY: 1,
+			anaimationTimerLimit:4, // the bot has an animation for its engine, this animation swaps every 4 ticks.
+			score: 20000,
+			health:200,
+		};
+
+		if(difficulty == 0){ // easy difficulty, so reducing the bots health
+			// here I am overiding the fighters health and reducing it to one, and keeping all of the other values defined above.
+			fighterConfig = {...fighterConfig, health:3}
+			// reducing drones health
+			droneConfig = {...droneConfig, health: 3 }
+			// reducing rocks health
+			rockConfig = {...rockConfig, health: 26 }
+			// reducing diver fire rate
+			diverConfig = {...diverConfig, bTimerLimit: 90 }
+			// reducing guardians health
+			guardian1Config = {...guardian1Config, health: 70 }
+			// reducing guardianCreepers health and shot limit
+			guardianCreeperConfig = {...guardianCreeperConfig, health: 22, retreatAfterShotsFiredLimit: 3 }
+			// reducing miniboss 1 health and fire rate
+			level1MiniBoss1 = {...level1MiniBoss1, health: 300, bTimerLimit: 90 }
+			// reducing miniboss 2 health and fire rate
+			level1MiniBoss2 = {...level1MiniBoss2, health: 200, bTimerLimit: 35 }
+			// reducing main boss 1 health
+			level1MainBoss1 = {...level1MainBoss1, health: 175 }
+		} else if(difficulty == 1){ // normal, can just use the default settings above.
+			// use the defaults defined above
+		} else { //todo hard one day I assume
+			// todo
+		}
+
+		//#########################################################################################
+		//######################          Phase Zero        #######################################
+    //#########################################################################################
+    le.push(new SpawnBotEvent(0, 90, false, 0, BotType.BUGGY, buggyConfig, false, -30, 50));
+    le.push(new SpawnBotEvent(0, 90, false, 0, BotType.BUGGY, {...buggyConfig, moveToXCord: 300}, false, 400, 50));
+		// wings middle
+		le.push(new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));
+		le.push(new SpawnBotEvent(0, 80, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));
+		le.push(new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
+		// blade right
+		le.push(new SpawnBotEvent(0, 190, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
+		le.push(new SpawnBotEvent(0, 200, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
+		le.push(new SpawnBotEvent(0, 210, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
+		// blade left
+		le.push(new SpawnBotEvent(0, 260, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
+		le.push(new SpawnBotEvent(0, 270, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
+		le.push(new SpawnBotEvent(0, 280, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
+		le.push(new SpawnBotEvent(0, 400, false, 0, BotType.DIVER, diverConfig, false, 10, -60));
+		le.push(new SpawnBotEvent(0, 450, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));
+		le.push(new SpawnBotEvent(0, 430, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));
+		le.push(new SpawnBotEvent(0, 450, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
+		le.push(new SpawnBotEvent(0, 400, false, 0, BotType.DIVER, diverConfig, false, 420, -60));
+		le.push(new SpawnBotEvent(0, 700, false, 0, BotType.DRONE, droneConfig, false, 100, -60));
+		le.push(new SpawnBotEvent(0, 720, false, 0, BotType.DRONE, droneConfig, false, 160, -60));
+		le.push(new SpawnBotEvent(0, 740, false, 0, BotType.DRONE, droneConfig, false, 220, -60));
+		le.push(new SpawnBotEvent(0, 720, false, 0, BotType.DRONE, droneConfig, false, 280, -60));
+		le.push(new SpawnBotEvent(0, 700, false, 0, BotType.DRONE, droneConfig, false, 340, -60));
+		le.push(new SpawnBotEvent(0, 900, false, 0, BotType.ROCK, rockConfig, false, 220, -80));
+		le.push(new SpawnBotEvent(0, 1200, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
+		le.push(new SpawnBotEvent(0, 1210, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
+		le.push(new SpawnBotEvent(0, 1220, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
+		le.push(new SpawnBotEvent(0, 1210, false, 0, BotType.DIVER, diverConfig, false, 70, -60));
+		le.push(new SpawnBotEvent(0, 1500, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
+		le.push(new SpawnBotEvent(0, 1510, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
+		le.push(new SpawnBotEvent(0, 1520, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
+		le.push(new SpawnBotEvent(0, 1510, false, 0, BotType.DIVER, diverConfig, false, 360, -60));
+		le.push(new SpawnBotEvent(0, 1600, false, 0, BotType.ROCK, rockConfig, false, 120, -80));
+		le.push(new SpawnBotEvent(0, 1600, false, 0, BotType.ROCK, rockConfig, false, 320, -80));
+		le.push(new SpawnBotEvent(0, 1800, false, 0, BotType.DIVER, diverConfig, false, 200, -60));
+		le.push(new SpawnBotEvent(0, 1800, false, 0, BotType.DIVER, diverConfig, false, 280, -60));
+		le.push(new SpawnBotEvent(0, 1960, false, 0, BotType.DRONE, droneConfig, false, 10, -60));
+		le.push(new SpawnBotEvent(0, 1930, false, 0, BotType.DRONE, droneConfig, false, 70, -60));
+		le.push(new SpawnBotEvent(0, 1930, false, 0, BotType.DRONE, droneConfig, false, 360, -60));
+		le.push(new SpawnBotEvent(0, 1960, false, 0, BotType.DRONE, droneConfig, false, 420, -60));
+		le.push(new SpawnBotEvent(0, 2200, false, 0, BotType.FIGHTER, fighterConfig, false, 60, -60));
+		le.push(new SpawnBotEvent(0, 2215, false, 0, BotType.FIGHTER, fighterConfig, false, 120, -60));
+		le.push(new SpawnBotEvent(0, 2230, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));
+		le.push(new SpawnBotEvent(0, 2245, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));
+		le.push(new SpawnBotEvent(0, 2230, false, 0, BotType.DIVER, diverConfig, false, 420, -60));
+		le.push(new SpawnBotEvent(0, 2500, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
+		le.push(new SpawnBotEvent(0, 2515, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
+		le.push(new SpawnBotEvent(0, 2530, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
+		le.push(new SpawnBotEvent(0, 2545, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));
+		le.push(new SpawnBotEvent(0, 2530, false, 0, BotType.DIVER, diverConfig, false, 60, -60));
+		le.push(new SpawnBotEvent(0, 2700, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
+		le.push(new SpawnBotEvent(0, 2730, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
+		le.push(new SpawnBotEvent(0, 2760, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
+		le.push(new SpawnBotEvent(0, 2700, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
+		le.push(new SpawnBotEvent(0, 2730, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
+		le.push(new SpawnBotEvent(0, 2760, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
+		le.push(new SpawnBotEvent(0, 2960, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
+		le.push(new SpawnBotEvent(0, 2930, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
+		le.push(new SpawnBotEvent(0, 2900, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
+		le.push(new SpawnBotEvent(0, 2960, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
+		le.push(new SpawnBotEvent(0, 2930, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
+		le.push(new SpawnBotEvent(0, 2900, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
+		le.push(new SpawnBotEvent(0, 3000, false, 0, BotType.ROCK, rockConfig, false, 240, -80));
+		le.push(new SpawnBotEvent(0, 3100, false, 0, BotType.DRONE, droneConfig, false, 100, -60));
+		le.push(new SpawnBotEvent(0, 3120, false, 0, BotType.DRONE, droneConfig, false, 160, -60));
+		le.push(new SpawnBotEvent(0, 3140, false, 0, BotType.DRONE, droneConfig, false, 220, -60));
+		le.push(new SpawnBotEvent(0, 3120, false, 0, BotType.DRONE, droneConfig, false, 280, -60));
+		le.push(new SpawnBotEvent(0, 3100, false, 0, BotType.DRONE, droneConfig, false, 340, -60));
+
+
+		le.push(new SpawnBotEvent(0, 3240, false, 0, BotType.ROCK, rockConfig, false, 240, -80));
+		le.push(new SpawnBotEvent(0, 3300, false, 0, BotType.FIGHTER, fighterConfig, false, 120, -60));
+		le.push(new SpawnBotEvent(0, 3300, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
+
+		// I've put in the new boss here so you can see him in action!
+    le.push(new SpawnBotEvent(0, 3700, false, 0, BotType.MINIBOSS1L2, level2MiniBoss1, false, 100, -300));
+    le.push(new LevelOverEvent(1,100));
+    return le;
+
+	}
 }

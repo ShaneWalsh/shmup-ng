@@ -19,6 +19,8 @@ import { Guardian1 } from 'src/app/domain/bots/Guardian1';
 import { GuardianCreeper } from 'src/app/domain/bots/GuardianCreeper';
 import { Level2SubBoss1 } from 'src/app/domain/bots/Level2SubBoss1';
 import { Level2SubBoss1V2 } from '../domain/bots/Level2SubBoss1V2';
+import { CanvasContainer } from '../domain/CanvasContainer';
+import { Buggy } from '../domain/bots/ground/Buggy';
 
 /**
  * Going to manage the created bots, spawned by the level manager. Its going to emit when they are destroyed or when they leave the screen.
@@ -45,12 +47,12 @@ export class BotManagerService {
         this.spriteSheetArr = [];
     }
 
-    update(levelInstance: LevelInstance, ctx: CanvasRenderingContext2D, bulletManagerService: BulletManagerService, playerService: PlayerService): any {
+    update(levelInstance: LevelInstance, canvasContainer:CanvasContainer, bulletManagerService: BulletManagerService, playerService: PlayerService): any {
         //throw new Error("Method not implemented.");
         let botArrClone = [...this.botsArr]; // why clone it? So I can update the original array without effecting the for loop.
         for (let i = 0; i < botArrClone.length; i++) {
             const bot = botArrClone[i];
-            bot.update(levelInstance, ctx, this, bulletManagerService, playerService);
+            bot.update(levelInstance, canvasContainer, this, bulletManagerService, playerService);
             if (playerService.currentPlayer && bot.getPlayerCollisionHitBoxes() != null && bot.getPlayerCollisionHitBoxes().length > 0){
               const collsionBoxes = bot.getPlayerCollisionHitBoxes();
               for(let i = 0; i < collsionBoxes.length;i++){
@@ -68,7 +70,7 @@ export class BotManagerService {
         let spriteSheetArrClone = [...this.spriteSheetArr]; // why clone it? So I can update the original array without effecting the for loop.
         for (let i = 0; i < spriteSheetArrClone.length; i++) {
             const bot = spriteSheetArrClone[i];
-            bot.update(levelInstance, ctx, this, bulletManagerService, playerService);
+            bot.update(levelInstance, canvasContainer, this, bulletManagerService, playerService);
         }
     }
 
@@ -95,8 +97,18 @@ export class BotManagerService {
 						this.resourcesService.getRes().get("enemy-08-damaged"));
 					this.botsArr.push(newBot);
 					this.botCreated.next(newBot);
-			}
+      }
 
+
+    generateBuggy(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
+        let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
+        let newBot = new Buggy(config, posObj.posX, posObj.posY, this.resourcesService.getRes().get("ground-enemy-1-1"),
+        this.resourcesService.getRes().get("ground-enemy-1-1-cannon"),
+        this.resourcesService.getRes().get("miniboss-3-muzzle-flash"),
+         120, 70);
+        this.botsArr.push(newBot);
+        this.botCreated.next(newBot);
+    }
 
     generateFighter(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
         let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
@@ -107,7 +119,7 @@ export class BotManagerService {
 
     generateFighterV2(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
         let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
-        let newBot = new Fighter(config, posObj.posX, posObj.posY, this.resourcesService.getRes().get("enemy-1-1-v2"), this.resourcesService.getRes().get("enemy-1-2-v2"), 48, 78, new HitBox(0, 0, 48, 78), this.resourcesService.getRes().get("enemy-1-damaged-v2"));
+        let newBot = new Fighter(config, posObj.posX, posObj.posY, this.resourcesService.getRes().get("enemy-1-1-v2"), this.resourcesService.getRes().get("enemy-1-2-v2"), 48, 78, new HitBox(0, 0, 48, 78), this.resourcesService.getRes().get("enemy-1-damaged-v2"),this.resourcesService.getRes().get("enemy-1-1-shadow-separate"));
         this.botsArr.push(newBot);
         this.botCreated.next(newBot);
     }

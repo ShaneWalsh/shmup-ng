@@ -4,27 +4,28 @@ import { HitBox } from "src/app/domain/HitBox";
 import { BotManagerService } from "src/app/manager/bot-manager.service";
 import { BulletManagerService, BulletDirection } from "src/app/manager/bullet-manager.service";
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
+import { CanvasContainer } from "../CanvasContainer";
 
 export class Fighter extends BotInstanceImpl{
 	public bulletSpeed:number = 6;
-    public posXSpeed:number = 3;
-    public posYSpeed:number = 3;
+  public posXSpeed:number = 3;
+  public posYSpeed:number = 3;
 
-    public bTimer:number = 0; // bullet timer
-    public bTimerLimit:number = 30;
+  public bTimer:number = 0; // bullet timer
+  public bTimerLimit:number = 30;
 
-    public anaimationTimer:number = 0;
-    public anaimationTimerLimit:number =4;
+  public anaimationTimer:number = 0;
+  public anaimationTimerLimit:number =4;
 
 	public damAnaimationTimer:number = 8;
 	public damAnaimationTimerLimit:number =8;
 
-    public imageObj:HTMLImageElement;
+  public imageObj:HTMLImageElement;
 
-    public score:number = 10;
+  public score:number = 10;
 
 	public health:number=3;
-    constructor(
+  constructor(
 		public config:any={},
         public posX:number=0,
         public posY:number=0,
@@ -33,20 +34,25 @@ export class Fighter extends BotInstanceImpl{
         public imageSizeX:number=90,
         public imageSizeY:number=60,
         public hitBox:HitBox=new HitBox(0,0,imageSizeX,imageSizeY),
-				public imageObjDamaged: HTMLImageElement = imageObj1
+				public imageObjDamaged: HTMLImageElement = imageObj1,
+				public imageObjShadow: HTMLImageElement = null
     ){
-        super(config);
-		this.tryConfigValues(["bulletSpeed","posXSpeed","posYSpeed","bTimer","bTimerLimit","score","health"]);
-		this.bTimer = this.bTimerLimit/2;
-        this.imageObj = imageObj1;
-    }
+      super(config);
+		  this.tryConfigValues(["bulletSpeed","posXSpeed","posYSpeed","bTimer","bTimerLimit","score","health"]);
+		  this.bTimer = this.bTimerLimit/2;
+      this.imageObj = imageObj1;
+  }
 
-	update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {
-		let currentPlayer = playerService.currentPlayer;
+	update(levelInstance:LevelInstance, canvasContainer:CanvasContainer, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {
+    let currentPlayer = playerService.currentPlayer;
+    let ctx = canvasContainer.mainCtx;
         this.posY += this.posYSpeed;
         if(this.posY + this.imageSizeY > (levelInstance.getMapHeight()+this.imageSizeY)){
             botManagerService.removeBot(this);
         } else {
+            if(levelInstance.drawShadow() && this.imageObjShadow != null) {
+              this.drawShadow(canvasContainer,this.imageObjShadow,this.posX,this.posY,this.imageSizeX, this.imageSizeY);
+            }
             ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
 						if(this.damAnaimationTimer < this.damAnaimationTimerLimit){
 							this.damAnaimationTimer++;
@@ -78,31 +84,31 @@ export class Fighter extends BotInstanceImpl{
 		else{
 			this.anaimationTimer++;
 		}
+  }
+
+  hasBotBeenHit(hitter:any,hitterBox:HitBox):boolean {
+        return this.hitBox.areCentersToClose(hitter,hitterBox,this,this.hitBox);
+  }
+
+  // lazers go straight, nothing fancy so no need to make them do anything fancy, cal a stright direction.
+  fireTracker(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D,bulletManagerService:BulletManagerService, currentPlayer:PlayerObj){
+    let bullDirection:BulletDirection;
+    if(levelInstance.isVertical()){
+      bullDirection = bulletManagerService.calculateBulletDirection(this.posX + 15, this.posY + 55, this.posX + 15, this.posY + 90, this.bulletSpeed, true);
+      bulletManagerService.generateBotTrackerBlob(levelInstance, bullDirection, this.posX + 15, this.posY + 55, -1);
+    } else {
+
     }
-
-    hasBotBeenHit(hitter:any,hitterBox:HitBox):boolean {
-         return this.hitBox.areCentersToClose(hitter,hitterBox,this,this.hitBox);
-    }
-
-    // lazers go straight, nothing fancy so no need to make them do anything fancy, cal a stright direction.
-    fireTracker(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D,bulletManagerService:BulletManagerService, currentPlayer:PlayerObj){
-        let bullDirection:BulletDirection;
-        if(levelInstance.isVertical()){
-						bullDirection = bulletManagerService.calculateBulletDirection(this.posX + 15, this.posY + 55, this.posX + 15, this.posY + 90, this.bulletSpeed, true);
-						bulletManagerService.generateBotTrackerBlob(levelInstance, bullDirection, this.posX + 15, this.posY + 55, -1);
-        } else {
-
-        }
 	}
 
-    applyDamage(damage: number, botManagerService: BotManagerService, playerService:PlayerService, levelInstance:LevelInstance) {
-        this.health -= damage;
-				this.triggerDamagedAnimation();
-        if(this.health < 1){
-            playerService.currentPlayer.addScore(this.score);
-            botManagerService.removeBot(this);
-        }
+  applyDamage(damage: number, botManagerService: BotManagerService, playerService:PlayerService, levelInstance:LevelInstance) {
+    this.health -= damage;
+    this.triggerDamagedAnimation();
+    if(this.health < 1){
+      playerService.currentPlayer.addScore(this.score);
+      botManagerService.removeBot(this);
     }
+  }
 
 	canShoot(levelInstance:LevelInstance, currentPlayer:PlayerObj){
 		if(levelInstance.isVertical() && this.getCenterY() < currentPlayer.getCenterY()){
@@ -113,21 +119,21 @@ export class Fighter extends BotInstanceImpl{
 		return false;
 	}
 
-    getCenterX():number{
-        return this.posX+(this.imageSizeX/2);
+  getCenterX():number {
+      return this.posX+(this.imageSizeX/2);
+  }
+
+  getCenterY():number {
+      return this.posY+(this.imageSizeY/2);
+  }
+
+  getPlayerCollisionHitBoxes(): HitBox[] {
+      return [this.hitBox];
+  }
+
+  triggerDamagedAnimation(): any {
+    if(this.imageObjDamaged != null){
+      this.damAnaimationTimer = 1;// trigger damage animation
     }
-
-    getCenterY():number{
-        return this.posY+(this.imageSizeY/2);
-    }
-
-		getPlayerCollisionHitBoxes(): HitBox[] {
-				return [this.hitBox];
-		}
-
-		triggerDamagedAnimation(): any {
-			if(this.imageObjDamaged != null){
-				this.damAnaimationTimer = 1;// trigger damage animation
-			}
-		}
+  }
 }

@@ -6,6 +6,7 @@ import { HitBox } from 'src/app/domain/HitBox';
 import { BulletManagerService, BulletDirection } from 'src/app/manager/bullet-manager.service';
 import { Subject } from '../../../node_modules/rxjs';
 import { BotManagerService } from 'src/app/manager/bot-manager.service';
+import { CanvasContainer } from '../domain/CanvasContainer';
 
 @Injectable({
   providedIn: 'root'
@@ -43,15 +44,16 @@ export class PlayerService {
     }
 
     // creates an entirely new player
-    initPlayer(): any {
+    initPlayer(score=0,lives=3): any {
         this.currentPlayer.reset(); // position
         this.currentPlayer.pressedKeys = {"left":false,"up":false,"right":false,"down":false};
         this.currentPlayer.bulletsFiring = false;
         this.currentPlayer.invincibilityTimer = 0;
         this.currentPlayer.imageObj = this.resourcesService.getRes().get("player-1-ship");
         this.currentPlayer.imageObjMuzzle = this.resourcesService.getRes().get("player-1-muzzle-flash");
-        this.currentPlayer.score = 0;
-        this.currentPlayer.lives = 3;
+        this.currentPlayer.imageObjShadow = this.resourcesService.getRes().get("player-1-ship-shadow-separa");
+        this.currentPlayer.score = score;
+        this.currentPlayer.lives = lives;
     }
 
 }
@@ -61,25 +63,27 @@ export class PlayerObj {
 	public bulletSpeed:number = 20;
 	public pressedKeys = {"left":false,"up":false,"right":false,"down":false};
 
-    public bTimer:number = 0; // bullet timer
-    public bTimerLimit:number = 4;
+  public bTimer:number = 0; // bullet timer
+  public bTimerLimit:number = 4;
 
-    public bulletsFiring:boolean = false;
-    public bulletsFired:boolean = true;
+  public bulletsFiring:boolean = false;
+  public bulletsFired:boolean = true;
 
-    public resetPositionX:number;
-    public resetPositionY:number;
+  public resetPositionX:number;
+  public resetPositionY:number;
 
-    public invincibilityTimer:number = 0;
+  public invincibilityTimer:number = 0;
 
-    public firingSequence = 6;
-    public score = 0;
+  public firingSequence = 6;
+  public score = 0;
+
     constructor(
         public lives:number=10,
         public posX:number=210,
         public posY:number=480,
         public imageObj:HTMLImageElement=null,
         public imageObjMuzzle:HTMLImageElement=null,
+        public imageObjShadow:HTMLImageElement=null,
         public imageSizeX:number=90,
         public imageSizeY:number=60,
         public hitBox:HitBox=new HitBox((Math.floor(imageSizeX/2))-5,(Math.floor(imageSizeY/2))-5,10,10)
@@ -88,9 +92,9 @@ export class PlayerObj {
         this.resetPositionY = this.posY;
     }
 
-    update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, bulletManagerService:BulletManagerService, botManagerService:BotManagerService){
+    update(levelInstance:LevelInstance, canvasContainer:CanvasContainer, bulletManagerService:BulletManagerService, botManagerService:BotManagerService){
         this.acceleration(levelInstance);
-
+        let ctx = canvasContainer.mainCtx;
         // fire weapon
         // need to put some kind of timer around this, may have to bring back the timer pubsub
 		if(this.bulletsFiring || !this.bulletsFired){
@@ -113,6 +117,9 @@ export class PlayerObj {
     }
 
 
+    if(levelInstance.drawShadow()){
+      canvasContainer.shadowCtx.drawImage(this.imageObjShadow, 0, 0, this.imageSizeX, this.imageSizeY, this.posX+30, this.posY+60, this.imageSizeX, this.imageSizeY);
+    }
         // draw
         if (this.invincibilityTimer > 0) {
             this.invincibilityTimer--;

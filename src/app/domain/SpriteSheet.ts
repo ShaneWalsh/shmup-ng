@@ -3,6 +3,7 @@ import { BotManagerService } from "../manager/bot-manager.service";
 import { BulletManagerService } from "../manager/bullet-manager.service";
 import { PlayerObj, PlayerService } from "../services/player.service";
 import { LogicService } from "../services/logic.service";
+import { CanvasContainer } from "./CanvasContainer";
 
 export class SpriteSheet {
     public animationTimer: number = 0;
@@ -23,7 +24,7 @@ export class SpriteSheet {
 
     }
 
-    update(levelInstance: LevelInstance, ctx: CanvasRenderingContext2D, botManagerService: BotManagerService, bulletManagerService: BulletManagerService, playerService: PlayerService) {
+    update(levelInstance: LevelInstance, canvasContainer:CanvasContainer, botManagerService: BotManagerService, bulletManagerService: BulletManagerService, playerService: PlayerService) {
         let currentPlayer = playerService.currentPlayer;
         // fire weapon
         if (this.animationTimer >= this.animationTimerLimit) {
@@ -38,9 +39,9 @@ export class SpriteSheet {
         }
         if (!this.complete){
           if(this.angle == null){
-            ctx.drawImage(this.imageObjs[this.spritePosition], 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY, this.imageSizeX, this.imageSizeY);
+            canvasContainer.mainCtx.drawImage(this.imageObjs[this.spritePosition], 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY, this.imageSizeX, this.imageSizeY);
           } else {
-            LogicService.drawRotateImage(this.imageObjs[this.spritePosition], ctx,this.angle,this.posX, this.posY, this.imageSizeX, this.imageSizeY);
+            LogicService.drawRotateImage(this.imageObjs[this.spritePosition], canvasContainer.mainCtx,this.angle,this.posX, this.posY, this.imageSizeX, this.imageSizeY);
           }
         } else {
             botManagerService.removeSpriteSheet(this);

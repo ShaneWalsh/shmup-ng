@@ -6,6 +6,7 @@ import { BulletManagerService, BulletDirection } from "src/app/manager/bullet-ma
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { LogicService } from "src/app/services/logic.service";
 import { Turret } from "./Turret";
+import { CanvasContainer } from "../CanvasContainer";
 
 export class Level2SubBoss1V2 extends  BotInstanceImpl {
 	public imageObj:HTMLImageElement;
@@ -43,7 +44,7 @@ export class Level2SubBoss1V2 extends  BotInstanceImpl {
 		public config:any={},
 		public posX:number=0,
 		public posY:number=0,
-		public imageObj1:HTMLImageElement=null,
+		public imageObjMuzzleFlash:HTMLImageElement=null,
 		public imageObjcannon:HTMLImageElement=null,
 		public imageObj2:HTMLImageElement=null,
 		public imageObjDamaged:HTMLImageElement=null,
@@ -53,7 +54,7 @@ export class Level2SubBoss1V2 extends  BotInstanceImpl {
 		public hitBox2:HitBox=new HitBox(0,50,imageSizeX,150)
 	){
 		super(config);
-		this.imageObj = imageObj1;
+		this.imageObj = imageObjMuzzleFlash;
     this.tryConfigValues(["bTimer", "bTimerLimit", "mTimer", "mTimerLimit", "missileSpeed", "health", "score","posYSpeed","posXSpeed","bulletSpeed", "anaimationTimerLimit","destinationY"]);
     this.turret = new Turret(
       this.posX+114,
@@ -65,7 +66,7 @@ export class Level2SubBoss1V2 extends  BotInstanceImpl {
       "bullet",
       50, // Muzzle offsets
       10,
-      this.imageObj1,
+      this.imageObjMuzzleFlash,
       14,//imageMuzzleSizeX
       22,//imageMuzzleSizeY
       50,//bulletX
@@ -79,14 +80,17 @@ export class Level2SubBoss1V2 extends  BotInstanceImpl {
     );
 	}
 
-	update(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {
-		let currentPlayer = playerService.currentPlayer;
+	update(levelInstance:LevelInstance, canvasContainer:CanvasContainer, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {
+    let currentPlayer = playerService.currentPlayer;
+    let ctx = canvasContainer.mainCtx;
+
     this.angleDirection = bulletManagerService.calculateBulletDirection(this.posX+(this.imageSizeX/2), this.posY+(this.imageSizeY/2), this.posX+(this.imageSizeX/2), this.posY+(this.imageSizeY/2)+100, this.bulletSpeed, true, currentPlayer);
 
 		if(this.posY < this.destinationY){
 			this.posY += this.posYSpeed;
 		}
 
+    this.turret.update(this.posX+114,this.posY+265,currentPlayer,levelInstance, ctx, botManagerService, bulletManagerService, playerService);
     ctx.drawImage(this.imageObj2, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
 		if(this.damAnaimationTimer < this.damAnaimationTimerLimit){
 			this.damAnaimationTimer++;
@@ -99,8 +103,6 @@ export class Level2SubBoss1V2 extends  BotInstanceImpl {
 			this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");
 			this.hitBox2.drawBorder(this.posX+this.hitBox2.hitBoxX,this.posY+this.hitBox2.hitBoxY,this.hitBox2.hitBoxSizeX,this.hitBox2.hitBoxSizeY,ctx,"#FF0000");
 		}
-
-    this.turret.update(this.posX+114,this.posY+265,currentPlayer,levelInstance, ctx, botManagerService, bulletManagerService, playerService);
 
 		if(this.mTimer >= this.mTimerLimit){
 			this.mTimer = 0;
