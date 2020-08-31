@@ -19,6 +19,30 @@ export class ResourcesService {
       /*
       this.resourcesToLoad = [
 
+    {code:"miniboss-3-no-cannon-shadow", path:"assets/img/boss/miniboss-3-changes/miniboss-3-no-cannon-shadow.png", type:ResourcesEnum.ImageRes},
+    {code:"shield-1", path:"assets/img/player/shield/shield-1.png", type:ResourcesEnum.ImageRes},
+    {code:"shield-2", path:"assets/img/player/shield/shield-2.png", type:ResourcesEnum.ImageRes},
+    {code:"shield-3", path:"assets/img/player/shield/shield-3.png", type:ResourcesEnum.ImageRes},
+    {code:"shield-4", path:"assets/img/player/shield/shield-4.png", type:ResourcesEnum.ImageRes},
+    {code:"shield-5", path:"assets/img/player/shield/shield-5.png", type:ResourcesEnum.ImageRes},
+    {code:"shield-6", path:"assets/img/player/shield/shield-6.png", type:ResourcesEnum.ImageRes},
+    {code:"shield-7", path:"assets/img/player/shield/shield-7.png", type:ResourcesEnum.ImageRes},
+    {code:"shield-8", path:"assets/img/player/shield/shield-8.png", type:ResourcesEnum.ImageRes},
+
+    {code:"aa-tank-hull-horizontal", path:"assets/img/bots/aa-tank/aa-tank-hull-horizontal.png", type:ResourcesEnum.ImageRes},
+    {code:"aa-tank-hull-horizontal-shadow", path:"assets/img/bots/aa-tank/aa-tank-hull-horizontal-shadow.png", type:ResourcesEnum.ImageRes},
+    {code:"aa-tank-turret-1", path:"assets/img/bots/aa-tank/aa-tank-turret-1.png", type:ResourcesEnum.ImageRes},
+    {code:"aa-tank-turret-3", path:"assets/img/bots/aa-tank/aa-tank-turret-3.png", type:ResourcesEnum.ImageRes},
+    {code:"aa-tank-turret-5", path:"assets/img/bots/aa-tank/aa-tank-turret-5.png", type:ResourcesEnum.ImageRes},
+    {code:"aa-tank-turret-7", path:"assets/img/bots/aa-tank/aa-tank-turret-7.png", type:ResourcesEnum.ImageRes},
+    {code:"aa-tank-turret-damaged", path:"assets/img/bots/aa-tank/aa-tank-turret-damaged.png", type:ResourcesEnum.ImageRes},
+    {code:"aa-tank-hull-horizontal-dam", path:"assets/img/bots/aa-tank/aa-tank-hull-horizontal-dam.png", type:ResourcesEnum.ImageRes},
+    {code:"aa-tank-track-horizontal", path:"assets/img/bots/aa-tank/aa-tank-track-horizontal.png", type:ResourcesEnum.ImageRes},
+    {code:"aa-tank-turret-2", path:"assets/img/bots/aa-tank/aa-tank-turret-2.png", type:ResourcesEnum.ImageRes},
+    {code:"aa-tank-turret-4", path:"assets/img/bots/aa-tank/aa-tank-turret-4.png", type:ResourcesEnum.ImageRes},
+    {code:"aa-tank-turret-6", path:"assets/img/bots/aa-tank/aa-tank-turret-6.png", type:ResourcesEnum.ImageRes},
+    {code:"aa-tank-turret-8", path:"assets/img/bots/aa-tank/aa-tank-turret-8.png", type:ResourcesEnum.ImageRes},
+
     {code:"enemy-1-1-shadow", path:"assets/img/bots/level-2/enemy-1-1-shadow.png", type:ResourcesEnum.ImageRes},
     {code:"enemy-1-1-shadow-separate", path:"assets/img/bots/level-2/enemy-1-1-shadow-separate.png", type:ResourcesEnum.ImageRes},
     {code:"enemy-1-2-shadow", path:"assets/img/bots/level-2/enemy-1-2-shadow.png", type:ResourcesEnum.ImageRes},
