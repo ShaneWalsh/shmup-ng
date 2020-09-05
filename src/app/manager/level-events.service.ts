@@ -383,7 +383,7 @@ export class LevelEventsService {
 			posXSpeed: 1.5,
 			posYSpeed: 1,
       bTimerLimit: 90,
-      moveToXCord: 80,
+      moveRight: true,
 			score: 1000,
 			health:5,
 		};
@@ -515,7 +515,7 @@ export class LevelEventsService {
 		//######################          Phase Zero        #######################################
     //#########################################################################################
     le.push(new SpawnBotEvent(0, 90, false, 0, BotType.BUGGY, buggyConfig, false, -30, 50));
-    le.push(new SpawnBotEvent(0, 90, false, 0, BotType.BUGGY, {...buggyConfig, moveToXCord: 300}, false, 400, 50));
+    le.push(new SpawnBotEvent(0, 90, false, 0, BotType.BUGGY, {...buggyConfig, moveRight: false}, false, 400, 50));
 		// wings middle
 		le.push(new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));
 		le.push(new SpawnBotEvent(0, 80, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));

@@ -131,7 +131,7 @@ class LevelOneInstance implements LevelInstance{
       this.scrollerXIncrement++;
       if(this.scrollerXIncrement > this.mapWidth){this.scrollerXIncrement = 0};
     }
-    canvasContainer.bgCtx.drawImage(this.hudImage, 0, 0 , this.mapWidth, this.mapHeight);
+    canvasContainer.topCtx.drawImage(this.hudImage, 0, 0 , this.mapWidth, this.mapHeight);
     LogicService.writeOnCanvas(90,27,playerService.currentPlayer.score,24,"#ff00ff",canvasContainer.bgCtx);
     LogicService.writeOnCanvas(80,628,playerService.currentPlayer.lives,24,"#ff00ff",canvasContainer.bgCtx);
     //then fire the normal events

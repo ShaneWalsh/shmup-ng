@@ -23,6 +23,7 @@ export class GameContainerComponent implements OnInit, OnDestroy {
     @ViewChild('canvasBG') public canvasBG: ElementRef;
     @ViewChild('canvasShadow') public canvasShadow: ElementRef;
     @ViewChild('canvas') public canvasMain: ElementRef;
+    @ViewChild('canvasTop') public canvasTop: ElementRef;
 
     introOver:boolean = true; // set to true for testing to skip the intro
     introTicker:number = 0;
@@ -38,6 +39,8 @@ export class GameContainerComponent implements OnInit, OnDestroy {
     shadowCtx: CanvasRenderingContext2D;
     mainCanvasEl: any;
     mainCtx: CanvasRenderingContext2D;
+    topCanvasEl: any;
+    topCtx: CanvasRenderingContext2D;
 
     canvasContainer:CanvasContainer;
 
@@ -88,7 +91,13 @@ export class GameContainerComponent implements OnInit, OnDestroy {
         this.mainCanvasEl.width = this.width;
         this.mainCanvasEl.height = this.height;
 
-        this.canvasContainer = new CanvasContainer(this.bgCanvasEl,this.bgCtx,this.shadowCanvasEl,this.shadowCtx,this.mainCanvasEl,this.mainCtx);
+        this.topCanvasEl = this.canvasTop.nativeElement;
+        this.topCtx = this.topCanvasEl.getContext('2d');
+
+        this.topCanvasEl.width = this.width;
+        this.topCanvasEl.height = this.height;
+
+        this.canvasContainer = new CanvasContainer(this.bgCanvasEl,this.bgCtx,this.shadowCanvasEl,this.shadowCtx,this.mainCanvasEl,this.mainCtx,this.topCanvasEl,this.topCtx);
         if (this.introOver) {
             this.levelManagerService.unPauseGame();
         }

@@ -6,7 +6,9 @@ export class CanvasContainer{
     public shadowCanvasEl:any,
     public shadowCtx:CanvasRenderingContext2D,
     public mainCanvasEl:any,
-    public mainCtx:CanvasRenderingContext2D
+    public mainCtx:CanvasRenderingContext2D,
+    public topCanvasEl:any,
+    public topCtx:CanvasRenderingContext2D
   ){
 
   }

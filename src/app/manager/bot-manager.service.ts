@@ -105,7 +105,7 @@ export class BotManagerService {
         let newBot = new Buggy(config, posObj.posX, posObj.posY, this.resourcesService.getRes().get("ground-enemy-1-1"),
         this.resourcesService.getRes().get("ground-enemy-1-1-cannon"),
         this.resourcesService.getRes().get("miniboss-3-muzzle-flash"),
-         120, 70);
+        120, 70);
         this.botsArr.push(newBot);
         this.botCreated.next(newBot);
     }

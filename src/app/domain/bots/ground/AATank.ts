@@ -7,11 +7,11 @@ import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { CanvasContainer } from "../../CanvasContainer";
 import { Turret } from "../Turret";
 
-export class Buggy extends BotInstanceImpl{
+export class AATank extends BotInstanceImpl{
 	public bulletSpeed:number = 6;
   public posXSpeed:number = 1.5;
   public posYSpeed:number = 1;
-  public moveRight:boolean = false;
+  public moveToXCord:number = 80;
 
   public bTimer:number = 0; // bullet timer
   public bTimerLimit:number = 30;
@@ -45,7 +45,7 @@ export class Buggy extends BotInstanceImpl{
 				public imageObjShadow: HTMLImageElement = null
     ){
       super(config);
-		  this.tryConfigValues(["bulletSpeed","posXSpeed","posYSpeed","bTimer","bTimerLimit","score","health", "moveToXCord", "moveRight"]);
+		  this.tryConfigValues(["bulletSpeed","posXSpeed","posYSpeed","bTimer","bTimerLimit","score","health", "moveToXCord"]);
 		  this.bTimer = this.bTimerLimit/2;
       this.imageObj = imageObjMain;
       this.turret = new Turret(
@@ -76,19 +76,16 @@ export class Buggy extends BotInstanceImpl{
     let currentPlayer = playerService.currentPlayer;
     let ctx = canvasContainer.mainCtx;
     this.posY += this.posYSpeed;
-    if(this.moveRight) {
+    if((this.posX < (this.moveToXCord-this.posXSpeed+2))){
       this.posX += this.posXSpeed;
-    } else {
+    } else if((this.posX) > (this.moveToXCord+this.posXSpeed+2)){
       this.posX -= this.posXSpeed;
     }
     if(this.posY + this.imageSizeY > (levelInstance.getMapHeight()+this.imageSizeY)
-      || (this.posX < -400 || this.posX > 800)){
+        || (this.posX < -400 || this.posX > 800)){
         botManagerService.removeBot(this);
     } else {
         ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
-        if(levelInstance.drawShadow() && this.imageObjShadow != null) {
-          this.drawShadow(canvasContainer,this.imageObjShadow,this.posX,this.posY,this.imageSizeX, this.imageSizeY);
-        }
         if(this.damAnaimationTimer < this.damAnaimationTimerLimit){
           this.damAnaimationTimer++;
           if(this.damAnaimationTimer %2 == 1){
@@ -150,9 +147,5 @@ export class Buggy extends BotInstanceImpl{
     if(this.imageObjDamaged != null){
       this.damAnaimationTimer = 1;// trigger damage animation
     }
-  }
-
-  drawShadow(canvasContainer:CanvasContainer, imageObjShadow:HTMLImageElement,posX:number,posY:number,imageSizeX:number, imageSizeY:number, shadowX:number=10, shadowY:number =6){
-    canvasContainer.shadowCtx.drawImage(imageObjShadow, 0, 0, imageSizeX, imageSizeY, posX+shadowX, posY+shadowY, imageSizeX, imageSizeY);
   }
 }
