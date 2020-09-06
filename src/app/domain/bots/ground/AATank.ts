@@ -62,6 +62,7 @@ export class AATank extends BotInstanceImpl{
       if(this.moveToXCord == this.posX){
         this.rotationAngle = HardRotationAngle.DOWN;
         this.turretXoffset = 30
+        this.hitBox=new HitBox(30,-20,imageSizeY,imageSizeX)
       } else if(this.moveToXCord < this.posX){
         this.rotationAngle = HardRotationAngle.LEFT;
         this.turretXoffset = 20
@@ -79,13 +80,11 @@ export class AATank extends BotInstanceImpl{
         68,
         34,33, // rotation offsets
         "bullet",
-        97, // Muzzle offsets
-        33,
+        [{muzzlePosXOffset:100, muzzlePosYOffset:27},{muzzlePosXOffset:100, muzzlePosYOffset:35}], // Muzzle offsets
         this.imageObjMuzzleFlash,
         14,//imageMuzzleSizeX
         22,//imageMuzzleSizeY
-        97,//bulletX
-        33,//bulletY
+        [{bulletXOffset:100, bulletYOffset:27},{bulletXOffset:100, bulletYOffset:35}],
         22,// bullet sizex
         14,
         600,
