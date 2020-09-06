@@ -21,6 +21,7 @@ import { Level2SubBoss1 } from 'src/app/domain/bots/Level2SubBoss1';
 import { Level2SubBoss1V2 } from '../domain/bots/Level2SubBoss1V2';
 import { CanvasContainer } from '../domain/CanvasContainer';
 import { Buggy } from '../domain/bots/ground/Buggy';
+import { AATank } from '../domain/bots/ground/AATank';
 
 /**
  * Going to manage the created bots, spawned by the level manager. Its going to emit when they are destroyed or when they leave the screen.
@@ -89,21 +90,41 @@ export class BotManagerService {
     }
 
 		generateGuardianCreeper(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
-					let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
+      let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
 
-					let newBot = new GuardianCreeper(config, posObj.posX, posObj.posY,
-						this.resourcesService.getRes().get("enemy-08-1"),
-						this.resourcesService.getRes().get("enemy-08-2"),
-						this.resourcesService.getRes().get("enemy-08-damaged"));
-					this.botsArr.push(newBot);
-					this.botCreated.next(newBot);
-      }
-
+      let newBot = new GuardianCreeper(config, posObj.posX, posObj.posY,
+      this.resourcesService.getRes().get("enemy-08-1"),
+      this.resourcesService.getRes().get("enemy-08-2"),
+      this.resourcesService.getRes().get("enemy-08-damaged"));
+      this.botsArr.push(newBot);
+      this.botCreated.next(newBot);
+    }
 
     generateBuggy(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
         let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
         let newBot = new Buggy(config, posObj.posX, posObj.posY, this.resourcesService.getRes().get("ground-enemy-1-1"),
         this.resourcesService.getRes().get("ground-enemy-1-1-cannon"),
+        this.resourcesService.getRes().get("miniboss-3-muzzle-flash"),
+        120, 70);
+        this.botsArr.push(newBot);
+        this.botCreated.next(newBot);
+    }
+    generateAATank(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
+        let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
+        let newBot = new AATank(config, posObj.posX, posObj.posY,
+        this.resourcesService.getRes().get("aa-tank-hull-horizontal"),
+        this.resourcesService.getRes().get("aa-tank-hull-horizontal-dam"),
+        this.resourcesService.getRes().get("aa-tank-hull-horizontal-shadow"),
+        this.resourcesService.getRes().get("aa-tank-track-horizontal"),
+        this.resourcesService.getRes().get("aa-tank-turret-damaged"),
+        this.resourcesService.getRes().get("aa-tank-turret-1"),
+        this.resourcesService.getRes().get("aa-tank-turret-2"),
+        this.resourcesService.getRes().get("aa-tank-turret-3"),
+        this.resourcesService.getRes().get("aa-tank-turret-4"),
+        this.resourcesService.getRes().get("aa-tank-turret-5"),
+        this.resourcesService.getRes().get("aa-tank-turret-6"),
+        this.resourcesService.getRes().get("aa-tank-turret-7"),
+        this.resourcesService.getRes().get("aa-tank-turret-8"),
         this.resourcesService.getRes().get("miniboss-3-muzzle-flash"),
         120, 70);
         this.botsArr.push(newBot);
@@ -184,7 +205,9 @@ export class BotManagerService {
         this.resourcesService.getRes().get("miniboss-3-muzzle-flash"),
         this.resourcesService.getRes().get("miniboss-3-1-cannon"),
         this.resourcesService.getRes().get("miniboss-3-no-cannon"),
-        this.resourcesService.getRes().get("miniboss-3-no-cannon-damage"),242,302);
+        this.resourcesService.getRes().get("miniboss-3-no-cannon-damage"),
+        this.resourcesService.getRes().get("miniboss-3-no-cannon-shadow"),
+        242,302);
 			this.botsArr.push(newBot);
 			this.botCreated.next(newBot);
 	  }
@@ -229,7 +252,15 @@ export class BotManagerService {
 		);
 	}
 
-	createMisslePlume(x,y,angle=null){
+
+  // createTankTrack(x,y,angle=null, ctx=null){
+	// 	this.spriteSheetArr.push(new SpriteSheet(x,y,
+	// 		[this.resourcesService.getRes().get("aa-tank-track-horizontal")],
+	// 		1,62,60,60,angle,ctx)
+	// 	);
+  // }
+
+  createMisslePlume(x,y,angle=null) {
 		this.spriteSheetArr.push(new SpriteSheet(x-20,y-20,
 			[this.resourcesService.getRes().get("explosion-small-1"),
 			this.resourcesService.getRes().get("explosion-small-2"),

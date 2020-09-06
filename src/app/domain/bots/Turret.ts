@@ -7,11 +7,13 @@ import { LogicService } from "src/app/services/logic.service";
 export class Turret {
 	public angleDirection:BulletDirection;
   public targetObject:any=null;
+  public turretSlideIndexSpeed = 0;
 
 	constructor(
 		public posX:number=0, // top left of the turret
     public posY:number=0,
-    public imageObjTurret:HTMLImageElement=null,
+    public imageObjTurret:HTMLImageElement[]=null,
+    public imageObjTurretDamaged = null,
     public imageSizeX:number=90,
     public imageSizeY:number=60,
     public rotationXOffset:number=0, // the turret may not turn on centerX+Y
@@ -29,21 +31,23 @@ export class Turret {
     public allowedMovement:number=500,
     public bulletSpeed:number = 6,
     public bTimer:number = 0,
-    public bTimerLimit:number = 30
+    public bTimerLimit:number = 30,
+    public turretSlideIndex = 0,
+    public turretSlideIndexSpeedLimit = 5
 	){
 
 	}
 
-	update(posX,posY,targetObject,levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {
+	update(posX,posY,targetObject,levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService, drawDamage:boolean=false) {
     this.targetObject = targetObject;
     this.posX = posX;
     this.posY = posY;
     if(this.targetObject != null) {
       this.angleDirection = bulletManagerService.calculateBulletDirection(this.posX+this.rotationXOffset, this.posY+this.rotationYOffset, this.targetObject.getCenterX(), this.targetObject.getCenterY(), this.bulletSpeed, true, this.targetObject);
-      LogicService.drawRotateImage(this.imageObjTurret,ctx,this.angleDirection.angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY,this.posX,this.posY,this.imageSizeX,this.imageSizeY,this.posX+this.rotationXOffset,this.posY+this.rotationYOffset);
+      LogicService.drawRotateImage(this.getNextTurretImage(drawDamage),ctx,this.angleDirection.angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY,this.posX,this.posY,this.imageSizeX,this.imageSizeY,this.posX+this.rotationXOffset,this.posY+this.rotationYOffset);
     } else { // will always point straight ahead
       this.angleDirection = bulletManagerService.calculateBulletDirection(this.posX+this.rotationXOffset, this.posY+this.rotationYOffset, this.posX+this.rotationXOffset, this.posY+this.rotationYOffset+100, this.bulletSpeed, true, null);
-      LogicService.drawRotateImage(this.imageObjTurret,ctx,this.angleDirection.angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY);
+      LogicService.drawRotateImage(this.getNextTurretImage(drawDamage),ctx,this.angleDirection.angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY);
     }
 
 		// fire weapon
@@ -71,7 +75,7 @@ export class Turret {
           let topLeftCords={x:cords.x-(this.imageMuzzleSizeX/2),y:cords.y-(this.imageMuzzleSizeY/2)}
           LogicService.drawRotateImage(this.imageObjMuzzleFlash, ctx,this.angleDirection.angle,topLeftCords.x,topLeftCords.y,this.imageMuzzleSizeX,this.imageMuzzleSizeY);
         } else { // simply draw it directly where its specifed as there is no rotation.
-          ctx.drawImage(this.imageObjTurret, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
+          ctx.drawImage(this.getNextTurretImage(drawDamage), 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
         }
 			}
 		}
@@ -90,5 +94,24 @@ export class Turret {
 
 	getCenterY():number{
 		return this.posY+this.rotationYOffset;
+  }
+
+  getNextTurretImage(drawDamage=false):HTMLImageElement {
+    if(drawDamage && this.imageObjTurretDamaged != null){
+      return this.imageObjTurretDamaged;
+    }
+    if(this.imageObjTurret.length > 1){
+      this.turretSlideIndexSpeed++;
+      if(this.turretSlideIndexSpeed >= this.turretSlideIndexSpeedLimit){
+        this.turretSlideIndexSpeed =0;
+        this.turretSlideIndex++;
+        if(this.turretSlideIndex >= this.imageObjTurret.length){
+          this.turretSlideIndex = 0;
+        }
+      }
+      return this.imageObjTurret[this.turretSlideIndex];
+    } else {
+      return this.imageObjTurret[0];
+    }
   }
 }

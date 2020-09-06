@@ -56,5 +56,11 @@ export class LogicService {
     ctx.fillText(text, x, y);
     //ctx.fill();
   }
+}
 
+export enum HardRotationAngle {
+  UP=-1.5707963267948966,
+  DOWN=1.5707963267948966,
+  LEFT=3.141592653589793,
+  RIGHT=0,
 }

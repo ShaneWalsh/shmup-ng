@@ -377,8 +377,8 @@ export class LevelEventsService {
 	getLevel2Events(difficulty:number):LevelEvent[] {
 		let le = [];
 
-    // buggy will move to the moveToXCord after it spawns, using the posXSpeed. posYSpeed should match the screen scroll speed of 1.
-    let buggyConfig = {
+    // buggy will move to the right or left after it spawns depending on moveRight boolean, using the posXSpeed. posYSpeed should match the screen scroll speed of 1.
+    let buggyConfigMR = {
 			bulletSpeed: 6,
 			posXSpeed: 1.5,
 			posYSpeed: 1,
@@ -386,7 +386,20 @@ export class LevelEventsService {
       moveRight: true,
 			score: 1000,
 			health:5,
-		};
+    };
+    let buggyConfigML = {...buggyConfigMR,moveRight: false,};
+
+
+    // buggy will move to the moveToXCord after it spawns, using the posXSpeed. posYSpeed should match the screen scroll speed of 1.
+    let AATankConfig = {
+			bulletSpeed: 6,
+			posXSpeed: 1.5,
+			posYSpeed: 1,
+      bTimerLimit: 90,
+      moveToXCord: 400,
+			score: 1000,
+			health:25,
+    };
 
 		let diverConfig = {
 			bulletSpeed: 3, // how fast this bots buttets travel every tick
@@ -514,16 +527,23 @@ export class LevelEventsService {
 		//#########################################################################################
 		//######################          Phase Zero        #######################################
     //#########################################################################################
-    le.push(new SpawnBotEvent(0, 90, false, 0, BotType.BUGGY, buggyConfig, false, -30, 50));
-    le.push(new SpawnBotEvent(0, 90, false, 0, BotType.BUGGY, {...buggyConfig, moveRight: false}, false, 400, 50));
+    le.push(new SpawnBotEvent(0, 40, false, 0, BotType.BUGGY, buggyConfigMR, false, -30, 50));
+    le.push(new SpawnBotEvent(0, 40, false, 0, BotType.BUGGY, buggyConfigML, false, 400, 50));
+    le.push(new SpawnBotEvent(0, 120, false, 0, BotType.AATANK, AATankConfig, false, -30, 50));
+    le.push(new SpawnBotEvent(0, 120, false, 0, BotType.AATANK, {...AATankConfig, moveToXCord:50}, false, 400, 50));
+
+    // trick of the eye here, by increasing the AATanks yspeed by .5 it will look like its driving down, or leave it at 1 and it will look parked.
+    le.push(new SpawnBotEvent(0, 120, false, 0, BotType.AATANK, {...AATankConfig, moveToXCord:350, posYSpeed:1.5}, false, 350, -150));
+    le.push(new SpawnBotEvent(0, 120, false, 0, BotType.AATANK, {...AATankConfig, moveToXCord:150, posYSpeed:1.5}, false, 150, -150));
+
 		// wings middle
-		le.push(new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));
-		le.push(new SpawnBotEvent(0, 80, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));
-		le.push(new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
-		// blade right
-		le.push(new SpawnBotEvent(0, 190, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
-		le.push(new SpawnBotEvent(0, 200, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
-		le.push(new SpawnBotEvent(0, 210, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
+		// le.push(new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));
+		// le.push(new SpawnBotEvent(0, 80, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));
+		// le.push(new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
+		// // blade right
+		// le.push(new SpawnBotEvent(0, 190, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
+		// le.push(new SpawnBotEvent(0, 200, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
+		// le.push(new SpawnBotEvent(0, 210, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
 		// blade left
 		le.push(new SpawnBotEvent(0, 260, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
 		le.push(new SpawnBotEvent(0, 270, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));

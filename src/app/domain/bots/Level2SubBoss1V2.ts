@@ -48,6 +48,7 @@ export class Level2SubBoss1V2 extends  BotInstanceImpl {
 		public imageObjcannon:HTMLImageElement=null,
 		public imageObj2:HTMLImageElement=null,
 		public imageObjDamaged:HTMLImageElement=null,
+		public imageObjShadow:HTMLImageElement=null,
 		public imageSizeX:number=90,
 		public imageSizeY:number=60,
 		public hitBox:HitBox=new HitBox(70,0,imageSizeX-140,imageSizeY-30),
@@ -59,7 +60,8 @@ export class Level2SubBoss1V2 extends  BotInstanceImpl {
     this.turret = new Turret(
       this.posX+114,
       this.posY+265,
-      this.imageObjcannon,
+      [this.imageObjcannon],
+      null,
       46,//imageSizeX
       18,
       8,8, // rotation offsets
@@ -92,6 +94,9 @@ export class Level2SubBoss1V2 extends  BotInstanceImpl {
 
     this.turret.update(this.posX+114,this.posY+265,currentPlayer,levelInstance, ctx, botManagerService, bulletManagerService, playerService);
     ctx.drawImage(this.imageObj2, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
+    if(levelInstance.drawShadow() && this.imageObjShadow != null) {
+      this.drawShadow(canvasContainer,this.imageObjShadow,this.posX,this.posY,this.imageSizeX, this.imageSizeY);
+    }
 		if(this.damAnaimationTimer < this.damAnaimationTimerLimit){
 			this.damAnaimationTimer++;
 			if(this.damAnaimationTimer %2 == 1){

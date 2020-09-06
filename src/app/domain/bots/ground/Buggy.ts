@@ -51,7 +51,8 @@ export class Buggy extends BotInstanceImpl{
       this.turret = new Turret(
         this.posX+this.turretXoffset,
         this.posY+this.turretYoffset,
-        this.imageObjTurret,
+        [this.imageObjTurret],
+        null,
         56,//imageSizeX
         20,
         18,6, // rotation offsets

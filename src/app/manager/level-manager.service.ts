@@ -90,6 +90,8 @@ export interface LevelInstance {
     updateIntro(ctx: CanvasRenderingContext2D);
     getMapWidth():number;
     getMapHeight():number;
+    getScrollWidth():number;
+    getScrollHeight():number;
     isVertical():boolean;
     drawHitBox():boolean;
     updatePhaseCounter();
@@ -99,6 +101,8 @@ export interface LevelInstance {
 class LevelOneInstance implements LevelInstance{
   public mapWidth:number=480;
   public mapHeight:number=640;
+  public scrollWidth:number=this.mapWidth;
+  public scrollHeight:number=this.mapHeight;
   protected backgroundImage = new Image();
   protected hudImage:HTMLImageElement;
 
@@ -121,24 +125,24 @@ class LevelOneInstance implements LevelInstance{
 
   update(canvasContainer:CanvasContainer, playerService:PlayerService) {
     // infinite scroller
-    canvasContainer.bgCtx.drawImage(this.backgroundImage, this.scrollerXIncrement, this.scrollerYIncrement, this.mapWidth, this.mapHeight);
+    canvasContainer.bgCtx.drawImage(this.backgroundImage, this.scrollerXIncrement, this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
     if(this.isVertical()) {
-      canvasContainer.bgCtx.drawImage(this.backgroundImage, this.scrollerXIncrement, (this.scrollerYIncrement - this.mapHeight), this.mapWidth, this.mapHeight);
+      canvasContainer.bgCtx.drawImage(this.backgroundImage, this.scrollerXIncrement, (this.scrollerYIncrement - this.getScrollHeight()), this.getScrollWidth(), this.getScrollHeight());
       this.scrollerYIncrement++;
-      if(this.scrollerYIncrement > this.mapHeight){this.scrollerYIncrement = 0};
+      if(this.scrollerYIncrement > this.getScrollHeight()){this.scrollerYIncrement = 0};
     } else {
-      canvasContainer.bgCtx.drawImage(this.backgroundImage, (this.scrollerXIncrement-this.mapWidth), this.scrollerYIncrement, this.mapWidth, this.mapHeight);
+      canvasContainer.bgCtx.drawImage(this.backgroundImage, (this.scrollerXIncrement-this.getScrollWidth()), this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
       this.scrollerXIncrement++;
-      if(this.scrollerXIncrement > this.mapWidth){this.scrollerXIncrement = 0};
+      if(this.scrollerXIncrement > this.getScrollWidth()){this.scrollerXIncrement = 0};
     }
     canvasContainer.topCtx.drawImage(this.hudImage, 0, 0 , this.mapWidth, this.mapHeight);
-    LogicService.writeOnCanvas(90,27,playerService.currentPlayer.score,24,"#ff00ff",canvasContainer.bgCtx);
-    LogicService.writeOnCanvas(80,628,playerService.currentPlayer.lives,24,"#ff00ff",canvasContainer.bgCtx);
+    LogicService.writeOnCanvas(90,27,playerService.currentPlayer.score,24,"#ff00ff",canvasContainer.topCtx);
+    LogicService.writeOnCanvas(80,628,playerService.currentPlayer.lives,24,"#ff00ff",canvasContainer.topCtx);
     //then fire the normal events
     this.repeatEvents = [];
-    for(let i =0 ; i <  this.eventArr.length; i++){
+    for(let i =0 ; i <  this.eventArr.length; i++) {
         let eventI = this.eventArr[i];
-        if(eventI.canTrigger(this.tickCounter, this.phaseCounter)){
+        if(eventI.canTrigger(this.tickCounter, this.phaseCounter)) {
             eventI.triggerEvent(this.botManagerService,this.levelManagerService);
             if(eventI.repeatUntilPhaseEnd){
                 eventI.happenAfterTicks = eventI.getRepeatLoopTicks();
@@ -155,15 +159,15 @@ class LevelOneInstance implements LevelInstance{
 
   updateIntro(ctx: CanvasRenderingContext2D) {
       // just for the intro for displaying the background
-      ctx.drawImage(this.backgroundImage, this.scrollerXIncrement, this.scrollerYIncrement, this.mapWidth, this.mapHeight);
+      ctx.drawImage(this.backgroundImage, this.scrollerXIncrement, this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
       if (this.isVertical()) {
-          ctx.drawImage(this.backgroundImage, this.scrollerXIncrement, (this.scrollerYIncrement - this.mapHeight), this.mapWidth, this.mapHeight);
+          ctx.drawImage(this.backgroundImage, this.scrollerXIncrement, (this.scrollerYIncrement - this.getScrollHeight()), this.getScrollWidth(), this.getScrollHeight());
           this.scrollerYIncrement++;
-          if (this.scrollerYIncrement > this.mapHeight) { this.scrollerYIncrement = 0 };
+          if (this.scrollerYIncrement > this.getScrollHeight()) { this.scrollerYIncrement = 0 };
       } else {
-          ctx.drawImage(this.backgroundImage, (this.scrollerXIncrement - this.mapWidth), this.scrollerYIncrement, this.mapWidth, this.mapHeight);
+          ctx.drawImage(this.backgroundImage, (this.scrollerXIncrement - this.getScrollWidth()), this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
           this.scrollerXIncrement++;
-          if (this.scrollerXIncrement > this.mapWidth) { this.scrollerXIncrement = 0 };
+          if (this.scrollerXIncrement > this.getScrollWidth()) { this.scrollerXIncrement = 0 };
       }
   }
 
@@ -184,6 +188,13 @@ class LevelOneInstance implements LevelInstance{
       return this.mapWidth;
   }
 
+  getScrollWidth(): number {
+    return this.scrollWidth;
+  }
+  getScrollHeight(): number {
+    return this.scrollHeight;
+  }
+
   isVertical() {
       return true;
   }
@@ -201,9 +212,10 @@ class LevelTwoInstance extends LevelOneInstance{
 
   constructor(resourcesService:ResourcesService, botManagerService:BotManagerService, levelManagerService:LevelManagerService, levelEventsService:LevelEventsService){
       super(resourcesService,botManagerService,levelManagerService,levelEventsService);
-      this.backgroundImage = this.resourcesService.getRes().get("level-2-background");
+      this.backgroundImage = this.resourcesService.getRes().get("level-2-background-full");
       this.hudImage = this.resourcesService.getRes().get("HUD-resized");
       this.eventArr = this.levelEventsService.getLevel2Events(levelManagerService.difficulty);
+      this.scrollHeight = 3840;
   }
 
   drawShadow(){

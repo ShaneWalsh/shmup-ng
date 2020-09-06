@@ -19,7 +19,8 @@ export class SpriteSheet {
         public imageSizeY: number = 480,
         public animationTimerLimit: number = 10,
         public holdLastFrameLimit:number = 10,
-        public angle:number = null
+        public angle:number = null,
+        public ctx:CanvasRenderingContext2D = null
     ) {
 
     }
@@ -37,11 +38,12 @@ export class SpriteSheet {
         else {
             this.animationTimer++;
         }
+        let ctxDraw = this.ctx == null ? canvasContainer.mainCtx:this.ctx;
         if (!this.complete){
           if(this.angle == null){
-            canvasContainer.mainCtx.drawImage(this.imageObjs[this.spritePosition], 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY, this.imageSizeX, this.imageSizeY);
+            ctxDraw.drawImage(this.imageObjs[this.spritePosition], 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY, this.imageSizeX, this.imageSizeY);
           } else {
-            LogicService.drawRotateImage(this.imageObjs[this.spritePosition], canvasContainer.mainCtx,this.angle,this.posX, this.posY, this.imageSizeX, this.imageSizeY);
+            LogicService.drawRotateImage(this.imageObjs[this.spritePosition], ctxDraw,this.angle,this.posX, this.posY, this.imageSizeX, this.imageSizeY);
           }
         } else {
             botManagerService.removeSpriteSheet(this);
