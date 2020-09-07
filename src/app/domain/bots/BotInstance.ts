@@ -4,6 +4,7 @@ import { HitBox } from "src/app/domain/HitBox";
 import { BulletManagerService } from "src/app/manager/bullet-manager.service";
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { CanvasContainer } from "../CanvasContainer";
+import { LogicService } from "src/app/services/logic.service";
 
 export interface BotInstance {
     update(levelInstance:LevelInstance, canvasContainer:CanvasContainer, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService);
@@ -65,6 +66,10 @@ export class BotInstanceImpl implements BotInstance {
 
   drawShadow(canvasContainer:CanvasContainer, imageObjShadow:HTMLImageElement,posX:number,posY:number,imageSizeX:number, imageSizeY:number, shadowX:number=30, shadowY:number =60){
     canvasContainer.shadowCtx.drawImage(imageObjShadow, 0, 0, imageSizeX, imageSizeY, posX+shadowX, posY+shadowY, imageSizeX, imageSizeY);
+  }
+
+  drawShadowRotate(canvasContainer:CanvasContainer,angle:number, imageObjShadow:HTMLImageElement,posX:number,posY:number,imageSizeX:number, imageSizeY:number, shadowX:number=30, shadowY:number =60){
+    LogicService.drawRotateImage(imageObjShadow,canvasContainer.shadowCtx,angle,posX+shadowX, posY+shadowY, imageSizeX, imageSizeY);
   }
 
 }

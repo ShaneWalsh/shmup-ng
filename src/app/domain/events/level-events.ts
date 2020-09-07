@@ -15,6 +15,7 @@ export enum BotType {
 
   BUGGY="BUGGY",
   AATANK="AATANK",
+  HEAVYJET="HEAVYJET",
 
   MINIBOSS1="MINIBOSS1", // move on a phase after a mini boss dies.
   MINIBOSS2 = "MINIBOSS2",
@@ -92,6 +93,8 @@ export class SpawnBotEvent extends LevelEvent {
             botManagerService.generateBuggy(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.AATANK) {
             botManagerService.generateAATank(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
+        } else if (this.botType == BotType.HEAVYJET) {
+            botManagerService.generateHeavyJet(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.MINIBOSS1) {
             botManagerService.generateLevel1SubBoss1(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.MINIBOSS2) {

@@ -1,3 +1,4 @@
+import { HeavyJet } from './../domain/bots/HeavyJet';
 import { Injectable } from '@angular/core';
 import { Subject } from '../../../node_modules/rxjs';
 import { BotInstance } from 'src/app/domain/bots/BotInstance';
@@ -88,6 +89,17 @@ export class BotManagerService {
         this.botsArr.push(newBot);
         this.botCreated.next(newBot);
     }
+
+    generateHeavyJet(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
+      let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
+      let newBot = new HeavyJet(config, posObj.posX, posObj.posY,
+        this.resourcesService.getRes().get("heavy-jet"),
+        this.resourcesService.getRes().get("heavy-jet-damaged"),
+        this.resourcesService.getRes().get("heavy-jet-shadow")
+        );
+      this.botsArr.push(newBot);
+      this.botCreated.next(newBot);
+  }
 
 		generateGuardianCreeper(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
       let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
