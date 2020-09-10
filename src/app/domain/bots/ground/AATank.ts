@@ -7,6 +7,7 @@ import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { CanvasContainer } from "../../CanvasContainer";
 import { Turret } from "../Turret";
 import { LogicService, HardRotationAngle } from "src/app/services/logic.service";
+import { BackgroundElement } from "../../BackgroundElement";
 
 export class AATank extends BotInstanceImpl{
 	public bulletSpeed:number = 6;
@@ -31,6 +32,9 @@ export class AATank extends BotInstanceImpl{
   public turret:Turret;
   public turretXoffset:number=34;
   public turretYoffset:number=0;
+
+  public trackXOffset:number=0;
+  public trackYOffset:number=0;
 
   public rotationAngle:number = HardRotationAngle.RIGHT; // right
 
@@ -62,11 +66,15 @@ export class AATank extends BotInstanceImpl{
       if(this.moveToXCord == this.posX){
         this.rotationAngle = HardRotationAngle.DOWN;
         this.turretXoffset = 30
+        this.trackXOffset= 68;
+        this.trackYOffset= -50;
         this.hitBox=new HitBox(30,-20,imageSizeY,imageSizeX)
       } else if(this.moveToXCord < this.posX){
         this.rotationAngle = HardRotationAngle.LEFT;
         this.turretXoffset = 20
         this.turretYoffset = 5
+        this.trackXOffset= this.imageSizeX;
+        this.trackYOffset= 10;
       } // mtX > x RIGHT is default
 
 		  this.bTimer = this.bTimerLimit/2;
@@ -132,6 +140,7 @@ export class AATank extends BotInstanceImpl{
       } else {
           this.imageObj = this.imageObjMain;
       }
+      botManagerService.generateTankTrack(this.posX+this.trackXOffset,this.posY+this.trackYOffset,this.rotationAngle);
 		}
 		else{
 			this.anaimationTimer++;
@@ -171,11 +180,15 @@ export class AATank extends BotInstanceImpl{
   }
 
   triggerDamagedAnimation(): any {
-    if(this.imageObjDamaged != null){
+    if(this.imageObjDamaged != null) {
       this.damAnaimationTimer = 1;// trigger damage animation
     }
   }
   drawShadow(canvasContainer:CanvasContainer, imageObjShadow:HTMLImageElement,posX:number,posY:number,imageSizeX:number, imageSizeY:number, shadowX:number=10, shadowY:number =6){
     LogicService.drawRotateImage(imageObjShadow,canvasContainer.shadowCtx,this.rotationAngle,posX+shadowX, posY+shadowY,imageSizeX, imageSizeY);
+  }
+
+  isGroundBot():boolean{
+    return true;
   }
 }

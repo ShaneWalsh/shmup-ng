@@ -154,4 +154,8 @@ export class Buggy extends BotInstanceImpl{
   drawShadow(canvasContainer:CanvasContainer, imageObjShadow:HTMLImageElement,posX:number,posY:number,imageSizeX:number, imageSizeY:number, shadowX:number=10, shadowY:number =6){
     canvasContainer.shadowCtx.drawImage(imageObjShadow, 0, 0, imageSizeX, imageSizeY, posX+shadowX, posY+shadowY, imageSizeX, imageSizeY);
   }
+
+  isGroundBot():boolean{
+    return true;
+  }
 }

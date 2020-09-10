@@ -23,6 +23,7 @@ import { Level2SubBoss1V2 } from '../domain/bots/Level2SubBoss1V2';
 import { CanvasContainer } from '../domain/CanvasContainer';
 import { Buggy } from '../domain/bots/ground/Buggy';
 import { AATank } from '../domain/bots/ground/AATank';
+import { BackgroundElement } from '../domain/BackgroundElement';
 
 /**
  * Going to manage the created bots, spawned by the level manager. Its going to emit when they are destroyed or when they leave the screen.
@@ -31,13 +32,13 @@ import { AATank } from '../domain/bots/ground/AATank';
     providedIn: 'root'
 })
 export class BotManagerService {
-
     private botDestroyed: Subject<BotInstance> = new Subject();
     private botCreated: Subject<BotInstance> = new Subject();
     private botRemoved: Subject<BotInstance> = new Subject();
-	private deathAnimtionTimer:number=4;
+	  private deathAnimtionTimer:number=4;
 
     private botsArr: BotInstance[] = [];
+    private backgroundElementsArr: BackgroundElement[] = [];
     private spriteSheetArr: SpriteSheet[] = [];
 
     constructor(private resourcesService: ResourcesService) {
@@ -55,7 +56,7 @@ export class BotManagerService {
         for (let i = 0; i < botArrClone.length; i++) {
             const bot = botArrClone[i];
             bot.update(levelInstance, canvasContainer, this, bulletManagerService, playerService);
-            if (playerService.currentPlayer && bot.getPlayerCollisionHitBoxes() != null && bot.getPlayerCollisionHitBoxes().length > 0){
+            if (playerService.currentPlayer && !bot.isGroundBot() && bot.getPlayerCollisionHitBoxes() != null && bot.getPlayerCollisionHitBoxes().length > 0){
               const collsionBoxes = bot.getPlayerCollisionHitBoxes();
               for(let i = 0; i < collsionBoxes.length;i++){
                 if(playerService.currentPlayer.hasPlayerBeenHit(bot,collsionBoxes[i] )) {
@@ -71,8 +72,13 @@ export class BotManagerService {
 
         let spriteSheetArrClone = [...this.spriteSheetArr]; // why clone it? So I can update the original array without effecting the for loop.
         for (let i = 0; i < spriteSheetArrClone.length; i++) {
-            const bot = spriteSheetArrClone[i];
-            bot.update(levelInstance, canvasContainer, this, bulletManagerService, playerService);
+            const sprite = spriteSheetArrClone[i];
+            sprite.update(levelInstance, canvasContainer, this, bulletManagerService, playerService);
+        }
+        let backgroundElementsArrClone = [...this.backgroundElementsArr];
+        for (let i = 0; i < backgroundElementsArrClone.length; i++) {
+            const element = backgroundElementsArrClone[i];
+            element.update(levelInstance, canvasContainer, this, bulletManagerService, playerService);
         }
     }
 
@@ -262,7 +268,14 @@ export class BotManagerService {
 			this.resourcesService.getRes().get("bot-explosion-4")],
 			80,80,this.deathAnimtionTimer,this.deathAnimtionTimer)
 		);
-	}
+  }
+
+  generateTankTrack(posX: number, posY: number, rotationAngle: number) {
+    this.backgroundElementsArr.push(new BackgroundElement(posX,posY,
+			this.resourcesService.getRes().get("aa-tank-track-horizontal"),
+			1,62,rotationAngle)
+		);
+  }
 
 
   // createTankTrack(x,y,angle=null, ctx=null){
@@ -302,8 +315,17 @@ export class BotManagerService {
         }
     }
 
-    addSpriteSheet(bot: SpriteSheet) {
-        this.spriteSheetArr.push(bot);
+    addSpriteSheet(sprite: SpriteSheet) {
+        this.spriteSheetArr.push(sprite);
+    }
+
+    addBGElment(bg: BackgroundElement) {
+      this.backgroundElementsArr.push(bg);
+    }
+
+    removeBGElement(elmentToRemove: BackgroundElement) {
+      //this.backgroundElementsArr = this.backgroundElementsArr.filter(el => el !== elmentToRemove);
+      this.backgroundElementsArr.splice(this.backgroundElementsArr.indexOf(elmentToRemove),1);
     }
 
     removeBot(bot: BotInstance) {

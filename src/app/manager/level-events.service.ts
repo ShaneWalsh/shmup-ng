@@ -409,7 +409,7 @@ export class LevelEventsService {
       bTimerLimit: 90,
       score: 2000, // this is only added to the players score if they kill the bot, if it leaves the screen the bot is simply removed.
       health:20, // health, when 0 Diver is dead.
-      targetCords:[{targetX:30,targetY:560},{targetX:350,targetY:560},{targetX:350,targetY:-150}]
+      targetCords:[{targetX:70,targetY:460},{targetX:140,targetY:540},{targetX:280,targetY:540},{targetX:400,targetY:460},{targetX:400,targetY:-150}]
     };
 
 		let diverConfig = {

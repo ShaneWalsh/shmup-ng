@@ -20,6 +20,8 @@ export interface BotInstance {
 
     getPlayerCollisionHitBoxes() : HitBox[];
 
+    isGroundBot():boolean;
+
     isDeathOnColision():boolean;
 }
 
@@ -27,9 +29,9 @@ export interface BotInstance {
 export class BotInstanceImpl implements BotInstance {
 	constructor(public config:any={}){
 
-	}
+  }
 
-	getCenterY(): number {
+	 getCenterY(): number {
         throw new Error("Method not implemented.");
     }
     getCenterX(): number {
@@ -61,6 +63,10 @@ export class BotInstanceImpl implements BotInstance {
   }
 
   hasBotArmorBeenHit(hitter: any, hitterBox: HitBox) {
+    return false;
+  }
+
+  isGroundBot(): boolean {
     return false;
   }
 
