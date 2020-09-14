@@ -404,12 +404,11 @@ export class LevelEventsService {
     // main boss guardian
     let heavyJetConfig = {
       bulletSpeed: 6, // how fast this bots buttets travel every tick
-      posXSpeed: 3,
-      posYSpeed: 3, // the speed the bot moves in the X and y Directions every Tick
+      speed: 3,
       bTimerLimit: 90,
       score: 2000, // this is only added to the players score if they kill the bot, if it leaves the screen the bot is simply removed.
       health:20, // health, when 0 Diver is dead.
-      targetCords:[{targetX:70,targetY:460},{targetX:140,targetY:540},{targetX:280,targetY:540},{targetX:400,targetY:460},{targetX:400,targetY:-150}]
+      targetCords:[{targetX:70,targetY:460},{targetX:140,targetY:560},{targetX:340,targetY:560},{targetX:410,targetY:460},{targetX:410,targetY:-150}]
     };
 
 		let diverConfig = {
@@ -546,7 +545,7 @@ export class LevelEventsService {
     // trick of the eye here, by increasing the AATanks yspeed by .5 it will look like its driving down, or leave it at 1 and it will look parked.
     le.push(new SpawnBotEvent(0, 220, false, 0, BotType.AATANK, {...AATankConfig, moveToXCord:300, posYSpeed:1.5}, false, 300, -150));
     //le.push(new SpawnBotEvent(0, 220, false, 0, BotType.AATANK, {...AATankConfig, moveToXCord:50, posYSpeed:1.5}, false, 50, -150));
-    le.push(new SpawnBotEvent(0, 220, false, 0, BotType.HEAVYJET, heavyJetConfig, false, 30, -150));
+    le.push(new SpawnBotEvent(0, 220, false, 0, BotType.HEAVYJET, heavyJetConfig, false, 0, -150));
 
 		// wings middle
 		// le.push(new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));

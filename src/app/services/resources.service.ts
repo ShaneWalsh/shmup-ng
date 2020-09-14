@@ -19,6 +19,18 @@ export class ResourcesService {
 
       this.resourcesToLoad = [
 
+    {code:"explosion-huge-1", path:"assets/img/bots/explosion/explosion-huge-1.png", type:ResourcesEnum.ImageRes},
+    {code:"explosion-huge-2", path:"assets/img/bots/explosion/explosion-huge-2.png", type:ResourcesEnum.ImageRes},
+    {code:"explosion-huge-3", path:"assets/img/bots/explosion/explosion-huge-3.png", type:ResourcesEnum.ImageRes},
+    {code:"explosion-huge-4", path:"assets/img/bots/explosion/explosion-huge-4.png", type:ResourcesEnum.ImageRes},
+    {code:"explosion-tiny-1", path:"assets/img/bots/explosion/explosion-tiny-1.png", type:ResourcesEnum.ImageRes},
+    {code:"explosion-tiny-2", path:"assets/img/bots/explosion/explosion-tiny-2.png", type:ResourcesEnum.ImageRes},
+    {code:"explosion-tiny-3", path:"assets/img/bots/explosion/explosion-tiny-3.png", type:ResourcesEnum.ImageRes},
+    {code:"explosion-tiny-4", path:"assets/img/bots/explosion/explosion-tiny-4.png", type:ResourcesEnum.ImageRes},
+
+    {code:"enemy-missile-1", path:"assets/img/bots/enemy-missile-1.png", type:ResourcesEnum.ImageRes},
+    {code:"enemy-missile-2", path:"assets/img/bots/enemy-missile-2.png", type:ResourcesEnum.ImageRes},
+
     {code:"heavy-jet", path:"assets/img/bots/heavy-jet/heavy-jet.png", type:ResourcesEnum.ImageRes},
     {code:"heavy-jet-damaged", path:"assets/img/bots/heavy-jet/heavy-jet-damaged.png", type:ResourcesEnum.ImageRes},
     {code:"heavy-jet-shadow", path:"assets/img/bots/heavy-jet/heavy-jet-shadow.png", type:ResourcesEnum.ImageRes},
@@ -34,6 +46,7 @@ export class ResourcesService {
     {code:"shield-8", path:"assets/img/player/shield/shield-8.png", type:ResourcesEnum.ImageRes},
 
     {code:"aa-tank-hull-horizontal", path:"assets/img/bots/aa-tank/aa-tank-hull-horizontal.png", type:ResourcesEnum.ImageRes},
+    {code:"aa-tank-wreckage-horizontal", path:"assets/img/bots/aa-tank/aa-tank-wreckage-horizontal.png", type:ResourcesEnum.ImageRes},
     {code:"aa-tank-hull-horizontal-shadow", path:"assets/img/bots/aa-tank/aa-tank-hull-horizontal-shadow.png", type:ResourcesEnum.ImageRes},
     {code:"aa-tank-turret-1", path:"assets/img/bots/aa-tank/aa-tank-turret-1.png", type:ResourcesEnum.ImageRes},
     {code:"aa-tank-turret-3", path:"assets/img/bots/aa-tank/aa-tank-turret-3.png", type:ResourcesEnum.ImageRes},
@@ -54,8 +67,7 @@ export class ResourcesService {
     {code:"ground-enemy-1-1", path:"assets/img/bots/level-2/ground-enemy-1-1.png", type:ResourcesEnum.ImageRes},
     {code:"ground-enemy-1-1-cannon", path:"assets/img/bots/level-2/ground-enemy-1-1-cannon.png", type:ResourcesEnum.ImageRes},
     {code:"ground-enemy-1-1-example", path:"assets/img/bots/level-2/ground-enemy-1-1-example.png", type:ResourcesEnum.ImageRes},
-    {code:"player-1-ship-shadows", path:"assets/img/bots/level-2/player-1-ship-shadows.png", type:ResourcesEnum.ImageRes},
-    {code:"player-1-ship-shadow-separa", path:"assets/img/bots/level-2/player-1-ship-shadow-separa.png", type:ResourcesEnum.ImageRes},
+    {code:"player-1-ship-shadow-separa", path:"assets/img/player/player-1-ship-shadow.png", type:ResourcesEnum.ImageRes},
 
     {code:"HUD-resized", path:"assets/img/hud/HUD-resized.png", type:ResourcesEnum.ImageRes},
     {code:"stage-1-complete", path:"assets/img/desc/stage-1-complete.png", type:ResourcesEnum.ImageRes},
@@ -89,7 +101,7 @@ export class ResourcesService {
 		{code:"bot-explosion-4", path:"assets/img/bots/explosion/explosion-4.png", type:ResourcesEnum.ImageRes},
 
 		{code:"main-boss-1-guardian", path:"assets/img/bots/main-boss-1-guardian/main-boss-1-guardian.png", type:ResourcesEnum.ImageRes},
-        {code:"main-boss-1-guardian-damage", path:"assets/img/bots/main-boss-1-guardian/main-boss-1-guardian-damage.png",  type:ResourcesEnum.ImageRes},
+    {code:"main-boss-1-guardian-damage", path:"assets/img/bots/main-boss-1-guardian/main-boss-1-guardian-damage.png",  type:ResourcesEnum.ImageRes},
 
 		{code:"miniboss-1-damaged", path:"assets/img/boss/miniboss-1-damaged.png", type:ResourcesEnum.ImageRes},
     {code:"player-1-muzzle-flash", path:"assets/img/bots/redesign/player-1-muzzle-flash.png", type:ResourcesEnum.ImageRes},

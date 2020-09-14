@@ -48,6 +48,7 @@ export class BotManagerService {
     clean() {
         this.botsArr = [];
         this.spriteSheetArr = [];
+        this.backgroundElementsArr = [];
     }
 
     update(levelInstance: LevelInstance, canvasContainer:CanvasContainer, bulletManagerService: BulletManagerService, playerService: PlayerService): any {
@@ -270,10 +271,21 @@ export class BotManagerService {
 		);
   }
 
-  generateTankTrack(posX: number, posY: number, rotationAngle: number) {
+  generateTankTrack(posX: number, posY: number, rotationAngle: number, timeLimit: number = 900) {
     this.backgroundElementsArr.push(new BackgroundElement(posX,posY,
 			this.resourcesService.getRes().get("aa-tank-track-horizontal"),
-			1,62,rotationAngle)
+			4,62,rotationAngle,timeLimit)
+		);
+  }
+
+  generateDeadAATank(posX: number, posY: number, rotationAngle: number, deathXOffset:number, deathYOffset:number, deathShadowXOffset:number, deathShadowYOffset:number, timeLimit: number = 900) {
+    this.backgroundElementsArr.push(new BackgroundElement(posX+deathShadowXOffset,posY+deathShadowYOffset,
+			this.resourcesService.getRes().get("aa-tank-hull-horizontal-shadow"),
+			118,62,rotationAngle,timeLimit)
+		);
+    this.backgroundElementsArr.push(new BackgroundElement(posX+deathXOffset,posY+deathYOffset,
+			this.resourcesService.getRes().get("aa-tank-wreckage-horizontal"),
+			118,82,rotationAngle,timeLimit)
 		);
   }
 
@@ -292,6 +304,25 @@ export class BotManagerService {
 			this.resourcesService.getRes().get("explosion-small-3"),
 			this.resourcesService.getRes().get("explosion-small-4")],
 			40,40,this.deathAnimtionTimer,this.deathAnimtionTimer,angle)
+		);
+  }
+
+  createExplosionTiny(x,y,angle=null) {
+		this.spriteSheetArr.push(new SpriteSheet(x-10,y-10,
+			[this.resourcesService.getRes().get("explosion-tiny-1"),
+			this.resourcesService.getRes().get("explosion-tiny-2"),
+			this.resourcesService.getRes().get("explosion-tiny-3"),
+			this.resourcesService.getRes().get("explosion-tiny-4")],
+			20,20,this.deathAnimtionTimer,this.deathAnimtionTimer,angle)
+		);
+  }
+  createExplosionHuge(x,y,angle=null) {
+		this.spriteSheetArr.push(new SpriteSheet(x-80,y-80,
+			[this.resourcesService.getRes().get("explosion-huge-1"),
+			this.resourcesService.getRes().get("explosion-huge-2"),
+			this.resourcesService.getRes().get("explosion-huge-3"),
+			this.resourcesService.getRes().get("explosion-huge-4")],
+			160,160,this.deathAnimtionTimer,this.deathAnimtionTimer,angle)
 		);
 	}
 
@@ -328,8 +359,12 @@ export class BotManagerService {
       this.backgroundElementsArr.splice(this.backgroundElementsArr.indexOf(elmentToRemove),1);
     }
 
-    removeBot(bot: BotInstance) {
-		this.createBotDeath(bot.getCenterX(),bot.getCenterY());
+    removeBot(bot: BotInstance, botDeathSize:number=0) {
+        if(botDeathSize == 0){
+          this.createBotDeath(bot.getCenterX(),bot.getCenterY());
+        } else if(botDeathSize == 1){
+          this.createExplosionHuge(bot.getCenterX(),bot.getCenterY());
+        }
         this.botsArr.splice(this.botsArr.indexOf(bot), 1);
         this.botRemoved.next(bot);
     }

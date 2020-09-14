@@ -38,6 +38,13 @@ export class AATank extends BotInstanceImpl{
 
   public rotationAngle:number = HardRotationAngle.RIGHT; // right
 
+  public deathXOffset:number=0;
+  public deathYOffset:number=-10;
+  public deathShadowXOffset:number=5;
+  public deathShadowYOffset:number=8;
+  public skipTrack = false;
+  public skipTrackCount = false;
+
   constructor(
 		public config:any={},
         public posX:number=0,
@@ -66,15 +73,23 @@ export class AATank extends BotInstanceImpl{
       if(this.moveToXCord == this.posX){
         this.rotationAngle = HardRotationAngle.DOWN;
         this.turretXoffset = 30
-        this.trackXOffset= 68;
+        this.trackXOffset= 63;
         this.trackYOffset= -50;
+        this.skipTrack = true;
         this.hitBox=new HitBox(30,-20,imageSizeY,imageSizeX)
+        this.deathXOffset = 6;
+        this.deathYOffset = -7;
+        this.deathShadowXOffset = 14;
+        this.deathShadowYOffset = 8;
       } else if(this.moveToXCord < this.posX){
         this.rotationAngle = HardRotationAngle.LEFT;
         this.turretXoffset = 20
         this.turretYoffset = 5
         this.trackXOffset= this.imageSizeX;
         this.trackYOffset= 10;
+        this.deathYOffset = 0;
+        this.deathShadowXOffset = 10;
+        this.deathShadowYOffset = 16;
       } // mtX > x RIGHT is default
 
 		  this.bTimer = this.bTimerLimit/2;
@@ -140,7 +155,14 @@ export class AATank extends BotInstanceImpl{
       } else {
           this.imageObj = this.imageObjMain;
       }
-      botManagerService.generateTankTrack(this.posX+this.trackXOffset,this.posY+this.trackYOffset,this.rotationAngle);
+      if(this.skipTrack){
+        if(!this.skipTrackCount){
+          botManagerService.generateTankTrack(this.posX+this.trackXOffset,this.posY+this.trackYOffset,this.rotationAngle);
+        }
+        this.skipTrackCount = !this.skipTrackCount;
+      } else {
+        botManagerService.generateTankTrack(this.posX+this.trackXOffset,this.posY+this.trackYOffset,this.rotationAngle);
+      }
 		}
 		else{
 			this.anaimationTimer++;
@@ -157,6 +179,7 @@ export class AATank extends BotInstanceImpl{
     if(this.health < 1){
       playerService.currentPlayer.addScore(this.score);
       botManagerService.removeBot(this);
+      botManagerService.generateDeadAATank(this.posX,this.posY,this.rotationAngle,this.deathXOffset,this.deathYOffset, this.deathShadowXOffset, this.deathShadowYOffset);
     }
   }
 

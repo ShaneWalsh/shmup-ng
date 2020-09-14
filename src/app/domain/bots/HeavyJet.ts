@@ -9,8 +9,9 @@ import { CanvasContainer } from "../CanvasContainer";
 
 export class HeavyJet extends BotInstanceImpl{
     public bulletSpeed:number = 3;
-    public posXSpeed:number = 1.5;
-    public posYSpeed:number = 1.5;
+    // public posXSpeed:number = 1.5;
+    // public posYSpeed:number = 1.5;
+    public speed:number = 3;
 
     public bTimer:number = 0; // bullet timer
     public bTimerLimit:number = 80;
@@ -35,7 +36,7 @@ export class HeavyJet extends BotInstanceImpl{
         public targetCords:{targetX:number,targetY:number}[]=[]
     ){
       super(config);
-		  this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score","targetX","targetY","posXSpeed","posYSpeed","bulletSpeed","targetCords"]);
+		  this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score","targetX","targetY","speed","bulletSpeed","targetCords"]);
     }
 
   update(levelInstance:LevelInstance, canvasContainer:CanvasContainer, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {
@@ -44,14 +45,17 @@ export class HeavyJet extends BotInstanceImpl{
 
     let targetCord : {targetX: number, targetY: number} = this.getCurrentTargetCords();
     let range = 10;
-    this.angleDirection = bulletManagerService.calculateBulletDirection(this.getCenterX(), this.getCenterY(), targetCord.targetX, targetCord.targetY, this.bulletSpeed, true, currentPlayer);
+    this.angleDirection = bulletManagerService.calculateBulletDirection(this.getCenterX(), this.getCenterY(), targetCord.targetX, targetCord.targetY, this.speed, true);
 
-		if (this.getCenterY() <= (targetCord.targetY-range) || this.getCenterY() >= (targetCord.targetY+range)) {
-			this.posY += (this.getCenterY() <= (targetCord.targetY-range) )? this.posYSpeed:(this.posYSpeed * -1);
-		}
-		if (this.getCenterX() <= (targetCord.targetX-range) || this.getCenterX() >= (targetCord.targetX+range)) {
-			this.posX += (this.getCenterX() <= (targetCord.targetX-range) )? this.posXSpeed:(this.posXSpeed * -1);
-		}
+    this.posX += this.angleDirection.speed * this.angleDirection.directionX;
+    this.posY += this.angleDirection.speed * this.angleDirection.directionY;
+
+		// if (this.getCenterY() <= (targetCord.targetY-range) || this.getCenterY() >= (targetCord.targetY+range)) {
+		// 	this.posY += (this.getCenterY() <= (targetCord.targetY-range) )? this.posYSpeed:(this.posYSpeed * -1);
+		// }
+		// if (this.getCenterX() <= (targetCord.targetX-range) || this.getCenterX() >= (targetCord.targetX+range)) {
+		// 	this.posX += (this.getCenterX() <= (targetCord.targetX-range) )? this.posXSpeed:(this.posXSpeed * -1);
+		// }
 
     if(levelInstance.drawShadow() && this.imageObjShadow != null) {
       this.drawShadowRotate(canvasContainer,this.angleDirection.angle,this.imageObjShadow,this.posX,this.posY,this.imageSizeX, this.imageSizeY);

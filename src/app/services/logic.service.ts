@@ -56,7 +56,13 @@ export class LogicService {
     ctx.fillText(text, x, y);
     //ctx.fill();
   }
+
+  public static getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
 }
+
+
 
 export enum HardRotationAngle {
   UP=-1.5707963267948966,

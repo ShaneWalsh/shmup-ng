@@ -73,9 +73,8 @@ export class Diver extends BotInstanceImpl{
     fireTracker(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D,bulletManagerService:BulletManagerService, currentPlayer:PlayerObj){
         let bullDirection:BulletDirection;
         if(levelInstance.isVertical()){
-          	console.log("diver");
             bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, currentPlayer.getCenterX(), currentPlayer.getCenterY(), this.bulletSpeed, true, currentPlayer);
-            bulletManagerService.generateBotTrackerBlob(levelInstance, bullDirection,  (this.posX+16), (this.posY+40), 60);
+            bulletManagerService.generateHoming(levelInstance, bullDirection,  (this.posX+16), (this.posY+40), 60);
         } else {
             // bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, (this.posX+50), this.posY, 6);
             // bulletManagerService.generatePlayerLazer(levelInstance, bullDirection, this.posX, this.posY);

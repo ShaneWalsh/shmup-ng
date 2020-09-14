@@ -38,51 +38,49 @@ export class BulletManagerService {
 
     generatePlayerLazer(levelInstance:LevelInstance, bulletDirection:BulletDirection, startX, startY): any {
         // make a generaic lazer, isTargetBot? // damage to do
-        let newBullet = new DumbLazer(2,startX, startY, bulletDirection, true, this.resourcesService.getRes().get("player-1-bullets"), 30,22);
+        let newBullet = new DumbLazer(2,startX, startY, bulletDirection, true, this.resourcesService.getRes().get("player-1-bullets"),null, 30,22);
         this.bulletsArr.push(newBullet);
         this.bulletCreated.next(newBullet);
     }
 
     generateBotBlazer(levelInstance:LevelInstance, bulletDirection:BulletDirection, startX, startY): any {
-        let newBullet = new DumbLazer(1, startX, startY, bulletDirection, false, this.resourcesService.getRes().get("enemy-bullet-target"), 22, 14);
+        let newBullet = new DumbLazer(1, startX, startY, bulletDirection, false, this.resourcesService.getRes().get("enemy-bullet-target"),null, 22, 14);
         this.bulletsArr.push(newBullet);
         this.bulletCreated.next(newBullet);
     }
 
     generateMuzzleBlazer(levelInstance: LevelInstance, bulletDirection: BulletDirection, startX, startY): any {
-        // make a generaic lazer, isTargetBot? // damage to do
-        let newBullet = new RotationLazer(1, startX, startY, bulletDirection, false, this.resourcesService.getRes().get("miniboss-2-bullet"), 36, 20);
+        let newBullet = new RotationLazer(1, startX, startY, bulletDirection, false, this.resourcesService.getRes().get("miniboss-2-bullet"),null, 36, 20);
         this.bulletsArr.push(newBullet);
         this.bulletCreated.next(newBullet);
     }
 
     generateBotTrackerBlob(levelInstance:LevelInstance, bulletDirection:BulletDirection, startX, startY, allowedMovement=30 ): any {
-        // make a generaic lazer, isTargetBot? // damage to do
-        let newBullet = new DumbLazer(1,startX, startY, bulletDirection, false, this.resourcesService.getRes().get("enemy-bullet-target"),22,14);
-        newBullet.allowedMovement = allowedMovement; // 2 seconds ish
-        this.bulletsArr.push(newBullet);
-        this.bulletCreated.next(newBullet);
+      let newBullet = new DumbLazer(1,startX, startY, bulletDirection, false, this.resourcesService.getRes().get("enemy-bullet-target"),null,22,14);
+      newBullet.allowedMovement = allowedMovement; // 2 seconds ish
+      this.bulletsArr.push(newBullet);
+      this.bulletCreated.next(newBullet);
     }
 
 		// the x+y passed into the tracker are middle point of the bullet, so I have to then workout where the top left x+y is and rotate that by the bullet angle, giving me the actual x+y cord
 		generateGuardianTracker(levelInstance:LevelInstance, bulletDirection:BulletDirection, startX, startY, allowedMovement=30 ): any {
 				//let cords :{x:number,y:number} = LogicService.pointAfterRotation(centerX, centerY, centerX-7, centerY-10, bulletDirection.angle)
-				let newBullet = new RotationLazer(1,startX, startY, bulletDirection, false, this.resourcesService.getRes().get("enemy-bullet-target"),22,14);
+				let newBullet = new RotationLazer(1,startX, startY, bulletDirection, false, this.resourcesService.getRes().get("enemy-bullet-target"),null,22,14);
 				newBullet.allowedMovement = allowedMovement; // 2 seconds ish
 				this.bulletsArr.push(newBullet);
 				this.bulletCreated.next(newBullet);
 		}
 
 		generateHoming(levelInstance:LevelInstance, bulletDirection:BulletDirection, startX, startY, allowedMovement=60 ): any {
-        // make a generaic lazer, isTargetBot? // damage to do
-        let newBullet = new DumbLazer(1,startX, startY, bulletDirection, false, this.resourcesService.getRes().get("miniboss-3-missile-no-cannon"),22,13);
-        newBullet.allowedMovement = allowedMovement; // 2 seconds ish
+        let newBullet = new DumbLazer(1,startX, startY, bulletDirection, false, this.resourcesService.getRes().get("enemy-missile-1"),this.resourcesService.getRes().get("enemy-missile-2"),22,13);
+        newBullet.allowedMovement = allowedMovement;
         this.bulletsArr.push(newBullet);
         this.bulletCreated.next(newBullet);
     }
 
-    removeBullet(bullet:BulletInstance, botManagerService:BotManagerService){
-        botManagerService.createMisslePlume(bullet.getPosX(),bullet.getPosY(), bullet.getCurrentRotation());
+    removeBullet(bullet:BulletInstance, botManagerService:BotManagerService, xOffset:number=0){
+        //botManagerService.createMisslePlume(bullet.getPosX(),bullet.getPosY(), bullet.getCurrentRotation());
+        botManagerService.createExplosionTiny(bullet.getPosX()+xOffset,bullet.getPosY(), bullet.getCurrentRotation())
         this.bulletsArr.splice(this.bulletsArr.indexOf(bullet),1);
         this.bulletRemoved.next(bullet);
     }
@@ -149,19 +147,24 @@ class DumbLazer implements BulletInstance {
     public allowedMovement = -1; // if a bot has allowed movement it will be removed when that movement runs out
     public outOfMovesAnimation:any; // todo add in future.
 		private pad = 25;
-
+    protected imageObj:HTMLImageElement=null;
+    protected flipImageCounter:number = -1;
     constructor(
         public damage:number=2,
         public posX:number=0,
         public posY:number=0,
         public bulletDirection:BulletDirection=null,
         public goodBullet:boolean=true,
-        public imageObj:HTMLImageElement=null,
+        public imageObj1:HTMLImageElement=null,
+        public imageObj2:HTMLImageElement=null,
         public imageSizeX:number=90,
         public imageSizeY:number=60,
         public hitBox:HitBox=new HitBox(0,0,imageSizeX,imageSizeY)
     ){
-
+      this.imageObj = imageObj1;
+      if(imageObj2 != null){
+        this.flipImageCounter = 5;
+      }
     }
 
     getPosX():number {
@@ -207,13 +210,13 @@ class DumbLazer implements BulletInstance {
             let bot = botArrClone[i];
             if(bot.hasBotArmorBeenHit(this,this.hitBox)){
               // todo make noise or show anumation of failed hit
-              bulletManagerService.removeBullet(this, botManagerService);
+              bulletManagerService.removeBullet(this, botManagerService, LogicService.getRandomInt(this.imageSizeX-5));
               removed = true;
               break;
             }
             if(bot.hasBotBeenHit(this,this.hitBox)){
               bot.applyDamage(this.damage, botManagerService,playerService,levelInstance);
-              bulletManagerService.removeBullet(this, botManagerService);
+              bulletManagerService.removeBullet(this, botManagerService, LogicService.getRandomInt(this.imageSizeX-5));
               removed = true;
               break;
             }
@@ -235,6 +238,7 @@ class DumbLazer implements BulletInstance {
           }
         }
       }
+      this.updateDisplayAnimation();
     }
 
 		performRotation(ctx): any {
@@ -244,7 +248,17 @@ class DumbLazer implements BulletInstance {
       //   rotatedCenterCords.x,rotatedCenterCords.y
       // );
       LogicService.drawRotateImage(this.imageObj, ctx,this.bulletDirection.angle,this.getPosX(),this.getPosY(),this.imageSizeX,this.imageSizeY);
-	  }
+    }
+
+    updateDisplayAnimation(){
+      console.log("BaBingBoom")
+      if(this.flipImageCounter > 0) {
+        this.flipImageCounter--;
+      } else if(this.flipImageCounter == 0) {
+        this.imageObj = (this.imageObj === this.imageObj1)?this.imageObj2:this.imageObj1;
+        this.flipImageCounter = 5;
+      }
+    }
 }
 
 class RotationLazer extends DumbLazer {
@@ -255,11 +269,12 @@ class RotationLazer extends DumbLazer {
 		public bulletDirection:BulletDirection=null,
 		public goodBullet:boolean=true,
 		public imageObj:HTMLImageElement=null,
+		public imageObj2:HTMLImageElement=null,
 		public imageSizeX:number=90,
 		public imageSizeY:number=60,
 		public hitBox:HitBox=new HitBox(-(imageSizeX/2),-(imageSizeY/2),imageSizeX,imageSizeY)
 	){
-		super(damage,posX,posY,bulletDirection,goodBullet,imageObj,imageSizeX,imageSizeY,hitBox);
+		super(damage,posX,posY,bulletDirection,goodBullet,imageObj,imageObj2, imageSizeX,imageSizeY,hitBox);
   }
 
   getPosX():number {

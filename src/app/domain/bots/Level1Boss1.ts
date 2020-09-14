@@ -101,7 +101,7 @@ export class Level1Boss1 extends BotInstanceImpl {
         this.triggerDamagedAnimation();
         if (this.health < 1) {
             playerService.currentPlayer.addScore(this.score);
-            botManagerService.removeBot(this);
+            botManagerService.removeBot(this,1);
             levelInstance.updatePhaseCounter();
         }
     }
