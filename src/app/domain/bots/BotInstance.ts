@@ -27,39 +27,40 @@ export interface BotInstance {
 
 
 export class BotInstanceImpl implements BotInstance {
-	constructor(public config:any={}){
+
+  constructor(public config:any={}){
 
   }
 
-	 getCenterY(): number {
-        throw new Error("Method not implemented.");
-    }
-    getCenterX(): number {
-        throw new Error("Method not implemented.");
-    }
-    applyDamage(damage: number, botManagerService: BotManagerService, playerService: PlayerService, levelInstance:LevelInstance) {
-        throw new Error("Method not implemented.");
-    }
-    hasBotBeenHit(hitter: any, hitterBox: HitBox) {
-        throw new Error("Method not implemented.");
-    }
-    update(levelInstance: LevelInstance, canvasContainer:CanvasContainer, botManagerService: BotManagerService, bulletManagerService: BulletManagerService, playerService: PlayerService) {
-        throw new Error("Method not implemented.");
-    }
-    getPlayerCollisionHitBoxes(): HitBox[] {
-        throw new Error("Method not implemented.");
-    }
+  getCenterY(): number {
+      throw new Error("Method not implemented.");
+  }
+  getCenterX(): number {
+      throw new Error("Method not implemented.");
+  }
+  applyDamage(damage: number, botManagerService: BotManagerService, playerService: PlayerService, levelInstance:LevelInstance) {
+      throw new Error("Method not implemented.");
+  }
+  hasBotBeenHit(hitter: any, hitterBox: HitBox) {
+      throw new Error("Method not implemented.");
+  }
+  update(levelInstance: LevelInstance, canvasContainer:CanvasContainer, botManagerService: BotManagerService, bulletManagerService: BulletManagerService, playerService: PlayerService) {
+      throw new Error("Method not implemented.");
+  }
+  getPlayerCollisionHitBoxes(): HitBox[] {
+      throw new Error("Method not implemented.");
+  }
 
-    isDeathOnColision():boolean{
-      return true;
-    }
+  isDeathOnColision():boolean{
+    return true;
+  }
 
-	tryConfigValues(params){
-		for(let param of params){
-			if(this.config[param]){
-				this[param] = this.config[param];
-			}
-		}
+  tryConfigValues(params){
+    for(let param of params){
+      if(this.config[param]){
+        this[param] = this.config[param];
+      }
+    }
   }
 
   hasBotArmorBeenHit(hitter: any, hitterBox: HitBox) {
@@ -76,6 +77,120 @@ export class BotInstanceImpl implements BotInstance {
 
   drawShadowRotate(canvasContainer:CanvasContainer,angle:number, imageObjShadow:HTMLImageElement,posX:number,posY:number,imageSizeX:number, imageSizeY:number, shadowX:number=30, shadowY:number =60){
     LogicService.drawRotateImage(imageObjShadow,canvasContainer.shadowCtx,angle,posX+shadowX, posY+shadowY, imageSizeX, imageSizeY);
+  }
+}
+
+export class FlyingBotImpl extends BotInstanceImpl {
+	public bulletSpeed:number = 3;
+  public posXSpeed:number = 1.5;
+  public posYSpeed:number = 1.5;
+
+  public bTimer:number = 0;
+  public bTimerLimit:number = 30;
+
+  public animationTimer:number = 0;
+  public animationTimerLimit:number =4;
+  public animationIndex:number= 0;
+
+  public damAnaimationTimer:number = 8;
+	public damAnaimationTimerLimit:number =8;
+
+  public imageObj:HTMLImageElement;
+
+  constructor(public config:any={},
+      public posX:number=0,
+      public posY:number=0,
+      public imageSizeX:number=90,
+      public imageSizeY:number=60,
+      public animationImages:HTMLImageElement[]=[],
+      public imageObjDamaged: HTMLImageElement = animationImages[0],
+      public imageObjShadow: HTMLImageElement = null
+    ) {
+    super(config);
+    this.imageObj = animationImages[0];
+  }
+
+  /**
+   * Can this bot fire right now?
+   */
+  canShoot(levelInstance:LevelInstance, currentPlayer:PlayerObj) {
+		if(levelInstance.isVertical() && this.getCenterY() < currentPlayer.getCenterY()) {
+			return true;
+		} else if(!levelInstance.isVertical() && this.getCenterX() > currentPlayer.getCenterX()) {
+			return true;
+		}
+		return false;
+	}
+
+  /**
+   * Common method for looping a firing timer for single firing bots.
+   * @param levelInstance
+   * @param ctx
+   * @param bulletManagerService
+   * @param currentPlayer
+   */
+  updateBulletTimer(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D,bulletManagerService:BulletManagerService, currentPlayer:PlayerObj) {
+    if(this.bTimer >= this.bTimerLimit && this.canShoot(levelInstance,currentPlayer)) {
+			this.bTimer = 0;
+			this.fireSomething(levelInstance,ctx,bulletManagerService,currentPlayer);
+		} else {
+			this.bTimer++;
+		}
+  }
+
+  /**
+   * cycle through the bots sprites to create an animation
+   */
+  updateAnimation(){
+    if(this.animationTimer >= this.animationTimerLimit) {
+      this.animationTimer = 0;
+      this.animationIndex++;
+      if(this.animationIndex >= this.animationImages.length) {
+        this.animationIndex = 0;
+      }
+      this.imageObj = this.animationImages[this.animationIndex];
+    } else {
+      this.animationTimer++;
+    }
+  }
+
+  /**
+   * draw the damaged sprite over the parent sprite to indicate damage.
+   * @param ctx
+   * @param angle when provided the damaged image will be drawn at this angle
+   */
+  updateDamageAnimation(ctx,angle=null){
+    if(this.damAnaimationTimer < this.damAnaimationTimerLimit) {
+      this.damAnaimationTimer++;
+      if(this.damAnaimationTimer %2 == 1) {
+        if(angle != null){
+          LogicService.drawRotateImage(this.imageObjDamaged,ctx,angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY);
+        } else {
+          ctx.drawImage(this.imageObjDamaged, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
+        }
+      }
+    }
+  }
+
+  /**
+   * Start the damage animation.
+   */
+  triggerDamagedAnimation(): any {
+    if(this.imageObjDamaged != null) {
+      this.damAnaimationTimer = 1;
+    }
+  }
+
+  fireSomething(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D,bulletManagerService:BulletManagerService, currentPlayer:PlayerObj) {
+    console.log("Should i be firing something?");
+  }
+
+  getCenterX():number {
+    return this.posX+(this.imageSizeX/2);
+  }
+
+  getCenterY():number {
+      return this.posY+(this.imageSizeY/2);
   }
 
 }
