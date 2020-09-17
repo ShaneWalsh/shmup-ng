@@ -74,14 +74,18 @@ export class GuardianCreeper extends FlyingBotImpl {
 
 	// lazers go straight, nothing fancy so no need to make them do anything fancy, cal a stright direction.
 	fireSomething(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D,bulletManagerService:BulletManagerService, currentPlayer:PlayerObj){
-		let bullDirection:BulletDirection;
+    let bullDirection:BulletDirection;
+    this.retreatAfterShotsFired++;
 		if(levelInstance.isVertical()){
 			let cords :{x:number,y:number} = LogicService.pointAfterRotation(this.posX+(this.imageSizeX/2), this.posY+(this.imageSizeY/2), this.posX+107, this.posY+50, this.angleDirection.angle)
-			// why is the bullet so off??
 			bullDirection = bulletManagerService.calculateBulletDirection(cords.x, cords.y, currentPlayer.getCenterX(), currentPlayer.getCenterY(), this.bulletSpeed, true, null);
 			bulletManagerService.generateGuardianTracker(levelInstance, bullDirection, cords.x, cords.y, 500);
 		} else {
 		}
-	}
+  }
+
+  getPlayerCollisionHitBoxes(): HitBox[] {
+    return [this.hitBox];
+  }
 
 }

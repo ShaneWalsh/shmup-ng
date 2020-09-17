@@ -7,8 +7,6 @@ import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { CanvasContainer } from "../CanvasContainer";
 
 export class Diver extends FlyingBotImpl{
-	public health:number=3;
-  public score:number = 50;
 
   constructor(
       config:any={},
@@ -22,6 +20,7 @@ export class Diver extends FlyingBotImpl{
       public hitBox2:HitBox=new HitBox(0,5,imageSizeX,25)
   ){
     super(config, posX, posY, imageSizeX, imageSizeY, [imageObj], imageObjDamaged);
+    this.score = 50;
     this.bTimerLimit = 60;
     this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score","posYSpeed","posXSpeed","bulletSpeed"]);
   }
@@ -54,15 +53,6 @@ export class Diver extends FlyingBotImpl{
       bulletManagerService.generateHoming(levelInstance, bullDirection,  (this.posX+16), (this.posY+40), 60);
     } else {
       // todo
-    }
-  }
-
-  applyDamage(damage: number, botManagerService: BotManagerService, playerService:PlayerService, levelInstance:LevelInstance) {
-    this.health -= damage;
-    this.triggerDamagedAnimation();
-    if(this.health < 1){
-      playerService.currentPlayer.addScore(this.score);
-      botManagerService.removeBot(this);
     }
   }
 

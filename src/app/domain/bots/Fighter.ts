@@ -7,8 +7,6 @@ import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { CanvasContainer } from "../CanvasContainer";
 
 export class Fighter extends FlyingBotImpl{
-  public score:number = 10;
-  public health:number=3;
 
   constructor(
       config:any={},
@@ -64,15 +62,6 @@ export class Fighter extends FlyingBotImpl{
       // todo
     }
 	}
-
-  applyDamage(damage: number, botManagerService: BotManagerService, playerService:PlayerService, levelInstance:LevelInstance) {
-    this.health -= damage;
-    this.triggerDamagedAnimation();
-    if(this.health < 1){
-      playerService.currentPlayer.addScore(this.score);
-      botManagerService.removeBot(this);
-    }
-  }
 
   getPlayerCollisionHitBoxes(): HitBox[] {
       return [this.hitBox];

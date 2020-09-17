@@ -97,6 +97,9 @@ export class FlyingBotImpl extends BotInstanceImpl {
 
   public imageObj:HTMLImageElement;
 
+  public score:number = 10;
+  public health:number=3;
+
   constructor(public config:any={},
       public posX:number=0,
       public posY:number=0,
@@ -178,6 +181,23 @@ export class FlyingBotImpl extends BotInstanceImpl {
   triggerDamagedAnimation(): any {
     if(this.imageObjDamaged != null) {
       this.damAnaimationTimer = 1;
+    }
+  }
+
+  /**
+   * Apply damage to the bot and trigger damage animation, and death if health below zero
+   * Also add score value to the players score.
+   * @param damage
+   * @param botManagerService
+   * @param playerService
+   * @param levelInstance
+   */
+  applyDamage(damage: number, botManagerService: BotManagerService, playerService:PlayerService, levelInstance:LevelInstance) {
+    this.health -= damage;
+    this.triggerDamagedAnimation();
+    if(this.health < 1){
+      playerService.currentPlayer.addScore(this.score);
+      botManagerService.removeBot(this);
     }
   }
 

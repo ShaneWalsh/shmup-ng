@@ -8,9 +8,6 @@ import { LogicService } from "src/app/services/logic.service";
 import { CanvasContainer } from "../CanvasContainer";
 
 export class Guardian1 extends FlyingBotImpl{
-	public health:number=30;
-
-  public score:number = 80;
   public angleDirection:BulletDirection;
   constructor(
       config:any={},
@@ -26,6 +23,8 @@ export class Guardian1 extends FlyingBotImpl{
   ){
     super(config, posX, posY, imageSizeX, imageSizeY, [imageObj], imageObjDamaged, null);
     this.bTimerLimit = 80;
+    this.health = 30;
+    this.score = 80;
     this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score","targetX","targetY","posXSpeed","posYSpeed","bulletSpeed"]);
   }
 
@@ -64,15 +63,6 @@ export class Guardian1 extends FlyingBotImpl{
       // todo
     }
 	}
-
-  applyDamage(damage: number, botManagerService: BotManagerService, playerService:PlayerService, levelInstance:LevelInstance) {
-    this.health -= damage;
-    this.triggerDamagedAnimation();
-    if(this.health < 1){
-        playerService.currentPlayer.addScore(this.score);
-        botManagerService.removeBot(this);
-    }
-  }
 
 	canShoot(levelInstance:LevelInstance, currentPlayer:PlayerObj){
 		return true;

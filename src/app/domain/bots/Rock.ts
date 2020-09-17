@@ -8,12 +8,9 @@ import { CanvasContainer } from "../CanvasContainer";
 
 
 export class Rock extends Fighter {
-
   public driftXDistance = 50;
   public driftXDistanceCounter = this.driftXDistance/2;
   public driftXDistanceRight = true;
-
-  public health:number=24;
 
   constructor(
       config: any = {},
@@ -29,6 +26,7 @@ export class Rock extends Fighter {
     super(config, posX,posY,imageObj1,imageObj2,imageSizeX,imageSizeY,hitBox,imageObjDamaged);
     this.posXSpeed = 3;
     this.posYSpeed = 2;
+    this.health = 24;
     this.imageObj = imageObj1;
     this.tryConfigValues(["driftXDistance","driftXDistanceCounter","driftXDistanceRight","posYSpeed","bTimerLimit","score","health"]);
   }
