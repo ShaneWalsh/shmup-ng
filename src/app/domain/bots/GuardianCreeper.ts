@@ -27,7 +27,7 @@ export class GuardianCreeper extends FlyingBotImpl {
 		public targetX:number=posX,
 		public targetY:number=posY+200
 	){
-		super(config, posX, posY, imageSizeX, imageSizeY, [imageObj1,imageObj2], imageObjDamaged, null);
+		super(config, posX, posY, imageSizeX, imageSizeY, [imageObj1,imageObj2], [imageObjDamaged], null);
 		this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score","targetX","targetY","posXSpeed","posYSpeed","bulletSpeed","retreatAfterShotsFiredLimit","canShootNow"]);
 		this.imageObj = imageObj1;
 	}
@@ -63,7 +63,7 @@ export class GuardianCreeper extends FlyingBotImpl {
 		}
 
 		if(this.canShootNow){
-      this.updateBulletTimer(levelInstance,ctx,bulletManagerService,currentPlayer);
+      this.updateBulletTimer(levelInstance,ctx,botManagerService, bulletManagerService,currentPlayer);
 		}
     this.updateAnimation();
 	}

@@ -50,7 +50,7 @@ export class PlayerService {
         this.currentPlayer.bulletsFiring = false;
         this.currentPlayer.invincibilityTimer = 0;
         this.currentPlayer.imageObj = this.resourcesService.getRes().get("player-1-ship");
-        this.currentPlayer.imageObjMuzzle = this.resourcesService.getRes().get("player-1-muzzle-flash");
+        this.currentPlayer.imageObjMuzzle = [this.resourcesService.getRes().get("player-muzzle-flash-1"),this.resourcesService.getRes().get("player-muzzle-flash-2"),this.resourcesService.getRes().get("player-muzzle-flash-3")];
         this.currentPlayer.imageObjShadow = this.resourcesService.getRes().get("player-1-ship-shadow-separa");
         this.currentPlayer.score = score;
         this.currentPlayer.lives = lives;
@@ -77,12 +77,14 @@ export class PlayerObj {
   public firingSequence = 6;
   public score = 0;
 
+  public muzzleIndex = 0;
+
     constructor(
         public lives:number=10,
         public posX:number=210,
         public posY:number=480,
         public imageObj:HTMLImageElement=null,
-        public imageObjMuzzle:HTMLImageElement=null,
+        public imageObjMuzzle:HTMLImageElement[]=[],
         public imageObjShadow:HTMLImageElement=null,
         public imageSizeX:number=90,
         public imageSizeY:number=70,
@@ -108,10 +110,11 @@ export class PlayerObj {
 		}
 
     if(this.firingSequence < 5){
-      ctx.drawImage(this.imageObjMuzzle, 0, 0, 30,17, this.posX+30, this.posY-10, 30,17);
+      ctx.drawImage(this.imageObjMuzzle[this.muzzleIndex], 0, 0, 90,40, this.posX, this.posY-30, 90,40);
       this.firingSequence++;
     } else if(this.firingSequence == 5){
       this.fireLazer(levelInstance,ctx,bulletManagerService);
+      this.muzzleIndex = ((this.muzzleIndex+1)>=this.imageObjMuzzle.length)?0:(this.muzzleIndex+1);
       this.bulletsFired = true;
       this.firingSequence++;
     }
@@ -170,16 +173,14 @@ export class PlayerObj {
 
     // lazers go straight, nothing fancy so no need to make them do anything fancy, cal a stright direction.
     fireLazer(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D,bulletManagerService:BulletManagerService){
-        let bullDirection:BulletDirection;
-        if(levelInstance.isVertical()){
-            bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, this.posX, (this.posY-50), this.bulletSpeed);
-            // todo gen two bullets, or just one?
-
-            bulletManagerService.generatePlayerLazer(levelInstance, bullDirection, this.posX+30, this.posY-10);
-        } else {
-            bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, (this.posX+50), this.posY, this.bulletSpeed);
-            bulletManagerService.generatePlayerLazer(levelInstance, bullDirection, this.posX, this.posY);
-        }
+      let bullDirection:BulletDirection;
+      if(levelInstance.isVertical()){
+        bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, this.posX, (this.posY-50), this.bulletSpeed);
+        bulletManagerService.generatePlayerLazer(levelInstance, bullDirection, this.posX+30, this.posY-10);
+      } else {
+        bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, (this.posX+50), this.posY, this.bulletSpeed);
+        bulletManagerService.generatePlayerLazer(levelInstance, bullDirection, this.posX, this.posY);
+      }
 	}
 
     setFireBullet(){
@@ -191,68 +192,66 @@ export class PlayerObj {
 		this.bulletsFiring = false;
 	}
 
-    getCenterX():number{
-        return this.posX+(this.imageSizeX/2);
-    }
+  getCenterX():number{
+    return this.posX+(this.imageSizeX/2);
+  }
 
-    getCenterY():number{
-        return this.posY+(this.imageSizeY/2);
-    }
+  getCenterY():number{
+    return this.posY+(this.imageSizeY/2);
+  }
 
-    isInvincible():boolean{
-        return this.invincibilityTimer > 0;
-    }
+  isInvincible():boolean{
+    return this.invincibilityTimer > 0;
+  }
 
-    hasPlayerBeenHit(hitter:any,hitterBox:HitBox):boolean {
-        if (!this.isInvincible()){
-            return this.hitBox.areCentersToClose(hitter,hitterBox,this,this.hitBox);
-        } else {
-            return false;
-        }
+  hasPlayerBeenHit(hitter:any,hitterBox:HitBox):boolean {
+    if (!this.isInvincible()){
+      return this.hitBox.areCentersToClose(hitter,hitterBox,this,this.hitBox);
+    } else {
+      return false;
     }
+  }
 
-    addScore(arg0: any): any {
-        this.score+= arg0;
-    }
+  addScore(arg0: any): any {
+    this.score+= arg0;
+  }
 
-    reset(): any {
-        this.posX = this.resetPositionX;
-        this.posY = this.resetPositionY;
-    }
+  reset(): any {
+    this.posX = this.resetPositionX;
+    this.posY = this.resetPositionY;
+  }
 
 	processKeyDown(customKeyboardEvent:CustomKeyboardEvent){
-        // move the ship about
-        if(customKeyboardEvent.event.keyCode == 65 || customKeyboardEvent.event.keyCode == 37 ){ // a - left
-			this.pressedKeys["left"] = true;
+    if(customKeyboardEvent.event.keyCode == 65 || customKeyboardEvent.event.keyCode == 37 ){ // a - left
+      this.pressedKeys["left"] = true;
 
-        } else if(customKeyboardEvent.event.keyCode == 83 || customKeyboardEvent.event.keyCode == 40){ // s - up
-			this.pressedKeys["up"] = true;
+    } else if(customKeyboardEvent.event.keyCode == 83 || customKeyboardEvent.event.keyCode == 40){ // s - up
+      this.pressedKeys["up"] = true;
 
-        } else if(customKeyboardEvent.event.keyCode == 68 || customKeyboardEvent.event.keyCode == 39){ // d - right
-			this.pressedKeys["right"] = true;
+    } else if(customKeyboardEvent.event.keyCode == 68 || customKeyboardEvent.event.keyCode == 39){ // d - right
+      this.pressedKeys["right"] = true;
 
-        } else if(customKeyboardEvent.event.keyCode == 87 || customKeyboardEvent.event.keyCode == 38){ // w -- down
-			this.pressedKeys["down"] = true;
-
-        }
-        if(customKeyboardEvent.event.keyCode == 90 || customKeyboardEvent.event.keyCode == 78){ // z-n
-            this.setFireBullet();
-        }
-    }
-
-    processKeyUp(customKeyboardEvent:CustomKeyboardEvent){
-        if(customKeyboardEvent.event.keyCode == 65 || customKeyboardEvent.event.keyCode == 37 ){ // a - left
-			this.pressedKeys["left"] = false;
-        } else if(customKeyboardEvent.event.keyCode == 83 || customKeyboardEvent.event.keyCode == 40){ // s - up
-			this.pressedKeys["up"] = false;
-        } else if(customKeyboardEvent.event.keyCode == 68 || customKeyboardEvent.event.keyCode == 39){ // d - right
-			this.pressedKeys["right"] = false;
-        } else if(customKeyboardEvent.event.keyCode == 87 || customKeyboardEvent.event.keyCode == 38){ // w -- down
-			this.pressedKeys["down"] = false;
-        }
-        if(customKeyboardEvent.event.keyCode == 90 || customKeyboardEvent.event.keyCode == 78){ // z-n
-            this.stopFireBullet();
-        }
+    } else if(customKeyboardEvent.event.keyCode == 87 || customKeyboardEvent.event.keyCode == 38){ // w -- down
+      this.pressedKeys["down"] = true;
 
     }
+    if(customKeyboardEvent.event.keyCode == 90 || customKeyboardEvent.event.keyCode == 78){ // z-n
+        this.setFireBullet();
+    }
+  }
+
+  processKeyUp(customKeyboardEvent:CustomKeyboardEvent){
+    if(customKeyboardEvent.event.keyCode == 65 || customKeyboardEvent.event.keyCode == 37 ){ // a - left
+      this.pressedKeys["left"] = false;
+    } else if(customKeyboardEvent.event.keyCode == 83 || customKeyboardEvent.event.keyCode == 40){ // s - up
+      this.pressedKeys["up"] = false;
+    } else if(customKeyboardEvent.event.keyCode == 68 || customKeyboardEvent.event.keyCode == 39){ // d - right
+      this.pressedKeys["right"] = false;
+    } else if(customKeyboardEvent.event.keyCode == 87 || customKeyboardEvent.event.keyCode == 38){ // w -- down
+      this.pressedKeys["down"] = false;
+    }
+    if(customKeyboardEvent.event.keyCode == 90 || customKeyboardEvent.event.keyCode == 78){ // z-n
+        this.stopFireBullet();
+    }
+  }
 }

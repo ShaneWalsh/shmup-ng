@@ -17,10 +17,22 @@
   color: #ff00ff;
 }
 
+.black-out{
+  background-color: black;
+}
+
+.grid-style{
+  position: absolute;
+}
 
 .player-lives-vic{
   position: absolute;
   left: 280px;
   top: 208px;
   color: #ff00ff;
+}
+
+.effect-container{
+  width: 480px;
+  height: 640px;
 }

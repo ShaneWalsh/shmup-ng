@@ -21,7 +21,7 @@ export class Guardian1 extends FlyingBotImpl{
       public targetX:number=posX,
       public targetY:number=posY+300
   ){
-    super(config, posX, posY, imageSizeX, imageSizeY, [imageObj], imageObjDamaged, null);
+    super(config, posX, posY, imageSizeX, imageSizeY, [imageObj], [imageObjDamaged], null);
     this.bTimerLimit = 80;
     this.health = 30;
     this.score = 80;
@@ -46,7 +46,7 @@ export class Guardian1 extends FlyingBotImpl{
     if(levelInstance.drawHitBox()){
       this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");
     }
-    this.updateBulletTimer(levelInstance,ctx,bulletManagerService,currentPlayer);
+    this.updateBulletTimer(levelInstance,ctx,botManagerService, bulletManagerService,currentPlayer);
   }
 
   hasBotBeenHit(hitter:any,hitterBox:HitBox):boolean {

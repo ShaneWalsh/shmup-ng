@@ -72,11 +72,13 @@ export class BotInstanceImpl implements BotInstance {
   }
 
   drawShadow(canvasContainer:CanvasContainer, imageObjShadow:HTMLImageElement,posX:number,posY:number,imageSizeX:number, imageSizeY:number, shadowX:number=30, shadowY:number =60){
-    canvasContainer.shadowCtx.drawImage(imageObjShadow, 0, 0, imageSizeX, imageSizeY, posX+shadowX, posY+shadowY, imageSizeX, imageSizeY);
+    if(imageObjShadow != null)
+      canvasContainer.shadowCtx.drawImage(imageObjShadow, 0, 0, imageSizeX, imageSizeY, posX+shadowX, posY+shadowY, imageSizeX, imageSizeY);
   }
 
   drawShadowRotate(canvasContainer:CanvasContainer,angle:number, imageObjShadow:HTMLImageElement,posX:number,posY:number,imageSizeX:number, imageSizeY:number, shadowX:number=30, shadowY:number =60){
-    LogicService.drawRotateImage(imageObjShadow,canvasContainer.shadowCtx,angle,posX+shadowX, posY+shadowY, imageSizeX, imageSizeY);
+    if(imageObjShadow != null)
+      LogicService.drawRotateImage(imageObjShadow,canvasContainer.shadowCtx,angle,posX+shadowX, posY+shadowY, imageSizeX, imageSizeY);
   }
 }
 
@@ -106,8 +108,8 @@ export class FlyingBotImpl extends BotInstanceImpl {
       public imageSizeX:number=90,
       public imageSizeY:number=60,
       public animationImages:HTMLImageElement[]=[],
-      public imageObjDamaged: HTMLImageElement = animationImages[0],
-      public imageObjShadow: HTMLImageElement = null
+      public imageObjDamaged: HTMLImageElement[] = [animationImages[0]],
+      public imageObjShadow: HTMLImageElement[] = null
     ) {
     super(config);
     this.imageObj = animationImages[0];
@@ -132,13 +134,23 @@ export class FlyingBotImpl extends BotInstanceImpl {
    * @param bulletManagerService
    * @param currentPlayer
    */
-  updateBulletTimer(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D,bulletManagerService:BulletManagerService, currentPlayer:PlayerObj) {
+  updateBulletTimer(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D,botManagerService:BotManagerService, bulletManagerService:BulletManagerService, currentPlayer:PlayerObj) {
     if(this.bTimer >= this.bTimerLimit && this.canShoot(levelInstance,currentPlayer)) {
 			this.bTimer = 0;
 			this.fireSomething(levelInstance,ctx,bulletManagerService,currentPlayer);
+		} else if(this.bTimer == (this.bTimerLimit-1) && this.canShoot(levelInstance,currentPlayer)) {
+      this.drawMuzzleFlare(levelInstance,ctx,botManagerService, bulletManagerService,currentPlayer);
+      this.bTimer++;
 		} else {
 			this.bTimer++;
 		}
+  }
+
+  /**
+   * Optional method for bots to draw in a muzzle flare before firing.
+   */
+  drawMuzzleFlare(levelInstance: LevelInstance, ctx: CanvasRenderingContext2D, botManagerService: BotManagerService, bulletManagerService: BulletManagerService, currentPlayer: PlayerObj) {
+
   }
 
   /**
@@ -166,13 +178,31 @@ export class FlyingBotImpl extends BotInstanceImpl {
     if(this.damAnaimationTimer < this.damAnaimationTimerLimit) {
       this.damAnaimationTimer++;
       if(this.damAnaimationTimer %2 == 1) {
+        var damImage = this.imageObjDamaged[0]
+        if(this.animationIndex < this.imageObjDamaged.length){
+          damImage = this.imageObjDamaged[this.animationIndex];
+        }
         if(angle != null){
-          LogicService.drawRotateImage(this.imageObjDamaged,ctx,angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY);
+          LogicService.drawRotateImage(damImage,ctx,angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY);
         } else {
-          ctx.drawImage(this.imageObjDamaged, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
+          ctx.drawImage(damImage, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
         }
       }
     }
+  }
+
+  /**
+   * Single place to calcualte the current shadow image.
+   */
+  getShadowImage(){
+    if(this.imageObjShadow != null) {
+      var shadowImage = this.imageObjShadow[0];
+      if(this.animationIndex < this.imageObjShadow.length){
+        shadowImage = this.imageObjShadow[this.animationIndex];
+      }
+      return shadowImage;
+    }
+    return null;
   }
 
   /**
@@ -211,6 +241,14 @@ export class FlyingBotImpl extends BotInstanceImpl {
 
   getCenterY():number {
       return this.posY+(this.imageSizeY/2);
+  }
+
+  drawShadowFlying(angle:number, canvasContainer:CanvasContainer, posX:number,posY:number,imageSizeX:number, imageSizeY:number, shadowX:number=30, shadowY:number =60){
+    if(angle != null){
+      this.drawShadowRotate(canvasContainer,angle,this.getShadowImage(),posX,posY,imageSizeX,imageSizeY,shadowX,shadowY)
+    } else {
+      this.drawShadow(canvasContainer,this.getShadowImage(),posX,posY,imageSizeX,imageSizeY,shadowX,shadowY)
+    }
   }
 
 }

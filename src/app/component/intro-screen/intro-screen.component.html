@@ -1,42 +1,46 @@
-<div class="screen-container" *ngIf="screenId==1">
-    <img [src]="'assets/img/desc/new-title-gif.gif'">
-</div>
-<div class="screen-container" *ngIf="screenId==2">
-    <img [src]="'assets/img/desc/new-story.png'">
-</div>
-<div class="screen-container" *ngIf="screenId==3">
-	<span *ngIf="levelManagerService.difficulty==0">
-	    <img *ngIf="gifTimer < 40" [src]="'assets/img/desc/difficulty-select/easy-1.png'">
-	    <img *ngIf="gifTimer >= 40" [src]="'assets/img/desc/difficulty-select/easy-2.png'">
-	</span>
-	<span *ngIf="levelManagerService.difficulty==1">
-	    <img *ngIf="gifTimer < 40" [src]="'assets/img/desc/difficulty-select/normal-1.png'">
-	    <img *ngIf="gifTimer >= 40" [src]="'assets/img/desc/difficulty-select/normal-2.png'">
+<div class="black-out effect-container">
+  <!-- <img class="grid-style" [src]="'assets/img/levels/title-grid-background.png'"> -->
+  <div class="screen-container" *ngIf="screenId==1">
+      <img class="grid-style" [src]="'assets/img/levels/title-grid-background.png'">
+      <img [src]="'assets/img/desc/updated-title.gif'">
+  </div>
+  <div class="screen-container" *ngIf="screenId==2">
+      <img [src]="'assets/img/desc/new-story.png'">
+  </div>
+  <div class="screen-container" *ngIf="screenId==3">
+    <span *ngIf="levelManagerService.difficulty==0">
+        <img *ngIf="gifTimer < 40" [src]="'assets/img/desc/difficulty-select/easy-1.png'">
+        <img *ngIf="gifTimer >= 40" [src]="'assets/img/desc/difficulty-select/easy-2.png'">
+    </span>
+    <span *ngIf="levelManagerService.difficulty==1">
+        <img *ngIf="gifTimer < 40" [src]="'assets/img/desc/difficulty-select/normal-1.png'">
+        <img *ngIf="gifTimer >= 40" [src]="'assets/img/desc/difficulty-select/normal-2.png'">
+    </span>
+    <span *ngIf="levelManagerService.difficulty==2">
+      <img *ngIf="gifTimer < 40" [src]="'assets/img/desc/difficulty-select/hard-1.png'">
+      <img *ngIf="gifTimer >= 40" [src]="'assets/img/desc/difficulty-select/hard-2.png'">
   </span>
-  <span *ngIf="levelManagerService.difficulty==2">
-    <img *ngIf="gifTimer < 40" [src]="'assets/img/desc/difficulty-select/hard-1.png'">
-    <img *ngIf="gifTimer >= 40" [src]="'assets/img/desc/difficulty-select/hard-2.png'">
-</span>
-</div>
-<div class="screen-container" *ngIf="screenId==4">
-    <img [src]="'assets/img/desc/character-select-MICS.png'">
-</div>
-<div class="screen-container" *ngIf="screenId==5">
-    <img [src]="'assets/img/desc/MICS-intro.png'">
-</div>
-<div class="screen-container" *ngIf="screenId==6">
+  </div>
+  <div class="screen-container" *ngIf="screenId==4">
+      <img [src]="'assets/img/desc/character-select-MICS.png'">
+  </div>
+  <div class="screen-container" *ngIf="screenId==5">
+      <img [src]="'assets/img/desc/MICS-intro.png'">
+  </div>
+  <div class="screen-container" *ngIf="screenId==6">
+      <app-game-container [requestAnimFrame]="requestAnimFrame"></app-game-container>
+  </div>
+  <div class="screen-container pink-text" *ngIf="screenId==20">
+      <h1>Game over</h1>
+      <p>Score: {{playerScore}}</p>
+      <p>Press Enter to Restart</p>
+  </div>
+  <div class="screen-container pink-text" *ngIf="screenId==30">
+    <img [src]="'assets/img/desc/stage-1-complete.png'">
+    <h2 class="player-score-vic">{{playerScore}}</h2>
+    <h2 class="player-lives-vic">{{playerLives}}</h2>
+  </div>
+  <div class="screen-container" *ngIf="screenId==35">
     <app-game-container [requestAnimFrame]="requestAnimFrame"></app-game-container>
-</div>
-<div class="screen-container pink-text" *ngIf="screenId==20">
-    <h1>Game over</h1>
-    <p>Score: {{playerScore}}</p>
-    <p>Press Enter to Restart</p>
-</div>
-<div class="screen-container pink-text" *ngIf="screenId==30">
-  <img [src]="'assets/img/desc/stage-1-complete.png'">
-  <h2 class="player-score-vic">{{playerScore}}</h2>
-  <h2 class="player-lives-vic">{{playerLives}}</h2>
-</div>
-<div class="screen-container" *ngIf="screenId==35">
-  <app-game-container [requestAnimFrame]="requestAnimFrame"></app-game-container>
+  </div>
 </div>

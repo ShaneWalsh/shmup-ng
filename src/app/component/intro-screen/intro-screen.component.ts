@@ -16,7 +16,8 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
         })
     }
     private subs:Subscription[] =[];
-	  public gifTimer:number = 0;
+    public gifTimer:number = 0;
+    public gridTop = 50;
     public screenId:number = 1;
     public playerScore:number = 0;
     public playerLives:number = 0;

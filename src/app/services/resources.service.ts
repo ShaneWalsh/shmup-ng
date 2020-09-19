@@ -16,8 +16,17 @@ export class ResourcesService {
 			this.resources = new Map();
 			this.resourcesLoaded = new Subject();
 
-
       this.resourcesToLoad = [
+    {code:"diver-1", path:"assets/img/bots/diver-update/diver-1.png", type:ResourcesEnum.ImageRes},
+    {code:"diver-2", path:"assets/img/bots/diver-update/diver-2.png", type:ResourcesEnum.ImageRes},
+    {code:"diver-1-damaged", path:"assets/img/bots/diver-update/diver-1-damaged.png", type:ResourcesEnum.ImageRes},
+    {code:"diver-2-damaged", path:"assets/img/bots/diver-update/diver-2-damaged.png", type:ResourcesEnum.ImageRes},
+    {code:"diver-shadow-1", path:"assets/img/bots/diver-update/diver-shadow-1.png", type:ResourcesEnum.ImageRes},
+    {code:"diver-shadow-2", path:"assets/img/bots/diver-update/diver-shadow-2.png", type:ResourcesEnum.ImageRes},
+
+    {code:"player-muzzle-flash-1", path:"assets/img/player/player-muzzle-flash-1.png", type:ResourcesEnum.ImageRes},
+    {code:"player-muzzle-flash-2", path:"assets/img/player/player-muzzle-flash-2.png", type:ResourcesEnum.ImageRes},
+    {code:"player-muzzle-flash-3", path:"assets/img/player/player-muzzle-flash-3.png", type:ResourcesEnum.ImageRes},
 
     {code:"explosion-huge-1", path:"assets/img/bots/explosion/explosion-huge-1.png", type:ResourcesEnum.ImageRes},
     {code:"explosion-huge-2", path:"assets/img/bots/explosion/explosion-huge-2.png", type:ResourcesEnum.ImageRes},

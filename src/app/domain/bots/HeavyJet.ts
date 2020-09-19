@@ -24,7 +24,7 @@ export class HeavyJet extends FlyingBotImpl {
       public hitBox:HitBox=new HitBox(0,0,imageSizeX-10,imageSizeY-10),
       public targetCords:{targetX:number,targetY:number}[]=[]
   ){
-    super(config, posX, posY, imageSizeX, imageSizeY, [imageObj], imageObjDamaged, imageObjShadow);
+    super(config, posX, posY, imageSizeX, imageSizeY, [imageObj], [imageObjDamaged], [imageObjShadow]);
     this.bTimerLimit = 80;
     this.health = 30;
     this.score = 80;
@@ -43,7 +43,7 @@ export class HeavyJet extends FlyingBotImpl {
     this.posY += this.angleDirection.speed * this.angleDirection.directionY;
 
     if(levelInstance.drawShadow() && this.imageObjShadow != null) {
-      this.drawShadowRotate(canvasContainer,this.angleDirection.angle,this.imageObjShadow,this.posX,this.posY,this.imageSizeX, this.imageSizeY);
+      this.drawShadowFlying(this.angleDirection.angle,canvasContainer,this.posX,this.posY,this.imageSizeX, this.imageSizeY);
     }
 		LogicService.drawRotateImage(this.imageObj,ctx,this.angleDirection.angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY);
 		this.updateDamageAnimation(ctx, this.angleDirection.angle);
@@ -66,7 +66,7 @@ export class HeavyJet extends FlyingBotImpl {
         targetCord = this.getCurrentTargetCords();
       }
     }
-    this.updateBulletTimer(levelInstance, ctx, bulletManagerService, currentPlayer);
+    this.updateBulletTimer(levelInstance,ctx,botManagerService, bulletManagerService,currentPlayer);
   }
 
   getCurrentTargetCords(): { targetX: number; targetY: number; } {

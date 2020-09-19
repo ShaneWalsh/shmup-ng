@@ -20,7 +20,7 @@ export class Fighter extends FlyingBotImpl{
       imageObjDamaged: HTMLImageElement = imageObj1,
       imageObjShadow: HTMLImageElement = null
     ){
-      super(config, posX, posY, imageSizeX, imageSizeY, [imageObj1,imageObj2], imageObjDamaged, imageObjShadow);
+      super(config, posX, posY, imageSizeX, imageSizeY, [imageObj1,imageObj2], [imageObjDamaged], [imageObjShadow]);
       this.posXSpeed = 3;
       this.posYSpeed = 3;
 		  this.tryConfigValues(["bulletSpeed","posXSpeed","posYSpeed","bTimer","bTimerLimit","score","health"]);
@@ -35,8 +35,8 @@ export class Fighter extends FlyingBotImpl{
     if(this.posY + this.imageSizeY > (levelInstance.getMapHeight()+this.imageSizeY)){
       botManagerService.removeBot(this);
     } else {
-      if(levelInstance.drawShadow() && this.imageObjShadow != null) {
-        this.drawShadow(canvasContainer,this.imageObjShadow,this.posX,this.posY,this.imageSizeX, this.imageSizeY);
+      if(levelInstance.drawShadow()) {
+        this.drawShadowFlying(null,canvasContainer,this.posX,this.posY,this.imageSizeX, this.imageSizeY);
       }
       ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
       this.updateDamageAnimation(ctx);
@@ -45,7 +45,7 @@ export class Fighter extends FlyingBotImpl{
       this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");
     }
 
-    this.updateBulletTimer(levelInstance,ctx,bulletManagerService,currentPlayer);
+    this.updateBulletTimer(levelInstance,ctx,botManagerService, bulletManagerService,currentPlayer);
     this.updateAnimation();
   }
 

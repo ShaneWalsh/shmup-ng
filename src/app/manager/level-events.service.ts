@@ -408,7 +408,7 @@ export class LevelEventsService {
       bTimerLimit: 90,
       score: 2000, // this is only added to the players score if they kill the bot, if it leaves the screen the bot is simply removed.
       health:20, // health, when 0 Diver is dead.
-      targetCords:[{targetX:70,targetY:460},{targetX:140,targetY:560},{targetX:340,targetY:560},{targetX:410,targetY:460},{targetX:410,targetY:-150}]
+      targetCords:[{targetX:70,targetY:440},{targetX:110,targetY:535},{targetX:200,targetY:580},{targetX:280,targetY:580},{targetX:360,targetY:540},{targetX:410,targetY:440}, {targetX:410,targetY:-150}]
     };
 
 		let diverConfig = {
@@ -538,8 +538,9 @@ export class LevelEventsService {
 		//######################          Phase Zero        #######################################
 		//#########################################################################################
 		le.push(new SpawnBotEvent(0, 40, false, 0, BotType.BUGGY, buggyConfigMR, false, -30, 80));
-		le.push(new SpawnBotEvent(0, 40, false, 0, BotType.BUGGY, buggyConfigML, false, 400, 20));
-		le.push(new SpawnBotEvent(0, 120, false, 0, BotType.AATANK, AATankConfig, false, -30, 20));
+    le.push(new SpawnBotEvent(0, 40, false, 0, BotType.DIVER, diverConfig, false, 70, -60));
+    //le.push(new SpawnBotEvent(0, 40, false, 0, BotType.BUGGY, buggyConfigML, false, 400, 20));
+		//le.push(new SpawnBotEvent(0, 120, false, 0, BotType.AATANK, AATankConfig, false, -30, 20));
 		le.push(new SpawnBotEvent(0, 120, false, 0, BotType.AATANK, {...AATankConfig, moveToXCord:50}, false, 400, 80));
 
 		// trick of the eye here, by increasing the AATanks yspeed by .5 it will look like its driving down, or leave it at 1 and it will look parked.
@@ -548,7 +549,8 @@ export class LevelEventsService {
 		le.push(new SpawnBotEvent(0, 220, false, 0, BotType.HEAVYJET, heavyJetConfig, false, 0, -150));
 
 		le.push(new SpawnBotEvent(0, 400, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 250, -60));
-		le.push(new SpawnBotEvent(0, 500, false, 0, BotType.GUARDIAN1, guardian1Config, false, 380, -60));
+    le.push(new SpawnBotEvent(0, 500, false, 0, BotType.GUARDIAN1, guardian1Config, false, 380, -60));
+
 		// wings middle
 		// le.push(new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));
 		// le.push(new SpawnBotEvent(0, 80, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));
