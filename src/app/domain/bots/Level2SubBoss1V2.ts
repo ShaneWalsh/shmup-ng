@@ -62,6 +62,7 @@ export class Level2SubBoss1V2 extends  BotInstanceImpl {
       this.posY+265,
       [this.imageObjcannon],
       null,
+      null,
       46,//imageSizeX
       18,
       8,8, // rotation offsets
@@ -76,7 +77,8 @@ export class Level2SubBoss1V2 extends  BotInstanceImpl {
       600,
       this.bulletSpeed,
       this.bTimer,
-      this.bTimerLimit
+      this.bTimerLimit,
+      0,5,false
     );
 	}
 
@@ -90,7 +92,7 @@ export class Level2SubBoss1V2 extends  BotInstanceImpl {
 			this.posY += this.posYSpeed;
 		}
 
-    this.turret.update(this.posX+114,this.posY+265,currentPlayer,levelInstance, ctx, botManagerService, bulletManagerService, playerService);
+    this.turret.update(this.posX+114,this.posY+265,currentPlayer,levelInstance, canvasContainer, botManagerService, bulletManagerService, playerService);
     ctx.drawImage(this.imageObj2, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
     if(levelInstance.drawShadow() && this.imageObjShadow != null) {
       this.drawShadow(canvasContainer,this.imageObjShadow,this.posX,this.posY,this.imageSizeX, this.imageSizeY);

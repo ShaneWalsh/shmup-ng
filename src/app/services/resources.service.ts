@@ -37,8 +37,16 @@ export class ResourcesService {
     {code:"explosion-tiny-3", path:"assets/img/bots/explosion/explosion-tiny-3.png", type:ResourcesEnum.ImageRes},
     {code:"explosion-tiny-4", path:"assets/img/bots/explosion/explosion-tiny-4.png", type:ResourcesEnum.ImageRes},
 
-    {code:"enemy-missile-1", path:"assets/img/bots/enemy-missile-1.png", type:ResourcesEnum.ImageRes},
-    {code:"enemy-missile-2", path:"assets/img/bots/enemy-missile-2.png", type:ResourcesEnum.ImageRes},
+    {code:"sentry-hull", path:"assets/img/bots/sentry-update/sentry-hull.png", type:ResourcesEnum.ImageRes},
+    {code:"sentry-hull-damaged", path:"assets/img/bots/sentry-update/sentry-hull-damaged.png", type:ResourcesEnum.ImageRes},
+    {code:"sentry-hull-shadow", path:"assets/img/bots/sentry-update/sentry-hull-shadow.png", type:ResourcesEnum.ImageRes},
+    {code:"sentry-turret", path:"assets/img/bots/sentry-update/sentry-turret.png", type:ResourcesEnum.ImageRes},
+    {code:"sentry-turret-damaged", path:"assets/img/bots/sentry-update/sentry-turret-damaged.png", type:ResourcesEnum.ImageRes},
+    {code:"sentry-turret-shadow", path:"assets/img/bots/sentry-update/sentry-turret-shadow.png", type:ResourcesEnum.ImageRes},
+
+    {code:"enemy-missile-1", path:"assets/img/bots/sentry-update/enemy-missile-1.png", type:ResourcesEnum.ImageRes},
+    {code:"enemy-missile-2", path:"assets/img/bots/sentry-update/enemy-missile-2.png", type:ResourcesEnum.ImageRes},
+    {code:"enemy-missile-3", path:"assets/img/bots/sentry-update/enemy-missile-3.png", type:ResourcesEnum.ImageRes},
 
     {code:"heavy-jet", path:"assets/img/bots/heavy-jet/heavy-jet.png", type:ResourcesEnum.ImageRes},
     {code:"heavy-jet-damaged", path:"assets/img/bots/heavy-jet/heavy-jet-damaged.png", type:ResourcesEnum.ImageRes},

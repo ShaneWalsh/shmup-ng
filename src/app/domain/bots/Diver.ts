@@ -54,12 +54,12 @@ export class Diver extends FlyingBotImpl{
     return this.hitBox.areCentersToClose(hitter,hitterBox,this,this.hitBox) || this.hitBox.areCentersToClose(hitter,hitterBox,this,this.hitBox2);
   }
 
-  fireSomething(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D,bulletManagerService:BulletManagerService, currentPlayer:PlayerObj){
+  fireSomething(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D,bulletManagerService:BulletManagerService, currentPlayer:PlayerObj) {
     let bullDirection:BulletDirection;
     let portCords = this.firingPorts[this.firingPortIndex];
     if(levelInstance.isVertical()){
       bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, currentPlayer.getCenterX(), currentPlayer.getCenterY(), this.bulletSpeed, true, currentPlayer);
-      bulletManagerService.generateHoming(levelInstance, bullDirection,  (this.posX+portCords.x), (this.posY+portCords.y), 60);
+      bulletManagerService.generateHoming(levelInstance, bullDirection,  (this.posX+portCords.x), (this.posY+portCords.y), 120, true);
     } else {
       // todo
     }

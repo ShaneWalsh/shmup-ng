@@ -5,6 +5,9 @@ import { Injectable } from '@angular/core';
 })
 export class LogicService {
 
+  public static RADIANCAL= 180/Math.PI;
+  public static DEGREECAL= Math.PI/180;
+
   constructor() { }
 
   public static pointAfterRotation(centerX, centerY, point2X, point2Y, angle) :{x:number,y:number} {
@@ -59,6 +62,24 @@ export class LogicService {
 
   public static getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
+  }
+
+  public static radianToDegree(radians){
+    var deg = radians * this.RADIANCAL;
+    if(deg < 0){
+        return deg+360;
+    }
+    else{
+          return deg;
+      }
+  }
+
+  public static radianToDegreeFloor(radians){
+    return Math.floor(this.radianToDegree(radians))
+  }
+
+  public static degreeToRadian(degrees){
+    return degrees * this.DEGREECAL;
   }
 }
 

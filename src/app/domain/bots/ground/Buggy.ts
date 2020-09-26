@@ -53,6 +53,7 @@ export class Buggy extends BotInstanceImpl{
         this.posY+this.turretYoffset,
         [this.imageObjTurret],
         null,
+        null,
         56,//imageSizeX
         20,
         18,6, // rotation offsets
@@ -67,7 +68,8 @@ export class Buggy extends BotInstanceImpl{
         600,
         this.bulletSpeed,
         this.bTimer,
-        this.bTimerLimit
+        this.bTimerLimit,
+        0,5,false
       );
   }
 
@@ -94,7 +96,7 @@ export class Buggy extends BotInstanceImpl{
             ctx.drawImage(this.imageObjDamaged, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
           }
         }
-        this.turret.update(this.posX+this.turretXoffset,this.posY+this.turretYoffset,currentPlayer,levelInstance, ctx, botManagerService, bulletManagerService, playerService);
+        this.turret.update(this.posX+this.turretXoffset,this.posY+this.turretYoffset,currentPlayer,levelInstance, canvasContainer, botManagerService, bulletManagerService, playerService);
     }
     if(levelInstance.drawHitBox()){
         this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");

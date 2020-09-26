@@ -22,7 +22,7 @@ export enum LevelEnum{
 })
 export class LevelManagerService {
   drawHitBox(): boolean {
-      return true;
+      return false;
   }
   private gameTickSubject:Subject<boolean> = new Subject();
   private levelLoaded: Subject<LevelInstance> = new Subject();

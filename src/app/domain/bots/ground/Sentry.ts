@@ -9,7 +9,7 @@ import { Turret } from "../Turret";
 import { LogicService, HardRotationAngle } from "src/app/services/logic.service";
 import { BackgroundElement } from "../../BackgroundElement";
 
-export class AATank extends BotInstanceImpl{
+export class Sentry extends BotInstanceImpl{
 	public bulletSpeed:number = 6;
   public posXSpeed:number = 1.5;
   public posYSpeed:number = 1;
@@ -30,13 +30,8 @@ export class AATank extends BotInstanceImpl{
 
   public health:number=5;
   public turret:Turret;
-  public turretXoffset:number=34;
-  public turretYoffset:number=0;
-
-  public trackXOffset:number=0;
-  public trackYOffset:number=0;
-
-  public rotationAngle:number = HardRotationAngle.RIGHT; // right
+  public turretXoffset:number=18;
+  public turretYoffset:number=40;
 
   public deathXOffset:number=0;
   public deathYOffset:number=-10;
@@ -52,63 +47,34 @@ export class AATank extends BotInstanceImpl{
         public imageObjMain:HTMLImageElement=null,
         public imageObjDamaged:HTMLImageElement=null,
         public imageObjShadow:HTMLImageElement=null,
-        public aaTankTrackHorizontal:HTMLImageElement=null,
-        public aaTankTurretDamaged:HTMLImageElement=null,
-        public aaTankTurret1:HTMLImageElement=null,
-        public aaTankTurret2:HTMLImageElement=null,
-        public aaTankTurret3:HTMLImageElement=null,
-        public aaTankTurret4:HTMLImageElement=null,
-        public aaTankTurret5:HTMLImageElement=null,
-        public aaTankTurret6:HTMLImageElement=null,
-        public aaTankTurret7:HTMLImageElement=null,
-        public aaTankTurret8:HTMLImageElement=null,
+        public sentryTurret1:HTMLImageElement=null,
+        public sentryTurretDamaged:HTMLImageElement=null,
+        public sentryTurretShadow:HTMLImageElement=null,
         public imageObjMuzzleFlash:HTMLImageElement=null,
         public imageSizeX:number=90,
         public imageSizeY:number=60,
         public hitBox:HitBox=new HitBox(0,0,imageSizeX,imageSizeY)
     ){
       super(config);
-      this.moveToXCord = this.posX;
       this.tryConfigValues(["bulletSpeed","posXSpeed","posYSpeed","bTimer","bTimerLimit","score","health", "moveToXCord"]);
-      if(this.moveToXCord == this.posX){
-        this.rotationAngle = HardRotationAngle.DOWN;
-        this.turretXoffset = 30
-        this.trackXOffset= 63;
-        this.trackYOffset= -50;
-        this.skipTrack = true;
-        this.hitBox=new HitBox(30,-20,imageSizeY,imageSizeX)
-        this.deathXOffset = 6;
-        this.deathYOffset = -7;
-        this.deathShadowXOffset = 14;
-        this.deathShadowYOffset = 8;
-      } else if(this.moveToXCord < this.posX){
-        this.rotationAngle = HardRotationAngle.LEFT;
-        this.turretXoffset = 20
-        this.turretYoffset = 5
-        this.trackXOffset= this.imageSizeX;
-        this.trackYOffset= 10;
-        this.deathYOffset = 0;
-        this.deathShadowXOffset = 10;
-        this.deathShadowYOffset = 16;
-      } // mtX > x RIGHT is default
 
 		  this.bTimer = this.bTimerLimit/2;
       this.imageObj = imageObjMain;
       this.turret = new Turret(
         this.posX+this.turretXoffset,
         this.posY+this.turretYoffset,
-        [this.aaTankTurret1,this.aaTankTurret2,this.aaTankTurret3,this.aaTankTurret4,this.aaTankTurret5,this.aaTankTurret6,this.aaTankTurret7,this.aaTankTurret8],
-        aaTankTurretDamaged,
-        null,
-        98,//imageSizeX
-        68,
-        34,33, // rotation offsets
+        [this.sentryTurret1],
+        sentryTurretDamaged,
+        sentryTurretShadow,
+        130,//imageSizeX
+        62,
+        42,30, // rotation offsets
         "bullet",
-        [{muzzlePosXOffset:100, muzzlePosYOffset:27},{muzzlePosXOffset:100, muzzlePosYOffset:35}], // Muzzle offsets
+        [{muzzlePosXOffset:135, muzzlePosYOffset:30}], // Muzzle offsets
         this.imageObjMuzzleFlash,
         14,//imageMuzzleSizeX
         22,//imageMuzzleSizeY
-        [{bulletXOffset:100, bulletYOffset:27},{bulletXOffset:100, bulletYOffset:35}],
+        [{bulletXOffset:135, bulletYOffset:28}],
         22,// bullet sizex
         14,
         600,
@@ -122,11 +88,6 @@ export class AATank extends BotInstanceImpl{
     let currentPlayer = playerService.currentPlayer;
     let ctx = canvasContainer.mainCtx;
     this.posY += this.posYSpeed;
-    if((this.posX < (this.moveToXCord-this.posXSpeed+2))){
-      this.posX += this.posXSpeed;
-    } else if((this.posX) > (this.moveToXCord+this.posXSpeed+2)){
-      this.posX -= this.posXSpeed;
-    }
     if(this.posY + this.imageSizeY > (levelInstance.getMapHeight()+this.imageSizeY)
         || (this.posX < -2000 || this.posX > 2000)){
         botManagerService.removeBot(this);
@@ -135,12 +96,12 @@ export class AATank extends BotInstanceImpl{
         this.drawShadow(canvasContainer,this.imageObjShadow,this.posX,this.posY,this.imageSizeX, this.imageSizeY);
       }
       let drawDamage = false;
-      LogicService.drawRotateImage(this.imageObj,ctx,this.rotationAngle,this.posX,this.posY,this.imageSizeX,this.imageSizeY,this.posX,this.posY,this.imageSizeX,this.imageSizeY);
+      LogicService.drawRotateImage(this.imageObj,ctx,0,this.posX,this.posY,this.imageSizeX,this.imageSizeY,this.posX,this.posY,this.imageSizeX,this.imageSizeY);
         if(this.damAnaimationTimer < this.damAnaimationTimerLimit){
           this.damAnaimationTimer++;
           if(this.damAnaimationTimer %2 == 1){
             drawDamage = true;
-            LogicService.drawRotateImage(this.imageObjDamaged,ctx,this.rotationAngle,this.posX,this.posY,this.imageSizeX,this.imageSizeY,this.posX,this.posY,this.imageSizeX,this.imageSizeY);
+            LogicService.drawRotateImage(this.imageObjDamaged,ctx,0,this.posX,this.posY,this.imageSizeX,this.imageSizeY,this.posX,this.posY,this.imageSizeX,this.imageSizeY);
           }
         }
         this.turret.update(this.posX+this.turretXoffset,this.posY+this.turretYoffset,currentPlayer,levelInstance, canvasContainer, botManagerService, bulletManagerService, playerService, drawDamage);
@@ -155,14 +116,6 @@ export class AATank extends BotInstanceImpl{
           this.imageObj = this.imageObjMain; // if we ever add a moving image we can just drop it in here,
       } else {
           this.imageObj = this.imageObjMain;
-      }
-      if(this.skipTrack){
-        if(!this.skipTrackCount){
-          botManagerService.generateTankTrack(this.posX+this.trackXOffset,this.posY+this.trackYOffset,this.rotationAngle);
-        }
-        this.skipTrackCount = !this.skipTrackCount;
-      } else {
-        botManagerService.generateTankTrack(this.posX+this.trackXOffset,this.posY+this.trackYOffset,this.rotationAngle);
       }
 		}
 		else{
@@ -180,12 +133,12 @@ export class AATank extends BotInstanceImpl{
     if(this.health < 1){
       playerService.currentPlayer.addScore(this.score);
       botManagerService.removeBot(this);
-      botManagerService.generateDeadAATank(this.posX,this.posY,this.rotationAngle,this.deathXOffset,this.deathYOffset, this.deathShadowXOffset, this.deathShadowYOffset);
+      //botManagerService.generateDeadsentry(this.posX,this.posY,this.rotationAngle,this.deathXOffset,this.deathYOffset, this.deathShadowXOffset, this.deathShadowYOffset);
     }
   }
 
 	canShoot(levelInstance:LevelInstance, currentPlayer:PlayerObj){
-		if(this.getCenterY() < levelInstance.getMapHeight() && (this.getCenterX() > 0 || this.getCenterX() < 480 )){
+		if(this.getCenterY() < levelInstance.getMapHeight() && (this.getCenterX() > -40 || this.getCenterY() < 640 )){
 			return true;
 		}
 		return false;
@@ -209,7 +162,7 @@ export class AATank extends BotInstanceImpl{
     }
   }
   drawShadow(canvasContainer:CanvasContainer, imageObjShadow:HTMLImageElement,posX:number,posY:number,imageSizeX:number, imageSizeY:number, shadowX:number=10, shadowY:number =6){
-    LogicService.drawRotateImage(imageObjShadow,canvasContainer.shadowCtx,this.rotationAngle,posX+shadowX, posY+shadowY,imageSizeX, imageSizeY);
+    LogicService.drawRotateImage(imageObjShadow,canvasContainer.shadowCtx,0,posX+shadowX, posY+shadowY,imageSizeX, imageSizeY);
   }
 
   isGroundBot():boolean{

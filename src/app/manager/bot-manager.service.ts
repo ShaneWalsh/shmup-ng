@@ -24,6 +24,7 @@ import { CanvasContainer } from '../domain/CanvasContainer';
 import { Buggy } from '../domain/bots/ground/Buggy';
 import { AATank } from '../domain/bots/ground/AATank';
 import { BackgroundElement } from '../domain/BackgroundElement';
+import { Sentry } from '../domain/bots/ground/Sentry';
 
 /**
  * Going to manage the created bots, spawned by the level manager. Its going to emit when they are destroyed or when they leave the screen.
@@ -152,6 +153,21 @@ export class BotManagerService {
       this.resourcesService.getRes().get("aa-tank-turret-8"),
       this.resourcesService.getRes().get("miniboss-3-muzzle-flash"),
     120, 70);
+    this.botsArr.push(newBot);
+    this.botCreated.next(newBot);
+  }
+
+  generateSentry(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
+    let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
+    let newBot = new Sentry(config, posObj.posX, posObj.posY,
+      this.resourcesService.getRes().get("sentry-hull"),
+      this.resourcesService.getRes().get("sentry-hull-damaged"),
+      this.resourcesService.getRes().get("sentry-hull-shadow"),
+      this.resourcesService.getRes().get("sentry-turret"),
+      this.resourcesService.getRes().get("sentry-turret-damaged"),
+      this.resourcesService.getRes().get("sentry-turret-shadow"),
+      this.resourcesService.getRes().get("miniboss-3-muzzle-flash"),
+      132, 132);
     this.botsArr.push(newBot);
     this.botCreated.next(newBot);
   }

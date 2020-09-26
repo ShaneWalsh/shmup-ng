@@ -389,8 +389,6 @@ export class LevelEventsService {
     };
     let buggyConfigML = {...buggyConfigMR,moveRight: false,};
 
-
-    // buggy will move to the moveToXCord after it spawns, using the posXSpeed. posYSpeed should match the screen scroll speed of 1.
     let AATankConfig = {
 			bulletSpeed: 6,
 			posXSpeed: 1.5,
@@ -399,6 +397,15 @@ export class LevelEventsService {
       moveToXCord: 400,
 			score: 1000,
 			health:25,
+    };
+
+    let sentryConfig = {
+			bulletSpeed: 6,
+			posXSpeed: 0,
+			posYSpeed: 1,
+      bTimerLimit: 90,
+			score: 10000,
+			health:35,
     };
 
     // main boss guardian
@@ -536,18 +543,19 @@ export class LevelEventsService {
 
 		//#########################################################################################
 		//######################          Phase Zero        #######################################
-		//#########################################################################################
-		le.push(new SpawnBotEvent(0, 40, false, 0, BotType.BUGGY, buggyConfigMR, false, -30, 80));
+    //#########################################################################################
+    le.push(new SpawnBotEvent(0, 20, false, 0, BotType.SENTRY, sentryConfig, false, 100, -140));
+		//le.push(new SpawnBotEvent(0, 40, false, 0, BotType.BUGGY, buggyConfigMR, false, -30, 80));
     le.push(new SpawnBotEvent(0, 40, false, 0, BotType.DIVER, diverConfig, false, 70, -60));
-    //le.push(new SpawnBotEvent(0, 40, false, 0, BotType.BUGGY, buggyConfigML, false, 400, 20));
+    le.push(new SpawnBotEvent(0, 40, false, 0, BotType.BUGGY, buggyConfigML, false, 400, 20));
 		//le.push(new SpawnBotEvent(0, 120, false, 0, BotType.AATANK, AATankConfig, false, -30, 20));
-		le.push(new SpawnBotEvent(0, 120, false, 0, BotType.AATANK, {...AATankConfig, moveToXCord:50}, false, 400, 80));
 
+    le.push(new SpawnBotEvent(0, 120, false, 0, BotType.AATANK, {...AATankConfig, moveToXCord:50}, false, 400, 80));
+    //le.push(new SpawnBotEvent(0, 300, false, 0, BotType.SENTRY, sentryConfig, false, 100, -140));
 		// trick of the eye here, by increasing the AATanks yspeed by .5 it will look like its driving down, or leave it at 1 and it will look parked.
 		le.push(new SpawnBotEvent(0, 220, false, 0, BotType.AATANK, {...AATankConfig, moveToXCord:300, posYSpeed:1.5}, false, 300, -150));
 		//le.push(new SpawnBotEvent(0, 220, false, 0, BotType.AATANK, {...AATankConfig, moveToXCord:50, posYSpeed:1.5}, false, 50, -150));
 		le.push(new SpawnBotEvent(0, 220, false, 0, BotType.HEAVYJET, heavyJetConfig, false, 0, -150));
-
 		le.push(new SpawnBotEvent(0, 400, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 250, -60));
     le.push(new SpawnBotEvent(0, 500, false, 0, BotType.GUARDIAN1, guardian1Config, false, 380, -60));
 
