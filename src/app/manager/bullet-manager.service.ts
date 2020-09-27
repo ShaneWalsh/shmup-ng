@@ -3,11 +3,12 @@ import { Subject } from '../../../node_modules/rxjs';
 import { ResourcesService } from 'src/app/services/resources.service';
 import { LevelInstance } from 'src/app/manager/level-manager.service';
 import { BotManagerService } from 'src/app/manager/bot-manager.service';
-import { PlayerService } from 'src/app/services/player.service';
+import { PlayerObj, PlayerService } from 'src/app/services/player.service';
 import { BulletInstance } from 'src/app/domain/bullet/BulletInstance';
 import { HitBox } from 'src/app/domain/HitBox';
 import { LogicService } from 'src/app/services/logic.service';
 import { CanvasContainer } from '../domain/CanvasContainer';
+import { Shield } from '../domain/skills/Shield';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,8 @@ export class BulletManagerService {
   private bulletRemoved: Subject<BulletInstance> = new Subject();
 
   private bulletsArr:BulletInstance[] = [];
+  private shieldsArr:Shield[] = [];
+
 
   constructor(private resourcesService:ResourcesService) {
 
@@ -25,6 +28,7 @@ export class BulletManagerService {
 
   clean(){
     this.bulletsArr = [];
+    this.shieldsArr = [];
   }
 
   getBullets() {
@@ -36,6 +40,12 @@ export class BulletManagerService {
     for(let i = 0; i< bulletArrClone.length; i++){
         const bullet = bulletArrClone[i];
         bullet.update(levelInstance, canvasContainer, this, botManagerService, playerService);
+    }
+
+    let shieldsArrClone = [...this.shieldsArr];
+    for (let i = 0; i < shieldsArrClone.length; i++) {
+      const shield = shieldsArrClone[i];
+      shield.update(levelInstance, canvasContainer, botManagerService, this, playerService);
     }
   }
 
@@ -103,6 +113,28 @@ export class BulletManagerService {
     return this.bulletRemoved;
   }
 
+  addPlayerShield(playerObj:PlayerObj) {
+    this.shieldsArr.push(new Shield({},playerObj.getShieldX(),playerObj.getShieldY(),
+      [ this.resourcesService.getRes().get("shield-1"),
+        this.resourcesService.getRes().get("shield-2"),
+        this.resourcesService.getRes().get("shield-3"),
+        this.resourcesService.getRes().get("shield-4"),
+        this.resourcesService.getRes().get("shield-5"),
+        this.resourcesService.getRes().get("shield-6"),
+        this.resourcesService.getRes().get("shield-7"),
+        this.resourcesService.getRes().get("shield-8"),
+      ],90,90,playerObj)
+    );
+  }
+
+  getShields() : Shield[] {
+    return this.shieldsArr;
+  }
+
+  removeShield(shieldToRemove: Shield) {
+    this.shieldsArr.splice(this.shieldsArr.indexOf(shieldToRemove),1);
+  }
+
   calculateBulletDirection(origX:number, origY:number, targetX:number, targetY:number, speed:number, performRotation=false, targetObject:any=null):BulletDirection {
     var directionY = targetY-origY;
     var directionX = targetX-origX;
@@ -168,7 +200,7 @@ class DumbLazer implements BulletInstance {
   }
 
   update(levelInstance:LevelInstance, canvasContainer:CanvasContainer, bulletManagerService:BulletManagerService, botManagerService:BotManagerService, playerService:PlayerService ){
-      this.bulletDirection.update(this.posX,this.posY);
+    this.bulletDirection.update(this.posX,this.posY);
     this.posX += this.bulletDirection.speed * this.bulletDirection.directionX;
     this.posY += this.bulletDirection.speed * this.bulletDirection.directionY;
     let ctx = canvasContainer.mainCtx;
@@ -217,8 +249,19 @@ class DumbLazer implements BulletInstance {
             break;
           }
         }
-      } else { // colision with the player
-        if(playerService.currentPlayer && playerService.currentPlayer.hasPlayerBeenHit(this,this.hitBox)){
+      } else {
+        // colision with a good shield
+        let shieldsArrClone = [...bulletManagerService.getShields()];
+        for (let i = 0; i < shieldsArrClone.length; i++) {
+          const shield = shieldsArrClone[i];
+          if(shield.goodShield && shield.hasShieldBeenHit(this,this.hitBox)){
+            bulletManagerService.removeBullet(this, botManagerService, 0, true);
+            removed = true;
+            break;
+          }
+        }
+        // colision with player
+        if(!removed && playerService.currentPlayer && playerService.currentPlayer.hasPlayerBeenHit(this,this.hitBox)){
           bulletManagerService.removeBullet(this, botManagerService);
           removed = true;
           playerService.killCurrentPlayer();

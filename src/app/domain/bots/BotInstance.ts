@@ -5,6 +5,7 @@ import { BulletManagerService } from "src/app/manager/bullet-manager.service";
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { CanvasContainer } from "../CanvasContainer";
 import { LogicService } from "src/app/services/logic.service";
+import { ShieldBot } from "../skills/ShieldBotInterface";
 
 export interface BotInstance {
     update(levelInstance:LevelInstance, canvasContainer:CanvasContainer, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService);
@@ -26,7 +27,7 @@ export interface BotInstance {
 }
 
 
-export class BotInstanceImpl implements BotInstance {
+export class BotInstanceImpl implements BotInstance, ShieldBot {
 
   constructor(public config:any={}){
 
@@ -79,6 +80,13 @@ export class BotInstanceImpl implements BotInstance {
   drawShadowRotate(canvasContainer:CanvasContainer,angle:number, imageObjShadow:HTMLImageElement,posX:number,posY:number,imageSizeX:number, imageSizeY:number, shadowX:number=30, shadowY:number =60){
     if(imageObjShadow != null)
       LogicService.drawRotateImage(imageObjShadow,canvasContainer.shadowCtx,angle,posX+shadowX, posY+shadowY, imageSizeX, imageSizeY);
+  }
+
+  getShieldX(): number {
+    return this.getCenterX();
+  }
+  getShieldY(): number {
+    return this.getCenterY();
   }
 }
 

@@ -53,7 +53,8 @@ export class Sentry extends BotInstanceImpl{
         public imageObjMuzzleFlash:HTMLImageElement=null,
         public imageSizeX:number=90,
         public imageSizeY:number=60,
-        public hitBox:HitBox=new HitBox(0,0,imageSizeX,imageSizeY)
+        public hitBox:HitBox=new HitBox(20,60,60,60),
+        public hitBox2:HitBox=new HitBox(70,20,60,60)
     ){
       super(config);
       this.tryConfigValues(["bulletSpeed","posXSpeed","posYSpeed","bTimer","bTimerLimit","score","health", "moveToXCord"]);
@@ -108,6 +109,7 @@ export class Sentry extends BotInstanceImpl{
     }
     if(levelInstance.drawHitBox()){
         this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");
+        this.hitBox2.drawBorder(this.posX+this.hitBox2.hitBoxX,this.posY+this.hitBox2.hitBoxY,this.hitBox2.hitBoxSizeX,this.hitBox2.hitBoxSizeY,ctx,"#FF0000");
     }
 
     if(this.anaimationTimer >= this.anaimationTimerLimit){
@@ -124,7 +126,7 @@ export class Sentry extends BotInstanceImpl{
   }
 
   hasBotBeenHit(hitter:any,hitterBox:HitBox):boolean {
-    return this.hitBox.areCentersToClose(hitter,hitterBox,this,this.hitBox);
+    return this.hitBox.areCentersToClose(hitter,hitterBox,this,this.hitBox) || this.hitBox.areCentersToClose(hitter,hitterBox,this,this.hitBox2)
   }
 
   applyDamage(damage: number, botManagerService: BotManagerService, playerService:PlayerService, levelInstance:LevelInstance) {

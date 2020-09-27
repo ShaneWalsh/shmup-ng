@@ -25,6 +25,7 @@ import { Buggy } from '../domain/bots/ground/Buggy';
 import { AATank } from '../domain/bots/ground/AATank';
 import { BackgroundElement } from '../domain/BackgroundElement';
 import { Sentry } from '../domain/bots/ground/Sentry';
+import { Shield } from '../domain/skills/Shield';
 
 /**
  * Going to manage the created bots, spawned by the level manager. Its going to emit when they are destroyed or when they leave the screen.
@@ -349,7 +350,8 @@ export class BotManagerService {
 			this.resourcesService.getRes().get("player-explosion-4")],
 			80,80,this.deathAnimtionTimer,this.deathAnimtionTimer)
 		);
-	}
+  }
+
 
   getBotPostion(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = 0) {
     if (levelInstance.isVertical()) {

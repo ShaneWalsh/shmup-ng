@@ -7,6 +7,8 @@ import { BulletManagerService, BulletDirection } from 'src/app/manager/bullet-ma
 import { Subject } from '../../../node_modules/rxjs';
 import { BotManagerService } from 'src/app/manager/bot-manager.service';
 import { CanvasContainer } from '../domain/CanvasContainer';
+import { Shield } from '../domain/skills/Shield';
+import { ShieldBot } from '../domain/skills/ShieldBotInterface';
 
 @Injectable({
   providedIn: 'root'
@@ -54,11 +56,13 @@ export class PlayerService {
         this.currentPlayer.imageObjShadow = this.resourcesService.getRes().get("player-1-ship-shadow-separa");
         this.currentPlayer.score = score;
         this.currentPlayer.lives = lives;
+        this.currentPlayer.abilityCooldown = 0;
+        this.currentPlayer.activateAbilityNow = false;
     }
 
 }
 
-export class PlayerObj {
+export class PlayerObj implements ShieldBot{
 	public speed = 8;
 	public bulletSpeed:number = 20;
 	public pressedKeys = {"left":false,"up":false,"right":false,"down":false};
@@ -78,6 +82,9 @@ export class PlayerObj {
   public score = 0;
 
   public muzzleIndex = 0;
+  public activateAbilityNow:boolean = false;
+  public abilityCooldown:number =0;
+  public abilityCooldownLimit:number = 900; //15 seconds
 
     constructor(
         public lives:number=10,
@@ -99,53 +106,59 @@ export class PlayerObj {
         let ctx = canvasContainer.mainCtx;
         // fire weapon
         // need to put some kind of timer around this, may have to bring back the timer pubsub
-		if(this.bulletsFiring || !this.bulletsFired){
-			if(this.bTimer >= this.bTimerLimit){
-				this.bTimer = 0;
-        this.firingSequence = 1;
-			}
-			else{
-				this.bTimer++;
-			}
-		}
-
-    if(this.firingSequence < 5){
-      ctx.drawImage(this.imageObjMuzzle[this.muzzleIndex], 0, 0, 90,40, this.posX, this.posY-30, 90,40);
-      this.firingSequence++;
-    } else if(this.firingSequence == 5){
-      this.fireLazer(levelInstance,ctx,bulletManagerService);
-      this.muzzleIndex = ((this.muzzleIndex+1)>=this.imageObjMuzzle.length)?0:(this.muzzleIndex+1);
-      this.bulletsFired = true;
-      this.firingSequence++;
-    }
-
-
-    if(levelInstance.drawShadow()){
-      canvasContainer.shadowCtx.drawImage(this.imageObjShadow, 0, 0, this.imageSizeX, this.imageSizeY, this.posX+30, this.posY+60, this.imageSizeX, this.imageSizeY);
-    }
-        // draw
-        if (this.invincibilityTimer > 0) {
-            this.invincibilityTimer--;
-            if (this.invincibilityTimer % 2 == 0) {// draw every second draw, to get an invincible effect
-                ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY, this.imageSizeX, this.imageSizeY);
-                if (levelInstance.drawHitBox()) {
-                    this.hitBox.drawBorder(this.posX + this.hitBox.hitBoxX, this.posY + this.hitBox.hitBoxY, this.hitBox.hitBoxSizeX, this.hitBox.hitBoxSizeY, ctx, "#FF0000");
-                }
-            }
-        } else {
-            ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY, this.imageSizeX, this.imageSizeY);
-            if (levelInstance.drawHitBox()) {
-                this.hitBox.drawBorder(this.posX + this.hitBox.hitBoxX, this.posY + this.hitBox.hitBoxY, this.hitBox.hitBoxSizeX, this.hitBox.hitBoxSizeY, ctx, "#FF0000");
-            }
+      if(this.bulletsFiring || !this.bulletsFired){
+        if(this.bTimer >= this.bTimerLimit){
+          this.bTimer = 0;
+          this.firingSequence = 1;
         }
+        else{
+          this.bTimer++;
+        }
+      }
+
+      if(this.firingSequence < 5){
+        ctx.drawImage(this.imageObjMuzzle[this.muzzleIndex], 0, 0, 90,40, this.posX, this.posY-30, 90,40);
+        this.firingSequence++;
+      } else if(this.firingSequence == 5){
+        this.fireLazer(levelInstance,ctx,bulletManagerService);
+        this.muzzleIndex = ((this.muzzleIndex+1)>=this.imageObjMuzzle.length)?0:(this.muzzleIndex+1);
+        this.bulletsFired = true;
+        this.firingSequence++;
+      }
+
+
+      if(levelInstance.drawShadow()){
+        canvasContainer.shadowCtx.drawImage(this.imageObjShadow, 0, 0, this.imageSizeX, this.imageSizeY, this.posX+30, this.posY+60, this.imageSizeX, this.imageSizeY);
+      }
+      // draw
+      if (this.invincibilityTimer > 0) {
+        this.invincibilityTimer--;
+        if (this.invincibilityTimer % 2 == 0) {// draw every second draw, to get an invincible effect
+          ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY, this.imageSizeX, this.imageSizeY);
+          if (levelInstance.drawHitBox()) {
+              this.hitBox.drawBorder(this.posX + this.hitBox.hitBoxX, this.posY + this.hitBox.hitBoxY, this.hitBox.hitBoxSizeX, this.hitBox.hitBoxSizeY, ctx, "#FF0000");
+          }
+        }
+      } else {
+        ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY, this.imageSizeX, this.imageSizeY);
+        if (levelInstance.drawHitBox()) {
+          this.hitBox.drawBorder(this.posX + this.hitBox.hitBoxX, this.posY + this.hitBox.hitBoxY, this.hitBox.hitBoxSizeX, this.hitBox.hitBoxSizeY, ctx, "#FF0000");
+        }
+      }
+      if(this.activateAbilityNow && this.abilityCooldown < 1) { // can I activate my ability now? Cooldown?
+        this.activateAbility(levelInstance, canvasContainer, bulletManagerService, botManagerService);
+      } else {
+        this.abilityCooldown--;
+      }
+
     }
 
     updateIntro(ctx: CanvasRenderingContext2D, animationTimer:number) {
-        let sizeY = 4 + (4 * animationTimer);
-        ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, sizeY, this.posX, this.posY, this.imageSizeX, sizeY);
+      let sizeY = 4 + (4 * animationTimer);
+      ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, sizeY, this.posX, this.posY, this.imageSizeX, sizeY);
     }
 
-    acceleration(levelInstance:LevelInstance){
+  acceleration(levelInstance:LevelInstance){
         // apply movement
 		if(this.pressedKeys["left"])
 			this.posX -= this.speed;
@@ -156,19 +169,19 @@ export class PlayerObj {
 		if(this.pressedKeys["down"])
 			this.posY -= this.speed;
 
-        if(this.posX + this.imageSizeX > levelInstance.getMapWidth()){
-            this.posX = levelInstance.getMapWidth() -  this.imageSizeX;
-        }
-        else if(this.posX < 0){
-            this.posX = 0;
-        }
+      if(this.posX + this.imageSizeX > levelInstance.getMapWidth()){
+        this.posX = levelInstance.getMapWidth() -  this.imageSizeX;
+      }
+      else if(this.posX < 0){
+        this.posX = 0;
+      }
 
-        if(this.posY + this.imageSizeY > levelInstance.getMapHeight()){
-            this.posY = levelInstance.getMapHeight() -  this.imageSizeY;
-        }
-        else if(this.posY < 0){
-            this.posY = 0;
-        }
+      if(this.posY + this.imageSizeY > levelInstance.getMapHeight()){
+        this.posY = levelInstance.getMapHeight() -  this.imageSizeY;
+      }
+      else if(this.posY < 0){
+        this.posY = 0;
+      }
     }
 
     // lazers go straight, nothing fancy so no need to make them do anything fancy, cal a stright direction.
@@ -181,9 +194,15 @@ export class PlayerObj {
         bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, (this.posX+50), this.posY, this.bulletSpeed);
         bulletManagerService.generatePlayerLazer(levelInstance, bullDirection, this.posX, this.posY);
       }
-	}
+  }
 
-    setFireBullet(){
+  // depending on which ship it is, it may have a different ability, perhaps I could pass a function as the arg for the player ability.
+  activateAbility(levelInstance:LevelInstance, canvasContainer:CanvasContainer, bulletManagerService:BulletManagerService, botManagerService:BotManagerService) {
+    bulletManagerService.addPlayerShield(this);
+    this.abilityCooldown = this.abilityCooldownLimit;
+  }
+
+  setFireBullet(){
 		this.bulletsFiring = true;
 		this.bulletsFired = false;
 	}
@@ -200,7 +219,7 @@ export class PlayerObj {
     return this.posY+(this.imageSizeY/2);
   }
 
-  isInvincible():boolean{
+  isInvincible():boolean {
     return this.invincibilityTimer > 0;
   }
 
@@ -233,10 +252,12 @@ export class PlayerObj {
 
     } else if(customKeyboardEvent.event.keyCode == 87 || customKeyboardEvent.event.keyCode == 38){ // w -- down
       this.pressedKeys["down"] = true;
-
     }
     if(customKeyboardEvent.event.keyCode == 90 || customKeyboardEvent.event.keyCode == 78){ // z-n
         this.setFireBullet();
+    }
+    if(customKeyboardEvent.event.keyCode == 32){ // space
+      this.activateAbilityNow=true;
     }
   }
 
@@ -253,5 +274,15 @@ export class PlayerObj {
     if(customKeyboardEvent.event.keyCode == 90 || customKeyboardEvent.event.keyCode == 78){ // z-n
         this.stopFireBullet();
     }
+    if(customKeyboardEvent.event.keyCode == 32){ // space
+      this.activateAbilityNow=false;
+    }
+  }
+
+  getShieldX(): number {
+    return this.getCenterX();
+  }
+  getShieldY(): number {
+    return this.getCenterY();
   }
 }
