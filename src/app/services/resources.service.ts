@@ -17,6 +17,13 @@ export class ResourcesService {
 			this.resourcesLoaded = new Subject();
 
       this.resourcesToLoad = [
+
+    {code:"enemy-rocket-1", path:"assets/img/bots/enemy-rocket-1.png", type:ResourcesEnum.ImageRes},
+    {code:"enemy-rocket-2", path:"assets/img/bots/enemy-rocket-2.png", type:ResourcesEnum.ImageRes},
+
+    {code:"level-2-bg-buildings", path:"assets/img/levels/level-2-update_1/level-2-bg-buildings.png", type:ResourcesEnum.ImageRes},
+    {code:"level-2-bg-shadows", path:"assets/img/levels/level-2-update_1/level-2-bg-shadows.png", type:ResourcesEnum.ImageRes},
+
     {code:"diver-1", path:"assets/img/bots/diver-update/diver-1.png", type:ResourcesEnum.ImageRes},
     {code:"diver-2", path:"assets/img/bots/diver-update/diver-2.png", type:ResourcesEnum.ImageRes},
     {code:"diver-1-damaged", path:"assets/img/bots/diver-update/diver-1-damaged.png", type:ResourcesEnum.ImageRes},
@@ -40,6 +47,7 @@ export class ResourcesService {
     {code:"sentry-hull", path:"assets/img/bots/sentry-update/sentry-hull.png", type:ResourcesEnum.ImageRes},
     {code:"sentry-hull-damaged", path:"assets/img/bots/sentry-update/sentry-hull-damaged.png", type:ResourcesEnum.ImageRes},
     {code:"sentry-hull-shadow", path:"assets/img/bots/sentry-update/sentry-hull-shadow.png", type:ResourcesEnum.ImageRes},
+    {code:"sentry-wreckage", path:"assets/img/bots/sentry-update/sentry-wreckage.png", type:ResourcesEnum.ImageRes},
     {code:"sentry-turret", path:"assets/img/bots/sentry-update/sentry-turret.png", type:ResourcesEnum.ImageRes},
     {code:"sentry-turret-damaged", path:"assets/img/bots/sentry-update/sentry-turret-damaged.png", type:ResourcesEnum.ImageRes},
     {code:"sentry-turret-shadow", path:"assets/img/bots/sentry-update/sentry-turret-shadow.png", type:ResourcesEnum.ImageRes},
