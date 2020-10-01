@@ -10,6 +10,7 @@ export class Turret {
   public targetObject:any=null;
   public turretSlideIndexSpeed = 0;
   public currentTurretBulletOffsetIndex=0;
+  public currentTurretMuzzleIndex=0;
 
   public firing = false;
 
@@ -25,7 +26,7 @@ export class Turret {
     public rotationYOffset:number=0,
     public bulletType:string="bullet",
     public muzzlePosOffsets:{muzzlePosXOffset:number,muzzlePosYOffset:number}[],// the center of the muzzle flash
-		public imageObjMuzzleFlash:HTMLImageElement=null,
+		public imageObjMuzzleFlash:HTMLImageElement[]=null,
 		public imageMuzzleSizeX:number=90,
     public imageMuzzleSizeY:number=60,
     public bulletOffsets:{bulletXOffset:number,bulletYOffset:number}[], // the center of the bullet
@@ -85,6 +86,10 @@ export class Turret {
           let bullDirection = bulletManagerService.calculateBulletDirection(cords.x, cords.y,
             (this.targetObject)?this.targetObject.getCenterX():cords.x, (this.targetObject)?this.targetObject.getCenterY():cords.y+6000, this.bulletSpeed, true, null);
           bulletManagerService.generateBotBlazer(levelInstance, bullDirection, topLeftCords.x, topLeftCords.y);
+        } else if (this.bulletType == "rocket" ) {
+          let bullDirection = bulletManagerService.calculateBulletDirection(cords.x, cords.y,
+            (this.targetObject)?this.targetObject.getCenterX():cords.x, (this.targetObject)?this.targetObject.getCenterY():cords.y+6000, this.bulletSpeed, true, null);
+          bulletManagerService.generateBotRocket(levelInstance, bullDirection, topLeftCords.x, topLeftCords.y);
         } else if(this.bulletType == "tracker") {
           let bullDirection = bulletManagerService.calculateBulletDirection(cords.x, cords.y, this.targetObject.getCenterX(),this.targetObject.getCenterY(), this.bulletSpeed, true, this.targetObject);
           bulletManagerService.generateBotTrackerBlob(levelInstance, bullDirection, topLeftCords.x, topLeftCords.y, this.allowedMovement);
@@ -97,13 +102,15 @@ export class Turret {
       } else {
         this.bTimer++;
         let muzzlePosOffsets:{muzzlePosXOffset:number,muzzlePosYOffset:number} = this.getCurrentMuzzleOffsets();
-        if (this.bTimer >= (this.bTimerLimit-5) && this.imageObjMuzzleFlash) {
+        if (this.bTimer >= (this.bTimerLimit-20) && this.imageObjMuzzleFlash) {
+          this.currentTurretMuzzleIndex = (this.currentTurretMuzzleIndex === this.imageObjMuzzleFlash.length-1)?0:this.currentTurretMuzzleIndex+1;
+          const imageObj = this.imageObjMuzzleFlash[this.currentTurretMuzzleIndex];
           if(this.targetObject != null) { // will have to rotate the drawing point accordingly
             let cords :{x:number,y:number} = LogicService.pointAfterRotation(this.posX+this.rotationXOffset, this.posY+this.rotationYOffset, this.posX+muzzlePosOffsets.muzzlePosXOffset, this.posY+muzzlePosOffsets.muzzlePosYOffset, this.angleDirection.angle);
             let topLeftCords={x:cords.x-(this.imageMuzzleSizeX/2),y:cords.y-(this.imageMuzzleSizeY/2)}
-            LogicService.drawRotateImage(this.imageObjMuzzleFlash, ctx,this.angleDirection.angle,topLeftCords.x,topLeftCords.y,this.imageMuzzleSizeX,this.imageMuzzleSizeY);
+            LogicService.drawRotateImage(imageObj, ctx,this.angleDirection.angle,topLeftCords.x,topLeftCords.y,this.imageMuzzleSizeX,this.imageMuzzleSizeY);
           } else { // simply draw it directly where its specifed as there is no rotation.
-            ctx.drawImage(this.imageObjMuzzleFlash, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
+            ctx.drawImage(imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
           }
         }
       }

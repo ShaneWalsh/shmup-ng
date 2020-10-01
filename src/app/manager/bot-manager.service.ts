@@ -167,7 +167,12 @@ export class BotManagerService {
       this.resourcesService.getRes().get("sentry-turret"),
       this.resourcesService.getRes().get("sentry-turret-damaged"),
       this.resourcesService.getRes().get("sentry-turret-shadow"),
-      this.resourcesService.getRes().get("miniboss-3-muzzle-flash"),
+      [
+        this.resourcesService.getRes().get("explosion-tiny-1"),
+        this.resourcesService.getRes().get("explosion-tiny-2"),
+        this.resourcesService.getRes().get("explosion-tiny-3"),
+        this.resourcesService.getRes().get("explosion-tiny-4"),
+      ],
       132, 132);
     this.botsArr.push(newBot);
     this.botCreated.next(newBot);
@@ -309,6 +314,17 @@ export class BotManagerService {
     this.backgroundElementsArr.push(new BackgroundElement(posX+deathXOffset,posY+deathYOffset,
 			this.resourcesService.getRes().get("aa-tank-wreckage-horizontal"),
 			118,82,rotationAngle,timeLimit)
+		);
+  }
+
+  generateDeadSentry(posX: number, posY: number, deathXOffset:number, deathYOffset:number, deathShadowXOffset:number, deathShadowYOffset:number, timeLimit: number = 900) {
+    this.backgroundElementsArr.push(new BackgroundElement(posX+deathShadowXOffset,posY+deathShadowYOffset,
+			this.resourcesService.getRes().get("sentry-hull-shadow"),
+			132,132,0,timeLimit)
+		);
+    this.backgroundElementsArr.push(new BackgroundElement(posX+deathXOffset,posY+deathYOffset,
+			this.resourcesService.getRes().get("sentry-wreckage"),
+			132,132,0,timeLimit)
 		);
   }
 

@@ -105,7 +105,7 @@ export class AATank extends BotInstanceImpl{
         34,33, // rotation offsets
         "bullet",
         [{muzzlePosXOffset:100, muzzlePosYOffset:27},{muzzlePosXOffset:100, muzzlePosYOffset:35}], // Muzzle offsets
-        this.imageObjMuzzleFlash,
+        [this.imageObjMuzzleFlash],
         14,//imageMuzzleSizeX
         22,//imageMuzzleSizeY
         [{bulletXOffset:100, bulletYOffset:27},{bulletXOffset:100, bulletYOffset:35}],

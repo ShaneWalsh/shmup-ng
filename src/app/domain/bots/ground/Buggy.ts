@@ -59,7 +59,7 @@ export class Buggy extends BotInstanceImpl{
         18,6, // rotation offsets
         "bullet",
         [{muzzlePosXOffset:60, muzzlePosYOffset:5}], // Muzzle offsets
-        this.imageObjMuzzleFlash,
+        [this.imageObjMuzzleFlash],
         14,//imageMuzzleSizeX
         22,//imageMuzzleSizeY
         [{bulletXOffset:50, bulletYOffset:10}],

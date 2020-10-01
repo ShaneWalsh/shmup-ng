@@ -104,6 +104,7 @@ class LevelOneInstance implements LevelInstance{
   public scrollWidth:number=this.mapWidth;
   public scrollHeight:number=this.mapHeight;
   protected backgroundImage = new Image();
+  protected backgroundShadowImage = null;
   protected hudImage:HTMLImageElement;
 
   // keeps track of the infinite scrolling of the background.
@@ -126,12 +127,21 @@ class LevelOneInstance implements LevelInstance{
   update(canvasContainer:CanvasContainer, playerService:PlayerService) {
     // infinite scroller
     canvasContainer.bgCtx.drawImage(this.backgroundImage, this.scrollerXIncrement, this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
+    if(this.backgroundShadowImage) {
+      canvasContainer.bgCtx.drawImage(this.backgroundShadowImage, this.scrollerXIncrement, this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
+    }
     if(this.isVertical()) {
       canvasContainer.bgCtx.drawImage(this.backgroundImage, this.scrollerXIncrement, (this.scrollerYIncrement - this.getScrollHeight()), this.getScrollWidth(), this.getScrollHeight());
+      if(this.backgroundShadowImage) {
+        canvasContainer.bgCtx.drawImage(this.backgroundShadowImage, this.scrollerXIncrement, (this.scrollerYIncrement - this.getScrollHeight()), this.getScrollWidth(), this.getScrollHeight());
+      }
       this.scrollerYIncrement++;
       if(this.scrollerYIncrement > this.getScrollHeight()){this.scrollerYIncrement = 0};
     } else {
       canvasContainer.bgCtx.drawImage(this.backgroundImage, (this.scrollerXIncrement-this.getScrollWidth()), this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
+      if(this.backgroundShadowImage) {
+        canvasContainer.topCtx.drawImage(this.backgroundShadowImage, (this.scrollerXIncrement-this.getScrollWidth()), this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
+      }
       this.scrollerXIncrement++;
       if(this.scrollerXIncrement > this.getScrollWidth()){this.scrollerXIncrement = 0};
     }
@@ -212,7 +222,8 @@ class LevelTwoInstance extends LevelOneInstance{
 
   constructor(resourcesService:ResourcesService, botManagerService:BotManagerService, levelManagerService:LevelManagerService, levelEventsService:LevelEventsService){
       super(resourcesService,botManagerService,levelManagerService,levelEventsService);
-      this.backgroundImage = this.resourcesService.getRes().get("level-2-background-full");
+      this.backgroundImage = this.resourcesService.getRes().get("level-2-bg-buildings");
+      this.backgroundShadowImage = this.resourcesService.getRes().get("level-2-bg-shadows");
       this.hudImage = this.resourcesService.getRes().get("HUD-resized");
       this.eventArr = this.levelEventsService.getLevel2Events(levelManagerService.difficulty);
       this.scrollHeight = 3840;

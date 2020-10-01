@@ -61,6 +61,13 @@ export class BulletManagerService {
     this.bulletCreated.next(newBullet);
   }
 
+  generateBotRocket(levelInstance:LevelInstance, bulletDirection:BulletDirection, startX, startY): any {
+    let newBullet = new DumbLazer(1, startX, startY, bulletDirection, false, [this.resourcesService.getRes().get("enemy-rocket-1"),
+      this.resourcesService.getRes().get("enemy-rocket-2")], 36, 26);
+    this.bulletsArr.push(newBullet);
+    this.bulletCreated.next(newBullet);
+  }
+
   generateMuzzleBlazer(levelInstance: LevelInstance, bulletDirection: BulletDirection, startX, startY): any {
     let newBullet = new RotationLazer(1, startX, startY, bulletDirection, false, [this.resourcesService.getRes().get("miniboss-2-bullet")], 36, 20);
     this.bulletsArr.push(newBullet);
@@ -431,9 +438,17 @@ export class TurretDirection extends BulletDirection {
       this.angDiff = currentAngleDeg-newAngleDeg;
       if(this.angDiff != 0 && (this.angDiff > 0.9 || this.angDiff < -0.9)){
         if(this.angDiff < 0){
-          angle = LogicService.degreeToRadian(currentAngleDeg+1)
+          if(this.angDiff < -180) {
+            angle = LogicService.degreeToRadian(currentAngleDeg+1)
+          } else { // its > than 180 so i may as well go the opposite direction
+            angle = LogicService.degreeToRadian(currentAngleDeg-1)
+          }
         } else {
-          angle = LogicService.degreeToRadian(currentAngleDeg-1)
+          if(this.angDiff > 180) {
+            angle = LogicService.degreeToRadian(currentAngleDeg+1)
+          } else { // its < than 180 so i may as well go the opposite direction
+            angle = LogicService.degreeToRadian(currentAngleDeg-1)
+          }
         }
       }
 

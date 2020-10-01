@@ -34,9 +34,9 @@ export class Sentry extends BotInstanceImpl{
   public turretYoffset:number=40;
 
   public deathXOffset:number=0;
-  public deathYOffset:number=-10;
-  public deathShadowXOffset:number=5;
-  public deathShadowYOffset:number=8;
+  public deathYOffset:number=0;
+  public deathShadowXOffset:number=10;
+  public deathShadowYOffset:number=6;
   public skipTrack = false;
   public skipTrackCount = false;
 
@@ -50,7 +50,7 @@ export class Sentry extends BotInstanceImpl{
         public sentryTurret1:HTMLImageElement=null,
         public sentryTurretDamaged:HTMLImageElement=null,
         public sentryTurretShadow:HTMLImageElement=null,
-        public imageObjMuzzleFlash:HTMLImageElement=null,
+        public imageObjMuzzleFlash:HTMLImageElement[]=null,
         public imageSizeX:number=90,
         public imageSizeY:number=60,
         public hitBox:HitBox=new HitBox(20,60,60,60),
@@ -70,12 +70,12 @@ export class Sentry extends BotInstanceImpl{
         130,//imageSizeX
         62,
         42,30, // rotation offsets
-        "bullet",
-        [{muzzlePosXOffset:135, muzzlePosYOffset:30}], // Muzzle offsets
+        "rocket",
+        [{muzzlePosXOffset:125, muzzlePosYOffset:30}], // Muzzle offsets
         this.imageObjMuzzleFlash,
-        14,//imageMuzzleSizeX
-        22,//imageMuzzleSizeY
-        [{bulletXOffset:135, bulletYOffset:28}],
+        20,//imageMuzzleSizeX
+        20,//imageMuzzleSizeY
+        [{bulletXOffset:135, bulletYOffset:32}],
         22,// bullet sizex
         14,
         600,
@@ -135,7 +135,7 @@ export class Sentry extends BotInstanceImpl{
     if(this.health < 1){
       playerService.currentPlayer.addScore(this.score);
       botManagerService.removeBot(this);
-      //botManagerService.generateDeadsentry(this.posX,this.posY,this.rotationAngle,this.deathXOffset,this.deathYOffset, this.deathShadowXOffset, this.deathShadowYOffset);
+      botManagerService.generateDeadSentry(this.posX,this.posY,this.deathXOffset,this.deathYOffset, this.deathShadowXOffset, this.deathShadowYOffset);
     }
   }
 

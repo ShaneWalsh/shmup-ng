@@ -68,7 +68,7 @@ export class Level2SubBoss1V2 extends  BotInstanceImpl {
       8,8, // rotation offsets
       "bullet",
       [{muzzlePosXOffset:50, muzzlePosYOffset:10}], // Muzzle offsets
-      this.imageObjMuzzleFlash,
+      [this.imageObjMuzzleFlash],
       14,//imageMuzzleSizeX
       22,//imageMuzzleSizeY
       [{bulletXOffset:50, bulletYOffset:10}],
