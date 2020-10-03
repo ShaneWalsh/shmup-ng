@@ -439,9 +439,9 @@ export class TurretDirection extends BulletDirection {
       if(this.angDiff != 0 && (this.angDiff > 0.9 || this.angDiff < -0.9)){
         if(this.angDiff < 0){
           if(this.angDiff < -180) {
-            angle = LogicService.degreeToRadian(currentAngleDeg+1)
-          } else { // its > than 180 so i may as well go the opposite direction
             angle = LogicService.degreeToRadian(currentAngleDeg-1)
+          } else { // its > than 180 so i may as well go the opposite direction
+            angle = LogicService.degreeToRadian(currentAngleDeg+1)
           }
         } else {
           if(this.angDiff > 180) {
