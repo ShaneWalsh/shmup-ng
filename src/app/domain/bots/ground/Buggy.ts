@@ -75,7 +75,8 @@ export class Buggy extends BotInstanceImpl{
 
 	update(levelInstance:LevelInstance, canvasContainer:CanvasContainer, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {
     let currentPlayer = playerService.currentPlayer;
-    let ctx = canvasContainer.mainCtx;
+    let ctx = canvasContainer.groundCtx;
+    let ctxShadow = canvasContainer.groundShadowCtx;
     this.posY += this.posYSpeed;
     if(this.moveRight) {
       this.posX += this.posXSpeed;
@@ -88,7 +89,7 @@ export class Buggy extends BotInstanceImpl{
     } else {
         ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
         if(levelInstance.drawShadow() && this.imageObjShadow != null) {
-          this.drawShadow(canvasContainer,this.imageObjShadow,this.posX,this.posY,this.imageSizeX, this.imageSizeY);
+          this.drawShadow(ctxShadow,this.imageObjShadow,this.posX,this.posY,this.imageSizeX, this.imageSizeY);
         }
         if(this.damAnaimationTimer < this.damAnaimationTimerLimit){
           this.damAnaimationTimer++;
@@ -96,7 +97,7 @@ export class Buggy extends BotInstanceImpl{
             ctx.drawImage(this.imageObjDamaged, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
           }
         }
-        this.turret.update(this.posX+this.turretXoffset,this.posY+this.turretYoffset,currentPlayer,levelInstance, canvasContainer, botManagerService, bulletManagerService, playerService);
+        this.turret.update(this.posX+this.turretXoffset,this.posY+this.turretYoffset,currentPlayer,levelInstance, canvasContainer.groundCtx, canvasContainer.groundCtx, botManagerService, bulletManagerService, playerService);
     }
     if(levelInstance.drawHitBox()){
         this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");
@@ -153,8 +154,8 @@ export class Buggy extends BotInstanceImpl{
     }
   }
 
-  drawShadow(canvasContainer:CanvasContainer, imageObjShadow:HTMLImageElement,posX:number,posY:number,imageSizeX:number, imageSizeY:number, shadowX:number=10, shadowY:number =6){
-    canvasContainer.shadowCtx.drawImage(imageObjShadow, 0, 0, imageSizeX, imageSizeY, posX+shadowX, posY+shadowY, imageSizeX, imageSizeY);
+  drawShadow(ctx:CanvasRenderingContext2D, imageObjShadow:HTMLImageElement,posX:number,posY:number,imageSizeX:number, imageSizeY:number, shadowX:number=10, shadowY:number =6){
+    ctx.drawImage(imageObjShadow, 0, 0, imageSizeX, imageSizeY, posX+shadowX, posY+shadowY, imageSizeX, imageSizeY);
   }
 
   isGroundBot():boolean{

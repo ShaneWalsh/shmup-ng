@@ -128,19 +128,19 @@ class LevelOneInstance implements LevelInstance{
     // infinite scroller
     canvasContainer.bgCtx.drawImage(this.backgroundImage, this.scrollerXIncrement, this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
     if(this.backgroundShadowImage) {
-      canvasContainer.bgCtx.drawImage(this.backgroundShadowImage, this.scrollerXIncrement, this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
+      canvasContainer.shadowCtx.drawImage(this.backgroundShadowImage, this.scrollerXIncrement, this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
     }
     if(this.isVertical()) {
       canvasContainer.bgCtx.drawImage(this.backgroundImage, this.scrollerXIncrement, (this.scrollerYIncrement - this.getScrollHeight()), this.getScrollWidth(), this.getScrollHeight());
       if(this.backgroundShadowImage) {
-        canvasContainer.bgCtx.drawImage(this.backgroundShadowImage, this.scrollerXIncrement, (this.scrollerYIncrement - this.getScrollHeight()), this.getScrollWidth(), this.getScrollHeight());
+        canvasContainer.shadowCtx.drawImage(this.backgroundShadowImage, this.scrollerXIncrement, (this.scrollerYIncrement - this.getScrollHeight()), this.getScrollWidth(), this.getScrollHeight());
       }
       this.scrollerYIncrement++;
       if(this.scrollerYIncrement > this.getScrollHeight()){this.scrollerYIncrement = 0};
     } else {
       canvasContainer.bgCtx.drawImage(this.backgroundImage, (this.scrollerXIncrement-this.getScrollWidth()), this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
       if(this.backgroundShadowImage) {
-        canvasContainer.topCtx.drawImage(this.backgroundShadowImage, (this.scrollerXIncrement-this.getScrollWidth()), this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
+        canvasContainer.shadowCtx.drawImage(this.backgroundShadowImage, (this.scrollerXIncrement-this.getScrollWidth()), this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
       }
       this.scrollerXIncrement++;
       if(this.scrollerXIncrement > this.getScrollWidth()){this.scrollerXIncrement = 0};

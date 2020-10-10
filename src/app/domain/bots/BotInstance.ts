@@ -72,14 +72,14 @@ export class BotInstanceImpl implements BotInstance, ShieldBot {
     return false;
   }
 
-  drawShadow(canvasContainer:CanvasContainer, imageObjShadow:HTMLImageElement,posX:number,posY:number,imageSizeX:number, imageSizeY:number, shadowX:number=30, shadowY:number =60){
+  drawShadow(ctx:CanvasRenderingContext2D, imageObjShadow:HTMLImageElement,posX:number,posY:number,imageSizeX:number, imageSizeY:number, shadowX:number=30, shadowY:number =60){
     if(imageObjShadow != null)
-      canvasContainer.shadowCtx.drawImage(imageObjShadow, 0, 0, imageSizeX, imageSizeY, posX+shadowX, posY+shadowY, imageSizeX, imageSizeY);
+    ctx.drawImage(imageObjShadow, 0, 0, imageSizeX, imageSizeY, posX+shadowX, posY+shadowY, imageSizeX, imageSizeY);
   }
 
-  drawShadowRotate(canvasContainer:CanvasContainer,angle:number, imageObjShadow:HTMLImageElement,posX:number,posY:number,imageSizeX:number, imageSizeY:number, shadowX:number=30, shadowY:number =60){
+  drawShadowRotate(ctx:CanvasRenderingContext2D,angle:number, imageObjShadow:HTMLImageElement,posX:number,posY:number,imageSizeX:number, imageSizeY:number, shadowX:number=30, shadowY:number =60){
     if(imageObjShadow != null)
-      LogicService.drawRotateImage(imageObjShadow,canvasContainer.shadowCtx,angle,posX+shadowX, posY+shadowY, imageSizeX, imageSizeY);
+      LogicService.drawRotateImage(imageObjShadow,ctx,angle,posX+shadowX, posY+shadowY, imageSizeX, imageSizeY);
   }
 
   getShieldX(): number {
@@ -253,9 +253,9 @@ export class FlyingBotImpl extends BotInstanceImpl {
 
   drawShadowFlying(angle:number, canvasContainer:CanvasContainer, posX:number,posY:number,imageSizeX:number, imageSizeY:number, shadowX:number=30, shadowY:number =60){
     if(angle != null){
-      this.drawShadowRotate(canvasContainer,angle,this.getShadowImage(),posX,posY,imageSizeX,imageSizeY,shadowX,shadowY)
+      this.drawShadowRotate(canvasContainer.shadowCtx,angle,this.getShadowImage(),posX,posY,imageSizeX,imageSizeY,shadowX,shadowY)
     } else {
-      this.drawShadow(canvasContainer,this.getShadowImage(),posX,posY,imageSizeX,imageSizeY,shadowX,shadowY)
+      this.drawShadow(canvasContainer.shadowCtx,this.getShadowImage(),posX,posY,imageSizeX,imageSizeY,shadowX,shadowY)
     }
   }
 

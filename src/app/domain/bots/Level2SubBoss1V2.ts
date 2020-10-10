@@ -92,10 +92,10 @@ export class Level2SubBoss1V2 extends  BotInstanceImpl {
 			this.posY += this.posYSpeed;
 		}
 
-    this.turret.update(this.posX+114,this.posY+265,currentPlayer,levelInstance, canvasContainer, botManagerService, bulletManagerService, playerService);
+    this.turret.update(this.posX+114,this.posY+265,currentPlayer,levelInstance, canvasContainer.mainCtx, canvasContainer.shadowCtx, botManagerService, bulletManagerService, playerService);
     ctx.drawImage(this.imageObj2, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
     if(levelInstance.drawShadow() && this.imageObjShadow != null) {
-      this.drawShadow(canvasContainer,this.imageObjShadow,this.posX,this.posY,this.imageSizeX, this.imageSizeY);
+      this.drawShadow(canvasContainer.shadowCtx,this.imageObjShadow,this.posX,this.posY,this.imageSizeX, this.imageSizeY);
     }
 		if(this.damAnaimationTimer < this.damAnaimationTimerLimit){
 			this.damAnaimationTimer++;

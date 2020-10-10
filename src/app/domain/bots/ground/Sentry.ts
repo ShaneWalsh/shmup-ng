@@ -87,14 +87,15 @@ export class Sentry extends BotInstanceImpl{
 
 	update(levelInstance:LevelInstance, canvasContainer:CanvasContainer, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {
     let currentPlayer = playerService.currentPlayer;
-    let ctx = canvasContainer.mainCtx;
+    let ctx = canvasContainer.groundCtx;
+    let ctxShadow = canvasContainer.groundShadowCtx;
     this.posY += this.posYSpeed;
     if(this.posY + this.imageSizeY > (levelInstance.getMapHeight()+this.imageSizeY)
         || (this.posX < -2000 || this.posX > 2000)){
         botManagerService.removeBot(this);
     } else {
       if(levelInstance.drawShadow() && this.imageObjShadow != null) {
-        this.drawShadow(canvasContainer,this.imageObjShadow,this.posX,this.posY,this.imageSizeX, this.imageSizeY);
+        this.drawShadow(ctxShadow,this.imageObjShadow,this.posX,this.posY,this.imageSizeX, this.imageSizeY);
       }
       let drawDamage = false;
       LogicService.drawRotateImage(this.imageObj,ctx,0,this.posX,this.posY,this.imageSizeX,this.imageSizeY,this.posX,this.posY,this.imageSizeX,this.imageSizeY);
@@ -105,7 +106,7 @@ export class Sentry extends BotInstanceImpl{
             LogicService.drawRotateImage(this.imageObjDamaged,ctx,0,this.posX,this.posY,this.imageSizeX,this.imageSizeY,this.posX,this.posY,this.imageSizeX,this.imageSizeY);
           }
         }
-        this.turret.update(this.posX+this.turretXoffset,this.posY+this.turretYoffset,currentPlayer,levelInstance, canvasContainer, botManagerService, bulletManagerService, playerService, drawDamage);
+        this.turret.update(this.posX+this.turretXoffset,this.posY+this.turretYoffset,currentPlayer,levelInstance, canvasContainer.groundCtx, canvasContainer.groundCtx, botManagerService, bulletManagerService, playerService, drawDamage);
     }
     if(levelInstance.drawHitBox()){
         this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");
@@ -163,8 +164,8 @@ export class Sentry extends BotInstanceImpl{
       this.damAnaimationTimer = 1;// trigger damage animation
     }
   }
-  drawShadow(canvasContainer:CanvasContainer, imageObjShadow:HTMLImageElement,posX:number,posY:number,imageSizeX:number, imageSizeY:number, shadowX:number=10, shadowY:number =6){
-    LogicService.drawRotateImage(imageObjShadow,canvasContainer.shadowCtx,0,posX+shadowX, posY+shadowY,imageSizeX, imageSizeY);
+  drawShadow(ctx:CanvasRenderingContext2D, imageObjShadow:HTMLImageElement,posX:number,posY:number,imageSizeX:number, imageSizeY:number, shadowX:number=10, shadowY:number =6){
+    LogicService.drawRotateImage(imageObjShadow,ctx,0,posX+shadowX, posY+shadowY,imageSizeX, imageSizeY);
   }
 
   isGroundBot():boolean{

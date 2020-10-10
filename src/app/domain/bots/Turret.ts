@@ -44,11 +44,10 @@ export class Turret {
 
 	}
 
-	update(posX,posY,targetObject,levelInstance:LevelInstance, canvasContainer:CanvasContainer, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService, drawDamage:boolean=false) {
+	update(posX,posY,targetObject,levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, ctxShadow:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService, drawDamage:boolean=false) {
     this.targetObject = targetObject;
     this.posX = posX;
     this.posY = posY;
-    let ctx = canvasContainer.mainCtx;
     if(this.targetObject != null) {
       if(this.angleDirection == null) {
         if(this.turretSlowRotate){
@@ -60,7 +59,7 @@ export class Turret {
         this.angleDirection.update(this.posX+this.rotationXOffset, this.posY+this.rotationYOffset,this.targetObject);
       }
       if(levelInstance.drawShadow() && this.imageObjTurretShadow != null) {
-        this.drawShadow(ctx,this.imageObjTurretShadow,5,3);
+        this.drawShadow(ctxShadow,this.imageObjTurretShadow,5,3);
       }
       LogicService.drawRotateImage(this.getNextTurretImage(drawDamage),ctx,this.angleDirection.angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY,this.posX,this.posY,this.imageSizeX,this.imageSizeY,this.posX+this.rotationXOffset,this.posY+this.rotationYOffset);
     } else { // will always point straight ahead
