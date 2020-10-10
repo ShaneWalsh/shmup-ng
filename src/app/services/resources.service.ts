@@ -17,6 +17,26 @@ export class ResourcesService {
 			this.resourcesLoaded = new Subject();
 
       this.resourcesToLoad = [
+    {code:"starship-hull-1", path:"assets/img/boss/Starship/starship-hull-1.png", type:ResourcesEnum.ImageRes},
+    {code:"starship-hull-1-damage", path:"assets/img/boss/Starship/starship-hull-1-damage.png", type:ResourcesEnum.ImageRes},
+    {code:"starship-hull-2", path:"assets/img/boss/Starship/starship-hull-2.png", type:ResourcesEnum.ImageRes},
+    {code:"starship-hull-2-damage", path:"assets/img/boss/Starship/starship-hull-2-damage.png", type:ResourcesEnum.ImageRes},
+    {code:"starship-hull-3", path:"assets/img/boss/Starship/starship-hull-3.png", type:ResourcesEnum.ImageRes},
+    {code:"starship-hull-3-damage", path:"assets/img/boss/Starship/starship-hull-3-damage.png", type:ResourcesEnum.ImageRes},
+    {code:"starship-hull-4", path:"assets/img/boss/Starship/starship-hull-4.png", type:ResourcesEnum.ImageRes},
+    {code:"starship-hull-4-damage", path:"assets/img/boss/Starship/starship-hull-4-damage.png", type:ResourcesEnum.ImageRes},
+    {code:"starship-hull-shadow-1", path:"assets/img/boss/Starship/starship-hull-shadow-1.png", type:ResourcesEnum.ImageRes},
+    {code:"starship-hull-shadow-2", path:"assets/img/boss/Starship/starship-hull-shadow-2.png", type:ResourcesEnum.ImageRes},
+    {code:"starship-main-turret", path:"assets/img/boss/Starship/starship-main-turret.png", type:ResourcesEnum.ImageRes},
+    {code:"starship-main-turret-damage", path:"assets/img/boss/Starship/starship-main-turret-damage.png", type:ResourcesEnum.ImageRes},
+    {code:"starship-main-turret-shadow", path:"assets/img/boss/Starship/starship-main-turret-shadow.png", type:ResourcesEnum.ImageRes},
+    {code:"starship-small-turret", path:"assets/img/boss/Starship/starship-small-turret.png", type:ResourcesEnum.ImageRes},
+    {code:"starship-small-turret-damag", path:"assets/img/boss/Starship/starship-small-turret-damag.png", type:ResourcesEnum.ImageRes},
+    {code:"starship-small-turret-shado", path:"assets/img/boss/Starship/starship-small-turret-shado.png", type:ResourcesEnum.ImageRes},
+    {code:"starship-turret-full", path:"assets/img/boss/Starship/starship-turret-full.png", type:ResourcesEnum.ImageRes},
+    {code:"starship-turret-full-damage", path:"assets/img/boss/Starship/starship-turret-full-damage.png", type:ResourcesEnum.ImageRes},
+    {code:"starship-weakpoint", path:"assets/img/boss/Starship/starship-weakpoint.png", type:ResourcesEnum.ImageRes},
+    {code:"starship-weakpoint-damage", path:"assets/img/boss/Starship/starship-weakpoint-damage.png", type:ResourcesEnum.ImageRes},
 
     {code:"enemy-rocket-1", path:"assets/img/bots/enemy-rocket-1.png", type:ResourcesEnum.ImageRes},
     {code:"enemy-rocket-2", path:"assets/img/bots/enemy-rocket-2.png", type:ResourcesEnum.ImageRes},
