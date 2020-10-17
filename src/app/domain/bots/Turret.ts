@@ -4,6 +4,7 @@ import { BulletManagerService, BulletDirection } from "src/app/manager/bullet-ma
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { LogicService } from "src/app/services/logic.service";
 import { CanvasContainer } from "../CanvasContainer";
+import { HitBox } from "../HitBox";
 
 export class Turret {
 	public angleDirection:BulletDirection = null;
@@ -13,6 +14,7 @@ export class Turret {
   public currentTurretMuzzleIndex=0;
 
   public firing = false;
+  public damageToggle = false;
 
 	constructor(
 		public posX:number=0, // top left of the turret
@@ -38,7 +40,9 @@ export class Turret {
     public bTimerLimit:number = 30,
     public turretSlideIndex = 0,
     public turretSlideIndexSpeedLimit = 5,
-    public turretSlowRotate:boolean = true
+    public turretSlowRotate:boolean = true,
+    public turretShadowX:number = 5,
+    public turretShadowY:number = 3,
 	){
 
 
@@ -59,7 +63,7 @@ export class Turret {
         this.angleDirection.update(this.posX+this.rotationXOffset, this.posY+this.rotationYOffset,this.targetObject);
       }
       if(levelInstance.drawShadow() && this.imageObjTurretShadow != null) {
-        this.drawShadow(ctxShadow,this.imageObjTurretShadow,5,3);
+        this.drawShadow(ctxShadow,this.imageObjTurretShadow,this.turretShadowX,this.turretShadowY);
       }
       LogicService.drawRotateImage(this.getNextTurretImage(drawDamage),ctx,this.angleDirection.angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY,this.posX,this.posY,this.imageSizeX,this.imageSizeY,this.posX+this.rotationXOffset,this.posY+this.rotationYOffset);
     } else { // will always point straight ahead
@@ -67,6 +71,11 @@ export class Turret {
       LogicService.drawRotateImage(this.getNextTurretImage(drawDamage),ctx,this.angleDirection.angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY);
     }
 
+
+    this.updateFiringLogic(posX,posY,targetObject,levelInstance, ctx, ctxShadow, botManagerService, bulletManagerService, playerService);
+  }
+
+  updateFiringLogic(posX,posY,targetObject,levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, ctxShadow:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService, drawDamage:boolean=false) {
     if(!this.firing){
       this.bTimer = (this.bTimer >= (this.bTimerLimit-5))? this.bTimerLimit-5:this.bTimer+1
       if(this.bTimer >= (this.bTimerLimit-5) && this.angleDirection.canShoot()){
@@ -146,7 +155,9 @@ export class Turret {
 
   getNextTurretImage(drawDamage=false):HTMLImageElement {
     if(drawDamage && this.imageObjTurretDamaged != null){
-      return this.imageObjTurretDamaged;
+      this.damageToggle = !this.damageToggle;
+      if(this.damageToggle)
+        return this.imageObjTurretDamaged;
     }
     if(this.imageObjTurret.length > 1){
       this.turretSlideIndexSpeed++;
@@ -169,4 +180,140 @@ export class Turret {
     let posY = this.posY+shadowY;
     LogicService.drawRotateImage(imageObjShadow,ctx,this.angleDirection.angle,posX,posY,this.imageSizeX,this.imageSizeY,posX,posY,this.imageSizeX,this.imageSizeY,posX+this.rotationXOffset,posY+this.rotationYOffset);
   }
+}
+
+
+
+export class LaserTurret extends Turret {
+	public firingLoading = false;
+	public firingPhase2 = false;
+
+	public bTimerLoading:number = 0;
+	public bTimerLoadingLimit:number = 60;
+	public loadingIndex:number = 0;
+
+	public bTimerFiring:number = 0;
+	public bTimerFiringPase2:number = 4;
+	public bTimerFiringPase3:number = 20;
+	public bTimerFiringLimit:number = 24;
+
+	constructor(
+		posX:number=0, // top left of the turret
+    posY:number=0,
+    imageObjTurret:HTMLImageElement[]=null,
+    imageObjTurretDamaged = null,
+    imageObjTurretShadow = null,
+    imageSizeX:number=90,
+    imageSizeY:number=60,
+    rotationXOffset:number=0, // the turret may not turn on centerX+Y
+    rotationYOffset:number=0,
+    bulletType:string="bullet",
+    muzzlePosOffsets:{muzzlePosXOffset:number,muzzlePosYOffset:number}[],// the center of the muzzle flash
+		imageObjMuzzleFlash:HTMLImageElement[]=null,
+		imageMuzzleSizeX:number=90,
+    imageMuzzleSizeY:number=60,
+    bulletOffsets:{bulletXOffset:number,bulletYOffset:number}[], // the center of the bullet
+    bulletSizeX:number=22,
+    bulletSizeY:number=14,
+    allowedMovement:number=500,
+    bulletSpeed:number = 6,
+    bTimer:number = 0,
+    bTimerLimit:number = 30,
+    turretSlideIndex = 0,
+    turretSlideIndexSpeedLimit = 5,
+    turretSlowRotate:boolean = true,
+    turretShadowX:number = 5,
+    turretShadowY:number = 3,
+
+    public loadingImages:HTMLImageElement[],
+		public firingStartImage:HTMLImageElement,
+		public firingImages:HTMLImageElement[],
+		public imageFiringSizeX:number=640,
+    public imageFiringSizeY:number=64,
+		public beamHitBoxs:HitBox[] = [new HitBox(0,0,imageFiringSizeX,imageFiringSizeY)],
+	){
+    super(posX,posY,imageObjTurret,imageObjTurretDamaged,imageObjTurretShadow,imageSizeX,imageSizeY,rotationXOffset,rotationYOffset,bulletType,muzzlePosOffsets,imageObjMuzzleFlash,imageMuzzleSizeX,imageMuzzleSizeY,bulletOffsets,bulletSizeX,bulletSizeY,allowedMovement,bulletSpeed,bTimer,bTimerLimit,turretSlideIndex,turretSlideIndexSpeedLimit,turretSlowRotate,turretShadowX,turretShadowY);
+    // some extra params for the laser sprite? No maybe I can farm that logic out?
+
+
+  }
+
+  updateFiringLogic(posX,posY,targetObject,levelInstance:LevelInstance, ctx:CanvasRenderingContext2D, ctxShadow:CanvasRenderingContext2D, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService, drawDamage:boolean=false) {
+    // I need to workout where the x+y should be.
+    let bulletOffsets:{bulletXOffset:number,bulletYOffset:number} = this.getCurrentBulletOffsets();
+    // where should the bullet spawn
+    let cords :{x:number,y:number} = LogicService.pointAfterRotation(posX+this.rotationXOffset, posY+this.rotationYOffset, posX+bulletOffsets.bulletXOffset, posY+bulletOffsets.bulletYOffset, this.angleDirection.angle);
+    let hitterCords = {...cords,posX:cords.x,posY:cords.y};
+
+    let laserRotationXOffset = 54;
+    let laserRotationYOffset = 32;
+
+    let drawPosX = cords.x-laserRotationXOffset;
+    let drawPosY = cords.y-laserRotationYOffset;
+
+    let beamCords :{x:number,y:number} = LogicService.pointAfterRotation(posX+this.rotationXOffset, posY+this.rotationYOffset, posX+bulletOffsets.bulletXOffset+500, posY+bulletOffsets.bulletYOffset, this.angleDirection.angle);
+    let beamDir = bulletManagerService.calculateBulletDirection(cords.x,cords.y,beamCords.x,beamCords.y,10,true);
+
+    let currentPlayer = playerService.currentPlayer;
+    if(this.firingLoading){
+			if(this.bTimerLoading < this.bTimerLoadingLimit) {
+				this.bTimerLoading++;
+				if(this.bTimerLoading % 3 == 0){
+					this.loadingIndex++;
+					if(this.loadingIndex == this.loadingImages.length )
+						this.loadingIndex = 0;
+        }
+        LogicService.drawRotateImage(this.loadingImages[this.loadingIndex],ctx,this.angleDirection.angle,drawPosX, drawPosY, this.imageFiringSizeX, this.imageFiringSizeY, drawPosX,drawPosY,this.imageFiringSizeX, this.imageFiringSizeY,drawPosX+laserRotationXOffset,drawPosY+laserRotationYOffset);
+				//ctx.drawImage(this.loadingImages[this.loadingIndex], 0, 0, this.imageFiringSizeX, this.imageFiringSizeY, drawPosX, drawPosY,this.imageFiringSizeX, this.imageFiringSizeY);
+			} else {
+				this.firingLoading = false;
+				this.firingPhase2 = true;
+				this.loadingIndex = 0;
+			}
+		} else if(this.firingPhase2){
+			if(this.bTimerFiring < this.bTimerFiringLimit) {
+				this.bTimerFiring++;
+				if(this.bTimerFiring < this.bTimerFiringPase2){
+          LogicService.drawRotateImage(this.firingStartImage,ctx,this.angleDirection.angle,drawPosX, drawPosY, this.imageFiringSizeX, this.imageFiringSizeY, drawPosX,drawPosY,this.imageFiringSizeX, this.imageFiringSizeY,drawPosX+laserRotationXOffset,drawPosY+laserRotationYOffset);
+					//ctx.drawImage(this.firingStartImage, 0, 0, this.imageFiringSizeX, this.imageFiringSizeY, drawPosX, drawPosY,this.imageFiringSizeX, this.imageFiringSizeY);
+				} else if(this.bTimerFiring < this.bTimerFiringPase3){
+					if(this.bTimerFiring % 2 == 0){
+						this.loadingIndex++;
+						if(this.loadingIndex == this.firingImages.length )
+							this.loadingIndex = 0;
+          }
+          LogicService.drawRotateImage(this.firingImages[this.loadingIndex],ctx,this.angleDirection.angle,drawPosX, drawPosY, this.imageFiringSizeX, this.imageFiringSizeY, drawPosX,drawPosY,this.imageFiringSizeX, this.imageFiringSizeY,drawPosX+laserRotationXOffset,drawPosY+laserRotationYOffset);
+					//ctx.drawImage(this.firingImages[this.loadingIndex], 0, 0, this.imageFiringSizeX, this.imageFiringSizeY, drawPosX, drawPosY,this.imageFiringSizeX, this.imageFiringSizeY);
+				} else if(this.bTimerFiring < this.bTimerFiringLimit){
+          LogicService.drawRotateImage(this.firingStartImage,ctx,this.angleDirection.angle,drawPosX, drawPosY, this.imageFiringSizeX, this.imageFiringSizeY, drawPosX,drawPosY,this.imageFiringSizeX, this.imageFiringSizeY,drawPosX+laserRotationXOffset,drawPosY+laserRotationYOffset);
+          //ctx.drawImage(this.firingStartImage, 0, 0, this.imageFiringSizeX, this.imageFiringSizeY, this.posX, drawPosY,this.imageFiringSizeX, this.imageFiringSizeY);
+        }
+        if(currentPlayer) {
+          this.beamHitBoxs = [];
+          for(var i = 0; i < 50; i++){
+            let beam = new HitBox((((beamDir.directionX)*beamDir.speed)*i),(((beamDir.directionY)*beamDir.speed)*i), 15,15);
+            this.beamHitBoxs.push(beam);
+            //LogicService.drawBorder(hitterCords.posX+beam.hitBoxX,hitterCords.posY+beam.hitBoxY,beam.hitBoxSizeX,beam.hitBoxSizeY,ctx,"#FFFF00");
+            if(currentPlayer && currentPlayer.hasPlayerBeenHit(hitterCords,beam)){
+              playerService.killCurrentPlayer();
+            }
+          }
+        }
+			} else {
+				this.loadingIndex = 0;
+				this.firingPhase2 = false;
+			}
+		} else { // fire weapon
+			if(this.bTimer >= this.bTimerLimit && this.canShoot(levelInstance,currentPlayer)){
+				this.bTimerLoading = 0;
+				this.bTimerFiring = 0;
+				this.loadingIndex = 0;
+				this.firingLoading = true;
+			}
+			else {
+				this.bTimer++;
+			}
+		}
+  }
+
 }

@@ -26,6 +26,7 @@ import { AATank } from '../domain/bots/ground/AATank';
 import { BackgroundElement } from '../domain/BackgroundElement';
 import { Sentry } from '../domain/bots/ground/Sentry';
 import { Shield } from '../domain/skills/Shield';
+import { Level2Starship } from '../domain/bots/Level2Starship';
 
 /**
  * Going to manage the created bots, spawned by the level manager. Its going to emit when they are destroyed or when they leave the screen.
@@ -255,6 +256,52 @@ export class BotManagerService {
       this.resourcesService.getRes().get("miniboss-3-no-cannon-damage"),
       this.resourcesService.getRes().get("miniboss-3-no-cannon-shadow"),
       242,302);
+    this.botsArr.push(newBot);
+    this.botCreated.next(newBot);
+  }
+
+  generateLevel2Starship(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 250, posY: number = -300, config: any = {}): any {
+    let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
+    let newBot = new Level2Starship(config, posObj.posX, posObj.posY,
+      [this.resourcesService.getRes().get("starship-hull-1"),
+        this.resourcesService.getRes().get("starship-hull-2"),
+        this.resourcesService.getRes().get("starship-hull-3"),
+        this.resourcesService.getRes().get("starship-hull-4")],
+      [this.resourcesService.getRes().get("starship-hull-1-damage"),
+        this.resourcesService.getRes().get("starship-hull-2-damage"),
+        this.resourcesService.getRes().get("starship-hull-3-damage"),
+        this.resourcesService.getRes().get("starship-hull-4-damage")],
+      [this.resourcesService.getRes().get("starship-hull-shadow-1"),
+        this.resourcesService.getRes().get("starship-hull-shadow-2"),
+        this.resourcesService.getRes().get("starship-hull-shadow-1"),
+        this.resourcesService.getRes().get("starship-hull-shadow-2")],
+      174,174,
+      this.resourcesService.getRes().get("starship-main-turret"),
+      this.resourcesService.getRes().get("starship-main-turret-damage"),
+      this.resourcesService.getRes().get("starship-main-turret-shadow"),
+      this.resourcesService.getRes().get("miniboss-3-muzzle-flash"),
+
+      this.resourcesService.getRes().get("starship-small-turret"),
+      this.resourcesService.getRes().get("starship-small-turret-damag"),
+      this.resourcesService.getRes().get("starship-small-turret-shado"),
+      this.resourcesService.getRes().get("miniboss-3-muzzle-flash"),
+
+      this.resourcesService.getRes().get("starship-weakpoint"),
+      this.resourcesService.getRes().get("starship-weakpoint-damage"),
+
+      [this.resourcesService.getRes().get("starship-firing-1"),
+      this.resourcesService.getRes().get("starship-firing-2"),
+      this.resourcesService.getRes().get("starship-firing-3")],
+
+      this.resourcesService.getRes().get("starship-firing-4"),
+
+      [this.resourcesService.getRes().get("starship-firing-5"),
+      this.resourcesService.getRes().get("starship-firing-6")]
+
+      );
+
+
+
     this.botsArr.push(newBot);
     this.botCreated.next(newBot);
   }

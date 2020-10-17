@@ -514,6 +514,20 @@ export class LevelEventsService {
 			anaimationTimerLimit:4, // the bot has an animation for its engine, this animation swaps every 4 ticks.
 			score: 20000,
 			health:200,
+    };
+
+    let level2Starship = {
+			bulletSpeed: 6,
+			posXSpeed: 3,
+			posYSpeed: 1.5,
+			bTimerLimit: 30,
+			mTimerLimit: 60,
+			missileSpeed: 4.5,
+			destinationY: 50,
+			anaimationTimerLimit:4, // the bot has an animation for its engine, this animation swaps every 4 ticks.
+			score: 50000,
+			health:350,
+			weakPointHealth:75,
 		};
 
 		if(difficulty == 0){ // easy difficulty, so reducing the bots health
@@ -544,20 +558,22 @@ export class LevelEventsService {
 		//#########################################################################################
 		//######################          Phase Zero        #######################################
     //#########################################################################################
-    le.push(new SpawnBotEvent(0, 20, false, 0, BotType.SENTRY, sentryConfig, false, 140, -140));
-		//le.push(new SpawnBotEvent(0, 40, false, 0, BotType.BUGGY, buggyConfigMR, false, -30, 80));
-    le.push(new SpawnBotEvent(0, 40, false, 0, BotType.DIVER, diverConfig, false, 70, -60));
-    le.push(new SpawnBotEvent(0, 40, false, 0, BotType.BUGGY, buggyConfigML, false, 400, 20));
-		//le.push(new SpawnBotEvent(0, 120, false, 0, BotType.AATANK, AATankConfig, false, -30, 20));
+    // le.push(new SpawnBotEvent(0, 20, false, 0, BotType.SENTRY, sentryConfig, false, 140, -140));
+		// //le.push(new SpawnBotEvent(0, 40, false, 0, BotType.BUGGY, buggyConfigMR, false, -30, 80));
+    // le.push(new SpawnBotEvent(0, 40, false, 0, BotType.DIVER, diverConfig, false, 70, -60));
+    // le.push(new SpawnBotEvent(0, 40, false, 0, BotType.BUGGY, buggyConfigML, false, 400, 20));
+		// //le.push(new SpawnBotEvent(0, 120, false, 0, BotType.AATANK, AATankConfig, false, -30, 20));
 
-    le.push(new SpawnBotEvent(0, 120, false, 0, BotType.AATANK, {...AATankConfig, moveToXCord:50}, false, 400, 80));
-    //le.push(new SpawnBotEvent(0, 300, false, 0, BotType.SENTRY, sentryConfig, false, 100, -140));
-		// trick of the eye here, by increasing the AATanks yspeed by .5 it will look like its driving down, or leave it at 1 and it will look parked.
-		le.push(new SpawnBotEvent(0, 300, false, 0, BotType.AATANK, {...AATankConfig, moveToXCord:220, posYSpeed:1.5}, false, 220, -150));
-		//le.push(new SpawnBotEvent(0, 220, false, 0, BotType.AATANK, {...AATankConfig, moveToXCord:50, posYSpeed:1.5}, false, 50, -150));
-		le.push(new SpawnBotEvent(0, 220, false, 0, BotType.HEAVYJET, heavyJetConfig, false, 0, -150));
-		le.push(new SpawnBotEvent(0, 400, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 250, -60));
-    le.push(new SpawnBotEvent(0, 500, false, 0, BotType.GUARDIAN1, guardian1Config, false, 380, -60));
+    // le.push(new SpawnBotEvent(0, 120, false, 0, BotType.AATANK, {...AATankConfig, moveToXCord:50}, false, 400, 80));
+    // //le.push(new SpawnBotEvent(0, 300, false, 0, BotType.SENTRY, sentryConfig, false, 100, -140));
+		// // trick of the eye here, by increasing the AATanks yspeed by .5 it will look like its driving down, or leave it at 1 and it will look parked.
+		// le.push(new SpawnBotEvent(0, 300, false, 0, BotType.AATANK, {...AATankConfig, moveToXCord:220, posYSpeed:1.5}, false, 220, -150));
+		// //le.push(new SpawnBotEvent(0, 220, false, 0, BotType.AATANK, {...AATankConfig, moveToXCord:50, posYSpeed:1.5}, false, 50, -150));
+		// le.push(new SpawnBotEvent(0, 220, false, 0, BotType.HEAVYJET, heavyJetConfig, false, 0, -150));
+		// le.push(new SpawnBotEvent(0, 400, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 250, -60));
+    // le.push(new SpawnBotEvent(0, 500, false, 0, BotType.GUARDIAN1, guardian1Config, false, 380, -60));
+
+    le.push(new SpawnBotEvent(0, 5, false, 0, BotType.STARSHIPL2, level2Starship, false, 150, -300));
 
 		// wings middle
 		// le.push(new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));
@@ -576,56 +592,56 @@ export class LevelEventsService {
 		// le.push(new SpawnBotEvent(0, 430, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));
 		// le.push(new SpawnBotEvent(0, 450, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
 		// le.push(new SpawnBotEvent(0, 400, false, 0, BotType.DIVER, diverConfig, false, 420, -60));
-		le.push(new SpawnBotEvent(0, 700, false, 0, BotType.DRONE, droneConfig, false, 100, -60));
-		le.push(new SpawnBotEvent(0, 720, false, 0, BotType.DRONE, droneConfig, false, 160, -60));
-		le.push(new SpawnBotEvent(0, 740, false, 0, BotType.DRONE, droneConfig, false, 220, -60));
-		le.push(new SpawnBotEvent(0, 720, false, 0, BotType.DRONE, droneConfig, false, 280, -60));
-		le.push(new SpawnBotEvent(0, 700, false, 0, BotType.DRONE, droneConfig, false, 340, -60));
-		le.push(new SpawnBotEvent(0, 900, false, 0, BotType.ROCK, rockConfig, false, 220, -80));
-		le.push(new SpawnBotEvent(0, 1200, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
-		le.push(new SpawnBotEvent(0, 1210, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
-		le.push(new SpawnBotEvent(0, 1220, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
-		le.push(new SpawnBotEvent(0, 1210, false, 0, BotType.DIVER, diverConfig, false, 70, -60));
-		le.push(new SpawnBotEvent(0, 1500, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
-		le.push(new SpawnBotEvent(0, 1510, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
-		le.push(new SpawnBotEvent(0, 1520, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
-		le.push(new SpawnBotEvent(0, 1510, false, 0, BotType.DIVER, diverConfig, false, 360, -60));
-		le.push(new SpawnBotEvent(0, 1600, false, 0, BotType.ROCK, rockConfig, false, 120, -80));
-		le.push(new SpawnBotEvent(0, 1600, false, 0, BotType.ROCK, rockConfig, false, 320, -80));
-		le.push(new SpawnBotEvent(0, 1800, false, 0, BotType.DIVER, diverConfig, false, 200, -60));
-		le.push(new SpawnBotEvent(0, 1800, false, 0, BotType.DIVER, diverConfig, false, 280, -60));
-		le.push(new SpawnBotEvent(0, 1960, false, 0, BotType.DRONE, droneConfig, false, 10, -60));
-		le.push(new SpawnBotEvent(0, 1930, false, 0, BotType.DRONE, droneConfig, false, 70, -60));
-		le.push(new SpawnBotEvent(0, 1930, false, 0, BotType.DRONE, droneConfig, false, 360, -60));
-		le.push(new SpawnBotEvent(0, 1960, false, 0, BotType.DRONE, droneConfig, false, 420, -60));
-		le.push(new SpawnBotEvent(0, 2200, false, 0, BotType.FIGHTER, fighterConfig, false, 60, -60));
-		le.push(new SpawnBotEvent(0, 2215, false, 0, BotType.FIGHTER, fighterConfig, false, 120, -60));
-		le.push(new SpawnBotEvent(0, 2230, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));
-		le.push(new SpawnBotEvent(0, 2245, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));
-		le.push(new SpawnBotEvent(0, 2230, false, 0, BotType.DIVER, diverConfig, false, 420, -60));
-		le.push(new SpawnBotEvent(0, 2500, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
-		le.push(new SpawnBotEvent(0, 2515, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
-		le.push(new SpawnBotEvent(0, 2530, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
-		le.push(new SpawnBotEvent(0, 2545, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));
-		le.push(new SpawnBotEvent(0, 2530, false, 0, BotType.DIVER, diverConfig, false, 60, -60));
-		le.push(new SpawnBotEvent(0, 2700, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
-		le.push(new SpawnBotEvent(0, 2730, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
-		le.push(new SpawnBotEvent(0, 2760, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
-		le.push(new SpawnBotEvent(0, 2700, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
-		le.push(new SpawnBotEvent(0, 2730, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
-		le.push(new SpawnBotEvent(0, 2760, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
-		le.push(new SpawnBotEvent(0, 2960, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
-		le.push(new SpawnBotEvent(0, 2930, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
-		le.push(new SpawnBotEvent(0, 2900, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
-		le.push(new SpawnBotEvent(0, 2960, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
-		le.push(new SpawnBotEvent(0, 2930, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
-		le.push(new SpawnBotEvent(0, 2900, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
-		le.push(new SpawnBotEvent(0, 3000, false, 0, BotType.ROCK, rockConfig, false, 240, -80));
-		le.push(new SpawnBotEvent(0, 3100, false, 0, BotType.DRONE, droneConfig, false, 100, -60));
-		le.push(new SpawnBotEvent(0, 3120, false, 0, BotType.DRONE, droneConfig, false, 160, -60));
-		le.push(new SpawnBotEvent(0, 3140, false, 0, BotType.DRONE, droneConfig, false, 220, -60));
-		le.push(new SpawnBotEvent(0, 3120, false, 0, BotType.DRONE, droneConfig, false, 280, -60));
-		le.push(new SpawnBotEvent(0, 3100, false, 0, BotType.DRONE, droneConfig, false, 340, -60));
+		// le.push(new SpawnBotEvent(0, 700, false, 0, BotType.DRONE, droneConfig, false, 100, -60));
+		// le.push(new SpawnBotEvent(0, 720, false, 0, BotType.DRONE, droneConfig, false, 160, -60));
+		// le.push(new SpawnBotEvent(0, 740, false, 0, BotType.DRONE, droneConfig, false, 220, -60));
+		// le.push(new SpawnBotEvent(0, 720, false, 0, BotType.DRONE, droneConfig, false, 280, -60));
+		// le.push(new SpawnBotEvent(0, 700, false, 0, BotType.DRONE, droneConfig, false, 340, -60));
+		// le.push(new SpawnBotEvent(0, 900, false, 0, BotType.ROCK, rockConfig, false, 220, -80));
+		// le.push(new SpawnBotEvent(0, 1200, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
+		// le.push(new SpawnBotEvent(0, 1210, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
+		// le.push(new SpawnBotEvent(0, 1220, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
+		// le.push(new SpawnBotEvent(0, 1210, false, 0, BotType.DIVER, diverConfig, false, 70, -60));
+		// le.push(new SpawnBotEvent(0, 1500, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
+		// le.push(new SpawnBotEvent(0, 1510, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
+		// le.push(new SpawnBotEvent(0, 1520, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
+		// le.push(new SpawnBotEvent(0, 1510, false, 0, BotType.DIVER, diverConfig, false, 360, -60));
+		// le.push(new SpawnBotEvent(0, 1600, false, 0, BotType.ROCK, rockConfig, false, 120, -80));
+		// le.push(new SpawnBotEvent(0, 1600, false, 0, BotType.ROCK, rockConfig, false, 320, -80));
+		// le.push(new SpawnBotEvent(0, 1800, false, 0, BotType.DIVER, diverConfig, false, 200, -60));
+		// le.push(new SpawnBotEvent(0, 1800, false, 0, BotType.DIVER, diverConfig, false, 280, -60));
+		// le.push(new SpawnBotEvent(0, 1960, false, 0, BotType.DRONE, droneConfig, false, 10, -60));
+		// le.push(new SpawnBotEvent(0, 1930, false, 0, BotType.DRONE, droneConfig, false, 70, -60));
+		// le.push(new SpawnBotEvent(0, 1930, false, 0, BotType.DRONE, droneConfig, false, 360, -60));
+		// le.push(new SpawnBotEvent(0, 1960, false, 0, BotType.DRONE, droneConfig, false, 420, -60));
+		// le.push(new SpawnBotEvent(0, 2200, false, 0, BotType.FIGHTER, fighterConfig, false, 60, -60));
+		// le.push(new SpawnBotEvent(0, 2215, false, 0, BotType.FIGHTER, fighterConfig, false, 120, -60));
+		// le.push(new SpawnBotEvent(0, 2230, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));
+		// le.push(new SpawnBotEvent(0, 2245, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));
+		// le.push(new SpawnBotEvent(0, 2230, false, 0, BotType.DIVER, diverConfig, false, 420, -60));
+		// le.push(new SpawnBotEvent(0, 2500, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
+		// le.push(new SpawnBotEvent(0, 2515, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
+		// le.push(new SpawnBotEvent(0, 2530, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
+		// le.push(new SpawnBotEvent(0, 2545, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));
+		// le.push(new SpawnBotEvent(0, 2530, false, 0, BotType.DIVER, diverConfig, false, 60, -60));
+		// le.push(new SpawnBotEvent(0, 2700, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
+		// le.push(new SpawnBotEvent(0, 2730, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
+		// le.push(new SpawnBotEvent(0, 2760, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
+		// le.push(new SpawnBotEvent(0, 2700, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
+		// le.push(new SpawnBotEvent(0, 2730, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
+		// le.push(new SpawnBotEvent(0, 2760, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
+		// le.push(new SpawnBotEvent(0, 2960, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
+		// le.push(new SpawnBotEvent(0, 2930, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
+		// le.push(new SpawnBotEvent(0, 2900, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
+		// le.push(new SpawnBotEvent(0, 2960, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
+		// le.push(new SpawnBotEvent(0, 2930, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
+		// le.push(new SpawnBotEvent(0, 2900, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
+		// le.push(new SpawnBotEvent(0, 3000, false, 0, BotType.ROCK, rockConfig, false, 240, -80));
+		// le.push(new SpawnBotEvent(0, 3100, false, 0, BotType.DRONE, droneConfig, false, 100, -60));
+		// le.push(new SpawnBotEvent(0, 3120, false, 0, BotType.DRONE, droneConfig, false, 160, -60));
+		// le.push(new SpawnBotEvent(0, 3140, false, 0, BotType.DRONE, droneConfig, false, 220, -60));
+		// le.push(new SpawnBotEvent(0, 3120, false, 0, BotType.DRONE, droneConfig, false, 280, -60));
+		// le.push(new SpawnBotEvent(0, 3100, false, 0, BotType.DRONE, droneConfig, false, 340, -60));
 
 
 		le.push(new SpawnBotEvent(0, 3240, false, 0, BotType.ROCK, rockConfig, false, 240, -80));

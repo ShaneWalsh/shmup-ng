@@ -13,6 +13,7 @@ export interface BotInstance {
     hasBotArmorBeenHit(hitter:any,hitterBox:HitBox);
     hasBotBeenHit(hitter:any,hitterBox:HitBox);
 
+    applyArmorDamage(damage:number, botManagerService:BotManagerService, playerService:PlayerService, levelInstance:LevelInstance);
     applyDamage(damage:number, botManagerService:BotManagerService, playerService:PlayerService, levelInstance:LevelInstance);
 
     getCenterX():number;
@@ -28,6 +29,8 @@ export interface BotInstance {
 
 
 export class BotInstanceImpl implements BotInstance, ShieldBot {
+
+  public botSize:number = 0;
 
   constructor(public config:any={}){
 
@@ -50,6 +53,10 @@ export class BotInstanceImpl implements BotInstance, ShieldBot {
   }
   getPlayerCollisionHitBoxes(): HitBox[] {
       throw new Error("Method not implemented.");
+  }
+
+  applyArmorDamage(damage:number, botManagerService:BotManagerService, playerService:PlayerService, levelInstance:LevelInstance){
+    // do nothing
   }
 
   isDeathOnColision():boolean{
@@ -235,7 +242,7 @@ export class FlyingBotImpl extends BotInstanceImpl {
     this.triggerDamagedAnimation();
     if(this.health < 1){
       playerService.currentPlayer.addScore(this.score);
-      botManagerService.removeBot(this);
+      botManagerService.removeBot(this,this.botSize);
     }
   }
 

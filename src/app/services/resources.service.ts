@@ -38,6 +38,13 @@ export class ResourcesService {
     {code:"starship-weakpoint", path:"assets/img/boss/Starship/starship-weakpoint.png", type:ResourcesEnum.ImageRes},
     {code:"starship-weakpoint-damage", path:"assets/img/boss/Starship/starship-weakpoint-damage.png", type:ResourcesEnum.ImageRes},
 
+    {code:"starship-firing-1", path:"assets/img/boss/Starship/starship-firing-1.png", type:ResourcesEnum.ImageRes},
+    {code:"starship-firing-2", path:"assets/img/boss/Starship/starship-firing-2.png", type:ResourcesEnum.ImageRes},
+    {code:"starship-firing-3", path:"assets/img/boss/Starship/starship-firing-3.png", type:ResourcesEnum.ImageRes},
+    {code:"starship-firing-4", path:"assets/img/boss/Starship/starship-firing-4.png", type:ResourcesEnum.ImageRes},
+    {code:"starship-firing-5", path:"assets/img/boss/Starship/starship-firing-5.png", type:ResourcesEnum.ImageRes},
+    {code:"starship-firing-6", path:"assets/img/boss/Starship/starship-firing-6.png", type:ResourcesEnum.ImageRes},
+
     {code:"enemy-rocket-1", path:"assets/img/bots/enemy-rocket-1.png", type:ResourcesEnum.ImageRes},
     {code:"enemy-rocket-2", path:"assets/img/bots/enemy-rocket-2.png", type:ResourcesEnum.ImageRes},
 

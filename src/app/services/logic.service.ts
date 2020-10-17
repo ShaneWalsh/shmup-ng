@@ -26,7 +26,7 @@ export class LogicService {
 	 * l are the actual canvas positions
 	 * the translateX + Y when drawing something that is its own source of truth, e.g a turret, the defaults are fine.
 	 * When calcualting the rotation of an object based off the rotation of another, eg. a bullet from a turret
-	 * the translateX + Y need to be calcualted by rotating the center of the bullet, and use this rotated ceneter as the translateX + Y
+	 * the translateX + Y need to be calcualted by rotating the center of the bullet, and use this rotated center as the translateX + Y
 	 * and workout the x,y from the translateX + Y - sx+sy.
 	 *
 	 */

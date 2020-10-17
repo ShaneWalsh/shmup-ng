@@ -235,6 +235,7 @@ class DumbLazer implements BulletInstance {
         for(let i = 0; i < botArrClone.length;i++) {
           let bot = botArrClone[i];
           if(bot.hasBotArmorBeenHit(this,this.hitBox)) {
+            bot.applyArmorDamage(this.damage, botManagerService,playerService,levelInstance);
             bulletManagerService.removeBullet(this, botManagerService, LogicService.getRandomInt(this.imageSizeX-5),false,true);
             removed = true;
             break;
@@ -436,18 +437,21 @@ export class TurretDirection extends BulletDirection {
       let currentAngleDeg = LogicService.radianToDegree(this.angle);
       let newAngleDeg = LogicService.radianToDegree(angle);
       this.angDiff = currentAngleDeg-newAngleDeg;
+      if(this.angDiff > 360){
+        console.log("this should not be happening:"+this.angDiff);
+      }
       if(this.angDiff != 0 && (this.angDiff > 0.9 || this.angDiff < -0.9)){
         if(this.angDiff < 0){
           if(this.angDiff < -180) {
-            angle = LogicService.degreeToRadian(currentAngleDeg-1)
+            angle = LogicService.degreeToRadian(this.decreaseAngle(currentAngleDeg))
           } else { // its > than 180 so i may as well go the opposite direction
-            angle = LogicService.degreeToRadian(currentAngleDeg+1)
+            angle = LogicService.degreeToRadian(this.increaseAngle(currentAngleDeg))
           }
         } else {
           if(this.angDiff > 180) {
-            angle = LogicService.degreeToRadian(currentAngleDeg+1)
+            angle = LogicService.degreeToRadian(this.increaseAngle(currentAngleDeg))
           } else { // its < than 180 so i may as well go the opposite direction
-            angle = LogicService.degreeToRadian(currentAngleDeg-1)
+            angle = LogicService.degreeToRadian(this.decreaseAngle(currentAngleDeg))
           }
         }
       }
@@ -460,7 +464,19 @@ export class TurretDirection extends BulletDirection {
       //console.error("Cannot target this object.",this.targetObject);
     }
   }
+
+  increaseAngle(currentAngleDeg):number{
+    currentAngleDeg = currentAngleDeg+1;
+    return (currentAngleDeg > 360)?1:currentAngleDeg;
+  }
+  decreaseAngle(currentAngleDeg):number{
+    currentAngleDeg = currentAngleDeg-1;
+    return (currentAngleDeg < 0)?359:currentAngleDeg;
+  }
+
   canShoot():boolean{
-    return (this.angDiff < 0.9 && this.angDiff > -0.9);
+    let cs = this.angDiff < 0.9 && this.angDiff > -0.9;
+    //console.log("canShoot:"+cs)
+    return cs;
   }
 }
