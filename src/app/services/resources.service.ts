@@ -17,6 +17,11 @@ export class ResourcesService {
 			this.resourcesLoaded = new Subject();
 
       this.resourcesToLoad = [
+
+    {code:"boss-5", path:"assets/img/boss/Starship/boss-5.png", type:ResourcesEnum.ImageRes},
+    {code:"boss-5-damaged", path:"assets/img/boss/Starship/boss-5-damaged.png", type:ResourcesEnum.ImageRes},
+    {code:"exploding-bullet", path:"assets/img/boss/Starship/exploding-bullet.png", type:ResourcesEnum.ImageRes},
+
     {code:"starship-hull-1", path:"assets/img/boss/Starship/starship-hull-1.png", type:ResourcesEnum.ImageRes},
     {code:"starship-hull-1-damage", path:"assets/img/boss/Starship/starship-hull-1-damage.png", type:ResourcesEnum.ImageRes},
     {code:"starship-hull-2", path:"assets/img/boss/Starship/starship-hull-2.png", type:ResourcesEnum.ImageRes},
@@ -86,6 +91,11 @@ export class ResourcesService {
     {code:"heavy-jet", path:"assets/img/bots/heavy-jet/heavy-jet.png", type:ResourcesEnum.ImageRes},
     {code:"heavy-jet-damaged", path:"assets/img/bots/heavy-jet/heavy-jet-damaged.png", type:ResourcesEnum.ImageRes},
     {code:"heavy-jet-shadow", path:"assets/img/bots/heavy-jet/heavy-jet-shadow.png", type:ResourcesEnum.ImageRes},
+    {code:"heavy-jet-flames-1", path:"assets/img/bots/heavy-jet/heavy-jet-flames-1.png", type:ResourcesEnum.ImageRes},
+    {code:"heavy-jet-flames-2", path:"assets/img/bots/heavy-jet/heavy-jet-flames-2.png", type:ResourcesEnum.ImageRes},
+    {code:"heavy-jet-flames-3", path:"assets/img/bots/heavy-jet/heavy-jet-flames-3.png", type:ResourcesEnum.ImageRes},
+    {code:"heavy-jet-flames-4", path:"assets/img/bots/heavy-jet/heavy-jet-flames-4.png", type:ResourcesEnum.ImageRes},
+    {code:"heavy-jet-flames-5", path:"assets/img/bots/heavy-jet/heavy-jet-flames-5.png", type:ResourcesEnum.ImageRes},
 
     {code:"miniboss-3-no-cannon-shadow", path:"assets/img/boss/miniboss-3-changes/miniboss-3-no-cannon-shadow.png", type:ResourcesEnum.ImageRes},
     {code:"shield-1", path:"assets/img/player/shield/shield-1.png", type:ResourcesEnum.ImageRes},

@@ -131,7 +131,7 @@ export class Level2SubBoss1V2 extends  BotInstanceImpl {
 		if(levelInstance.isVertical()){
 			let slot = this.mSlots[this.mSlot];
 			bullDirection = bulletManagerService.calculateBulletDirection(slot.x+this.posX, slot.y+this.posY, currentPlayer.getCenterX(), currentPlayer.getCenterY(), this.missileSpeed, true, currentPlayer);
-			bulletManagerService.generateHoming(levelInstance, bullDirection, slot.x+this.posX, slot.y+this.posY, 100);
+			bulletManagerService.generateHoming(levelInstance, bullDirection, slot.x+this.posX, slot.y+this.posY, 100, true);
 		} else {}
 	}
 
