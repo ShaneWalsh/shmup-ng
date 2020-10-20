@@ -61,7 +61,7 @@ export class Judge extends FlyingBotImpl {
     this.posY += this.angleDirection.speed * this.angleDirection.directionY;
 
     if(levelInstance.drawShadow() && this.imageObjShadow != null) {
-      this.drawShadowFlying(this.angleDirection.angle,canvasContainer,this.posX,this.posY,this.imageSizeX, this.imageSizeY);
+      this.drawShadowFlying(this.playerDirection.angle,canvasContainer,this.posX,this.posY,this.imageSizeX, this.imageSizeY);
     }
 		LogicService.drawRotateImage(this.imageObj,ctx,this.playerDirection.angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY);
 		this.updateDamageAnimation(ctx, this.playerDirection.angle);
@@ -96,7 +96,6 @@ export class Judge extends FlyingBotImpl {
           let slot = this.eSlots[this.eSlot];
           let cords :{x:number,y:number} = LogicService.pointAfterRotation(this.getCenterX(), this.getCenterY(), this.posX+slot.x, this.posY+slot.y,  this.playerDirection.angle);
           let topLeftCords={x:cords.x-5,y:cords.y-5}
-          //let topLeftCords=LogicService.topLeftAfterRotation(this.getCenterX(), this.getCenterY(), this.posX+slot.x, this.posY+slot.y,this.imageMuzzleFlashSizeX,this.imageMuzzleFlashSizeY,  this.playerDirection.angle)
           botManagerService.createMisslePlume(topLeftCords.x,topLeftCords.y,null,2);
         }
       }

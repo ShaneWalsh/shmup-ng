@@ -6,6 +6,7 @@ import { BulletManagerService, BulletDirection } from "src/app/manager/bullet-ma
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { LogicService } from "src/app/services/logic.service";
 import { CanvasContainer } from "../CanvasContainer";
+import { BotAnimation } from "../BotAnimation";
 
 export class HeavyJet extends FlyingBotImpl {
   public speed:number = 3;
@@ -19,7 +20,8 @@ export class HeavyJet extends FlyingBotImpl {
       imageObj:HTMLImageElement=null,
       imageObjDamaged:HTMLImageElement=null,
       imageObjShadow:HTMLImageElement=null,
-      imageSizeX:number=150,
+      public engine:BotAnimation= null,
+      imageSizeX:number=164,
       imageSizeY:number=134,
       public hitBox:HitBox=new HitBox(0,0,imageSizeX-10,imageSizeY-10),
       public targetCords:{targetX:number,targetY:number}[]=[]
@@ -45,7 +47,10 @@ export class HeavyJet extends FlyingBotImpl {
     if(levelInstance.drawShadow() && this.imageObjShadow != null) {
       this.drawShadowFlying(this.angleDirection.angle,canvasContainer,this.posX,this.posY,this.imageSizeX, this.imageSizeY);
     }
-		LogicService.drawRotateImage(this.imageObj,ctx,this.angleDirection.angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY);
+    LogicService.drawRotateImage(this.imageObj,ctx,this.angleDirection.angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY);
+    if(this.engine != null) {
+      this.engine.update(this.posX, this.posY, this.angleDirection.angle, ctx, levelInstance, canvasContainer, botManagerService, bulletManagerService, playerService)
+    }
 		this.updateDamageAnimation(ctx, this.angleDirection.angle);
 
     if(levelInstance.drawHitBox()){

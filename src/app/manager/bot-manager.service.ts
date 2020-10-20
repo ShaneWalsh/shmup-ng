@@ -28,6 +28,7 @@ import { Sentry } from '../domain/bots/ground/Sentry';
 import { Shield } from '../domain/skills/Shield';
 import { Level2Starship } from '../domain/bots/Level2Starship';
 import { Judge } from '../domain/bots/Level2Boss5Judge';
+import { BotAnimation } from '../domain/BotAnimation';
 
 /**
  * Going to manage the created bots, spawned by the level manager. Its going to emit when they are destroyed or when they leave the screen.
@@ -112,7 +113,14 @@ export class BotManagerService {
     let newBot = new HeavyJet(config, posObj.posX, posObj.posY,
       this.resourcesService.getRes().get("heavy-jet"),
       this.resourcesService.getRes().get("heavy-jet-damaged"),
-      this.resourcesService.getRes().get("heavy-jet-shadow")
+      this.resourcesService.getRes().get("heavy-jet-shadow"),
+      new BotAnimation(posObj.posX, posObj.posY,
+        [this.resourcesService.getRes().get("heavy-jet-flames-1"),
+        this.resourcesService.getRes().get("heavy-jet-flames-2"),
+        this.resourcesService.getRes().get("heavy-jet-flames-3"),
+        this.resourcesService.getRes().get("heavy-jet-flames-4"),
+        this.resourcesService.getRes().get("heavy-jet-flames-5")],
+        164,134, 3),
       );
     this.botsArr.push(newBot);
     this.botCreated.next(newBot);

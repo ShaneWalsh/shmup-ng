@@ -107,6 +107,7 @@ export class GameContainerComponent implements OnInit, OnDestroy {
                 cc.groundCtx.clearRect(0, 0, cc.canvasGroundEl.width, cc.canvasGroundEl.height);
                 cc.shadowCtx.clearRect(0, 0, cc.canvasBGShadowEl.width, cc.canvasBGShadowEl.height);
                 cc.mainCtx.clearRect(0, 0, cc.canvasMainEl.width, cc.canvasMainEl.height);
+                cc.topCtx.clearRect(0, 0, cc.canvasMainEl.width, cc.canvasMainEl.height);
                 const currentLevel = this.levelManagerService.getCurrentLevel();
                 // have a level manager, that controls the background and the spawning, updates first. 4 levels, controls boss spawn.
                 currentLevel.updateIntro(cc.mainCtx);
@@ -134,10 +135,11 @@ export class GameContainerComponent implements OnInit, OnDestroy {
               cc.groundCtx.clearRect(0, 0, cc.canvasGroundEl.width, cc.canvasGroundEl.height);
               cc.shadowCtx.clearRect(0, 0, cc.canvasBGShadowEl.width, cc.canvasBGShadowEl.height);
               cc.mainCtx.clearRect(0, 0, cc.canvasMainEl.width, cc.canvasMainEl.height);
+              cc.topCtx.clearRect(0, 0, cc.canvasMainEl.width, cc.canvasMainEl.height);
 
               const currentLevel = this.levelManagerService.getCurrentLevel();
               // have a level manager, that controls the background and the spawning, updates first. 4 levels, controls boss spawn.
-              currentLevel.update(this.canvasContainer,this.playerService);
+              currentLevel.update(this.canvasContainer,this.playerService, this.levelManagerService);
 
               // have a bot manager to move the bots (gen bullets, patterns etc)
               this.botManagerService.update(currentLevel, this.canvasContainer, this.bulletManagerService, this.playerService);

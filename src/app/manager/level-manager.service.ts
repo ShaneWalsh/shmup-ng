@@ -22,6 +22,9 @@ export enum LevelEnum{
 })
 export class LevelManagerService {
   drawHitBox(): boolean {
+      return false;
+  }
+  displayTicksAndPhases(): boolean {
       return true;
   }
   private gameTickSubject:Subject<boolean> = new Subject();
@@ -86,7 +89,7 @@ export class LevelManagerService {
 }
 
 export interface LevelInstance {
-    update(canvasContainer:CanvasContainer,playerService:PlayerService);
+    update(canvasContainer:CanvasContainer,playerService:PlayerService, levelManagerService:LevelManagerService);
     updateIntro(ctx: CanvasRenderingContext2D);
     getMapWidth():number;
     getMapHeight():number;
@@ -124,7 +127,7 @@ class LevelOneInstance implements LevelInstance{
       this.eventArr = this.levelEventsService.getLevel1Events(levelManagerService.difficulty);
   }
 
-  update(canvasContainer:CanvasContainer, playerService:PlayerService) {
+  update(canvasContainer:CanvasContainer, playerService:PlayerService, levelManagerService:LevelManagerService) {
     // infinite scroller
     canvasContainer.bgCtx.drawImage(this.backgroundImage, this.scrollerXIncrement, this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
     if(this.backgroundShadowImage) {
@@ -148,6 +151,10 @@ class LevelOneInstance implements LevelInstance{
     canvasContainer.topCtx.drawImage(this.hudImage, 0, 0 , this.mapWidth, this.mapHeight);
     LogicService.writeOnCanvas(90,27,playerService.currentPlayer.score,24,"#ff00ff",canvasContainer.topCtx);
     LogicService.writeOnCanvas(80,628,playerService.currentPlayer.lives,24,"#ff00ff",canvasContainer.topCtx);
+    if(levelManagerService.displayTicksAndPhases){
+      LogicService.writeOnCanvas(400,27,this.tickCounter,24,"#ff00ff",canvasContainer.topCtx);
+      LogicService.writeOnCanvas(400,60,this.phaseCounter,24,"#ff00ff",canvasContainer.topCtx);
+    }
     //then fire the normal events
     this.repeatEvents = [];
     for(let i =0 ; i <  this.eventArr.length; i++) {

@@ -536,7 +536,11 @@ export class LevelEventsService {
       bTimerLimit: 30,
       score: 20000, // this is only added to the players score if they kill the bot, if it leaves the screen the bot is simply removed.
       health:300, // health, when 0 Diver is dead.
-      targetCords:[{targetX:70,targetY:440},{targetX:110,targetY:535},{targetX:200,targetY:580},{targetX:280,targetY:580},{targetX:360,targetY:540},{targetX:410,targetY:440}, {targetX:410,targetY:-150}]
+      targetCords:[
+        {targetX:90,targetY:535},{targetX:90,targetY:90},
+        {targetX:380,targetY:90},{targetX:380,targetY:535},
+        {targetX:380,targetY:90},{targetX:90,targetY:90}
+      ]
     };
 
 		if(difficulty == 0){ // easy difficulty, so reducing the bots health
@@ -567,23 +571,24 @@ export class LevelEventsService {
 		//#########################################################################################
 		//######################          Phase Zero        #######################################
     //#########################################################################################
-    // le.push(new SpawnBotEvent(0, 20, false, 0, BotType.SENTRY, sentryConfig, false, 140, -140));
-		// //le.push(new SpawnBotEvent(0, 40, false, 0, BotType.BUGGY, buggyConfigMR, false, -30, 80));
-    // le.push(new SpawnBotEvent(0, 40, false, 0, BotType.DIVER, diverConfig, false, 70, -60));
-    // le.push(new SpawnBotEvent(0, 40, false, 0, BotType.BUGGY, buggyConfigML, false, 400, 20));
-		// //le.push(new SpawnBotEvent(0, 120, false, 0, BotType.AATANK, AATankConfig, false, -30, 20));
+    le.push(new SpawnBotEvent(0, 20, false, 0, BotType.SENTRY, sentryConfig, false, 140, -140));
+		//le.push(new SpawnBotEvent(0, 40, false, 0, BotType.BUGGY, buggyConfigMR, false, -30, 80));
+    le.push(new SpawnBotEvent(0, 40, false, 0, BotType.DIVER, diverConfig, false, 70, -60));
+    le.push(new SpawnBotEvent(0, 40, false, 0, BotType.BUGGY, buggyConfigML, false, 400, 20));
+		//le.push(new SpawnBotEvent(0, 120, false, 0, BotType.AATANK, AATankConfig, false, -30, 20));
 
-    // le.push(new SpawnBotEvent(0, 120, false, 0, BotType.AATANK, {...AATankConfig, moveToXCord:50}, false, 400, 80));
-    // //le.push(new SpawnBotEvent(0, 300, false, 0, BotType.SENTRY, sentryConfig, false, 100, -140));
-		// // trick of the eye here, by increasing the AATanks yspeed by .5 it will look like its driving down, or leave it at 1 and it will look parked.
-		// le.push(new SpawnBotEvent(0, 300, false, 0, BotType.AATANK, {...AATankConfig, moveToXCord:220, posYSpeed:1.5}, false, 220, -150));
-		// //le.push(new SpawnBotEvent(0, 220, false, 0, BotType.AATANK, {...AATankConfig, moveToXCord:50, posYSpeed:1.5}, false, 50, -150));
-		// le.push(new SpawnBotEvent(0, 220, false, 0, BotType.HEAVYJET, heavyJetConfig, false, 0, -150));
-		// le.push(new SpawnBotEvent(0, 400, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 250, -60));
-    // le.push(new SpawnBotEvent(0, 500, false, 0, BotType.GUARDIAN1, guardian1Config, false, 380, -60));
+    le.push(new SpawnBotEvent(0, 120, false, 0, BotType.AATANK, {...AATankConfig, moveToXCord:50}, false, 400, 80));
+    //le.push(new SpawnBotEvent(0, 300, false, 0, BotType.SENTRY, sentryConfig, false, 100, -140));
+		// trick of the eye here, by increasing the AATanks yspeed by .5 it will look like its driving down, or leave it at 1 and it will look parked.
+		le.push(new SpawnBotEvent(0, 300, false, 0, BotType.AATANK, {...AATankConfig, moveToXCord:220, posYSpeed:1.5}, false, 220, -150));
+		//le.push(new SpawnBotEvent(0, 220, false, 0, BotType.AATANK, {...AATankConfig, moveToXCord:50, posYSpeed:1.5}, false, 50, -150));
+		le.push(new SpawnBotEvent(0, 220, false, 0, BotType.HEAVYJET, heavyJetConfig, false, 0, -150));
+		le.push(new SpawnBotEvent(0, 400, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 250, -60));
+    le.push(new SpawnBotEvent(0, 500, false, 0, BotType.GUARDIAN1, guardian1Config, false, 380, -60));
 
-    //le.push(new SpawnBotEvent(0, 5, false, 0, BotType.STARSHIPL2, level2Starship, false, 150, -300));
-    le.push(new SpawnBotEvent(0, 5, false, 0, BotType.JUDGEL2, judgeL2Config, false, 150, -300));
+
+    le.push(new SpawnBotEvent(0, 550, false, 0, BotType.STARSHIPL2, level2Starship, false, 150, -300));
+    le.push(new SpawnBotEvent(0, 2000, false, 0, BotType.JUDGEL2, judgeL2Config, false, 90, -300));
 
 		// wings middle
 		// le.push(new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));

@@ -32,7 +32,7 @@ export class PlayerService {
 
     killCurrentPlayer(): any {
         this.currentPlayer.lives--;
-        this.currentPlayer.invincibilityTimer = 1200000000000;
+        this.currentPlayer.invincibilityTimer = 120;
 		this.botManagerService.createPlayerDeath(this.currentPlayer.getCenterX(),this.currentPlayer.getCenterY());
         if(this.currentPlayer.lives > 0){
             this.currentPlayer.reset();
@@ -46,7 +46,7 @@ export class PlayerService {
     }
 
     // creates an entirely new player
-    initPlayer(score=0,lives=3): any {
+    initPlayer(score=0,lives=25): any {
         this.currentPlayer.reset(); // position
         this.currentPlayer.pressedKeys = {"left":false,"up":false,"right":false,"down":false};
         this.currentPlayer.bulletsFiring = false;
