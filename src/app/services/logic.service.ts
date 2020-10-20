@@ -10,6 +10,28 @@ export class LogicService {
 
   constructor() { }
 
+  /**
+   * The point of this method is to simplify the process of rotating an image around another image.
+   * In order to draw something correctly after rotation you have to take its center point, and rotate that using the angle of the parent.
+   * Then subtract half the image size to get the top left again, this is where the image needs to be drawn and rotated.
+   * This is required to accurately draw a muzzle flash or bullet coming out of a turret correctly.
+   * Rotate around the parents rotation point, with your rotation point,
+   * then return both your final rotation cords and the topleft cords after rotating for drawing top left x+y.
+   * @param parCenterX
+   * @param parCenterY
+   * @param point2X
+   * @param point2Y
+   * @param imgSizeX
+   * @param imgSizeY
+   * @param angle
+   */
+  public static topLeftAfterRotation(parCenterX, parCenterY, point2X, point2Y, imgSizeX, imgSizeY, angle) :{x:number,y:number, xR:number, yR:number} {
+    let halfImageSizeX = imgSizeX/2;
+    let halfImageSizeY = imgSizeY/2;
+    let cords = this.pointAfterRotation(parCenterX, parCenterY, point2X + halfImageSizeX, point2Y + halfImageSizeY, angle);
+    return { x: (cords.x-halfImageSizeX), y: (cords.y-halfImageSizeY), xR: cords.x, yR: cords.y };
+  }
+
   public static pointAfterRotation(centerX, centerY, point2X, point2Y, angle) :{x:number,y:number} {
     var x1 = point2X - centerX;
     var y1 = point2Y - centerY;

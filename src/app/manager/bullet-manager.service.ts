@@ -9,6 +9,7 @@ import { HitBox } from 'src/app/domain/HitBox';
 import { LogicService } from 'src/app/services/logic.service';
 import { CanvasContainer } from '../domain/CanvasContainer';
 import { Shield } from '../domain/skills/Shield';
+import { bloomAdd } from '@angular/core/src/render3/di';
 
 @Injectable({
   providedIn: 'root'
@@ -98,7 +99,14 @@ export class BulletManagerService {
     this.bulletCreated.next(newBullet);
   }
 
-  removeBullet(bullet:BulletInstance, botManagerService:BotManagerService, xOffset:number=0, createTiny:boolean=false, createSmall:boolean=false) {
+  generateExplodingBullet(levelInstance:LevelInstance, bulletDirection:BulletDirection, startX, startY, allowedMovement=60, destructable:boolean = false): any {
+      let newBullet = new ExplodingBullet(1,startX, startY, bulletDirection, false, [this.resourcesService.getRes().get("exploding-bullet")],16,16);
+      newBullet.allowedMovement = allowedMovement;
+      this.bulletsArr.push(newBullet);
+      this.bulletCreated.next(newBullet);
+  }
+
+  removeBullet(bullet:BulletInstance, botManagerService:BotManagerService, xOffset:number=0, createTiny:boolean=false, createSmall:boolean=false, createMedium:boolean=false) {
     if(createTiny) {
       botManagerService.createExplosionTiny(bullet.getCenterX()+xOffset,bullet.getCenterY(), bullet.getCurrentRotation())
     } else if(createSmall) {
@@ -278,9 +286,9 @@ class DumbLazer implements BulletInstance {
 
       if(!removed && this.allowedMovement > -1){
         this.allowedMovement--;
-        if(this.allowedMovement < 1){
+        if(this.allowedMovement < 1) {
+          this.allowedMovementOver(levelInstance, canvasContainer, bulletManagerService, botManagerService, playerService);
           removed = true;
-          bulletManagerService.removeBullet(this, botManagerService, 0, true);
         }
       }
     }
@@ -311,6 +319,10 @@ class DumbLazer implements BulletInstance {
     LogicService.drawRotateImage(this.imageObj, ctx,this.bulletDirection.angle,this.getPosX(),this.getPosY(),this.imageSizeX,this.imageSizeY);
   }
 
+  allowedMovementOver(levelInstance:LevelInstance, canvasContainer:CanvasContainer, bulletManagerService:BulletManagerService, botManagerService:BotManagerService, playerService:PlayerService){
+    bulletManagerService.removeBullet(this, botManagerService, 0, true);
+  }
+
   updateDisplayAnimation(){
     if(this.animationTimer >= this.animationTimerLimit) {
       this.animationTimer = 0;
@@ -330,6 +342,37 @@ class DumbLazer implements BulletInstance {
 
   getCenterY():number {
       return this.posY+(this.imageSizeY/2);
+  }
+
+}
+
+export class ExplodingBullet extends DumbLazer {
+  positions:{x:number,y:number}[] = [{x:-10,y:-10},{x:-10,y:0},{x:-10,y:10},{x:0,y:-10},{x:0,y:10},{x:10,y:-10},{x:10,y:0},{x:10,y:10}];
+  constructor(
+    damage:number=2,
+    posX:number=0,
+    posY:number=0,
+    bulletDirection:BulletDirection=null,
+    goodBullet:boolean=true,
+    animationImages:HTMLImageElement[]=null,
+    imageSizeX:number=90,
+    imageSizeY:number=60,
+    hitBox:HitBox=new HitBox(0,0,imageSizeX,imageSizeY),
+    destructable:boolean=false
+  ){
+    super(damage,posX,posY,bulletDirection,goodBullet,animationImages,imageSizeX,imageSizeY,hitBox,destructable);
+  }
+
+  allowedMovementOver(levelInstance:LevelInstance, canvasContainer:CanvasContainer, bulletManagerService:BulletManagerService, botManagerService:BotManagerService, playerService:PlayerService) {
+    let px = this.getCenterX();
+    let py = this.getCenterY();
+    botManagerService.createBotDeath(px,py);
+    for(let pos of this.positions){
+      bulletManagerService.generateBotBlazer(levelInstance,
+        bulletManagerService.calculateBulletDirection(px, py, px+pos.x, py+pos.y, 6, true),
+        px, py);
+    }
+    bulletManagerService.removeBullet(this, botManagerService, 0, false,false,true);
   }
 
 }

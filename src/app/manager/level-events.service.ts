@@ -528,7 +528,16 @@ export class LevelEventsService {
 			score: 50000,
 			health:350,
 			weakPointHealth:75,
-		};
+    };
+
+    let judgeL2Config = {
+      bulletSpeed: 6, // how fast this bots buttets travel every tick
+      speed: 3,
+      bTimerLimit: 30,
+      score: 20000, // this is only added to the players score if they kill the bot, if it leaves the screen the bot is simply removed.
+      health:300, // health, when 0 Diver is dead.
+      targetCords:[{targetX:70,targetY:440},{targetX:110,targetY:535},{targetX:200,targetY:580},{targetX:280,targetY:580},{targetX:360,targetY:540},{targetX:410,targetY:440}, {targetX:410,targetY:-150}]
+    };
 
 		if(difficulty == 0){ // easy difficulty, so reducing the bots health
 			// here I am overiding the fighters health and reducing it to one, and keeping all of the other values defined above.
@@ -573,7 +582,8 @@ export class LevelEventsService {
 		// le.push(new SpawnBotEvent(0, 400, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 250, -60));
     // le.push(new SpawnBotEvent(0, 500, false, 0, BotType.GUARDIAN1, guardian1Config, false, 380, -60));
 
-    le.push(new SpawnBotEvent(0, 5, false, 0, BotType.STARSHIPL2, level2Starship, false, 150, -300));
+    //le.push(new SpawnBotEvent(0, 5, false, 0, BotType.STARSHIPL2, level2Starship, false, 150, -300));
+    le.push(new SpawnBotEvent(0, 5, false, 0, BotType.JUDGEL2, judgeL2Config, false, 150, -300));
 
 		// wings middle
 		// le.push(new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));

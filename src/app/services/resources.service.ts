@@ -18,9 +18,9 @@ export class ResourcesService {
 
       this.resourcesToLoad = [
 
-    {code:"boss-5", path:"assets/img/boss/Starship/boss-5.png", type:ResourcesEnum.ImageRes},
-    {code:"boss-5-damaged", path:"assets/img/boss/Starship/boss-5-damaged.png", type:ResourcesEnum.ImageRes},
-    {code:"exploding-bullet", path:"assets/img/boss/Starship/exploding-bullet.png", type:ResourcesEnum.ImageRes},
+    {code:"boss-5", path:"assets/img/boss/boss-5-update-Judge/boss-5.png", type:ResourcesEnum.ImageRes},
+    {code:"boss-5-damaged", path:"assets/img/boss/boss-5-update-Judge/boss-5-damaged.png", type:ResourcesEnum.ImageRes},
+    {code:"exploding-bullet", path:"assets/img/boss/boss-5-update-Judge/exploding-bullet.png", type:ResourcesEnum.ImageRes},
 
     {code:"starship-hull-1", path:"assets/img/boss/Starship/starship-hull-1.png", type:ResourcesEnum.ImageRes},
     {code:"starship-hull-1-damage", path:"assets/img/boss/Starship/starship-hull-1-damage.png", type:ResourcesEnum.ImageRes},

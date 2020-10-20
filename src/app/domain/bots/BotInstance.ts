@@ -104,6 +104,7 @@ export class FlyingBotImpl extends BotInstanceImpl {
 
   public bTimer:number = 0;
   public bTimerLimit:number = 30;
+  public muzzleDrawLimit:number = 5;
 
   public animationTimer:number = 0;
   public animationTimerLimit:number =4;
@@ -153,7 +154,7 @@ export class FlyingBotImpl extends BotInstanceImpl {
     if(this.bTimer >= this.bTimerLimit && this.canShoot(levelInstance,currentPlayer)) {
 			this.bTimer = 0;
 			this.fireSomething(levelInstance,ctx,bulletManagerService,currentPlayer);
-		} else if(this.bTimer == (this.bTimerLimit-1) && this.canShoot(levelInstance,currentPlayer)) {
+		} else if(this.bTimer == (this.bTimerLimit-this.muzzleDrawLimit) && this.canShoot(levelInstance,currentPlayer)) {
       this.drawMuzzleFlare(levelInstance,ctx,botManagerService, bulletManagerService,currentPlayer);
       this.bTimer++;
 		} else {

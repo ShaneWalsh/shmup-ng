@@ -27,6 +27,7 @@ import { BackgroundElement } from '../domain/BackgroundElement';
 import { Sentry } from '../domain/bots/ground/Sentry';
 import { Shield } from '../domain/skills/Shield';
 import { Level2Starship } from '../domain/bots/Level2Starship';
+import { Judge } from '../domain/bots/Level2Boss5Judge';
 
 /**
  * Going to manage the created bots, spawned by the level manager. Its going to emit when they are destroyed or when they leave the screen.
@@ -260,6 +261,18 @@ export class BotManagerService {
     this.botCreated.next(newBot);
   }
 
+  generateLevel2Judge(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
+    let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
+    let newBot = new Judge(config, posObj.posX, posObj.posY,
+      this.resourcesService.getRes().get("boss-5"),
+      this.resourcesService.getRes().get("boss-5-damaged"),
+      this.resourcesService.getRes().get("heavy-jet-shadow"),
+      this.resourcesService.getRes().get("miniboss-3-muzzle-flash"),
+      );
+    this.botsArr.push(newBot);
+    this.botCreated.next(newBot);
+  }
+
   generateLevel2Starship(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 250, posY: number = -300, config: any = {}): any {
     let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
     let newBot = new Level2Starship(config, posObj.posX, posObj.posY,
@@ -375,13 +388,13 @@ export class BotManagerService {
 		);
   }
 
-  createMisslePlume(x,y,angle=null) {
+  createMisslePlume(x,y,angle=null, deathAnimtionTimer=this.deathAnimtionTimer) {
 		this.spriteSheetArr.push(new SpriteSheet(x-20,y-20,
 			[this.resourcesService.getRes().get("explosion-small-1"),
 			this.resourcesService.getRes().get("explosion-small-2"),
 			this.resourcesService.getRes().get("explosion-small-3"),
 			this.resourcesService.getRes().get("explosion-small-4")],
-			40,40,this.deathAnimtionTimer,this.deathAnimtionTimer,angle)
+			40,40,deathAnimtionTimer,deathAnimtionTimer,angle)
 		);
   }
 

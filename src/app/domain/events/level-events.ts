@@ -23,6 +23,7 @@ export enum BotType {
   MAINBOSS1 = "MAINBOSS1",
   MINIBOSS1L2 = "MINIBOSS1L2",
   STARSHIPL2 = "STARSHIPL2",
+  JUDGEL2 = "JUDGEL2",
 
   BOSS1="BOSS1" // move on a phase after a mini boss dies.
 }
@@ -109,6 +110,8 @@ export class SpawnBotEvent extends LevelEvent {
             botManagerService.generateLevel2SubBoss1(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.STARSHIPL2) {
             botManagerService.generateLevel2Starship(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
+        } else if (this.botType == BotType.JUDGEL2) {
+            botManagerService.generateLevel2Judge(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
         } else {
 					console.log("Not implemented");
 		    }
