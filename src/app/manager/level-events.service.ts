@@ -588,7 +588,7 @@ export class LevelEventsService {
 
 
     le.push(new SpawnBotEvent(0, 550, false, 0, BotType.STARSHIPL2, level2Starship, false, 150, -300));
-    le.push(new SpawnBotEvent(0, 2000, false, 0, BotType.JUDGEL2, judgeL2Config, false, 90, -300));
+    le.push(new SpawnBotEvent(1, 100, false, 0, BotType.JUDGEL2, judgeL2Config, false, 90, -300));
 
 		// wings middle
 		// le.push(new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));
@@ -659,13 +659,13 @@ export class LevelEventsService {
 		// le.push(new SpawnBotEvent(0, 3100, false, 0, BotType.DRONE, droneConfig, false, 340, -60));
 
 
-		le.push(new SpawnBotEvent(0, 3240, false, 0, BotType.ROCK, rockConfig, false, 240, -80));
-		le.push(new SpawnBotEvent(0, 3300, false, 0, BotType.FIGHTER, fighterConfig, false, 120, -60));
-		le.push(new SpawnBotEvent(0, 3300, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
+		// le.push(new SpawnBotEvent(0, 3240, false, 0, BotType.ROCK, rockConfig, false, 240, -80));
+		// le.push(new SpawnBotEvent(0, 3300, false, 0, BotType.FIGHTER, fighterConfig, false, 120, -60));
+		// le.push(new SpawnBotEvent(0, 3300, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
 
-		// I've put in the new boss here so you can see him in action!
-    le.push(new SpawnBotEvent(0, 3700, false, 0, BotType.MINIBOSS1L2, level2MiniBoss1, false, 100, -300));
-    le.push(new LevelOverEvent(1,100));
+		// // I've put in the new boss here so you can see him in action!
+    // le.push(new SpawnBotEvent(0, 3700, false, 0, BotType.MINIBOSS1L2, level2MiniBoss1, false, 100, -300));
+    le.push(new LevelOverEvent(2,100));
     return le;
 
 	}

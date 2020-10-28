@@ -47,10 +47,12 @@ export class LevelManagerService {
     // clear down the managers
     this.botManagerService.clean();
     this.bulletManagerService.clean();
-    if(level == LevelEnum.LevelOne){ // todo flip these back, it just for testing.
+    //if(level == LevelEnum.LevelOne){ // todo flip these back, it just for testing.
+    if(level == LevelEnum.LevelTwo){ // todo flip these back, it just for testing.
       this.currentLevel = new LevelOneInstance(this.resourcesService, this.botManagerService, this, this.levelEventsService);
       this.levelLoaded.next(this.currentLevel);
-    } else if(level == LevelEnum.LevelTwo){
+    } else if(level == LevelEnum.LevelOne){
+    //} else if(level == LevelEnum.LevelTwo){
       this.currentLevel = new LevelTwoInstance(this.resourcesService, this.botManagerService, this, this.levelEventsService);
       this.levelLoaded.next(this.currentLevel);
     }

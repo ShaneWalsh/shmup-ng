@@ -40,7 +40,7 @@ export class Judge extends FlyingBotImpl {
       public imageBulletSizeX:number=22,
       public imageBulletSizeY:number=14,
   ){
-    super(config, posX, posY, imageSizeX, imageSizeY, [imageObj], [imageObjDamaged], [imageObjShadow]);
+    super(config, posX, posY, imageSizeX, imageSizeY, [imageObj], [imageObjDamaged], [imageObjShadow], true);
     this.bTimerLimit = 80;
     this.health = 30;
     this.score = 80;

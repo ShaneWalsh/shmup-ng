@@ -53,7 +53,7 @@ export class Level2Starship extends  FlyingBotImpl {
     public hitBoxHull:HitBox=new HitBox(40,40,imageSizeX-80,imageSizeY-80),
 
 	){
-    super(config,posX,posY,imageSizeX,imageSizeY,imageObjArray,imageObjDamaged,imageObjShadow);
+    super(config,posX,posY,imageSizeX,imageSizeY,imageObjArray,imageObjDamaged,imageObjShadow, true);
     this.botSize = 1;
     this.tryConfigValues(["bTimer", "bTimerLimit", "missileSpeed", "health", "score","posYSpeed","posXSpeed","bulletSpeed", "anaimationTimerLimit","destinationY"]);
     this.lazerTurret = new LaserTurret(
@@ -155,6 +155,7 @@ export class Level2Starship extends  FlyingBotImpl {
     if(this.weakPointHealth < 1){
       playerService.currentPlayer.addScore(this.score);
       botManagerService.removeBot(this,this.botSize);
+      levelInstance.updatePhaseCounter();
     }
   }
 

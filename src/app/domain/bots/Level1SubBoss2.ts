@@ -15,19 +15,19 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
 
     public imageObj:HTMLImageElement;
 
-	// todo make these config values
-	public health:number=150;
+    // todo make these config values
+    public health:number=150;
     public bulletSpeed:number = 6; // 6
     public moveSpeed: number = 5; // 5
 
-	public bTimer:number = 0; // bullet timer
+    public bTimer:number = 0; // bullet timer
     public bTimerLimit:number = 20; // 30
 
     public anaimationTimer:number = 0;
     public anaimationTimerLimit:number =4;
 
-	public damAnaimationTimer:number = 8;
-	public damAnaimationTimerLimit:number =8;
+    public damAnaimationTimer:number = 8;
+    public damAnaimationTimerLimit:number =8;
 
     public score:number = 200;
 

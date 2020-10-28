@@ -125,7 +125,8 @@ export class FlyingBotImpl extends BotInstanceImpl {
       public imageSizeY:number=60,
       public animationImages:HTMLImageElement[]=[],
       public imageObjDamaged: HTMLImageElement[] = [animationImages[0]],
-      public imageObjShadow: HTMLImageElement[] = null
+      public imageObjShadow: HTMLImageElement[] = null,
+      public isBoss:boolean = false
     ) {
     super(config);
     this.imageObj = animationImages[0];
@@ -244,6 +245,9 @@ export class FlyingBotImpl extends BotInstanceImpl {
     if(this.health < 1){
       playerService.currentPlayer.addScore(this.score);
       botManagerService.removeBot(this,this.botSize);
+      if(this.isBoss){
+        levelInstance.updatePhaseCounter();
+      }
     }
   }
 
