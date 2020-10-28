@@ -21,7 +21,7 @@ export class IntroAnimation {
     public scene1AnimTimerLimit: number = 7,
     public scene2AnimTimerLimit: number = 6,
     public scene3AnimTimerLimit: number = 8,
-    public scene4AnimTimerLimit: number = 6,
+    public scene4AnimTimerLimit: number = 10,
     public imageSizeX: number = 480,
     public imageSizeY: number = 640,
     public posX: number = 0,

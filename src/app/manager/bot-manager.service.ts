@@ -274,9 +274,9 @@ export class BotManagerService {
     let newBot = new Judge(config, posObj.posX, posObj.posY,
       this.resourcesService.getRes().get("boss-5"),
       this.resourcesService.getRes().get("boss-5-damaged"),
-      this.resourcesService.getRes().get("heavy-jet-shadow"),
+      this.resourcesService.getRes().get("judge-shadow"),
       this.resourcesService.getRes().get("miniboss-3-muzzle-flash"),
-      );
+    );
     this.botsArr.push(newBot);
     this.botCreated.next(newBot);
   }

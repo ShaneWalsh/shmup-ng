@@ -193,9 +193,9 @@ export class LaserTurret extends Turret {
 	public loadingIndex:number = 0;
 
 	public bTimerFiring:number = 0;
-	public bTimerFiringPase2:number = 4;
-	public bTimerFiringPase3:number = 20;
-	public bTimerFiringLimit:number = 24;
+	public bTimerFiringPase2:number = 4; // wind up time between 0-2
+	public bTimerFiringPase3:number = 76; // between phase 2-3 is where the damage is done, with the big laze
+	public bTimerFiringLimit:number = 80; // wind down time between 3-limit
 
 	constructor(
 		posX:number=0, // top left of the turret
@@ -307,7 +307,8 @@ export class LaserTurret extends Turret {
 			if(this.bTimer >= this.bTimerLimit && this.canShoot(levelInstance,currentPlayer)){
 				this.bTimerLoading = 0;
 				this.bTimerFiring = 0;
-				this.loadingIndex = 0;
+        this.loadingIndex = 0;
+        this.bTimer = 0;
 				this.firingLoading = true;
 			}
 			else {

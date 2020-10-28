@@ -76,7 +76,7 @@ export class Level2Starship extends  FlyingBotImpl {
       600,
       this.bulletSpeed,
       this.bTimer,
-      this.bTimerLimit,
+      50, // btimerlimit lazer between shots
       0,5,true, 30, 60,
       loadingImages,
       firingStartImage,

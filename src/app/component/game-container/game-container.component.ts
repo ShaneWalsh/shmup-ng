@@ -60,7 +60,11 @@ export class GameContainerComponent implements OnInit, OnDestroy {
        } else {
         this.introAnimationInstance = new IntroAnimation(
           [resourcesService.getRes().get("scene-1-1"),resourcesService.getRes().get("scene-1-2"),resourcesService.getRes().get("scene-1-3"),resourcesService.getRes().get("scene-1-4"),resourcesService.getRes().get("scene-1-5"),resourcesService.getRes().get("scene-1-6"),resourcesService.getRes().get("scene-1-7"),resourcesService.getRes().get("scene-1-8"),resourcesService.getRes().get("scene-1-9"),resourcesService.getRes().get("scene-1-10"),resourcesService.getRes().get("scene-1-11"),resourcesService.getRes().get("scene-1-12"),resourcesService.getRes().get("scene-1-13"),resourcesService.getRes().get("scene-1-14"),resourcesService.getRes().get("scene-1-15"),resourcesService.getRes().get("scene-1-16"),resourcesService.getRes().get("scene-1-17"),resourcesService.getRes().get("scene-1-18"),resourcesService.getRes().get("scene-1-19"),resourcesService.getRes().get("scene-1-20")],
-          [resourcesService.getRes().get("scene-2-1"),resourcesService.getRes().get("scene-2-2"),resourcesService.getRes().get("scene-2-3"),resourcesService.getRes().get("scene-2-4"),resourcesService.getRes().get("scene-2-5"),resourcesService.getRes().get("scene-2-6"),resourcesService.getRes().get("scene-2-7"),resourcesService.getRes().get("scene-2-8"),resourcesService.getRes().get("scene-2-9"),resourcesService.getRes().get("scene-2-10"),resourcesService.getRes().get("scene-2-11"),resourcesService.getRes().get("scene-2-12"),resourcesService.getRes().get("scene-2-13"),resourcesService.getRes().get("scene-2-14"),resourcesService.getRes().get("scene-2-15"),resourcesService.getRes().get("scene-2-16"),],
+          [resourcesService.getRes().get("scene-2-1"),resourcesService.getRes().get("scene-2-2"),resourcesService.getRes().get("scene-2-3"),resourcesService.getRes().get("scene-2-4"),resourcesService.getRes().get("scene-2-5"),resourcesService.getRes().get("scene-2-6"),resourcesService.getRes().get("scene-2-7"),resourcesService.getRes().get("scene-2-8"),resourcesService.getRes().get("scene-2-9"),resourcesService.getRes().get("scene-2-10"),resourcesService.getRes().get("scene-2-11"),resourcesService.getRes().get("scene-2-12"),resourcesService.getRes().get("scene-2-13"),resourcesService.getRes().get("scene-2-14"),resourcesService.getRes().get("scene-2-15"),
+            resourcesService.getRes().get("scene-2-16"),
+            resourcesService.getRes().get("scene-2-16"),
+            resourcesService.getRes().get("scene-2-16"),
+          ],
           [
             resourcesService.getRes().get("scene-3-1"),resourcesService.getRes().get("scene-3-2"),
             resourcesService.getRes().get("scene-3-1"),resourcesService.getRes().get("scene-3-2"),
@@ -69,9 +73,6 @@ export class GameContainerComponent implements OnInit, OnDestroy {
             resourcesService.getRes().get("scene-3-3"),resourcesService.getRes().get("scene-3-4"),
             resourcesService.getRes().get("scene-3-3"),resourcesService.getRes().get("scene-3-4"),
             resourcesService.getRes().get("scene-3-3"),resourcesService.getRes().get("scene-3-4"),
-            resourcesService.getRes().get("scene-3-3"),resourcesService.getRes().get("scene-3-4"),
-            resourcesService.getRes().get("scene-3-5"),resourcesService.getRes().get("scene-3-6"),
-            resourcesService.getRes().get("scene-3-5"),resourcesService.getRes().get("scene-3-6"),
             resourcesService.getRes().get("scene-3-5"),resourcesService.getRes().get("scene-3-6"),
             resourcesService.getRes().get("scene-3-5"),resourcesService.getRes().get("scene-3-6"),
           ],
