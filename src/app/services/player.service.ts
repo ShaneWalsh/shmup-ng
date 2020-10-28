@@ -46,8 +46,8 @@ export class PlayerService {
     }
 
     // creates an entirely new player
-    initPlayer(score=0,lives=25): any {
-        this.currentPlayer.reset(); // position
+    initPlayer(score=0,lives=25,startPositionX=210, startPositionY=640): any {
+        this.currentPlayer.reset(startPositionX,startPositionY); // position
         this.currentPlayer.pressedKeys = {"left":false,"up":false,"right":false,"down":false};
         this.currentPlayer.bulletsFiring = false;
         this.currentPlayer.invincibilityTimer = 0;
@@ -65,7 +65,7 @@ export class PlayerService {
 export class PlayerObj implements ShieldBot{
 	public speed = 8;
 	public bulletSpeed:number = 20;
-	public pressedKeys = {"left":false,"up":false,"right":false,"down":false};
+  public pressedKeys = {"left":false,"up":false,"right":false,"down":false};
 
   public bTimer:number = 0; // bullet timer
   public bTimerLimit:number = 4;
@@ -73,8 +73,8 @@ export class PlayerObj implements ShieldBot{
   public bulletsFiring:boolean = false;
   public bulletsFired:boolean = true;
 
-  public resetPositionX:number;
-  public resetPositionY:number;
+  public resetPositionX:number= 210;
+  public resetPositionY:number= 480;
 
   public invincibilityTimer:number = 0;
 
@@ -85,6 +85,8 @@ export class PlayerObj implements ShieldBot{
   public activateAbilityNow:boolean = false;
   public abilityCooldown:number =0;
   public abilityCooldownLimit:number = 900; //15 seconds
+
+  public hasMovedToMiddle=true;
 
     constructor(
         public lives:number=10,
@@ -97,13 +99,21 @@ export class PlayerObj implements ShieldBot{
         public imageSizeY:number=70,
         public hitBox:HitBox=new HitBox((Math.floor(imageSizeX/2))-5,(Math.floor(imageSizeY/2))-5,10,10)
     ){
-        this.resetPositionX = this.posX;
-        this.resetPositionY = this.posY;
+
     }
 
     update(levelInstance:LevelInstance, canvasContainer:CanvasContainer, bulletManagerService:BulletManagerService, botManagerService:BotManagerService){
+      if(!this.hasMovedToMiddle){
+        if(this.posY > 320){
+          this.posY-= this.speed;
+        } else {
+          this.hasMovedToMiddle = true;
+        }
+      } else {
         this.acceleration(levelInstance);
-        let ctx = canvasContainer.mainCtx;
+      }
+      let ctx = canvasContainer.mainCtx;
+
         // fire weapon
         // need to put some kind of timer around this, may have to bring back the timer pubsub
       if(this.bulletsFiring || !this.bulletsFired){
@@ -235,9 +245,9 @@ export class PlayerObj implements ShieldBot{
     this.score+= arg0;
   }
 
-  reset(): any {
-    this.posX = this.resetPositionX;
-    this.posY = this.resetPositionY;
+  reset(resetPositionX= this.resetPositionX, resetPositionY=this.resetPositionY): any {
+    this.posX = resetPositionX;
+    this.posY = resetPositionY;
   }
 
 	processKeyDown(customKeyboardEvent:CustomKeyboardEvent){
@@ -284,5 +294,9 @@ export class PlayerObj implements ShieldBot{
   }
   getShieldY(): number {
     return this.getCenterY();
+  }
+
+  moveToMiddle(){
+    this.hasMovedToMiddle=false;
   }
 }
