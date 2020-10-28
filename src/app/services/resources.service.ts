@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from '../../../node_modules/rxjs';
+import { CompiledResources } from './res/CompiledResources';
+import { ResourcesEnum } from './res/ResourcesEnum';
 
 @Injectable({
   providedIn: 'root'
@@ -323,10 +325,8 @@ export class ResourcesService {
           }
       ];
 
-
-      // more res
-
-
+      let compiledRes = new CompiledResources();
+      this.resourcesToLoad = compiledRes.res;
 
 		}
 
@@ -381,9 +381,4 @@ export class ResourcesService {
 	  ctx.drawImage(img, 0, 0);
 	  return canvas.toDataURL();
 	}
-}
-
-export enum ResourcesEnum {
-    ImageRes="ImageRes",
-    SoundRes="SoundRes"
 }

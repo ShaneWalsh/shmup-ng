@@ -227,7 +227,7 @@ class LevelOneInstance implements LevelInstance{
     return false;
   }
 
-  hasIntro():boolean {
+  hasIntro():boolean { // Set to false for no intro 1/2
     return true;
   }
 }
@@ -247,7 +247,7 @@ class LevelTwoInstance extends LevelOneInstance{
     return true;
   }
 
-  hasIntro():boolean {
+  hasIntro():boolean { // Set to false for no intro 2/2
     return false;
   }
 }
