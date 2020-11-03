@@ -7,6 +7,7 @@ import { BulletManagerService } from 'src/app/manager/bullet-manager.service';
 import { Subscription } from '../../../../node_modules/rxjs';
 import { CanvasContainer } from 'src/app/domain/CanvasContainer';
 import { IntroAnimation } from 'src/app/domain/IntroAnimation';
+import { OptionsService } from 'src/app/services/options.service';
 
 @Component({
   selector: 'app-game-container',
@@ -29,7 +30,7 @@ export class GameContainerComponent implements OnInit, OnDestroy {
     @ViewChild('canvasTop') public canvasTop: ElementRef;
 
 
-    introOver:boolean = false; // set to true for testing to skip the intro
+    introOver:boolean = false;
     introAnimationInstance:IntroAnimation = null;
 
     introTicker:number = 0;
@@ -45,40 +46,43 @@ export class GameContainerComponent implements OnInit, OnDestroy {
     @Input() public height = 640;
     @Input() public requestAnimFrame: any;
 
-    constructor(private resourcesService:ResourcesService,
+    constructor(
+                private optionsService:OptionsService,
+                private resourcesService:ResourcesService,
                 private levelManagerService:LevelManagerService,
                 private bulletManagerService: BulletManagerService,
                 private playerService:PlayerService, private botManagerService:BotManagerService) {
-       this.subs.push(this.levelManagerService.getGameTickSubject().subscribe(result => {
-           if(this.tickComplete){
-               this.update();
-           }
-       }));
-       this.playerService.currentPlayer.moveToMiddle();
-       if(!this.levelManagerService.getCurrentLevel().hasIntro()){
-         this.introOver = true;
-       } else {
-        this.introAnimationInstance = new IntroAnimation(
-          [resourcesService.getRes().get("scene-1-1"),resourcesService.getRes().get("scene-1-2"),resourcesService.getRes().get("scene-1-3"),resourcesService.getRes().get("scene-1-4"),resourcesService.getRes().get("scene-1-5"),resourcesService.getRes().get("scene-1-6"),resourcesService.getRes().get("scene-1-7"),resourcesService.getRes().get("scene-1-8"),resourcesService.getRes().get("scene-1-9"),resourcesService.getRes().get("scene-1-10"),resourcesService.getRes().get("scene-1-11"),resourcesService.getRes().get("scene-1-12"),resourcesService.getRes().get("scene-1-13"),resourcesService.getRes().get("scene-1-14"),resourcesService.getRes().get("scene-1-15"),resourcesService.getRes().get("scene-1-16"),resourcesService.getRes().get("scene-1-17"),resourcesService.getRes().get("scene-1-18"),resourcesService.getRes().get("scene-1-19"),resourcesService.getRes().get("scene-1-20")],
-          [resourcesService.getRes().get("scene-2-1"),resourcesService.getRes().get("scene-2-2"),resourcesService.getRes().get("scene-2-3"),resourcesService.getRes().get("scene-2-4"),resourcesService.getRes().get("scene-2-5"),resourcesService.getRes().get("scene-2-6"),resourcesService.getRes().get("scene-2-7"),resourcesService.getRes().get("scene-2-8"),resourcesService.getRes().get("scene-2-9"),resourcesService.getRes().get("scene-2-10"),resourcesService.getRes().get("scene-2-11"),resourcesService.getRes().get("scene-2-12"),resourcesService.getRes().get("scene-2-13"),resourcesService.getRes().get("scene-2-14"),resourcesService.getRes().get("scene-2-15"),
-            resourcesService.getRes().get("scene-2-16"),
-            resourcesService.getRes().get("scene-2-16"),
-            resourcesService.getRes().get("scene-2-16"),
-          ],
-          [
-            resourcesService.getRes().get("scene-3-1"),resourcesService.getRes().get("scene-3-2"),
-            resourcesService.getRes().get("scene-3-1"),resourcesService.getRes().get("scene-3-2"),
-            resourcesService.getRes().get("scene-3-1"),resourcesService.getRes().get("scene-3-2"),
-            resourcesService.getRes().get("scene-3-1"),resourcesService.getRes().get("scene-3-2"),
-            resourcesService.getRes().get("scene-3-3"),resourcesService.getRes().get("scene-3-4"),
-            resourcesService.getRes().get("scene-3-3"),resourcesService.getRes().get("scene-3-4"),
-            resourcesService.getRes().get("scene-3-3"),resourcesService.getRes().get("scene-3-4"),
-            resourcesService.getRes().get("scene-3-5"),resourcesService.getRes().get("scene-3-6"),
-            resourcesService.getRes().get("scene-3-5"),resourcesService.getRes().get("scene-3-6"),
-          ],
-          [resourcesService.getRes().get("scene-4-1"),resourcesService.getRes().get("scene-4-2"),resourcesService.getRes().get("scene-4-3"),resourcesService.getRes().get("scene-4-4"),resourcesService.getRes().get("scene-4-5"),resourcesService.getRes().get("scene-4-6"),],
-        );
-       }
+      this.introOver = this.optionsService.isSkipIntro();
+      this.subs.push(this.levelManagerService.getGameTickSubject().subscribe(result => {
+        if(this.tickComplete){
+            this.update();
+        }
+      }));
+      this.playerService.currentPlayer.moveToMiddle();
+      if(!this.levelManagerService.getCurrentLevel().hasIntro()){
+        this.introOver = true;
+      } else {
+      this.introAnimationInstance = new IntroAnimation(
+        [resourcesService.getRes().get("scene-1-1"),resourcesService.getRes().get("scene-1-2"),resourcesService.getRes().get("scene-1-3"),resourcesService.getRes().get("scene-1-4"),resourcesService.getRes().get("scene-1-5"),resourcesService.getRes().get("scene-1-6"),resourcesService.getRes().get("scene-1-7"),resourcesService.getRes().get("scene-1-8"),resourcesService.getRes().get("scene-1-9"),resourcesService.getRes().get("scene-1-10"),resourcesService.getRes().get("scene-1-11"),resourcesService.getRes().get("scene-1-12"),resourcesService.getRes().get("scene-1-13"),resourcesService.getRes().get("scene-1-14"),resourcesService.getRes().get("scene-1-15"),resourcesService.getRes().get("scene-1-16"),resourcesService.getRes().get("scene-1-17"),resourcesService.getRes().get("scene-1-18"),resourcesService.getRes().get("scene-1-19"),resourcesService.getRes().get("scene-1-20")],
+        [resourcesService.getRes().get("scene-2-1"),resourcesService.getRes().get("scene-2-2"),resourcesService.getRes().get("scene-2-3"),resourcesService.getRes().get("scene-2-4"),resourcesService.getRes().get("scene-2-5"),resourcesService.getRes().get("scene-2-6"),resourcesService.getRes().get("scene-2-7"),resourcesService.getRes().get("scene-2-8"),resourcesService.getRes().get("scene-2-9"),resourcesService.getRes().get("scene-2-10"),resourcesService.getRes().get("scene-2-11"),resourcesService.getRes().get("scene-2-12"),resourcesService.getRes().get("scene-2-13"),resourcesService.getRes().get("scene-2-14"),resourcesService.getRes().get("scene-2-15"),
+          resourcesService.getRes().get("scene-2-16"),
+          resourcesService.getRes().get("scene-2-16"),
+          resourcesService.getRes().get("scene-2-16"),
+        ],
+        [
+          resourcesService.getRes().get("scene-3-1"),resourcesService.getRes().get("scene-3-2"),
+          resourcesService.getRes().get("scene-3-1"),resourcesService.getRes().get("scene-3-2"),
+          resourcesService.getRes().get("scene-3-1"),resourcesService.getRes().get("scene-3-2"),
+          resourcesService.getRes().get("scene-3-1"),resourcesService.getRes().get("scene-3-2"),
+          resourcesService.getRes().get("scene-3-3"),resourcesService.getRes().get("scene-3-4"),
+          resourcesService.getRes().get("scene-3-3"),resourcesService.getRes().get("scene-3-4"),
+          resourcesService.getRes().get("scene-3-3"),resourcesService.getRes().get("scene-3-4"),
+          resourcesService.getRes().get("scene-3-5"),resourcesService.getRes().get("scene-3-6"),
+          resourcesService.getRes().get("scene-3-5"),resourcesService.getRes().get("scene-3-6"),
+        ],
+        [resourcesService.getRes().get("scene-4-1"),resourcesService.getRes().get("scene-4-2"),resourcesService.getRes().get("scene-4-3"),resourcesService.getRes().get("scene-4-4"),resourcesService.getRes().get("scene-4-5"),resourcesService.getRes().get("scene-4-6"),],
+      );
+      }
     }
 
     ngOnInit() {

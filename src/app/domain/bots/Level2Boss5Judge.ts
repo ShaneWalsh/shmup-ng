@@ -77,7 +77,7 @@ export class Judge extends FlyingBotImpl {
     if ((this.getCenterX() > (targetCord.targetX - range) && this.getCenterX() < (targetCord.targetX + range))
         && (this.getCenterY() > (targetCord.targetY - range) && this.getCenterY() < (targetCord.targetY + range))) {
       this.targetCordsIndex++;
-      if ( this.targetCordsIndex >= this.targetCords.length){
+      if ( this.targetCordsIndex >= this.targetCords.length) {
         //botManagerService.removeBot(this);
         this.targetCordsIndex = 0;
         return;
@@ -118,7 +118,7 @@ export class Judge extends FlyingBotImpl {
       let slot = this.eSlots[this.eSlot];
       let cords :{x:number,y:number} = LogicService.pointAfterRotation(this.getCenterX(), this.getCenterY(), this.posX+slot.x, this.posY+slot.y,  this.playerDirection.angle);
       let topLeftCords={x:cords.x-5,y:cords.y-5}
-			bullDirection = bulletManagerService.calculateBulletDirection(topLeftCords.x, topLeftCords.y, currentPlayer.getCenterX(), currentPlayer.getCenterY(), this.explodingBulletSpeed, true, currentPlayer);
+			bullDirection = bulletManagerService.calculateBulletDirection(topLeftCords.x, topLeftCords.y, currentPlayer.getCenterX(), currentPlayer.getCenterY(), this.explodingBulletSpeed, true, null);
 			bulletManagerService.generateExplodingBullet(levelInstance, bullDirection, topLeftCords.x, topLeftCords.y, 60, false);
 		} else {}
 	}

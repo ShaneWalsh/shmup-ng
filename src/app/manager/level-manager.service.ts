@@ -9,6 +9,7 @@ import { LevelEvent } from 'src/app/domain/events/level-events';
 import { SpriteSheet } from '../domain/SpriteSheet';
 import { CanvasContainer } from '../domain/CanvasContainer';
 import { LogicService } from '../services/logic.service';
+import { OptionsService } from '../services/options.service';
 
 export enum LevelEnum{
     LevelOne='LevelOne',
@@ -22,10 +23,10 @@ export enum LevelEnum{
 })
 export class LevelManagerService {
   drawHitBox(): boolean {
-      return false;
+      return this.optionsService.isDrawHitBox();
   }
   displayTicksAndPhases(): boolean {
-      return true;
+      return this.optionsService.isDisplayTicksAndPhases();
   }
   private gameTickSubject:Subject<boolean> = new Subject();
   private levelLoaded: Subject<LevelInstance> = new Subject();
@@ -35,8 +36,8 @@ export class LevelManagerService {
   private paused:boolean = false;
   public difficulty:number = 0;
 
-  constructor(private resourcesService:ResourcesService, private botManagerService:BotManagerService, private bulletManagerService: BulletManagerService,private levelEventsService:LevelEventsService) {
-      this.loadEvents();
+  constructor(private optionsService:OptionsService, private resourcesService:ResourcesService, private botManagerService:BotManagerService, private bulletManagerService: BulletManagerService,private levelEventsService:LevelEventsService) {
+    this.loadEvents();
   }
 
   loadEvents(): any {
@@ -154,7 +155,7 @@ class LevelOneInstance implements LevelInstance{
     canvasContainer.topCtx.drawImage(this.hudImage, 0, 0 , this.mapWidth, this.mapHeight);
     LogicService.writeOnCanvas(90,27,playerService.currentPlayer.score,24,"#ff00ff",canvasContainer.topCtx);
     LogicService.writeOnCanvas(80,628,playerService.currentPlayer.lives,24,"#ff00ff",canvasContainer.topCtx);
-    if(levelManagerService.displayTicksAndPhases){
+    if(levelManagerService.displayTicksAndPhases()){
       LogicService.writeOnCanvas(400,27,this.tickCounter,24,"#ff00ff",canvasContainer.topCtx);
       LogicService.writeOnCanvas(400,60,this.phaseCounter,24,"#ff00ff",canvasContainer.topCtx);
     }

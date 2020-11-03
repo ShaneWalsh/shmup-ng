@@ -221,7 +221,15 @@ export class ResourcesService {
 		{code:"main-boss-1-guardian", path:"assets/img/bots/main-boss-1-guardian/main-boss-1-guardian.png", type:ResourcesEnum.ImageRes},
     {code:"main-boss-1-guardian-damage", path:"assets/img/bots/main-boss-1-guardian/main-boss-1-guardian-damage.png",  type:ResourcesEnum.ImageRes},
 
-		{code:"miniboss-1-damaged", path:"assets/img/boss/miniboss-1-damaged.png", type:ResourcesEnum.ImageRes},
+    {code:"boss-1-damaged-1", path:"assets/img/boss/boss-1/boss-1-damaged-1.png", type:ResourcesEnum.ImageRes},
+    {code:"boss-1-damaged-2", path:"assets/img/boss/boss-1/boss-1-damaged-2.png", type:ResourcesEnum.ImageRes},
+    {code:"boss-1-flames", path:"assets/img/boss/boss-1/boss-1-flames.png", type:ResourcesEnum.ImageRes},
+    {code:"boss-1-flames-2", path:"assets/img/boss/boss-1/boss-1-flames-2.png", type:ResourcesEnum.ImageRes},
+    {code:"boss-1-flames-3", path:"assets/img/boss/boss-1/boss-1-flames-3.png", type:ResourcesEnum.ImageRes},
+    {code:"boss-1-flames-4", path:"assets/img/boss/boss-1/boss-1-flames-4.png", type:ResourcesEnum.ImageRes},
+    {code:"main-boss-1-1", path:"assets/img/boss/boss-1/main-boss-1-1.png", type:ResourcesEnum.ImageRes},
+    {code:"main-boss-1-2", path:"assets/img/boss/boss-1/main-boss-1-2.png", type:ResourcesEnum.ImageRes},
+
     {code:"player-1-muzzle-flash", path:"assets/img/bots/redesign/player-1-muzzle-flash.png", type:ResourcesEnum.ImageRes},
     {code:"enemy-3-1-damaged", path:"assets/img/bots/redesign/enemy-3-1-damaged.png", type:ResourcesEnum.ImageRes},
 
@@ -315,18 +323,12 @@ export class ResourcesService {
               type: ResourcesEnum.ImageRes },
           {
               code: "enemy-bullet-target", path: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAOCAYAAAArMezNAAAABGdBTUEAAK/INwWK6QAAAAlwSFlzAAAOwwAADsMBx2+oZAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMS42/U4J6AAAAGRJREFUOE/VkDEOgEAIBImv8v8fW7UgAXZFLM7EYgrIMJecARixYUdH9dPQoWKR6qfhQh29wTvrw0qK2Kl2kL8sTAtxNIE6tBBHE6jzvz/28PSBJ7zzXfgOFYlUPw0dKhbJPuwA7VOl229hSMgAAAAASUVORK5CYII=",
-              type: ResourcesEnum.ImageRes },
-          {
-              code: "boss-sub-1", path: " data: image / png; base64, iVBORw0KGgoAAAANSUhEUgAAAMQAAAD8CAYAAAAojwurAAAABGdBTUEAAK / INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAZSSURBVHja7N3dkto4EAZQBHmmrc37X2Qr7wTeqcrVCIqeTkuyYc65TBgwmA + prR + 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",
-              type: ResourcesEnum.ImageRes
-          },{
-              code: "boss-sub-1_2", path: "data:image/png;base64,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",
-              type: ResourcesEnum.ImageRes
-          }
+              type: ResourcesEnum.ImageRes }
       ];
 
-      let compiledRes = new CompiledResources();
-      this.resourcesToLoad = compiledRes.res;
+      // offline loading of files.
+      //let compiledRes = new CompiledResources();
+      //this.resourcesToLoad = compiledRes.res;
 
 		}
 

@@ -238,7 +238,16 @@ export class BotManagerService {
 
   generateLevel1SubBoss1(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -300, config: any = {}): any {
     let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
-    let newBot = new Level1SubBoss(config, posObj.posX, posObj.posY, this.resourcesService.getRes().get("boss-sub-1"), this.resourcesService.getRes().get("boss-sub-1_2"), this.resourcesService.getRes().get("miniboss-1-damaged"),196, 252);
+    let newBot = new Level1SubBoss(config, posObj.posX, posObj.posY,
+      [ this.resourcesService.getRes().get("main-boss-1-1"),
+        this.resourcesService.getRes().get("main-boss-1-2") ],
+      [ this.resourcesService.getRes().get("boss-1-damaged-1"),
+       this.resourcesService.getRes().get("boss-1-damaged-2")],
+      [this.resourcesService.getRes().get("boss-1-flames"),
+      this.resourcesService.getRes().get("boss-1-flames-2"),
+      this.resourcesService.getRes().get("boss-1-flames-3"),
+      this.resourcesService.getRes().get("boss-1-flames-4")],
+      198, 210);
     this.botsArr.push(newBot);
     this.botCreated.next(newBot);
   }
