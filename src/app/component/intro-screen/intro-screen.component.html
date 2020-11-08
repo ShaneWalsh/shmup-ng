@@ -22,10 +22,20 @@
   </span>
   </div>
   <div class="screen-container" *ngIf="screenId==4">
-      <img [src]="'assets/img/desc/character-select-MICS.png'">
+    <span *ngIf="playerService.selectedPilot==0">
+      <img [src]="'assets/img/desc/character-select-player-1.png'">
+    </span>
+    <span *ngIf="playerService.selectedPilot==1">
+      <img [src]="'assets/img/desc/character-select-player-2.png'">
+    </span>
   </div>
   <div class="screen-container" *ngIf="screenId==5">
-      <img [src]="'assets/img/desc/MICS-intro.png'">
+    <span *ngIf="playerService.selectedShip==0">
+      <img [src]="'assets/img/desc/ship-select-1.png'">
+    </span>
+    <span *ngIf="playerService.selectedShip==1">
+      <img [src]="'assets/img/desc/ship-select-2.png'">
+    </span>
   </div>
   <div class="screen-container" *ngIf="screenId==6">
       <app-game-container [requestAnimFrame]="requestAnimFrame"></app-game-container>

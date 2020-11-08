@@ -10,12 +10,25 @@ import { CanvasContainer } from '../domain/CanvasContainer';
 import { Shield } from '../domain/skills/Shield';
 import { ShieldBot } from '../domain/skills/ShieldBotInterface';
 
+export enum ShipEnum {
+  BLADE1,
+  SPEAR2
+}
+
+export enum PilotEnum {
+  NAOMI1,
+  MYRA2
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class PlayerService {
     public currentPlayer:PlayerObj = new PlayerObj();
     private playerLivesGoneSubject:Subject<PlayerObj> = new Subject();
+
+    public selectedShip:ShipEnum = ShipEnum.BLADE1;
+    public selectedPilot:PilotEnum = PilotEnum.NAOMI1;
 
     constructor(private keyboardEventService:KeyboardEventService, private levelManagerService:LevelManagerService, private resourcesService:ResourcesService, private botManagerService:BotManagerService) {
       keyboardEventService.getKeyDownEventSubject().subscribe(customKeyboardEvent => {
@@ -58,11 +71,18 @@ export class PlayerService {
         this.currentPlayer.lives = lives;
         this.currentPlayer.abilityCooldown = 0;
         this.currentPlayer.activateAbilityNow = false;
+        // are these need here? Or should these decide other objects that are inserted onto the ship? Pilot and ability seem like things that should be extracted
+        this.currentPlayer.selectedShip = this.selectedShip;
+        this.currentPlayer.selectedPilot = this.selectedPilot;
     }
 
 }
 
-export class PlayerObj implements ShieldBot{
+export class PlayerObj implements ShieldBot {
+  // are these need here? Or should these decide other objects that are inserted onto the ship? Pilot and ability seem like things that should be extracted
+  public selectedPilot: PilotEnum;
+  public selectedShip: ShipEnum;
+
 	public speed = 8;
 	public bulletSpeed:number = 20;
   public pressedKeys = {"left":false,"up":false,"right":false,"down":false};
@@ -88,85 +108,85 @@ export class PlayerObj implements ShieldBot{
 
   public hasMovedToMiddle=true;
 
-    constructor(
-        public lives:number=10,
-        public posX:number=210,
-        public posY:number=480,
-        public imageObj:HTMLImageElement=null,
-        public imageObjMuzzle:HTMLImageElement[]=[],
-        public imageObjShadow:HTMLImageElement=null,
-        public imageSizeX:number=90,
-        public imageSizeY:number=70,
-        public hitBox:HitBox=new HitBox((Math.floor(imageSizeX/2))-5,(Math.floor(imageSizeY/2))-5,10,10)
-    ){
+  constructor(
+      public lives:number=10,
+      public posX:number=210,
+      public posY:number=480,
+      public imageObj:HTMLImageElement=null,
+      public imageObjMuzzle:HTMLImageElement[]=[],
+      public imageObjShadow:HTMLImageElement=null,
+      public imageSizeX:number=90,
+      public imageSizeY:number=70,
+      public hitBox:HitBox=new HitBox((Math.floor(imageSizeX/2))-5,(Math.floor(imageSizeY/2))-5,10,10)
+  ){
 
+  }
+
+  update(levelInstance:LevelInstance, canvasContainer:CanvasContainer, bulletManagerService:BulletManagerService, botManagerService:BotManagerService){
+    if(!this.hasMovedToMiddle){
+      if(this.posY > 320){
+        this.posY-= this.speed;
+      } else {
+        this.hasMovedToMiddle = true;
+      }
+    } else {
+      this.acceleration(levelInstance);
+    }
+    let ctx = canvasContainer.mainCtx;
+
+      // fire weapon
+      // need to put some kind of timer around this, may have to bring back the timer pubsub
+    if(this.bulletsFiring || !this.bulletsFired){
+      if(this.bTimer >= this.bTimerLimit){
+        this.bTimer = 0;
+        this.firingSequence = 1;
+      }
+      else{
+        this.bTimer++;
+      }
     }
 
-    update(levelInstance:LevelInstance, canvasContainer:CanvasContainer, bulletManagerService:BulletManagerService, botManagerService:BotManagerService){
-      if(!this.hasMovedToMiddle){
-        if(this.posY > 320){
-          this.posY-= this.speed;
-        } else {
-          this.hasMovedToMiddle = true;
-        }
-      } else {
-        this.acceleration(levelInstance);
-      }
-      let ctx = canvasContainer.mainCtx;
-
-        // fire weapon
-        // need to put some kind of timer around this, may have to bring back the timer pubsub
-      if(this.bulletsFiring || !this.bulletsFired){
-        if(this.bTimer >= this.bTimerLimit){
-          this.bTimer = 0;
-          this.firingSequence = 1;
-        }
-        else{
-          this.bTimer++;
-        }
-      }
-
-      if(this.firingSequence < 5){
-        ctx.drawImage(this.imageObjMuzzle[this.muzzleIndex], 0, 0, 90,40, this.posX, this.posY-30, 90,40);
-        this.firingSequence++;
-      } else if(this.firingSequence == 5){
-        this.fireLazer(levelInstance,ctx,bulletManagerService);
-        this.muzzleIndex = ((this.muzzleIndex+1)>=this.imageObjMuzzle.length)?0:(this.muzzleIndex+1);
-        this.bulletsFired = true;
-        this.firingSequence++;
-      }
+    if(this.firingSequence < 5){
+      ctx.drawImage(this.imageObjMuzzle[this.muzzleIndex], 0, 0, 90,40, this.posX, this.posY-30, 90,40);
+      this.firingSequence++;
+    } else if(this.firingSequence == 5){
+      this.fireLazer(levelInstance,ctx,bulletManagerService);
+      this.muzzleIndex = ((this.muzzleIndex+1)>=this.imageObjMuzzle.length)?0:(this.muzzleIndex+1);
+      this.bulletsFired = true;
+      this.firingSequence++;
+    }
 
 
-      if(levelInstance.drawShadow()){
-        canvasContainer.shadowCtx.drawImage(this.imageObjShadow, 0, 0, this.imageSizeX, this.imageSizeY, this.posX+30, this.posY+60, this.imageSizeX, this.imageSizeY);
-      }
-      // draw
-      if (this.invincibilityTimer > 0) {
-        this.invincibilityTimer--;
-        if (this.invincibilityTimer % 2 == 0) {// draw every second draw, to get an invincible effect
-          ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY, this.imageSizeX, this.imageSizeY);
-          if (levelInstance.drawHitBox()) {
-              this.hitBox.drawBorder(this.posX + this.hitBox.hitBoxX, this.posY + this.hitBox.hitBoxY, this.hitBox.hitBoxSizeX, this.hitBox.hitBoxSizeY, ctx, "#FF0000");
-          }
-        }
-      } else {
+    if(levelInstance.drawShadow()){
+      canvasContainer.shadowCtx.drawImage(this.imageObjShadow, 0, 0, this.imageSizeX, this.imageSizeY, this.posX+30, this.posY+60, this.imageSizeX, this.imageSizeY);
+    }
+    // draw
+    if (this.invincibilityTimer > 0) {
+      this.invincibilityTimer--;
+      if (this.invincibilityTimer % 2 == 0) {// draw every second draw, to get an invincible effect
         ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY, this.imageSizeX, this.imageSizeY);
         if (levelInstance.drawHitBox()) {
-          this.hitBox.drawBorder(this.posX + this.hitBox.hitBoxX, this.posY + this.hitBox.hitBoxY, this.hitBox.hitBoxSizeX, this.hitBox.hitBoxSizeY, ctx, "#FF0000");
+            this.hitBox.drawBorder(this.posX + this.hitBox.hitBoxX, this.posY + this.hitBox.hitBoxY, this.hitBox.hitBoxSizeX, this.hitBox.hitBoxSizeY, ctx, "#FF0000");
         }
       }
-      if(this.activateAbilityNow && this.abilityCooldown < 1) { // can I activate my ability now? Cooldown?
-        this.activateAbility(levelInstance, canvasContainer, bulletManagerService, botManagerService);
-      } else {
-        this.abilityCooldown--;
+    } else {
+      ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY, this.imageSizeX, this.imageSizeY);
+      if (levelInstance.drawHitBox()) {
+        this.hitBox.drawBorder(this.posX + this.hitBox.hitBoxX, this.posY + this.hitBox.hitBoxY, this.hitBox.hitBoxSizeX, this.hitBox.hitBoxSizeY, ctx, "#FF0000");
       }
-
+    }
+    if(this.activateAbilityNow && this.abilityCooldown < 1) { // can I activate my ability now? Cooldown?
+      this.activateAbility(levelInstance, canvasContainer, bulletManagerService, botManagerService);
+    } else {
+      this.abilityCooldown--;
     }
 
-    updateIntro(ctx: CanvasRenderingContext2D, animationTimer:number) {
-      let sizeY = 4 + (4 * animationTimer);
-      ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, sizeY, this.posX, this.posY, this.imageSizeX, sizeY);
-    }
+  }
+
+  updateIntro(ctx: CanvasRenderingContext2D, animationTimer:number) {
+    let sizeY = 4 + (4 * animationTimer);
+    ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, sizeY, this.posX, this.posY, this.imageSizeX, sizeY);
+  }
 
   acceleration(levelInstance:LevelInstance){
         // apply movement
@@ -179,31 +199,31 @@ export class PlayerObj implements ShieldBot{
 		if(this.pressedKeys["down"])
 			this.posY -= this.speed;
 
-      if(this.posX + this.imageSizeX > levelInstance.getMapWidth()){
-        this.posX = levelInstance.getMapWidth() -  this.imageSizeX;
-      }
-      else if(this.posX < 0){
-        this.posX = 0;
-      }
-
-      if(this.posY + this.imageSizeY > levelInstance.getMapHeight()){
-        this.posY = levelInstance.getMapHeight() -  this.imageSizeY;
-      }
-      else if(this.posY < 0){
-        this.posY = 0;
-      }
+    if(this.posX + this.imageSizeX > levelInstance.getMapWidth()){
+      this.posX = levelInstance.getMapWidth() -  this.imageSizeX;
+    }
+    else if(this.posX < 0){
+      this.posX = 0;
     }
 
-    // lazers go straight, nothing fancy so no need to make them do anything fancy, cal a stright direction.
-    fireLazer(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D,bulletManagerService:BulletManagerService){
-      let bullDirection:BulletDirection;
-      if(levelInstance.isVertical()){
-        bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, this.posX, (this.posY-50), this.bulletSpeed);
-        bulletManagerService.generatePlayerLazer(levelInstance, bullDirection, this.posX+30, this.posY-10);
-      } else {
-        bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, (this.posX+50), this.posY, this.bulletSpeed);
-        bulletManagerService.generatePlayerLazer(levelInstance, bullDirection, this.posX, this.posY);
-      }
+    if(this.posY + this.imageSizeY > levelInstance.getMapHeight()){
+      this.posY = levelInstance.getMapHeight() -  this.imageSizeY;
+    }
+    else if(this.posY < 0){
+      this.posY = 0;
+    }
+  }
+
+  // lazers go straight, nothing fancy so no need to make them do anything fancy, cal a stright direction.
+  fireLazer(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D,bulletManagerService:BulletManagerService) {
+    let bullDirection:BulletDirection;
+    if (levelInstance.isVertical()) {
+      bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, this.posX, (this.posY-50), this.bulletSpeed);
+      bulletManagerService.generatePlayerLazer(levelInstance, bullDirection, this.posX+30, this.posY-10);
+    } else {
+      bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, (this.posX+50), this.posY, this.bulletSpeed);
+      bulletManagerService.generatePlayerLazer(levelInstance, bullDirection, this.posX, this.posY);
+    }
   }
 
   // depending on which ship it is, it may have a different ability, perhaps I could pass a function as the arg for the player ability.

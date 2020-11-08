@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { KeyboardEventService } from 'src/app/services/keyboard-event.service';
 import { Subscription } from '../../../../node_modules/rxjs';
 import { LevelManagerService, LevelEnum } from 'src/app/manager/level-manager.service';
-import { PlayerService } from '../../services/player.service';
+import { PlayerService, ShipEnum, PilotEnum } from '../../services/player.service';
 
 @Component({
   selector: 'app-intro-screen',
@@ -35,9 +35,9 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
       this.subs.push(this.keyboardEventService.getKeyDownEventSubject().subscribe(customKeyboardEvent => {
         console.log("customKeyboardEvent",customKeyboardEvent);
         if(customKeyboardEvent.event.keyCode == 13) { //  == 'Enter'
-            if(this.screenId < 4) {
+            if(this.screenId < 6) {
                 this.screenId++;
-                if(this.screenId == 4) { // used to be 6 for screen 4+5 but those have been removed
+                if(this.screenId == 6) { // used to be 6 for screen 4+5 but those have been removed
                     // lets assume the user picked a player here
                     this.screenId = 6;
                     this.playerService.initPlayer();
@@ -52,10 +52,20 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
             }
         }
         if(customKeyboardEvent.event.keyCode == 38 || customKeyboardEvent.event.keyCode == 40 || customKeyboardEvent.event.keyCode == 87 || customKeyboardEvent.event.keyCode == 83){ //  == 'Enter'
-          if(this.screenId == 3){
+          if(this.screenId == 3) { // diff select
             let diff =  this.levelManagerService.difficulty +1;
             if(diff > 2) diff = 0;
             this.levelManagerService.difficulty = diff;
+          }
+          if(this.screenId == 4) { // pilot select
+            let diff =  this.playerService.selectedPilot +1;
+            if(diff > 1) diff = 0;
+            this.playerService.selectedPilot = diff;
+          }
+          if(this.screenId == 5) { // ship select
+            let diff =  this.playerService.selectedShip +1;
+            if(diff > 1) diff = 0;
+            this.playerService.selectedShip = diff;
           }
         }
       }));
