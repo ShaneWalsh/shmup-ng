@@ -50,8 +50,8 @@ export class BulletManagerService {
     }
   }
 
-  generatePlayerLazer(levelInstance:LevelInstance, bulletDirection:BulletDirection, startX, startY): any {
-    let newBullet = new DumbLazer(2,startX, startY, bulletDirection, true, [this.resourcesService.getRes().get("player-1-bullets")], 30,22);
+  generatePlayerLazer(levelInstance:LevelInstance, bulletDirection:BulletDirection, startX, startY, bulletImages, bulletImageSizeX=30, bulletImageSizeY= 22): any {
+    let newBullet = new DumbLazer(2,startX, startY, bulletDirection, true, bulletImages, bulletImageSizeX,bulletImageSizeY);
     this.bulletsArr.push(newBullet);
     this.bulletCreated.next(newBullet);
   }

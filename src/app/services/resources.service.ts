@@ -135,6 +135,9 @@ export class ResourcesService {
     {code:"player-1-ship-shadow-separa", path:"assets/img/player/player-1-ship-shadow.png", type:ResourcesEnum.ImageRes},
     {code:"player-1-ship", path:"assets/img/player/player-1-ship.png", type:ResourcesEnum.ImageRes},
 
+    {code:"player-2-ship", path:"assets/img/player/player-2-ship.png", type:ResourcesEnum.ImageRes},
+    {code:"player-2-bullets", path:"assets/img/player/player-2-bullets.png", type:ResourcesEnum.ImageRes},
+
     {code:"HUD-resized", path:"assets/img/hud/HUD-resized.png", type:ResourcesEnum.ImageRes},
     {code:"stage-1-complete", path:"assets/img/desc/stage-1-complete.png", type:ResourcesEnum.ImageRes},
 

@@ -9,16 +9,11 @@ import { BotManagerService } from 'src/app/manager/bot-manager.service';
 import { CanvasContainer } from '../domain/CanvasContainer';
 import { Shield } from '../domain/skills/Shield';
 import { ShieldBot } from '../domain/skills/ShieldBotInterface';
+import { ShipFactoryService } from './ship-factory.service';
+import { PilotEnum, PilotFactoryService, PilotObject } from './pilot-factory.service';
+import { ShipEnum, ShipObject } from '../domain/player/ShipObject';
 
-export enum ShipEnum {
-  BLADE1,
-  SPEAR2
-}
 
-export enum PilotEnum {
-  NAOMI1,
-  MYRA2
-}
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +25,9 @@ export class PlayerService {
     public selectedShip:ShipEnum = ShipEnum.BLADE1;
     public selectedPilot:PilotEnum = PilotEnum.NAOMI1;
 
-    constructor(private keyboardEventService:KeyboardEventService, private levelManagerService:LevelManagerService, private resourcesService:ResourcesService, private botManagerService:BotManagerService) {
+    constructor(private keyboardEventService:KeyboardEventService, private levelManagerService:LevelManagerService,
+      private resourcesService:ResourcesService, private botManagerService:BotManagerService,
+      private shipFactoryService:ShipFactoryService, private pilotFactoryService:PilotFactoryService ) {
       keyboardEventService.getKeyDownEventSubject().subscribe(customKeyboardEvent => {
           if(this.levelManagerService.getNotPaused()){
               this.currentPlayer.processKeyDown(customKeyboardEvent);
@@ -64,24 +61,21 @@ export class PlayerService {
         this.currentPlayer.pressedKeys = {"left":false,"up":false,"right":false,"down":false};
         this.currentPlayer.bulletsFiring = false;
         this.currentPlayer.invincibilityTimer = 0;
-        this.currentPlayer.imageObj = this.resourcesService.getRes().get("player-1-ship");
-        this.currentPlayer.imageObjMuzzle = [this.resourcesService.getRes().get("player-muzzle-flash-1"),this.resourcesService.getRes().get("player-muzzle-flash-2"),this.resourcesService.getRes().get("player-muzzle-flash-3")];
-        this.currentPlayer.imageObjShadow = this.resourcesService.getRes().get("player-1-ship-shadow-separa");
         this.currentPlayer.score = score;
         this.currentPlayer.lives = lives;
         this.currentPlayer.abilityCooldown = 0;
         this.currentPlayer.activateAbilityNow = false;
         // are these need here? Or should these decide other objects that are inserted onto the ship? Pilot and ability seem like things that should be extracted
-        this.currentPlayer.selectedShip = this.selectedShip;
-        this.currentPlayer.selectedPilot = this.selectedPilot;
+        this.currentPlayer.selectedShip = this.shipFactoryService.createShip(this.selectedShip);
+        this.currentPlayer.selectedPilot = this.pilotFactoryService.createPilot(this.selectedPilot);
     }
 
 }
 
 export class PlayerObj implements ShieldBot {
   // are these need here? Or should these decide other objects that are inserted onto the ship? Pilot and ability seem like things that should be extracted
-  public selectedPilot: PilotEnum;
-  public selectedShip: ShipEnum;
+  public selectedPilot: PilotObject;
+  public selectedShip: ShipObject;
 
 	public speed = 8;
 	public bulletSpeed:number = 20;
@@ -101,7 +95,6 @@ export class PlayerObj implements ShieldBot {
   public firingSequence = 6;
   public score = 0;
 
-  public muzzleIndex = 0;
   public activateAbilityNow:boolean = false;
   public abilityCooldown:number =0;
   public abilityCooldownLimit:number = 900; //15 seconds
@@ -111,13 +104,7 @@ export class PlayerObj implements ShieldBot {
   constructor(
       public lives:number=10,
       public posX:number=210,
-      public posY:number=480,
-      public imageObj:HTMLImageElement=null,
-      public imageObjMuzzle:HTMLImageElement[]=[],
-      public imageObjShadow:HTMLImageElement=null,
-      public imageSizeX:number=90,
-      public imageSizeY:number=70,
-      public hitBox:HitBox=new HitBox((Math.floor(imageSizeX/2))-5,(Math.floor(imageSizeY/2))-5,10,10)
+      public posY:number=480
   ){
 
   }
@@ -133,6 +120,7 @@ export class PlayerObj implements ShieldBot {
       this.acceleration(levelInstance);
     }
     let ctx = canvasContainer.mainCtx;
+    let hitBox = this.selectedShip.getHitBox();
 
       // fire weapon
       // need to put some kind of timer around this, may have to bring back the timer pubsub
@@ -147,32 +135,31 @@ export class PlayerObj implements ShieldBot {
     }
 
     if(this.firingSequence < 5){
-      ctx.drawImage(this.imageObjMuzzle[this.muzzleIndex], 0, 0, 90,40, this.posX, this.posY-30, 90,40);
+      this.selectedShip.drawMuzzleFlash(ctx, this.posX,this.posY, levelInstance, canvasContainer, bulletManagerService, botManagerService)
       this.firingSequence++;
     } else if(this.firingSequence == 5){
-      this.fireLazer(levelInstance,ctx,bulletManagerService);
-      this.muzzleIndex = ((this.muzzleIndex+1)>=this.imageObjMuzzle.length)?0:(this.muzzleIndex+1);
+      this.selectedShip.fire(ctx, this.posX,this.posY, this.bulletSpeed, levelInstance, canvasContainer, bulletManagerService, botManagerService);
       this.bulletsFired = true;
       this.firingSequence++;
     }
 
 
     if(levelInstance.drawShadow()){
-      canvasContainer.shadowCtx.drawImage(this.imageObjShadow, 0, 0, this.imageSizeX, this.imageSizeY, this.posX+30, this.posY+60, this.imageSizeX, this.imageSizeY);
+      this.selectedShip.drawShadow(canvasContainer.shadowCtx, this.posX,this.posY, levelInstance, canvasContainer, bulletManagerService, botManagerService);
     }
     // draw
     if (this.invincibilityTimer > 0) {
       this.invincibilityTimer--;
       if (this.invincibilityTimer % 2 == 0) {// draw every second draw, to get an invincible effect
-        ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY, this.imageSizeX, this.imageSizeY);
+        this.selectedShip.draw(ctx, this.posX,this.posY, levelInstance, canvasContainer, bulletManagerService, botManagerService);
         if (levelInstance.drawHitBox()) {
-            this.hitBox.drawBorder(this.posX + this.hitBox.hitBoxX, this.posY + this.hitBox.hitBoxY, this.hitBox.hitBoxSizeX, this.hitBox.hitBoxSizeY, ctx, "#FF0000");
+          hitBox.drawBorder(this.posX + hitBox.hitBoxX, this.posY + hitBox.hitBoxY, hitBox.hitBoxSizeX, hitBox.hitBoxSizeY, ctx, "#FF0000");
         }
       }
     } else {
-      ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY, this.imageSizeX, this.imageSizeY);
+      this.selectedShip.draw(ctx, this.posX,this.posY, levelInstance, canvasContainer, bulletManagerService, botManagerService);
       if (levelInstance.drawHitBox()) {
-        this.hitBox.drawBorder(this.posX + this.hitBox.hitBoxX, this.posY + this.hitBox.hitBoxY, this.hitBox.hitBoxSizeX, this.hitBox.hitBoxSizeY, ctx, "#FF0000");
+        hitBox.drawBorder(this.posX + hitBox.hitBoxX, this.posY + hitBox.hitBoxY, hitBox.hitBoxSizeX, hitBox.hitBoxSizeY, ctx, "#FF0000");
       }
     }
     if(this.activateAbilityNow && this.abilityCooldown < 1) { // can I activate my ability now? Cooldown?
@@ -185,7 +172,7 @@ export class PlayerObj implements ShieldBot {
 
   updateIntro(ctx: CanvasRenderingContext2D, animationTimer:number) {
     let sizeY = 4 + (4 * animationTimer);
-    ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, sizeY, this.posX, this.posY, this.imageSizeX, sizeY);
+    ctx.drawImage(this.selectedShip.imageObj, 0, 0, this.selectedShip.imageSizeX, sizeY, this.posX, this.posY, this.selectedShip.imageSizeX, sizeY);
   }
 
   acceleration(levelInstance:LevelInstance){
@@ -199,30 +186,18 @@ export class PlayerObj implements ShieldBot {
 		if(this.pressedKeys["down"])
 			this.posY -= this.speed;
 
-    if(this.posX + this.imageSizeX > levelInstance.getMapWidth()){
-      this.posX = levelInstance.getMapWidth() -  this.imageSizeX;
+    if(this.posX + this.selectedShip.imageSizeX > levelInstance.getMapWidth()){
+      this.posX = levelInstance.getMapWidth() -  this.selectedShip.imageSizeX;
     }
     else if(this.posX < 0){
       this.posX = 0;
     }
 
-    if(this.posY + this.imageSizeY > levelInstance.getMapHeight()){
-      this.posY = levelInstance.getMapHeight() -  this.imageSizeY;
+    if(this.posY + this.selectedShip.imageSizeY > levelInstance.getMapHeight()){
+      this.posY = levelInstance.getMapHeight() -  this.selectedShip.imageSizeY;
     }
     else if(this.posY < 0){
       this.posY = 0;
-    }
-  }
-
-  // lazers go straight, nothing fancy so no need to make them do anything fancy, cal a stright direction.
-  fireLazer(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D,bulletManagerService:BulletManagerService) {
-    let bullDirection:BulletDirection;
-    if (levelInstance.isVertical()) {
-      bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, this.posX, (this.posY-50), this.bulletSpeed);
-      bulletManagerService.generatePlayerLazer(levelInstance, bullDirection, this.posX+30, this.posY-10);
-    } else {
-      bullDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, (this.posX+50), this.posY, this.bulletSpeed);
-      bulletManagerService.generatePlayerLazer(levelInstance, bullDirection, this.posX, this.posY);
     }
   }
 
@@ -242,11 +217,11 @@ export class PlayerObj implements ShieldBot {
 	}
 
   getCenterX():number{
-    return this.posX+(this.imageSizeX/2);
+    return this.posX+(this.selectedShip.imageSizeX/2);
   }
 
   getCenterY():number{
-    return this.posY+(this.imageSizeY/2);
+    return this.posY+(this.selectedShip.imageSizeY/2);
   }
 
   isInvincible():boolean {
@@ -255,7 +230,7 @@ export class PlayerObj implements ShieldBot {
 
   hasPlayerBeenHit(hitter:any,hitterBox:HitBox):boolean {
     if (!this.isInvincible()){
-      return this.hitBox.areCentersToClose(hitter,hitterBox,this,this.hitBox);
+      return this.selectedShip.getHitBox().areCentersToClose(hitter,hitterBox,this,this.selectedShip.getHitBox());
     } else {
       return false;
     }
