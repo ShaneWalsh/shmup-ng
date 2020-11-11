@@ -1,15 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Pilot1, Pilot2, PilotEnum, PilotObject } from '../domain/player/PilotObject';
 import { ResourcesService } from './resources.service';
-
-export enum PilotEnum {
-  NAOMI1,
-  MYRA2
-}
-
-
-export class PilotObject {
-
-}
 
 @Injectable({
   providedIn: 'root'
@@ -21,18 +12,10 @@ export class PilotFactoryService {
   public createPilot(selectedPilot:PilotEnum) : PilotObject {
     switch(selectedPilot){
       case PilotEnum.NAOMI1:
-        return new Pilot1();
+        return new Pilot1(900, 1); // extra life
       case PilotEnum.MYRA2:
-        return new Pilot2();
+        return new Pilot2(800, 0); // faster cooldown
     }
   }
 }
 
-
-class Pilot1 extends PilotObject {
-
-}
-
-class Pilot2 extends PilotObject {
-
-}

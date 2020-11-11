@@ -23,7 +23,7 @@ export class BulletManagerService {
   private shieldsArr:Shield[] = [];
 
 
-  constructor(private resourcesService:ResourcesService) {
+  constructor(private resourcesService:ResourcesService, private botManagerService:BotManagerService) {
 
   }
 
@@ -54,6 +54,26 @@ export class BulletManagerService {
     let newBullet = new DumbLazer(2,startX, startY, bulletDirection, true, bulletImages, bulletImageSizeX,bulletImageSizeY);
     this.bulletsArr.push(newBullet);
     this.bulletCreated.next(newBullet);
+  }
+
+  generatePlayerHomingMissiles(levelInstance:LevelInstance, pods:{startX:number, startY:number}[], bulletSpeed:number): any {
+    // choose a target on the screen and fire a bullet
+    let bots = this.botManagerService.getBots();
+    // todo order them by how close they are?
+    for(let i = 0 ; i < pods.length; i++){
+      let pod = pods[i];
+      let bot = bots[(i < bots.length)?i:0];
+      let bullDirection = this.calculateBulletDirection(pod.startX, pod.startY, pod.startX, pod.startY-90, bulletSpeed, true);
+      if(bot != null){
+        bullDirection = this.calculateBulletDirection(pod.startX, pod.startY, bot.getCenterX(), bot.getCenterY(), bulletSpeed, true, bot);
+      }
+      let newBullet = new DumbLazer(1, pod.startX, pod.startY, bullDirection, true,
+        [this.resourcesService.getRes().get("enemy-missile-1"),this.resourcesService.getRes().get("enemy-missile-2"),this.resourcesService.getRes().get("enemy-missile-3")],
+        38, 16, new HitBox(0,0,38,16), false);
+      this.bulletsArr.push(newBullet);
+      this.bulletCreated.next(newBullet);
+    }
+
   }
 
   generateBotBlazer(levelInstance:LevelInstance, bulletDirection:BulletDirection, startX, startY): any {

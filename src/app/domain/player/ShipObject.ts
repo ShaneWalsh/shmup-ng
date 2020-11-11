@@ -47,6 +47,10 @@ export class ShipObject {
     // abstracted to subclass
   }
 
+  activateAbility(player, posX: number, posY: number, bulletSpeed:number, levelInstance:LevelInstance, canvasContainer:CanvasContainer, bulletManagerService:BulletManagerService, botManagerService:BotManagerService) {
+    // abstracted to subclass
+  }
+
   getHitBox():HitBox {
     return this.hitBox;
   }
@@ -70,6 +74,10 @@ export class ShipBlade extends ShipObject {
     }
   }
 
+  activateAbility(player, posX: number, posY: number, bulletSpeed:number, levelInstance:LevelInstance, canvasContainer:CanvasContainer, bulletManagerService:BulletManagerService, botManagerService:BotManagerService) {
+    bulletManagerService.addPlayerShield(player);
+  }
+
 }
 
 export class ShipSpear extends ShipObject {
@@ -86,6 +94,34 @@ export class ShipSpear extends ShipObject {
     } else {
 
     }
+  }
+
+  /**
+   * Fire 6 homing missiles.
+   */
+  activateAbility(player, posX: number, posY: number, bulletSpeed:number, levelInstance:LevelInstance, canvasContainer:CanvasContainer, bulletManagerService:BulletManagerService, botManagerService:BotManagerService) {
+    bulletManagerService.generatePlayerHomingMissiles(levelInstance,
+      [
+        {startX:posX-20, startY:posY+50},
+        {startX:posX+40, startY:posY+50},
+      ],
+      bulletSpeed);
+    setTimeout(()=> {
+      bulletManagerService.generatePlayerHomingMissiles(levelInstance,
+        [
+          {startX:posX+40, startY:posY+50},
+          {startX:posX-20, startY:posY+50},
+        ],
+        bulletSpeed);
+    }, 50);
+    setTimeout(()=> {
+      bulletManagerService.generatePlayerHomingMissiles(levelInstance,
+        [
+          {startX:posX-20, startY:posY+50},
+          {startX:posX+40, startY:posY+50},
+        ],
+        bulletSpeed);
+    }, 100);
   }
 
 }

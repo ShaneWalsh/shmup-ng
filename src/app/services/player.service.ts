@@ -10,8 +10,9 @@ import { CanvasContainer } from '../domain/CanvasContainer';
 import { Shield } from '../domain/skills/Shield';
 import { ShieldBot } from '../domain/skills/ShieldBotInterface';
 import { ShipFactoryService } from './ship-factory.service';
-import { PilotEnum, PilotFactoryService, PilotObject } from './pilot-factory.service';
+import { PilotFactoryService } from './pilot-factory.service';
 import { ShipEnum, ShipObject } from '../domain/player/ShipObject';
+import { PilotEnum, PilotObject } from '../domain/player/PilotObject';
 
 
 
@@ -56,18 +57,21 @@ export class PlayerService {
     }
 
     // creates an entirely new player
-    initPlayer(score=0,lives=25,startPositionX=210, startPositionY=640): any {
-        this.currentPlayer.reset(startPositionX,startPositionY); // position
-        this.currentPlayer.pressedKeys = {"left":false,"up":false,"right":false,"down":false};
-        this.currentPlayer.bulletsFiring = false;
-        this.currentPlayer.invincibilityTimer = 0;
-        this.currentPlayer.score = score;
-        this.currentPlayer.lives = lives;
-        this.currentPlayer.abilityCooldown = 0;
-        this.currentPlayer.activateAbilityNow = false;
-        // are these need here? Or should these decide other objects that are inserted onto the ship? Pilot and ability seem like things that should be extracted
-        this.currentPlayer.selectedShip = this.shipFactoryService.createShip(this.selectedShip);
-        this.currentPlayer.selectedPilot = this.pilotFactoryService.createPilot(this.selectedPilot);
+    initPlayer(init:boolean=true, score=0,lives=3,startPositionX=210, startPositionY=640): any {
+      this.currentPlayer.reset(startPositionX,startPositionY); // position
+      this.currentPlayer.pressedKeys = {"left":false,"up":false,"right":false,"down":false};
+      this.currentPlayer.bulletsFiring = false;
+      this.currentPlayer.invincibilityTimer = 0;
+      this.currentPlayer.score = score;
+      this.currentPlayer.lives = lives;
+      this.currentPlayer.abilityCooldown = 0;
+      this.currentPlayer.activateAbilityNow = false;
+      // are these need here? Or should these decide other objects that are inserted onto the ship? Pilot and ability seem like things that should be extracted
+      this.currentPlayer.selectedShip = this.shipFactoryService.createShip(this.selectedShip);
+      this.currentPlayer.selectedPilot = this.pilotFactoryService.createPilot(this.selectedPilot);
+      if(init){
+        this.currentPlayer.selectedPilot.playerInit(this.currentPlayer)
+      }
     }
 
 }
@@ -97,7 +101,6 @@ export class PlayerObj implements ShieldBot {
 
   public activateAbilityNow:boolean = false;
   public abilityCooldown:number =0;
-  public abilityCooldownLimit:number = 900; //15 seconds
 
   public hasMovedToMiddle=true;
 
@@ -162,8 +165,9 @@ export class PlayerObj implements ShieldBot {
         hitBox.drawBorder(this.posX + hitBox.hitBoxX, this.posY + hitBox.hitBoxY, hitBox.hitBoxSizeX, hitBox.hitBoxSizeY, ctx, "#FF0000");
       }
     }
-    if(this.activateAbilityNow && this.abilityCooldown < 1) { // can I activate my ability now? Cooldown?
-      this.activateAbility(levelInstance, canvasContainer, bulletManagerService, botManagerService);
+    if (this.activateAbilityNow && this.abilityCooldown < 1) { // can I activate my ability now? Cooldown?
+      this.selectedShip.activateAbility(this, this.posX, this.posY,this.bulletSpeed, levelInstance, canvasContainer, bulletManagerService, botManagerService);
+      this.abilityCooldown = this.selectedPilot.abilityCooldownLimit;
     } else {
       this.abilityCooldown--;
     }
@@ -199,12 +203,6 @@ export class PlayerObj implements ShieldBot {
     else if(this.posY < 0){
       this.posY = 0;
     }
-  }
-
-  // depending on which ship it is, it may have a different ability, perhaps I could pass a function as the arg for the player ability.
-  activateAbility(levelInstance:LevelInstance, canvasContainer:CanvasContainer, bulletManagerService:BulletManagerService, botManagerService:BotManagerService) {
-    bulletManagerService.addPlayerShield(this);
-    this.abilityCooldown = this.abilityCooldownLimit;
   }
 
   setFireBullet(){
