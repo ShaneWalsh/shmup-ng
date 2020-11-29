@@ -29,6 +29,7 @@ import { Shield } from '../domain/skills/Shield';
 import { Level2Starship } from '../domain/bots/Level2Starship';
 import { Judge } from '../domain/bots/Level2Boss5Judge';
 import { BotAnimation } from '../domain/BotAnimation';
+import { Kamikaze } from '../domain/bots/Kamikaze';
 
 /**
  * Going to manage the created bots, spawned by the level manager. Its going to emit when they are destroyed or when they leave the screen.
@@ -97,6 +98,17 @@ export class BotManagerService {
       [this.resourcesService.getRes().get("diver-shadow-1"),
       this.resourcesService.getRes().get("diver-shadow-2")],
       124, 126);
+    this.botsArr.push(newBot);
+    this.botCreated.next(newBot);
+  }
+
+  generateKamikaze(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
+    let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
+    let newBot = new Kamikaze(config, posObj.posX, posObj.posY,
+      [this.resourcesService.getRes().get("kamikaze-enemy-1")],
+      [this.resourcesService.getRes().get("kamikaze-enemy-1-damaged")],
+      [],
+      110, 98);
     this.botsArr.push(newBot);
     this.botCreated.next(newBot);
   }

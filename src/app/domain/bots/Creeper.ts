@@ -133,7 +133,7 @@ export class Creeper extends BotInstanceImpl{
 
 	}
 
-    applyDamage(damage: number, botManagerService: BotManagerService, playerService:PlayerService, levelInstance:LevelInstance) {
+    applyDamage(damage: number, botManagerService: BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService, levelInstance:LevelInstance) {
         this.health -= damage;
         if(this.health < 1){
             playerService.currentPlayer.addScore(this.score);

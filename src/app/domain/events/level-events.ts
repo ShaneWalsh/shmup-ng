@@ -8,6 +8,7 @@ export enum BotType {
   DIVER="DIVER",
   FIGHTER="FIGHTER",
   DRONE="DRONE",
+  KAMIKAZE="KAMIKAZE",
   CREEPER="CREEPER",
   ROCK="ROCK",
 	GUARDIAN1="GUARDIAN1",
@@ -86,6 +87,8 @@ export class SpawnBotEvent extends LevelEvent {
 			     botManagerService.generateRock(levelManagerService.getCurrentLevel(),this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.DRONE) {
             botManagerService.generateDrone(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
+        } else if (this.botType == BotType.KAMIKAZE) {
+            botManagerService.generateKamikaze(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.CREEPER) {
             botManagerService.generateCreeper(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.GUARDIAN1) {

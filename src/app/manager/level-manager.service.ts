@@ -32,9 +32,11 @@ export class LevelManagerService {
   private levelLoaded: Subject<LevelInstance> = new Subject();
   private levelComplete: Subject<LevelInstance> = new Subject();
   private currentLevel:LevelInstance;
+  private currentLevelEnum:LevelEnum;
 
   private paused:boolean = false;
   public difficulty:number = 0;
+  public mainMenuIndex:number = 0;
 
   constructor(private optionsService:OptionsService, private resourcesService:ResourcesService, private botManagerService:BotManagerService, private bulletManagerService: BulletManagerService,private levelEventsService:LevelEventsService) {
     this.loadEvents();
@@ -48,13 +50,17 @@ export class LevelManagerService {
     // clear down the managers
     this.botManagerService.clean();
     this.bulletManagerService.clean();
+    this.currentLevelEnum = level;
     if(level == LevelEnum.LevelOne) {
       //this.currentLevel = new LevelOneInstance(this.resourcesService, this.botManagerService, this, this.levelEventsService);  // todo flip these back, it just for testing.
-      this.currentLevel = new LevelTwoInstance(this.resourcesService, this.botManagerService, this, this.levelEventsService);
+      // this.currentLevel = new LevelTwoInstance(this.resourcesService, this.botManagerService, this, this.levelEventsService);
+      this.currentLevel = new LevelThreeInstance(this.resourcesService, this.botManagerService, this, this.levelEventsService);
       this.levelLoaded.next(this.currentLevel);
     } else if(level == LevelEnum.LevelTwo) {
-      //this.currentLevel = new LevelTwoInstance(this.resourcesService, this.botManagerService, this, this.levelEventsService);
       this.currentLevel = new LevelOneInstance(this.resourcesService, this.botManagerService, this, this.levelEventsService);
+      this.levelLoaded.next(this.currentLevel);
+    } else if(level == LevelEnum.LevelThree) {
+      this.currentLevel = new LevelThreeInstance(this.resourcesService, this.botManagerService, this, this.levelEventsService);
       this.levelLoaded.next(this.currentLevel);
     }
   }
@@ -86,13 +92,21 @@ export class LevelManagerService {
   getLevelCompleteSubject(): Subject<LevelInstance> {
       return this.levelComplete;
   }
+
   getGameTickSubject(): Subject<boolean> {
       return this.gameTickSubject;
+  }
+
+  getCurrentLevelEnum():LevelEnum {
+    return this.currentLevelEnum;
   }
 }
 
 export interface LevelInstance {
     update(canvasContainer:CanvasContainer,playerService:PlayerService, levelManagerService:LevelManagerService);
+    updateBackground(canvasContainer:CanvasContainer,playerService:PlayerService, levelManagerService:LevelManagerService);
+    updateHud(canvasContainer:CanvasContainer,playerService:PlayerService, levelManagerService:LevelManagerService);
+    updateEvent(canvasContainer:CanvasContainer,playerService:PlayerService, levelManagerService:LevelManagerService);
     updateIntro(ctx: CanvasRenderingContext2D);
     getMapWidth():number;
     getMapHeight():number;
@@ -115,24 +129,43 @@ class LevelOneInstance implements LevelInstance{
   protected hudImage:HTMLImageElement;
 
   // keeps track of the infinite scrolling of the background.
-  private scrollerXIncrement:number = 0;
-  private scrollerYIncrement:number = 0;
+  protected scrollerXIncrement:number = 0;
+  protected scrollerYIncrement:number = 0;
 
   // event array to mark when things should happen. Spawning(fixed/random), Boss, Mini Boss, LevelOver?
   protected eventArr:LevelEvent[]=[];
-  private repeatEvents:LevelEvent[]=[]; // triggered events are removed from the events ary so they dont trigger twce by accident and then reinserted.
-  private tickCounter:number = 0;
-  private phaseCounter:number = 0; // when phase updates, tick counter goes back to zero
+  protected repeatEvents:LevelEvent[]=[]; // triggered events are removed from the events ary so they dont trigger twce by accident and then reinserted.
+  protected tickCounter:number = 0;
+  protected phaseCounter:number = 0; // when phase updates, tick counter goes back to zero
 
 
   constructor(public resourcesService:ResourcesService, protected botManagerService:BotManagerService, protected levelManagerService:LevelManagerService, public levelEventsService:LevelEventsService){
-      this.backgroundImage = this.resourcesService.getRes().get("level-1-background");
-      this.hudImage = this.resourcesService.getRes().get("HUD-resized");
-      this.eventArr = this.levelEventsService.getLevel1Events(levelManagerService.difficulty);
+    this.backgroundImage = this.resourcesService.getRes().get("level-1-background");
+    this.hudImage = this.resourcesService.getRes().get("HUD-resized");
+    this.eventArr = this.levelEventsService.getLevel1Events(levelManagerService.difficulty);
   }
 
   update(canvasContainer:CanvasContainer, playerService:PlayerService, levelManagerService:LevelManagerService) {
     // infinite scroller
+    this.updateBackground(canvasContainer, playerService, levelManagerService);
+    this.updateHud(canvasContainer, playerService, levelManagerService);
+    this.updateEvent(canvasContainer, playerService, levelManagerService);
+  }
+
+  updateIntro(ctx: CanvasRenderingContext2D) {
+    // just for the intro for displaying the background
+    ctx.drawImage(this.backgroundImage, this.scrollerXIncrement, this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
+    if (this.isVertical()) {
+      ctx.drawImage(this.backgroundImage, this.scrollerXIncrement, (this.scrollerYIncrement - this.getScrollHeight()), this.getScrollWidth(), this.getScrollHeight());
+      this.scrollerYIncrement++;
+      if (this.scrollerYIncrement > this.getScrollHeight()) { this.scrollerYIncrement = 0 };
+    } else {
+      ctx.drawImage(this.backgroundImage, (this.scrollerXIncrement - this.getScrollWidth()), this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
+      this.scrollerXIncrement++;
+      if (this.scrollerXIncrement > this.getScrollWidth()) { this.scrollerXIncrement = 0 };
+    }
+  }
+  updateBackground(canvasContainer:CanvasContainer, playerService:PlayerService, levelManagerService:LevelManagerService) {
     canvasContainer.bgCtx.drawImage(this.backgroundImage, this.scrollerXIncrement, this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
     if(this.backgroundShadowImage) {
       canvasContainer.shadowCtx.drawImage(this.backgroundShadowImage, this.scrollerXIncrement, this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
@@ -152,6 +185,8 @@ class LevelOneInstance implements LevelInstance{
       this.scrollerXIncrement++;
       if(this.scrollerXIncrement > this.getScrollWidth()){this.scrollerXIncrement = 0};
     }
+  }
+  updateHud(canvasContainer:CanvasContainer, playerService:PlayerService, levelManagerService:LevelManagerService) {
     canvasContainer.topCtx.drawImage(this.hudImage, 0, 0 , this.mapWidth, this.mapHeight);
     LogicService.writeOnCanvas(90,27,playerService.currentPlayer.score,24,"#ff00ff",canvasContainer.topCtx);
     LogicService.writeOnCanvas(80,628,playerService.currentPlayer.lives,24,"#ff00ff",canvasContainer.topCtx);
@@ -159,37 +194,25 @@ class LevelOneInstance implements LevelInstance{
       LogicService.writeOnCanvas(400,27,this.tickCounter,24,"#ff00ff",canvasContainer.topCtx);
       LogicService.writeOnCanvas(400,60,this.phaseCounter,24,"#ff00ff",canvasContainer.topCtx);
     }
+  }
+  updateEvent(canvasContainer:CanvasContainer, playerService:PlayerService, levelManagerService:LevelManagerService) {
     //then fire the normal events
     this.repeatEvents = [];
     for(let i =0 ; i <  this.eventArr.length; i++) {
-        let eventI = this.eventArr[i];
-        if(eventI.canTrigger(this.tickCounter, this.phaseCounter)) {
-            eventI.triggerEvent(this.botManagerService,this.levelManagerService);
-            if(eventI.repeatUntilPhaseEnd){
-                eventI.happenAfterTicks = eventI.getRepeatLoopTicks();
-                eventI.lastRepeatTickFire = this.tickCounter;
-                // now next time canTrigger is called, lastRepeatTickFire + happenAfterTicks(now RepeatLoopTicks) will be used
-                this.repeatEvents.push(eventI);
-            }
-          this.eventArr.splice(i--,1);
+      let eventI = this.eventArr[i];
+      if(eventI.canTrigger(this.tickCounter, this.phaseCounter)) {
+        eventI.triggerEvent(this.botManagerService,this.levelManagerService);
+        if(eventI.repeatUntilPhaseEnd){
+          eventI.happenAfterTicks = eventI.getRepeatLoopTicks();
+          eventI.lastRepeatTickFire = this.tickCounter;
+          // now next time canTrigger is called, lastRepeatTickFire + happenAfterTicks(now RepeatLoopTicks) will be used
+          this.repeatEvents.push(eventI);
         }
+        this.eventArr.splice(i--,1);
+      }
     }
     this.eventArr = this.eventArr.concat(...this.repeatEvents);
     this.updateTickCounter();
-  }
-
-  updateIntro(ctx: CanvasRenderingContext2D) {
-      // just for the intro for displaying the background
-      ctx.drawImage(this.backgroundImage, this.scrollerXIncrement, this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
-      if (this.isVertical()) {
-          ctx.drawImage(this.backgroundImage, this.scrollerXIncrement, (this.scrollerYIncrement - this.getScrollHeight()), this.getScrollWidth(), this.getScrollHeight());
-          this.scrollerYIncrement++;
-          if (this.scrollerYIncrement > this.getScrollHeight()) { this.scrollerYIncrement = 0 };
-      } else {
-          ctx.drawImage(this.backgroundImage, (this.scrollerXIncrement - this.getScrollWidth()), this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
-          this.scrollerXIncrement++;
-          if (this.scrollerXIncrement > this.getScrollWidth()) { this.scrollerXIncrement = 0 };
-      }
   }
 
   updateTickCounter(){
@@ -246,6 +269,52 @@ class LevelTwoInstance extends LevelOneInstance{
 
   drawShadow(){
     return true;
+  }
+
+  hasIntro():boolean { // Set to false for no intro 2/2
+    return false;
+  }
+}
+
+class LevelThreeInstance extends LevelOneInstance{
+
+  protected backgroundImageSlowScroll = new Image();
+  protected scrollHeightSlowScroll:number = 0;
+  protected slowScrollInterval:number = 0;
+  protected slowScrollIntervalLimit:number = 3;
+  protected scrollerYIncrementSlowScroll:number = 0;
+
+  constructor(resourcesService:ResourcesService, botManagerService:BotManagerService, levelManagerService:LevelManagerService, levelEventsService:LevelEventsService){
+      super(resourcesService,botManagerService,levelManagerService,levelEventsService);
+      this.backgroundImage = this.resourcesService.getRes().get("level-3-bg-1");
+      this.backgroundImageSlowScroll = this.resourcesService.getRes().get("level-3-bg-2");
+      this.hudImage = this.resourcesService.getRes().get("HUD-resized");
+      this.eventArr = this.levelEventsService.getLevel3Events(levelManagerService.difficulty);
+      this.scrollHeight = 640;
+      this.scrollHeightSlowScroll = 640;
+  }
+
+  updateBackground(canvasContainer:CanvasContainer, playerService:PlayerService, levelManagerService:LevelManagerService) {
+    canvasContainer.bgCtx.drawImage(this.backgroundImage, this.scrollerXIncrement, this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
+    canvasContainer.bgCtx.drawImage(this.backgroundImageSlowScroll, this.scrollerXIncrement, this.scrollerYIncrementSlowScroll, this.getScrollWidth(), this.getScrollHeight());
+    if(this.isVertical()) {
+      canvasContainer.bgCtx.drawImage(this.backgroundImage, this.scrollerXIncrement, (this.scrollerYIncrement - this.getScrollHeight()), this.getScrollWidth(), this.getScrollHeight());
+      canvasContainer.bgCtx.drawImage(this.backgroundImageSlowScroll, this.scrollerXIncrement, (this.scrollerYIncrementSlowScroll - this.getScrollHeight()), this.getScrollWidth(), this.getScrollHeight());
+    } else {
+      console.log("NO IMPLEMTENTED");
+    }
+    this.scrollerYIncrement++;
+    if (this.scrollerYIncrement > this.getScrollHeight()) { this.scrollerYIncrement = 0 };
+    this.slowScrollInterval++;
+    if (this.slowScrollInterval >= this.slowScrollIntervalLimit) {
+      this.slowScrollInterval = 0;
+      this.scrollerYIncrementSlowScroll++;
+      if (this.scrollerYIncrementSlowScroll > this.getScrollHeight()) { this.scrollerYIncrementSlowScroll = 0 };
+    }
+  }
+
+  drawShadow(){
+    return false;
   }
 
   hasIntro():boolean { // Set to false for no intro 2/2

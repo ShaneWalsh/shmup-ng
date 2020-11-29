@@ -175,7 +175,7 @@ export class AATank extends BotInstanceImpl{
     return this.hitBox.areCentersToClose(hitter,hitterBox,this,this.hitBox);
   }
 
-  applyDamage(damage: number, botManagerService: BotManagerService, playerService:PlayerService, levelInstance:LevelInstance) {
+  applyDamage(damage: number, botManagerService: BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService, levelInstance:LevelInstance) {
     this.health -= damage;
     this.triggerDamagedAnimation();
     if(this.health < 1){

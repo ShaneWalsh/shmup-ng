@@ -14,7 +14,7 @@ export interface BotInstance {
     hasBotBeenHit(hitter:any,hitterBox:HitBox);
 
     applyArmorDamage(damage:number, botManagerService:BotManagerService, playerService:PlayerService, levelInstance:LevelInstance);
-    applyDamage(damage:number, botManagerService:BotManagerService, playerService:PlayerService, levelInstance:LevelInstance);
+    applyDamage(damage:number, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService, levelInstance:LevelInstance);
 
     getCenterX():number;
 
@@ -42,7 +42,7 @@ export class BotInstanceImpl implements BotInstance, ShieldBot {
   getCenterX(): number {
       throw new Error("Method not implemented.");
   }
-  applyDamage(damage: number, botManagerService: BotManagerService, playerService: PlayerService, levelInstance:LevelInstance) {
+  applyDamage(damage: number, botManagerService: BotManagerService, bulletManagerService:BulletManagerService, playerService: PlayerService, levelInstance:LevelInstance) {
       throw new Error("Method not implemented.");
   }
   hasBotBeenHit(hitter: any, hitterBox: HitBox) {
@@ -239,7 +239,7 @@ export class FlyingBotImpl extends BotInstanceImpl {
    * @param playerService
    * @param levelInstance
    */
-  applyDamage(damage: number, botManagerService: BotManagerService, playerService:PlayerService, levelInstance:LevelInstance) {
+  applyDamage(damage: number, botManagerService: BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService, levelInstance:LevelInstance) {
     this.health -= damage;
     this.triggerDamagedAnimation();
     if(this.health < 1){

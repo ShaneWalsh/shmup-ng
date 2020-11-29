@@ -20,6 +20,21 @@ export class ResourcesService {
 
       this.resourcesToLoad = [
 
+
+    {code:"kamikaze-enemy-1-damaged", path:"assets/img/bots/kamikaze/kamikaze-enemy-1-damaged.png", type:ResourcesEnum.ImageRes},
+    {code:"kamikaze-enemy-1", path:"assets/img/bots/kamikaze/kamikaze-enemy-1.png", type:ResourcesEnum.ImageRes},
+
+    {code:"level-3-bg-1", path:"assets/img/levels/level-3-update/level-3-bg-1.png", type:ResourcesEnum.ImageRes},
+    {code:"level-3-bg-2", path:"assets/img/levels/level-3-update/level-3-bg-2.png", type:ResourcesEnum.ImageRes},
+
+    // {code:"menu-boss-rush", path:"assets/img/desc/menu-pics/menu-boss-rush.png", type:ResourcesEnum.ImageRes},
+    // {code:"menu-credits", path:"assets/img/desc/menu-pics/menu-credits.png", type:ResourcesEnum.ImageRes},
+    // {code:"menu-options", path:"assets/img/desc/menu-pics/menu-options.png", type:ResourcesEnum.ImageRes},
+    // {code:"menu-start", path:"assets/img/desc/menu-pics/menu-start.png", type:ResourcesEnum.ImageRes},
+    // {code:"paused-options", path:"assets/img/desc/menu-pics/paused-options.png", type:ResourcesEnum.ImageRes},
+    // {code:"paused-quit", path:"assets/img/desc/menu-pics/paused-quit.png", type:ResourcesEnum.ImageRes},
+    // {code:"paused-return", path:"assets/img/desc/menu-pics/paused-return.png", type:ResourcesEnum.ImageRes},
+
     {code:"boss-5", path:"assets/img/boss/boss-5-update-Judge/boss-5.png", type:ResourcesEnum.ImageRes},
     {code:"boss-5-damaged", path:"assets/img/boss/boss-5-update-Judge/boss-5-damaged.png", type:ResourcesEnum.ImageRes},
     {code:"judge-shadow", path:"assets/img/boss/boss-5-update-Judge/judge-shadow.png", type:ResourcesEnum.ImageRes},

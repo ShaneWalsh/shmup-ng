@@ -1,8 +1,22 @@
 <div class="black-out effect-container">
   <!-- <img class="grid-style" [src]="'assets/img/levels/title-grid-background.png'"> -->
+  <div class="screen-container" *ngIf="screenId==0">
+    <!-- <img class="grid-style" [src]="'assets/img/levels/title-grid-background.png'"> -->
+    <img [src]="'assets/img/desc/updated-title.gif'">
+  </div>
   <div class="screen-container" *ngIf="screenId==1">
-      <!-- <img class="grid-style" [src]="'assets/img/levels/title-grid-background.png'"> -->
-      <img [src]="'assets/img/desc/updated-title.gif'">
+    <span *ngIf="levelManagerService.mainMenuIndex==0">
+      <img [src]="'assets/img/desc/menu-pics/menu-start.png'">
+    </span>
+    <span *ngIf="levelManagerService.mainMenuIndex==1">
+      <img [src]="'assets/img/desc/menu-pics/menu-boss-rush.png'">
+    </span>
+    <span *ngIf="levelManagerService.mainMenuIndex==2">
+      <img [src]="'assets/img/desc/menu-pics/menu-options.png'">
+    </span>
+    <span *ngIf="levelManagerService.mainMenuIndex==3">
+      <img [src]="'assets/img/desc/menu-pics/menu-credits.png'">
+    </span>
   </div>
   <div class="screen-container" *ngIf="screenId==2">
       <img [src]="'assets/img/desc/new-story.png'">
@@ -51,6 +65,14 @@
     <h2 class="player-lives-vic">{{playerLives}}</h2>
   </div>
   <div class="screen-container" *ngIf="screenId==35">
+    <app-game-container [requestAnimFrame]="requestAnimFrame"></app-game-container>
+  </div>
+  <div class="screen-container pink-text" *ngIf="screenId==40">
+    <img [src]="'assets/img/desc/stage-1-complete.png'">
+    <h2 class="player-score-vic">{{playerScore}}</h2>
+    <h2 class="player-lives-vic">{{playerLives}}</h2>
+  </div>
+  <div class="screen-container" *ngIf="screenId==45">
     <app-game-container [requestAnimFrame]="requestAnimFrame"></app-game-container>
   </div>
 </div>

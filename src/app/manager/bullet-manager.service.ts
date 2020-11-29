@@ -269,7 +269,7 @@ class DumbLazer implements BulletInstance {
             break;
           }
           if(bot.hasBotBeenHit(this,this.hitBox)) {
-            bot.applyDamage(this.damage, botManagerService,playerService,levelInstance);
+            bot.applyDamage(this.damage, botManagerService, bulletManagerService, playerService,levelInstance);
             bulletManagerService.removeBullet(this, botManagerService, LogicService.getRandomInt(this.imageSizeX-5),false,true);
             removed = true;
             break;

@@ -139,7 +139,7 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
         }
 	}
 
-    applyDamage(damage: number, botManagerService: BotManagerService, playerService:PlayerService, levelInstance:LevelInstance) {
+    applyDamage(damage: number, botManagerService: BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService, levelInstance:LevelInstance) {
         this.health -= damage;
 		this.triggerDamagedAnimation();
         if(this.health < 1){
