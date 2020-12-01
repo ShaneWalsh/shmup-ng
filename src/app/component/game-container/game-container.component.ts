@@ -8,6 +8,7 @@ import { Subscription } from '../../../../node_modules/rxjs';
 import { CanvasContainer } from 'src/app/domain/CanvasContainer';
 import { IntroAnimation } from 'src/app/domain/IntroAnimation';
 import { OptionsService } from 'src/app/services/options.service';
+import { KeyboardEventService } from 'src/app/services/keyboard-event.service';
 
 @Component({
   selector: 'app-game-container',
@@ -29,7 +30,6 @@ export class GameContainerComponent implements OnInit, OnDestroy {
     @ViewChild('canvas') public canvasMain: ElementRef;
     @ViewChild('canvasTop') public canvasTop: ElementRef;
 
-
     introOver:boolean = false;
     introAnimationInstance:IntroAnimation = null;
 
@@ -49,9 +49,9 @@ export class GameContainerComponent implements OnInit, OnDestroy {
     constructor(
                 private optionsService:OptionsService,
                 private resourcesService:ResourcesService,
-                private levelManagerService:LevelManagerService,
+                protected levelManagerService:LevelManagerService,
                 private bulletManagerService: BulletManagerService,
-                private playerService:PlayerService, private botManagerService:BotManagerService) {
+                private playerService:PlayerService, private botManagerService:BotManagerService, private keyboardEventService:KeyboardEventService) {
       this.introOver = this.optionsService.isSkipIntro();
       this.subs.push(this.levelManagerService.getGameTickSubject().subscribe(result => {
         if(this.tickComplete){

@@ -4,3 +4,8 @@
 <canvas #canvasBGShadow class="canvas-position"></canvas>
 <canvas #canvas class="canvas-position"></canvas>
 <canvas #canvasTop class="canvas-position"></canvas>
+<span *ngIf="levelManagerService.showPauseMenu" class="pause-menu">
+  <img *ngIf="levelManagerService.showPauseMenuIndex == 0" [src]="'assets/img/desc/menu-pics/paused-return.png'">
+  <img *ngIf="levelManagerService.showPauseMenuIndex == 1" [src]="'assets/img/desc/menu-pics/paused-options.png'">
+  <img *ngIf="levelManagerService.showPauseMenuIndex == 2" [src]="'assets/img/desc/menu-pics/paused-quit.png'">
+</span>

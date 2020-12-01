@@ -1,3 +1,9 @@
 .canvas-position {
   position: absolute;
 }
+
+.pause-menu {
+  position: absolute;
+  left: 180px;
+  top: 230px;
+}

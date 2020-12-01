@@ -44,7 +44,7 @@ export class PlayerService {
     killCurrentPlayer(): any {
         this.currentPlayer.lives--;
         this.currentPlayer.invincibilityTimer = 120;
-		this.botManagerService.createPlayerDeath(this.currentPlayer.getCenterX(),this.currentPlayer.getCenterY());
+		    this.botManagerService.createPlayerDeath(this.currentPlayer.getCenterX(),this.currentPlayer.getCenterY());
         if(this.currentPlayer.lives > 0){
             this.currentPlayer.reset();
         } else { // game over.

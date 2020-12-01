@@ -10,6 +10,7 @@ import { SpriteSheet } from '../domain/SpriteSheet';
 import { CanvasContainer } from '../domain/CanvasContainer';
 import { LogicService } from '../services/logic.service';
 import { OptionsService } from '../services/options.service';
+import { KeyboardEventService } from '../services/keyboard-event.service';
 
 export enum LevelEnum{
     LevelOne='LevelOne',
@@ -38,8 +39,37 @@ export class LevelManagerService {
   public difficulty:number = 0;
   public mainMenuIndex:number = 0;
 
-  constructor(private optionsService:OptionsService, private resourcesService:ResourcesService, private botManagerService:BotManagerService, private bulletManagerService: BulletManagerService,private levelEventsService:LevelEventsService) {
+  // ingame menu
+  public showPauseMenu:boolean = false;
+  public showPauseMenuIndex:number = 0;
+
+  constructor(private optionsService:OptionsService, private resourcesService:ResourcesService, private botManagerService:BotManagerService, private bulletManagerService: BulletManagerService,private levelEventsService:LevelEventsService, private keyboardEventService:KeyboardEventService) {
     this.loadEvents();
+    keyboardEventService.getKeyUpEventSubject().subscribe(customKeyboardEvent => {
+      if(customKeyboardEvent.event.keyCode == 80){ // p
+        if(this.getNotPaused()){
+          this.pauseGame();
+          this.showPauseMenu = true;
+        } else {
+          this.unPauseGame();
+          this.showPauseMenu = false;
+        }
+      }
+      else if(this.getPaused()){
+        if (customKeyboardEvent.event.keyCode == 87 || customKeyboardEvent.event.keyCode == 38) { // up
+          let diff =  this.showPauseMenuIndex - 1 ;
+          if(diff < 0) diff = 2;
+          this.showPauseMenuIndex = diff;
+        } else if (customKeyboardEvent.event.keyCode == 83 || customKeyboardEvent.event.keyCode == 40){ //down 83 40
+          let diff =  this.showPauseMenuIndex + 1;
+          if(diff > 2) diff = 0;
+          this.showPauseMenuIndex = diff;
+        } else if(customKeyboardEvent.event.keyCode == 13) { // enter
+          this.unPauseGame();
+          this.showPauseMenu = false;
+        }
+      }
+    });
   }
 
   loadEvents(): any {
@@ -280,14 +310,19 @@ class LevelThreeInstance extends LevelOneInstance{
 
   protected backgroundImageSlowScroll = new Image();
   protected scrollHeightSlowScroll:number = 0;
+
+  protected scrollInterval:number = 0;
+  protected scrollIntervalLimit:number = 1;
+
   protected slowScrollInterval:number = 0;
   protected slowScrollIntervalLimit:number = 3;
+
   protected scrollerYIncrementSlowScroll:number = 0;
 
   constructor(resourcesService:ResourcesService, botManagerService:BotManagerService, levelManagerService:LevelManagerService, levelEventsService:LevelEventsService){
       super(resourcesService,botManagerService,levelManagerService,levelEventsService);
-      this.backgroundImage = this.resourcesService.getRes().get("level-3-bg-1");
-      this.backgroundImageSlowScroll = this.resourcesService.getRes().get("level-3-bg-2");
+      this.backgroundImage = this.resourcesService.getRes().get("level-3-bg-2");
+      this.backgroundImageSlowScroll = this.resourcesService.getRes().get("level-3-bg-1");
       this.hudImage = this.resourcesService.getRes().get("HUD-resized");
       this.eventArr = this.levelEventsService.getLevel3Events(levelManagerService.difficulty);
       this.scrollHeight = 640;
@@ -295,16 +330,26 @@ class LevelThreeInstance extends LevelOneInstance{
   }
 
   updateBackground(canvasContainer:CanvasContainer, playerService:PlayerService, levelManagerService:LevelManagerService) {
-    canvasContainer.bgCtx.drawImage(this.backgroundImage, this.scrollerXIncrement, this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
     canvasContainer.bgCtx.drawImage(this.backgroundImageSlowScroll, this.scrollerXIncrement, this.scrollerYIncrementSlowScroll, this.getScrollWidth(), this.getScrollHeight());
     if(this.isVertical()) {
-      canvasContainer.bgCtx.drawImage(this.backgroundImage, this.scrollerXIncrement, (this.scrollerYIncrement - this.getScrollHeight()), this.getScrollWidth(), this.getScrollHeight());
       canvasContainer.bgCtx.drawImage(this.backgroundImageSlowScroll, this.scrollerXIncrement, (this.scrollerYIncrementSlowScroll - this.getScrollHeight()), this.getScrollWidth(), this.getScrollHeight());
     } else {
       console.log("NO IMPLEMTENTED");
     }
-    this.scrollerYIncrement++;
-    if (this.scrollerYIncrement > this.getScrollHeight()) { this.scrollerYIncrement = 0 };
+    canvasContainer.bgCtx.drawImage(this.backgroundImage, this.scrollerXIncrement, this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
+    if(this.isVertical()) {
+      canvasContainer.bgCtx.drawImage(this.backgroundImage, this.scrollerXIncrement, (this.scrollerYIncrement - this.getScrollHeight()), this.getScrollWidth(), this.getScrollHeight());
+    } else {
+      console.log("NO IMPLEMTENTED");
+    }
+
+    this.scrollInterval++;
+    if (this.scrollInterval >= this.scrollIntervalLimit) {
+      this.scrollInterval = 0;
+      this.scrollerYIncrement += 0.7;
+      if (this.scrollerYIncrement > this.getScrollHeight()) { this.scrollerYIncrement = 0 };
+    }
+
     this.slowScrollInterval++;
     if (this.slowScrollInterval >= this.slowScrollIntervalLimit) {
       this.slowScrollInterval = 0;
