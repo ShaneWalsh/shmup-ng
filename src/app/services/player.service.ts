@@ -30,14 +30,14 @@ export class PlayerService {
       private resourcesService:ResourcesService, private botManagerService:BotManagerService,
       private shipFactoryService:ShipFactoryService, private pilotFactoryService:PilotFactoryService ) {
       keyboardEventService.getKeyDownEventSubject().subscribe(customKeyboardEvent => {
-          if(this.levelManagerService.getNotPaused()){
+          //if(this.levelManagerService.getNotPaused()){
               this.currentPlayer.processKeyDown(customKeyboardEvent);
-          }
+          //}
       });
       keyboardEventService.getKeyUpEventSubject().subscribe(customKeyboardEvent => {
-          if(this.levelManagerService.getNotPaused()){
+          //if(this.levelManagerService.getNotPaused()){
               this.currentPlayer.processKeyUp(customKeyboardEvent);
-          }
+          //}
       });
     }
 
