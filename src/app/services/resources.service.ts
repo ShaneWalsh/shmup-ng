@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from '../../../node_modules/rxjs';
+import { AudioServiceService } from './audio-service.service';
 import { CompiledResources } from './res/CompiledResources';
 import { ResourcesEnum } from './res/ResourcesEnum';
 
@@ -7,14 +8,15 @@ import { ResourcesEnum } from './res/ResourcesEnum';
   providedIn: 'root'
 })
 export class ResourcesService {
-
+    private audioResourcesToLoad:{code:string,path:string, type:ResourcesEnum}[];
     private resourcesToLoad:{code:string,path:string, type:ResourcesEnum}[];
 	  private resourcesToLoadB64:{code:string,path:string, type:ResourcesEnum}[];
     private resourcesLoaded: Subject<boolean>; // all resources loaded
     private resources:Map<string,any>;// could be images, sounds, etc
     private loaderRun:boolean = false;
-    constructor() {
+    constructor ( ) {
   		this.resourcesToLoadB64 = []
+  		this.audioResourcesToLoad = []
 			this.resources = new Map();
 			this.resourcesLoaded = new Subject();
 /*
@@ -348,51 +350,80 @@ export class ResourcesService {
       // offline loading of files.
       let compiledRes = new CompiledResources();
       this.resourcesToLoad = compiledRes.res;
-
-		}
-
-    getRes():Map<string,any> {
-        return this.resources;
+      // add in sound files.
+      this.audioResourcesToLoad.push({code:"Space-Cannon", path:"assets/sound/effects/Space-Cannon.mp3", type:ResourcesEnum.SoundRes});
+      this.audioResourcesToLoad.push({code:"Trouble-on-Mercury", path:"assets/sound/bg/Trouble-on-Mercury_Looping.mp3", type:ResourcesEnum.SoundRes});
     }
 
-    getResourcesLoaded():Subject<boolean>{
-        return this.resourcesLoaded;
+  /**
+   * Set all of the audio resources into the audio service
+   * @param audioServiceService
+   */
+  setAudio(audioServiceService: AudioServiceService) {
+    for(let audioRes of this.audioResourcesToLoad ){
+      audioServiceService.addAudio(audioRes.code,this.resources.get(audioRes.code));
     }
+  }
 
-    // should only be called once.
-    loadResources(){
-        if(!this.loaderRun){
-            this.loaderRun = true;
-            for(let i = 0; i < this.resourcesToLoad.length;i++){
-                const res = this.resourcesToLoad[i];
-                if(res.type == ResourcesEnum.ImageRes){
-                    this.loadImage(res.code,res.path);
-                } else {
+  getRes():Map<string,any> {
+    return this.resources;
+  }
 
-                }
-            }
-        }
-    }
+  getResourcesLoaded():Subject<boolean>{
+    return this.resourcesLoaded;
+  }
 
-    loadImage(code,path) {
-        let loadedImage:HTMLImageElement = new Image();
-        loadedImage.crossOrigin = "Anonymous";
-        loadedImage.src = path;
-
-        loadedImage.onload = function () {
-            this.imageLoaded(code,loadedImage);
-        }.bind(this);
-    }
-
-    imageLoaded(code,loadedImage:HTMLImageElement){
-        this.resources.set(code,loadedImage);
-        // store as global variable and then copy(temp1) to copy the object
-        this.resourcesToLoadB64.push({code:code,path:this.imgToBase64(loadedImage),type:ResourcesEnum.ImageRes})
-        if(this.resources.size == this.resourcesToLoad.length){
-          console.log("base64",this.resourcesToLoadB64);
-          this.getResourcesLoaded().next(true);
+  // should only be called once.
+  loadResources(){
+    if(!this.loaderRun){
+      this.loaderRun = true;
+      for(let i = 0; i < this.resourcesToLoad.length;i++){
+        const res = this.resourcesToLoad[i];
+        if(res.type == ResourcesEnum.ImageRes){
+          this.loadImage(res.code,res.path);
         }
       }
+      for(let i = 0; i < this.audioResourcesToLoad.length;i++){
+        const res = this.audioResourcesToLoad[i];
+        if(res.type == ResourcesEnum.SoundRes){
+          this.loadSound(res.code,res.path);
+        }
+      }
+    }
+  }
+
+  loadSound(code: string, path: string) {
+    let audio = new Audio();
+    audio.crossOrigin = "Anonymous";
+    audio.src = path;
+    // audio.onload = function () {
+    //   this.soundLoaded(code,audio);
+    // }.bind(this);
+    audio.load();
+    this.soundLoaded(code,audio);
+  }
+
+  soundLoaded(code,audio:HTMLAudioElement){
+    this.resources.set(code,audio);
+    this.resourceLoaded();
+  }
+
+  loadImage(code,path) {
+    let loadedImage:HTMLImageElement = new Image();
+    loadedImage.crossOrigin = "Anonymous";
+    loadedImage.src = path;
+
+    loadedImage.onload = function () {
+        this.imageLoaded(code,loadedImage);
+    }.bind(this);
+  }
+
+  imageLoaded(code,loadedImage:HTMLImageElement){
+    this.resources.set(code,loadedImage);
+    // store as global variable and then copy(temp1) to copy the object
+    // this.resourcesToLoadB64.push({code:code,path:this.imgToBase64(loadedImage),type:ResourcesEnum.ImageRes});
+    this.resourceLoaded();
+  }
 
 	imgToBase64(img) {
 	  const canvas = document.createElement('canvas');
@@ -401,5 +432,12 @@ export class ResourcesService {
 	  canvas.height = img.height;
 	  ctx.drawImage(img, 0, 0);
 	  return canvas.toDataURL();
-	}
+  }
+
+  resourceLoaded(){
+    if(this.resources.size == (this.resourcesToLoad.length && this.audioResourcesToLoad.length)){
+      console.log("base64",this.resourcesToLoadB64);
+      this.getResourcesLoaded().next(true);
+    }
+  }
 }

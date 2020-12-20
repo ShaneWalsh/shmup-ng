@@ -1,16 +1,29 @@
 import { Injectable } from '@angular/core';
-import { BotManagerService } from '../manager/bot-manager.service';
-import { LevelEventsService } from '../manager/level-events.service';
-import { LevelEnum, LevelInstance, LevelManagerService } from '../manager/level-manager.service';
-import { LevelOneInstance } from '../manager/level-manager/LevelOneInstance';
-import { LevelThreeInstance } from '../manager/level-manager/LevelThreeInstance';
-import { LevelTwoInstance } from '../manager/level-manager/LevelTwoInstance';
-import { ResourcesService } from './resources.service';
+import { LevelEnum } from '../manager/level-manager/LevelEnum';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class OptionsService {
+
+  /**
+   * Default sound effect volume.
+   */
+  private _soundAffectVolume : number = .2;
+  /**
+   * Default background volume.
+   */
+  private _backgroundSoundVolume : number = .1;
+  /**
+  * Default level order
+  */
+  private _levelOrder : LevelEnum[] = [
+    LevelEnum.LevelOne,
+    LevelEnum.LevelTwo,
+    LevelEnum.LevelThree,
+    LevelEnum.LevelFour,
+  ];
 
   constructor() { }
 
@@ -35,14 +48,28 @@ export class OptionsService {
     return true;
   }
 
-  initLevel(level:LevelEnum, resourcesService: ResourcesService, botManagerService: BotManagerService, levelManagerService: LevelManagerService, levelEventsService: LevelEventsService):LevelInstance {
-    if(level == LevelEnum.LevelOne) {
-      return new LevelOneInstance(resourcesService, botManagerService, levelManagerService, levelEventsService);
-    } else if(level == LevelEnum.LevelTwo) {
-      return new LevelTwoInstance(resourcesService, botManagerService, levelManagerService, levelEventsService);
-    } else if(level == LevelEnum.LevelThree) {
-      return new LevelThreeInstance(resourcesService, botManagerService, levelManagerService, levelEventsService);
-    }
+  getLevelIndex(level:LevelEnum):number {
+    return (this._levelOrder.indexOf(level))+1;
+  }
+
+  getLevelOrder(){
+
+  }
+
+  get backgroundSoundVolume(){
+    return this._backgroundSoundVolume;
+  }
+
+  set backgroundSoundVolume(bg:number){
+    this._backgroundSoundVolume = bg;
+  }
+
+  get soundAffectVolume(){
+    return this._soundAffectVolume;
+  }
+
+  set soundAffectVolume(v:number){
+    this._soundAffectVolume = v;
   }
 
 }

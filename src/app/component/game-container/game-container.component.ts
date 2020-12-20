@@ -9,6 +9,7 @@ import { CanvasContainer } from 'src/app/domain/CanvasContainer';
 import { IntroAnimation } from 'src/app/domain/IntroAnimation';
 import { OptionsService } from 'src/app/services/options.service';
 import { KeyboardEventService } from 'src/app/services/keyboard-event.service';
+import { AudioServiceService } from 'src/app/services/audio-service.service';
 
 @Component({
   selector: 'app-game-container',
@@ -49,6 +50,7 @@ export class GameContainerComponent implements OnInit, OnDestroy {
     constructor(
                 private optionsService:OptionsService,
                 private resourcesService:ResourcesService,
+                private audioServiceService:AudioServiceService,
                 protected levelManagerService:LevelManagerService,
                 private bulletManagerService: BulletManagerService,
                 private playerService:PlayerService, private botManagerService:BotManagerService, private keyboardEventService:KeyboardEventService) {
@@ -181,7 +183,7 @@ export class GameContainerComponent implements OnInit, OnDestroy {
               this.botManagerService.update(currentLevel, this.canvasContainer, this.bulletManagerService, this.playerService);
 
               // update for the player (Gen bullets)
-              this.playerService.currentPlayer.update(currentLevel, this.canvasContainer, this.bulletManagerService, this.botManagerService);
+              this.playerService.currentPlayer.update(currentLevel, this.canvasContainer, this.bulletManagerService, this.botManagerService, this.audioServiceService);
               // todo we have to find a nice way to move the player to the middle of the screen here. Maybe disable the player controls until this value is set?
 
               // have a bullet manager to move the bullets, do collision detection
@@ -190,6 +192,8 @@ export class GameContainerComponent implements OnInit, OnDestroy {
               this.bulletManagerService.update(currentLevel, this.canvasContainer, this.botManagerService, this.playerService);
 
               // vertical and horizontal, bare that in mind....
+              this.audioServiceService.update();
+              this.audioServiceService.playAudio("Trouble-on-Mercury", true);
             }
         }
         this.tickComplete = true;

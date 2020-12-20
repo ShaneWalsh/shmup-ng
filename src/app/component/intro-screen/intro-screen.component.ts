@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { KeyboardEventService } from 'src/app/services/keyboard-event.service';
 import { Subscription } from '../../../../node_modules/rxjs';
-import { LevelManagerService, LevelEnum } from 'src/app/manager/level-manager.service';
+import { LevelManagerService } from 'src/app/manager/level-manager.service';
 import { PlayerService} from '../../services/player.service';
+import { LevelEnum } from 'src/app/manager/level-manager/LevelEnum';
 
 @Component({
   selector: 'app-intro-screen',

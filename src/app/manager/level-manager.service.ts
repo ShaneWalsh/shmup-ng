@@ -8,13 +8,11 @@ import { LevelEventsService } from 'src/app/manager/level-events.service';
 import { CanvasContainer } from '../domain/CanvasContainer';
 import { OptionsService } from '../services/options.service';
 import { KeyboardEventService } from '../services/keyboard-event.service';
-
-export enum LevelEnum{
-    LevelOne='LevelOne',
-    LevelTwo='LevelTwo',
-    LevelThree='LevelThree',
-    LevelFour='LevelFour',
-}
+import { LevelOneInstance } from './level-manager/LevelOneInstance';
+import { LevelTwoInstance } from './level-manager/LevelTwoInstance';
+import { LevelThreeInstance } from './level-manager/LevelThreeInstance';
+import { LevelEnum } from './level-manager/LevelEnum';
+import { AudioServiceService } from '../services/audio-service.service';
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +38,7 @@ export class LevelManagerService {
   public showPauseMenu:boolean = false;
   public showPauseMenuIndex:number = 0;
 
-  constructor(private optionsService:OptionsService, private resourcesService:ResourcesService, private botManagerService:BotManagerService, private bulletManagerService: BulletManagerService,private levelEventsService:LevelEventsService, private keyboardEventService:KeyboardEventService) {
+  constructor(private optionsService:OptionsService, private resourcesService:ResourcesService, private botManagerService:BotManagerService, private bulletManagerService: BulletManagerService,private levelEventsService:LevelEventsService, private keyboardEventService:KeyboardEventService, private audioServiceService:AudioServiceService) {
     this.loadEvents();
     keyboardEventService.getKeyUpEventSubject().subscribe(customKeyboardEvent => {
       if(customKeyboardEvent.event.keyCode == 80 || customKeyboardEvent.event.keyCode == 27){ // p || esc
@@ -79,12 +77,21 @@ export class LevelManagerService {
     this.bulletManagerService.clean();
     this.currentLevelEnum = level;
 
-    this.currentLevel = this.optionsService.initLevel(level, this.resourcesService, this.botManagerService, this, this.levelEventsService);
+    let index = this.optionsService.getLevelIndex(level);
+    if(index == 1) {
+      this.currentLevel = new LevelOneInstance(this.resourcesService, this.botManagerService, this, this.levelEventsService);
+    } else if(index == 2) {
+      this.currentLevel = new LevelTwoInstance(this.resourcesService, this.botManagerService, this, this.levelEventsService);
+    } else if(index == 3) {
+      this.currentLevel = new LevelThreeInstance(this.resourcesService, this.botManagerService, this, this.levelEventsService);
+    }
+
     this.levelLoaded.next(this.currentLevel);
   }
 
   pauseGame() {
       this.paused = true;
+      this.audioServiceService.stopAllAudio();
   }
 
   unPauseGame(){

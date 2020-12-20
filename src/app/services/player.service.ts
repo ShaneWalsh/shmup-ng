@@ -13,6 +13,7 @@ import { ShipFactoryService } from './ship-factory.service';
 import { PilotFactoryService } from './pilot-factory.service';
 import { ShipEnum, ShipObject } from '../domain/player/ShipObject';
 import { PilotEnum, PilotObject } from '../domain/player/PilotObject';
+import { AudioServiceService } from './audio-service.service';
 
 
 
@@ -112,7 +113,7 @@ export class PlayerObj implements ShieldBot {
 
   }
 
-  update(levelInstance:LevelInstance, canvasContainer:CanvasContainer, bulletManagerService:BulletManagerService, botManagerService:BotManagerService){
+  update(levelInstance:LevelInstance, canvasContainer:CanvasContainer, bulletManagerService:BulletManagerService, botManagerService:BotManagerService, audioServiceService:AudioServiceService){
     if(!this.hasMovedToMiddle){
       if(this.posY > 320){
         this.posY-= this.speed;
@@ -142,6 +143,7 @@ export class PlayerObj implements ShieldBot {
       this.firingSequence++;
     } else if(this.firingSequence == 5){
       this.selectedShip.fire(ctx, this.posX,this.posY, this.bulletSpeed, levelInstance, canvasContainer, bulletManagerService, botManagerService);
+      audioServiceService.playAudioNewInstance("Space-Cannon");
       this.bulletsFired = true;
       this.firingSequence++;
     }
