@@ -19,7 +19,7 @@ export class ResourcesService {
   		this.audioResourcesToLoad = []
 			this.resources = new Map();
 			this.resourcesLoaded = new Subject();
-
+      /*
       this.resourcesToLoad = [
         {code:"b8-laser-1", path:"/assets/img/boss/boss-8-update/b8-laser-1.png", type:ResourcesEnum.ImageRes},
         {code:"b8-laser-2", path:"/assets/img/boss/boss-8-update/b8-laser-2.png", type:ResourcesEnum.ImageRes},
@@ -361,11 +361,11 @@ export class ResourcesService {
               code: "enemy-bullet-target", path: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAOCAYAAAArMezNAAAABGdBTUEAAK/INwWK6QAAAAlwSFlzAAAOwwAADsMBx2+oZAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMS42/U4J6AAAAGRJREFUOE/VkDEOgEAIBImv8v8fW7UgAXZFLM7EYgrIMJecARixYUdH9dPQoWKR6qfhQh29wTvrw0qK2Kl2kL8sTAtxNIE6tBBHE6jzvz/28PSBJ7zzXfgOFYlUPw0dKhbJPuwA7VOl229hSMgAAAAASUVORK5CYII=",
               type: ResourcesEnum.ImageRes }
       ];
-
+      */
 
       // offline loading of files.
       let compiledRes = new CompiledResources();
-      //this.resourcesToLoad = compiledRes.res;
+      this.resourcesToLoad = compiledRes.res;
       // add in sound files.
       this.audioResourcesToLoad.push({code:"Space-Cannon", path:"assets/sound/effects/Space-Cannon.mp3", type:ResourcesEnum.SoundRes});
       this.audioResourcesToLoad.push({code:"Trouble-on-Mercury", path:"assets/sound/bg/Trouble-on-Mercury_Looping.mp3", type:ResourcesEnum.SoundRes});
@@ -437,7 +437,7 @@ export class ResourcesService {
   imageLoaded(code,loadedImage:HTMLImageElement){
     this.resources.set(code,loadedImage);
     // store as global variable and then copy(temp1) to copy the object
-    // this.resourcesToLoadB64.push({code:code,path:this.imgToBase64(loadedImage),type:ResourcesEnum.ImageRes});
+    //this.resourcesToLoadB64.push({code:code,path:this.imgToBase64(loadedImage),type:ResourcesEnum.ImageRes});
     this.resourceLoaded();
   }
 
