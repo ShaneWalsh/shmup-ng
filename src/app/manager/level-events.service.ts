@@ -746,44 +746,17 @@ export class LevelEventsService {
 			health:250,
 		};
 
-		let level2MiniBoss1 = {
-			bulletSpeed: 6,
+		let level3MiniBoss1 = {
+			bulletSpeed: 4,
 			posXSpeed: 3,
 			posYSpeed: 1.5,
-			bTimerLimit: 30,
+			bTimerLimit: 80,// 80
 			mTimerLimit: 60,
 			missileSpeed: 4.5,
 			destinationY: 1,
 			anaimationTimerLimit:4, // the bot has an animation for its engine, this animation swaps every 4 ticks.
 			score: 20000,
-			health:200,
-    };
-
-    let level2Starship = {
-			bulletSpeed: 6,
-			posXSpeed: 3,
-			posYSpeed: 1.5,
-			bTimerLimit: 30,
-			mTimerLimit: 60,
-			missileSpeed: 4.5,
-			destinationY: 50,
-			anaimationTimerLimit:4, // the bot has an animation for its engine, this animation swaps every 4 ticks.
-			score: 50000,
-			health:350,
-			weakPointHealth:75,
-    };
-
-    let judgeL2Config = {
-      bulletSpeed: 6, // how fast this bots buttets travel every tick
-      speed: 3,
-      bTimerLimit: 30,
-      score: 20000, // this is only added to the players score if they kill the bot, if it leaves the screen the bot is simply removed.
-      health:300, // health, when 0 Diver is dead.
-      targetCords:[
-        {targetX:90,targetY:535},{targetX:90,targetY:90},
-        {targetX:380,targetY:90},{targetX:380,targetY:535},
-        {targetX:380,targetY:90},{targetX:90,targetY:90}
-      ]
+			health:1800,
     };
 
 		if(difficulty == 0){ // easy difficulty, so reducing the bots health
@@ -814,30 +787,28 @@ export class LevelEventsService {
 		//#########################################################################################
 		//######################          Phase Zero        #######################################
     //#########################################################################################
-    le.push(new SpawnBotEvent(0, 40, false, 0, BotType.KAMIKAZE, kamikazeConfig, false, 200, -80));
-		le.push(new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));
-		le.push(new SpawnBotEvent(0, 80, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));
-		le.push(new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
-		// blade right
-		le.push(new SpawnBotEvent(0, 190, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
-		le.push(new SpawnBotEvent(0, 200, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
-    le.push(new SpawnBotEvent(0, 210, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
-		// blade left
-		le.push(new SpawnBotEvent(0, 260, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
-		le.push(new SpawnBotEvent(0, 270, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
-		le.push(new SpawnBotEvent(0, 280, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
-		le.push(new SpawnBotEvent(0, 400, false, 0, BotType.DIVER, diverConfig, false, 10, -60));
-		le.push(new SpawnBotEvent(0, 450, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));
-		le.push(new SpawnBotEvent(0, 430, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));
-		le.push(new SpawnBotEvent(0, 450, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
+    // le.push(new SpawnBotEvent(0, 40, false, 0, BotType.KAMIKAZE, kamikazeConfig, false, 200, -80));
+		// le.push(new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));
+		// le.push(new SpawnBotEvent(0, 80, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));
+		// le.push(new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
+		// // blade right
+		// le.push(new SpawnBotEvent(0, 190, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
+		// le.push(new SpawnBotEvent(0, 200, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
+    // le.push(new SpawnBotEvent(0, 210, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
+		// // blade left
+		// le.push(new SpawnBotEvent(0, 260, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
+		// le.push(new SpawnBotEvent(0, 270, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
+		// le.push(new SpawnBotEvent(0, 280, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
+		// le.push(new SpawnBotEvent(0, 400, false, 0, BotType.DIVER, diverConfig, false, 10, -60));
+		// le.push(new SpawnBotEvent(0, 450, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));
+		// le.push(new SpawnBotEvent(0, 430, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));
+		// le.push(new SpawnBotEvent(0, 450, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
 
-    le.push(new SpawnBotEvent(0, 1200, false, 0, BotType.MINIBOSS1L2, level2MiniBoss1, false, 100, -300));
+    le.push(new SpawnBotEvent(0, 50, false, 0, BotType.MINIBOSS1L3, level3MiniBoss1, false, 0, -645));
 
-    le.push(new SpawnBotEvent(1, 180, false, 0, BotType.JUDGEL2, judgeL2Config, false, 90, -300));
+    le.push(new SpawnBotEvent(1, 50, false, 0, BotType.MINIBOSS1L3, level3MiniBoss1, false, 0, -645));
 
-    le.push(new SpawnBotEvent(2, 2000, false, 0, BotType.STARSHIPL2, level2Starship, false, 150, -300));
-
-    le.push(new LevelOverEvent(3,100));
+    le.push(new LevelOverEvent(2,100));
     return le;
 	}
 }

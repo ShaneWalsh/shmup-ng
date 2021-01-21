@@ -10,19 +10,19 @@ export class OptionsService {
   /**
    * Default sound effect volume.
    */
-  private _soundAffectVolume : number = .2;
+  private _soundAffectVolume : number = 0; //.2
   /**
    * Default background volume.
    */
-  private _backgroundSoundVolume : number = .1;
+  private _backgroundSoundVolume : number = 0; // .1
   /**
-  * Default level order
+  * Default level order, Just change the index value to change the order they are played in.
   */
-  private _levelOrder : LevelEnum[] = [
-    LevelEnum.LevelOne,
-    LevelEnum.LevelTwo,
-    LevelEnum.LevelThree,
-    LevelEnum.LevelFour,
+  private _levelOrder : {level:LevelEnum,levelIndex:number}[] = [
+    {level:LevelEnum.LevelOne, levelIndex:3},
+    {level:LevelEnum.LevelTwo, levelIndex:2},
+    {level:LevelEnum.LevelThree, levelIndex:1},
+    {level:LevelEnum.LevelFour, levelIndex:4}
   ];
 
   constructor() { }
@@ -49,7 +49,7 @@ export class OptionsService {
   }
 
   getLevelIndex(level:LevelEnum):number {
-    return (this._levelOrder.indexOf(level))+1;
+    return (this._levelOrder.find(lev => lev.level == level).levelIndex);
   }
 
   getLevelOrder(){

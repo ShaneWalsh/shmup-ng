@@ -30,6 +30,7 @@ import { Level2Starship } from '../domain/bots/Level2Starship';
 import { Judge } from '../domain/bots/Level2Boss5Judge';
 import { BotAnimation } from '../domain/BotAnimation';
 import { Kamikaze } from '../domain/bots/Kamikaze';
+import { Level3SubBoss } from '../domain/bots/Level3SubBoss';
 
 /**
  * Going to manage the created bots, spawned by the level manager. Its going to emit when they are destroyed or when they leave the screen.
@@ -378,7 +379,27 @@ export class BotManagerService {
       this.botCreated.next(newBot);
   }
 
-	createBotDeath(x,y){
+
+  generateLevel3SubBoss(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -300, config: any = {}): any {
+    let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
+    let newBot = new Level3SubBoss(config, posObj.posX, posObj.posY,
+      this.resourcesService.getRes().get("boss-8"),
+      this.resourcesService.getRes().get("boss-8-damaged"),
+      480,
+      640,
+      [this.resourcesService.getRes().get("b8-laser-1"),this.resourcesService.getRes().get("b8-laser-2"),this.resourcesService.getRes().get("b8-laser-3")],
+      [this.resourcesService.getRes().get("b8-laser-4"),this.resourcesService.getRes().get("b8-laser-5"),this.resourcesService.getRes().get("b8-laser-6"),
+        this.resourcesService.getRes().get("b8-laser-7"),this.resourcesService.getRes().get("b8-laser-8"),this.resourcesService.getRes().get("b8-laser-9")],
+      [this.resourcesService.getRes().get("b8-laser-10"),this.resourcesService.getRes().get("b8-laser-11")],
+      this.resourcesService.getRes().get("boss-8-turret"),
+      this.resourcesService.getRes().get("boss-8-turret-damaged"),
+      this.resourcesService.getRes().get("miniboss-3-muzzle-flash"),
+    );
+    this.botsArr.push(newBot);
+    this.botCreated.next(newBot);
+  }
+
+	createBotDeath(x,y) {
 		this.spriteSheetArr.push(new SpriteSheet(x-40,y-40,
 			[this.resourcesService.getRes().get("bot-explosion-1"),
 			this.resourcesService.getRes().get("bot-explosion-2"),
