@@ -22,7 +22,8 @@ export class Level3SubBoss extends  BotInstanceImpl {
     public bulletTurret:Turret;
     public bulletTurret2:Turret;
 
-    public health:number=1800;
+    public health:number=750;
+    public totalHealth:number=750;
     public bulletSpeed:number = 5;
 
     public posXSpeed:number = 3;
@@ -53,10 +54,28 @@ export class Level3SubBoss extends  BotInstanceImpl {
     public phaseDrawingCountLimit:number = 5;
 
     // static values for the laser locations
-    public iLaserOrder1:number[]=[0,1,2,3,4];
-    public iLaserOrder2:number[]=[2,0,4,1,3];
-    public iLaserOrder3:number[]=[4,3,2,1,0];
-    public currentOrder = null;
+    public iLaserOrders:any[] = [
+      [
+        [0],[1],[2],[3],[4]
+      ],
+      [
+        [2],[0],[4],[1],[3]
+      ],
+      [
+        [0,1], [3,4], [1,2], [0,3], [2,3],
+      ],
+      [
+        [0,4], [1,3], [1,2,3], [4,1], [0,3]
+      ],
+      [
+        [0,2,4], [0,1,3], [1,2,3], [4,2,1], [0,2,4]
+      ],
+    ];
+    public iLaserOrdersIndex = 0;
+    public iLaserOrdersChangePer:number = 150;
+    public iLaserOrdersChangeCounter:number = 0;
+
+    public currentOrder:any[] = null;
     public currentOrderIndex:number = 0;
     public currentOrderIndexLimit:number = 5;
     public iLaserLocations:any[]= [{x:0,y:-102}, {x:0,y:0}, {x:0,y:102}, {x:0,y:204}, {x:0,y:306}];
@@ -84,7 +103,7 @@ export class Level3SubBoss extends  BotInstanceImpl {
     ) {
       super(config);
       this.imageObj = imageObj;
-      this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score","posYSpeed","posXSpeed","bulletSpeed"]);
+      this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score","posYSpeed","posXSpeed","bulletSpeed", "iLaserOrders", "iLaserOrdersChangePer"]);
 
       this.bulletTurret = new Turret(
         this.posX+(102),
@@ -140,7 +159,8 @@ export class Level3SubBoss extends  BotInstanceImpl {
       this.phaseCountLimit = this.iLaserLoading.length;
       this.phaseDrawingCount = 0;
 
-      this.currentOrder = this.iLaserOrder1;
+      this.currentOrder = this.iLaserOrders[this.iLaserOrdersIndex];
+      this.totalHealth = this.health;
     }
 
 	update(levelInstance:LevelInstance, canvasContainer:CanvasContainer, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {
@@ -187,22 +207,26 @@ export class Level3SubBoss extends  BotInstanceImpl {
     this.bulletTurret2.update(this.posX+(314),this.posY+(8),currentPlayer,levelInstance, canvasContainer.mainCtx, canvasContainer.shadowCtx, botManagerService, bulletManagerService, playerService,( this.damAnaimationTimer %2 == 1));
 
     this.updatePhaseLaser(currentPlayer, canvasContainer, playerService, levelInstance);
-    if(this.phase == PhaseLaser.PHASE_LOADING && this.phaseCount == 0 &&  this.phaseDrawingCount == 0 && this.phaseLoop == 0){
-      if(this.health < 1201 && this.health > 600){
-        this.currentOrder = this.iLaserOrder2;
-      } else if(this.health < 601 && this.health > 0){
-        this.currentOrder = this.iLaserOrder3;
-      } else {
-        this.currentOrder = this.iLaserOrder1;
+    if(this.phase == PhaseLaser.PHASE_LOADING && this.phaseCount == 0 &&  this.phaseDrawingCount == 0 && this.phaseLoop == 0) {
+
+      this.currentOrder = this.iLaserOrders[this.iLaserOrdersIndex];
+      let diff = ((this.totalHealth - this.health) - this.iLaserOrdersChangeCounter);
+      if(diff > this.iLaserOrdersChangePer) {
+        this.iLaserOrdersChangeCounter += this.iLaserOrdersChangePer;
+        this.iLaserOrdersIndex = ((this.iLaserOrdersIndex+1) >= this.iLaserOrders.length)? 0 : this.iLaserOrdersIndex+1;
+        this.currentOrder = this.iLaserOrders[this.iLaserOrdersIndex];
+        //console.log(`phase shift iLaserOrdersIndex:${this.iLaserOrdersIndex}`)
+        // should I reset the order in the current index?
+        this.currentOrderIndex = 0;
       }
     }
   }
 
   updatePhaseLaser( playerObj:PlayerObj, canvasContainer:CanvasContainer,  playerService:PlayerService, levelInstance:LevelInstance) {
-    let iX = this.iLaserLocations[this.currentOrder[this.currentOrderIndex]].x;
-    let iY = this.iLaserLocations[this.currentOrder[this.currentOrderIndex]].y;
-    let drawX = this.posX+iX;
-    let drawY = this.posY+iY;
+
+    let currentLaserPositions:number[] = this.currentOrder[this.currentOrderIndex];
+    let currentLaserLength = currentLaserPositions.length;
+
     if(this.phaseDrawingCount == this.phaseDrawingCountLimit){
       this.phaseCount++; // move to the next image
       this.phaseDrawingCount = 0; // reset for the next image
@@ -216,7 +240,13 @@ export class Level3SubBoss extends  BotInstanceImpl {
       } else if ( this.phase == PhaseLaser.PHASE_DAMAGE ) {
         image = this.iLaserDamage[this.phaseCount];
       }
-      canvasContainer.mainCtx.drawImage(image, 0, 0, this.imageSizeX, this.imageSizeY, drawX, drawY,this.imageSizeX, this.imageSizeY);
+      for(let i = 0; i < currentLaserLength; i++) {
+        let iX = this.iLaserLocations[currentLaserPositions[i]].x;
+        let iY = this.iLaserLocations[currentLaserPositions[i]].y;
+        let drawX = this.posX+iX;
+        let drawY = this.posY+iY;
+        canvasContainer.mainCtx.drawImage(image, 0, 0, this.imageSizeX, this.imageSizeY, drawX, drawY,this.imageSizeX, this.imageSizeY);
+      }
     }
 
     if ( this.phaseCount == this.phaseCountLimit ) {
@@ -242,11 +272,17 @@ export class Level3SubBoss extends  BotInstanceImpl {
     }
     if ( this.phase == PhaseLaser.PHASE_DAMAGE ) {
       let hitty = new HitBox(162, 214, 150, 96);
-      if ( playerObj.hasPlayerBeenHit ( {posX:drawX, posY:drawY}, hitty) ) {
-        playerService.killCurrentPlayer();
-      }
-      if ( levelInstance.drawHitBox() ) {
-        hitty.drawBorder(drawX+hitty.hitBoxX,drawY+hitty.hitBoxY,hitty.hitBoxSizeX,hitty.hitBoxSizeY,canvasContainer.mainCtx,"#FF0000");
+      for(let i = 0; i < currentLaserLength; i++) {
+        let iX = this.iLaserLocations[currentLaserPositions[i]].x;
+        let iY = this.iLaserLocations[currentLaserPositions[i]].y;
+        let drawX = this.posX+iX;
+        let drawY = this.posY+iY;
+        if ( playerObj.hasPlayerBeenHit ( {posX:drawX, posY:drawY}, hitty) ) {
+          playerService.killCurrentPlayer();
+        }
+        if ( levelInstance.drawHitBox() ) {
+          hitty.drawBorder(drawX+hitty.hitBoxX,drawY+hitty.hitBoxY,hitty.hitBoxSizeX,hitty.hitBoxSizeY,canvasContainer.mainCtx,"#FF0000");
+        }
       }
     }
   }

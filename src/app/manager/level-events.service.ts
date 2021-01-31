@@ -756,7 +756,7 @@ export class LevelEventsService {
 			destinationY: 1,
 			anaimationTimerLimit:4, // the bot has an animation for its engine, this animation swaps every 4 ticks.
 			score: 20000,
-			health:1800,
+			health:750,
     };
 
 		if(difficulty == 0){ // easy difficulty, so reducing the bots health
