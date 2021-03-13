@@ -732,6 +732,17 @@ export class LevelEventsService {
 			score: 20000,
 			health:400,
 		};
+
+    let swordfishConfig = {
+			bulletSpeed: 6,
+			posXSpeed: 2.5,
+			posYSpeed: 2.5,
+			bTimerLimit: 90,
+			anaimationTimerLimit:4, // the bot has an animation for its engine, this animation swaps every 4 ticks.
+			score: 1000,
+			health:10,
+		};
+
 		// spinning boss guy
 		let level1MiniBoss2 = {
 			bulletSpeed: 6,
@@ -804,6 +815,9 @@ export class LevelEventsService {
 		// le.push(new SpawnBotEvent(0, 430, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));
 		// le.push(new SpawnBotEvent(0, 450, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
 
+    le.push(new SpawnBotEvent(0, 30, false, 0, BotType.SWORDFISH, swordfishConfig, false, 180, -185));
+    le.push(new SpawnBotEvent(0, 30, false, 0, BotType.SWORDFISH, swordfishConfig, false, 50, -185));
+    le.push(new SpawnBotEvent(0, 30, false, 0, BotType.SWORDFISH, swordfishConfig, false, 300, -185));
     le.push(new SpawnBotEvent(0, 50, false, 0, BotType.MINIBOSS1L3, level3MiniBoss1, false, 0, -645));
 
     le.push(new SpawnBotEvent(1, 50, false, 0, BotType.MINIBOSS1L3, level3MiniBoss1, false, 0, -645));

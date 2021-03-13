@@ -31,6 +31,7 @@ import { Judge } from '../domain/bots/Level2Boss5Judge';
 import { BotAnimation } from '../domain/BotAnimation';
 import { Kamikaze } from '../domain/bots/Kamikaze';
 import { Level3SubBoss } from '../domain/bots/Level3SubBoss';
+import { Swordfish } from '../domain/bots/Swordfish';
 
 /**
  * Going to manage the created bots, spawned by the level manager. Its going to emit when they are destroyed or when they leave the screen.
@@ -226,6 +227,17 @@ export class BotManagerService {
     let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
     let newBot = new Drone(config, posObj.posX, posObj.posY, this.resourcesService.getRes().get("enemy-2-1"),
     this.resourcesService.getRes().get("enemy-2-2"), 56, 78,new HitBox(0, 0, 56, 78),this.resourcesService.getRes().get("drone-damaged"));
+
+    this.botsArr.push(newBot);
+    this.botCreated.next(newBot);
+  }
+
+  generateSwordfish(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
+    let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
+    let newBot = new Swordfish(
+      config, posObj.posX, posObj.posY,
+      this.resourcesService.getRes().get("swordfish"),
+      this.resourcesService.getRes().get("swordfish-damaged"));
 
     this.botsArr.push(newBot);
     this.botCreated.next(newBot);

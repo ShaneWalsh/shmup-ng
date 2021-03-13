@@ -19,8 +19,21 @@ export class ResourcesService {
   		this.audioResourcesToLoad = []
 			this.resources = new Map();
 			this.resourcesLoaded = new Subject();
-      /*
+
       this.resourcesToLoad = [
+
+        {code:"caution-1", path:"/assets/img/loading/caution/caution-1.png", type:ResourcesEnum.ImageRes},
+        {code:"caution-2", path:"/assets/img/loading/caution/caution-2.png", type:ResourcesEnum.ImageRes},
+        {code:"caution-3", path:"/assets/img/loading/caution/caution-3.png", type:ResourcesEnum.ImageRes},
+        {code:"caution-4", path:"/assets/img/loading/caution/caution-4.png", type:ResourcesEnum.ImageRes},
+        {code:"caution-5", path:"/assets/img/loading/caution/caution-5.png", type:ResourcesEnum.ImageRes},
+        {code:"caution-6", path:"/assets/img/loading/caution/caution-6.png", type:ResourcesEnum.ImageRes},
+        {code:"caution-7", path:"/assets/img/loading/caution/caution-7.png", type:ResourcesEnum.ImageRes},
+        {code:"caution-8", path:"/assets/img/loading/caution/caution-8.png", type:ResourcesEnum.ImageRes},
+
+        {code:"swordfish", path:"/assets/img/bots/swordfish/swordfish.png", type:ResourcesEnum.ImageRes},
+        {code:"swordfish-damaged", path:"/assets/img/bots/swordfish/swordfish-damaged.png", type:ResourcesEnum.ImageRes},
+
         {code:"b8-laser-1", path:"/assets/img/boss/boss-8-update/b8-laser-1.png", type:ResourcesEnum.ImageRes},
         {code:"b8-laser-2", path:"/assets/img/boss/boss-8-update/b8-laser-2.png", type:ResourcesEnum.ImageRes},
         {code:"b8-laser-3", path:"/assets/img/boss/boss-8-update/b8-laser-3.png", type:ResourcesEnum.ImageRes},
@@ -361,11 +374,12 @@ export class ResourcesService {
               code: "enemy-bullet-target", path: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAOCAYAAAArMezNAAAABGdBTUEAAK/INwWK6QAAAAlwSFlzAAAOwwAADsMBx2+oZAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMS42/U4J6AAAAGRJREFUOE/VkDEOgEAIBImv8v8fW7UgAXZFLM7EYgrIMJecARixYUdH9dPQoWKR6qfhQh29wTvrw0qK2Kl2kL8sTAtxNIE6tBBHE6jzvz/28PSBJ7zzXfgOFYlUPw0dKhbJPuwA7VOl229hSMgAAAAASUVORK5CYII=",
               type: ResourcesEnum.ImageRes }
       ];
-      */
+
+
 
       // offline loading of files.
-      let compiledRes = new CompiledResources();
-      this.resourcesToLoad = compiledRes.res;
+      // let compiledRes = new CompiledResources();
+      // this.resourcesToLoad = compiledRes.res;
       // add in sound files.
       this.audioResourcesToLoad.push({code:"Space-Cannon", path:"assets/sound/effects/Space-Cannon.mp3", type:ResourcesEnum.SoundRes});
       this.audioResourcesToLoad.push({code:"Trouble-on-Mercury", path:"assets/sound/bg/Trouble-on-Mercury_Looping.mp3", type:ResourcesEnum.SoundRes});
