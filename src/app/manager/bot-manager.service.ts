@@ -411,6 +411,36 @@ export class BotManagerService {
     this.botCreated.next(newBot);
   }
 
+  createCautionAnimation(x=264,y=84) {
+		this.spriteSheetArr.push(new SpriteSheet(x,y,
+			[
+      this.resourcesService.getRes().get("caution-1"),
+			this.resourcesService.getRes().get("caution-2"),
+			this.resourcesService.getRes().get("caution-3"),
+			this.resourcesService.getRes().get("caution-4"),
+      this.resourcesService.getRes().get("caution-5"),
+			this.resourcesService.getRes().get("caution-6"),
+			this.resourcesService.getRes().get("caution-7"),
+			this.resourcesService.getRes().get("caution-8"),
+			null,
+      this.resourcesService.getRes().get("caution-8"),
+      null,
+      this.resourcesService.getRes().get("caution-8"),
+      null,
+      this.resourcesService.getRes().get("caution-8")
+    ],
+      264,84,this.deathAnimtionTimer,this.deathAnimtionTimer)
+		);
+  }
+
+
+
+
+
+
+
+
+
 	createBotDeath(x,y) {
 		this.spriteSheetArr.push(new SpriteSheet(x-40,y-40,
 			[this.resourcesService.getRes().get("bot-explosion-1"),

@@ -40,10 +40,12 @@ export class SpriteSheet {
     }
     let ctxDraw = this.ctx == null ? canvasContainer.mainCtx:this.ctx;
     if (!this.complete){
-      if(this.angle == null){
-        ctxDraw.drawImage(this.imageObjs[this.spritePosition], 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY, this.imageSizeX, this.imageSizeY);
-      } else {
-        LogicService.drawRotateImage(this.imageObjs[this.spritePosition], ctxDraw,this.angle,this.posX, this.posY, this.imageSizeX, this.imageSizeY);
+      if(this.imageObjs[this.spritePosition]){
+        if(this.angle == null){
+          ctxDraw.drawImage(this.imageObjs[this.spritePosition], 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY, this.imageSizeX, this.imageSizeY);
+        } else {
+          LogicService.drawRotateImage(this.imageObjs[this.spritePosition], ctxDraw,this.angle,this.posX, this.posY, this.imageSizeX, this.imageSizeY);
+        }
       }
     } else {
       botManagerService.removeSpriteSheet(this);

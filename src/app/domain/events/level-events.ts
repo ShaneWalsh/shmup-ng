@@ -28,7 +28,9 @@ export enum BotType {
   JUDGEL2 = "JUDGEL2",
   MINIBOSS1L3 = "MINIBOSS1L3",
 
-  BOSS1="BOSS1" // move on a phase after a mini boss dies.
+  BOSS1="BOSS1", // move on a phase after a mini boss dies.
+  // Animations
+  CAUTIONANIMATION="CAUTIONANIMATION"
 }
 
 // Extract Events to an events class.
@@ -121,6 +123,8 @@ export class SpawnBotEvent extends LevelEvent {
             botManagerService.generateLevel2Judge(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.MINIBOSS1L3) {
             botManagerService.generateLevel3SubBoss(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
+        } else if (this.botType == BotType.CAUTIONANIMATION) {
+            botManagerService.createCautionAnimation(this.posX, this.posY);
         } else {
 					console.log("Not implemented");
 		    }
