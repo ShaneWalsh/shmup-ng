@@ -4,6 +4,7 @@ import { Subscription } from '../../../../node_modules/rxjs';
 import { LevelManagerService } from 'src/app/manager/level-manager.service';
 import { PlayerService} from '../../services/player.service';
 import { LevelEnum } from 'src/app/manager/level-manager/LevelEnum';
+import { NgApiService } from 'src/app/services/ng-api.service';
 
 @Component({
   selector: 'app-intro-screen',
@@ -26,7 +27,7 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
     public playerLives:number = 0;
     public requestAnimFrame:any; // have to ensure this is not created multiple times!
 
-    constructor(private keyboardEventService:KeyboardEventService, private levelManagerService: LevelManagerService, private playerService:PlayerService) {
+    constructor(private keyboardEventService:KeyboardEventService, private levelManagerService: LevelManagerService, private playerService:PlayerService, private ngApiService:NgApiService) {
         this.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || // this redraws the canvas when the browser is updating. Crome 18 is execllent for canvas, makes it much faster by using os
                            window["mozRequestAnimationFrame"] || window["msRequestAnimationFrame"] || window["oRequestAnimationFrame"]
                            || function(callback) { window.setTimeout(callback,1000/60);};
@@ -59,15 +60,16 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
           }
         }
         if(customKeyboardEvent.event.keyCode == 38 || customKeyboardEvent.event.keyCode == 40 || customKeyboardEvent.event.keyCode == 87 || customKeyboardEvent.event.keyCode == 83){
-          if(this.screenId == 1) { // diff select
+          if(this.screenId == 1) { // main menu select
+            // perform a medal check again
             if (customKeyboardEvent.event.keyCode == 87 || customKeyboardEvent.event.keyCode == 38) { // up
-              let diff =  this.levelManagerService.mainMenuIndex - 1 ;
-              if(diff < 0) diff = 3;
-              this.levelManagerService.mainMenuIndex = diff;
+              let mainMenuSelection =  this.levelManagerService.mainMenuIndex - 1 ;
+              if(mainMenuSelection < 0) mainMenuSelection = 3;
+              this.levelManagerService.mainMenuIndex = mainMenuSelection;
             } else { //down 83 40
-              let diff =  this.levelManagerService.mainMenuIndex + 1;
-              if(diff > 3) diff = 0;
-              this.levelManagerService.mainMenuIndex = diff;
+              let mainMenuSelection =  this.levelManagerService.mainMenuIndex + 1;
+              if(mainMenuSelection > 3) mainMenuSelection = 0;
+              this.levelManagerService.mainMenuIndex = mainMenuSelection;
             }
           }
           if(this.screenId == 3) { // diff select
@@ -82,25 +84,27 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
             }
           }
           if(this.screenId == 4) { // pilot select
-            let diff =  this.playerService.selectedPilot +1;
-            if(diff > 1) diff = 0;
-            this.playerService.selectedPilot = diff;
+            let pilotSlection =  this.playerService.selectedPilot +1;
+            if(pilotSlection > 1) pilotSlection = 0;
+            this.playerService.selectedPilot = pilotSlection;
           }
           if(this.screenId == 5) { // ship select
-            let diff =  this.playerService.selectedShip +1;
-            if(diff > 1) diff = 0;
-            this.playerService.selectedShip = diff;
+            let shipSelection =  this.playerService.selectedShip +1;
+            if(shipSelection > 1) shipSelection = 0;
+            this.playerService.selectedShip = shipSelection;
           }
         }
       }));
       this.subs.push(this.playerService.getPlayerLivesGoneSubject().subscribe(playerObj => {
           this.levelManagerService.pauseGame(); // no point in it running for eternity
+          this.checkMedals();
           this.playerScore =  playerObj.score;
           this.playerLives =  playerObj.lives;
           this.screenId = 20;
       }));
       this.subs.push(this.levelManagerService.getLevelCompleteSubject().subscribe(result => {
         this.levelManagerService.pauseGame(); // no point in it running for eternity
+        this.checkMedals();
         this.playerScore =  this.playerService.currentPlayer.score;
         this.playerLives =  this.playerService.currentPlayer.lives;
         if(this.levelManagerService.getCurrentLevelEnum() == LevelEnum.LevelOne){
@@ -112,6 +116,11 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
         }
       }));
     }
+
+  checkMedals() {
+    // todo replace this with a medal check function, see if the user has any medals to unlock. This is a test
+    this.ngApiService.unlockMedal('CompleteLevel1onEasy');
+  }
 
     update() {
       this.gifTimer++;

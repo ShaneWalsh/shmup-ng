@@ -2,6 +2,7 @@ import { Component, HostListener } from '@angular/core';
 import { KeyboardEventService } from './services/keyboard-event.service';
 import { ResourcesService } from 'src/app/services/resources.service';
 import { AudioServiceService } from './services/audio-service.service';
+import { NgApiService } from './services/ng-api.service';
 
 @Component({
   selector: 'app-root',
@@ -26,12 +27,13 @@ export class AppComponent {
       this.keyboardEventService.publishKeyboardDownEvent(event);
   }
 
-  constructor(private keyboardEventService:KeyboardEventService, private resourcesService:ResourcesService, private audioServiceService:AudioServiceService){
+  constructor(private keyboardEventService:KeyboardEventService, private resourcesService:ResourcesService, private audioServiceService:AudioServiceService, private ngApiService:NgApiService){
       this.resourcesService.getResourcesLoaded().subscribe(load=>{
         this.resourcesService.setAudio(audioServiceService);
         this.loaded = load;
         console.log("loaded");
       })
       this.resourcesService.loadResources();
+      this.ngApiService.loadAll();
   }
 }
