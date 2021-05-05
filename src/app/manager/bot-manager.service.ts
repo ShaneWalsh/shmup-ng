@@ -434,13 +434,6 @@ export class BotManagerService {
   }
 
 
-
-
-
-
-
-
-
 	createBotDeath(x,y) {
 		this.spriteSheetArr.push(new SpriteSheet(x-40,y-40,
 			[this.resourcesService.getRes().get("bot-explosion-1"),
@@ -501,12 +494,18 @@ export class BotManagerService {
   }
 
   createExplosionHuge(x,y,angle=null) {
-		this.spriteSheetArr.push(new SpriteSheet(x-80,y-80,
-			[this.resourcesService.getRes().get("explosion-huge-1"),
-			this.resourcesService.getRes().get("explosion-huge-2"),
-			this.resourcesService.getRes().get("explosion-huge-3"),
-			this.resourcesService.getRes().get("explosion-huge-4")],
-			160,160,8,8,angle)
+		this.spriteSheetArr.push(new SpriteSheet(x-200,y-200,
+			[this.resourcesService.getRes().get("boss-explosion-1"),
+			this.resourcesService.getRes().get("boss-explosion-2"),
+			this.resourcesService.getRes().get("boss-explosion-3"),
+			this.resourcesService.getRes().get("boss-explosion-4"),
+			this.resourcesService.getRes().get("boss-explosion-5"),
+			this.resourcesService.getRes().get("boss-explosion-6"),
+			this.resourcesService.getRes().get("boss-explosion-7"),
+			this.resourcesService.getRes().get("boss-explosion-8"),
+			this.resourcesService.getRes().get("boss-explosion-9"),
+			this.resourcesService.getRes().get("boss-explosion-10")],
+			400,400,4,4,angle)
 		);
 	}
 
