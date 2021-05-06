@@ -32,6 +32,7 @@ import { BotAnimation } from '../domain/BotAnimation';
 import { Kamikaze } from '../domain/bots/Kamikaze';
 import { Level3SubBoss } from '../domain/bots/Level3SubBoss';
 import { Swordfish } from '../domain/bots/Swordfish';
+import { Level3SubBoss2 } from '../domain/bots/Level3SubBoss2';
 
 /**
  * Going to manage the created bots, spawned by the level manager. Its going to emit when they are destroyed or when they leave the screen.
@@ -409,6 +410,17 @@ export class BotManagerService {
     );
     this.botsArr.push(newBot);
     this.botCreated.next(newBot);
+  }
+
+  generateLevel3SubBoss2Bomber(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -300, config: any = {}): any {
+    let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
+    let hitz = new HitBox(0, 0, 118, 134);
+    let newBot = new Level3SubBoss2(config, posObj.posX, posObj.posY,
+        [this.resourcesService.getRes().get("boss-9")],
+        this.resourcesService.getRes().get("boss-9"),
+        118, 134, hitz);
+      this.botsArr.push(newBot);
+      this.botCreated.next(newBot);
   }
 
   createCautionAnimation(x=264,y=84) {
