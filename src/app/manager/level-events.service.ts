@@ -770,6 +770,12 @@ export class LevelEventsService {
 			health:750,
     };
 
+    let level3MiniBoss2 = {
+			moveSpeed: 5,
+			score: 15000,
+			health: 300,
+    };
+
 		if(difficulty == 0){ // easy difficulty, so reducing the bots health
 			// here I am overiding the fighters health and reducing it to one, and keeping all of the other values defined above.
 			fighterConfig = {...fighterConfig, health:3}
@@ -819,7 +825,7 @@ export class LevelEventsService {
     le.push(new SpawnBotEvent(0, 30, false, 0, BotType.SWORDFISH, swordfishConfig, false, 180, -185));
     le.push(new SpawnBotEvent(0, 30, false, 0, BotType.SWORDFISH, swordfishConfig, false, 50, -185));
     le.push(new SpawnBotEvent(0, 30, false, 0, BotType.SWORDFISH, swordfishConfig, false, 300, -185));
-    le.push(new SpawnBotEvent(0, 80, false, 0, BotType.MINIBOSS2L3, level3MiniBoss1, false, 0, -645));
+    le.push(new SpawnBotEvent(0, 80, false, 0, BotType.MINIBOSS2L3, level3MiniBoss2, false, 0, -645));
 
     le.push(new SpawnBotEvent(1, 30, false, 0, BotType.CAUTIONANIMATION, null, false, 108, 278));
     le.push(new SpawnBotEvent(1, 80, false, 0, BotType.MINIBOSS1L3, level3MiniBoss1, false, 0, -645));

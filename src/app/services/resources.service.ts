@@ -20,11 +20,11 @@ export class ResourcesService {
 			this.resources = new Map();
 			this.resourcesLoaded = new Subject();
 
-
+/*
       this.resourcesToLoad = [
 
         {code:"boss-9-bomb-1", path:"/assets/img/boss/boss-9-bomber/bomb-1.png", type:ResourcesEnum.ImageRes},
-        {code:"boss-9-bomb-2", path:"/assets/img/boss/boss-9-bomber/bomb-1.png", type:ResourcesEnum.ImageRes},
+        {code:"boss-9-bomb-2", path:"/assets/img/boss/boss-9-bomber/bomb-2.png", type:ResourcesEnum.ImageRes},
 
         {code:"boss-9", path:"/assets/img/boss/boss-9-bomber/boss-9.png", type:ResourcesEnum.ImageRes},
         {code:"boss-9-turret", path:"assets/img/boss/boss-9-bomber/boss-9-turret.png", type:ResourcesEnum.ImageRes},
@@ -391,12 +391,12 @@ export class ResourcesService {
           {
               code: "enemy-bullet-target", path: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAOCAYAAAArMezNAAAABGdBTUEAAK/INwWK6QAAAAlwSFlzAAAOwwAADsMBx2+oZAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMS42/U4J6AAAAGRJREFUOE/VkDEOgEAIBImv8v8fW7UgAXZFLM7EYgrIMJecARixYUdH9dPQoWKR6qfhQh29wTvrw0qK2Kl2kL8sTAtxNIE6tBBHE6jzvz/28PSBJ7zzXfgOFYlUPw0dKhbJPuwA7VOl229hSMgAAAAASUVORK5CYII=",
               type: ResourcesEnum.ImageRes }
-       ];
+       ]; */
 
 
       // offline loading of files.
-      //let compiledRes = new CompiledResources();
-      //this.resourcesToLoad = compiledRes.res;
+      let compiledRes = new CompiledResources();
+      this.resourcesToLoad = compiledRes.res;
       // add in sound files.
       this.audioResourcesToLoad.push({code:"Space-Cannon", path:"assets/sound/effects/Space-Cannon.mp3", type:ResourcesEnum.SoundRes});
       this.audioResourcesToLoad.push({code:"Trouble-on-Mercury", path:"assets/sound/bg/Trouble-on-Mercury_Looping.mp3", type:ResourcesEnum.SoundRes});
@@ -468,7 +468,7 @@ export class ResourcesService {
   imageLoaded(code,loadedImage:HTMLImageElement){
     this.resources.set(code,loadedImage);
     // store as global variable and then copy(temp1) to copy the object
-    //this.resourcesToLoadB64.push({code:code,path:this.imgToBase64(loadedImage),type:ResourcesEnum.ImageRes});
+    // this.resourcesToLoadB64.push({code:code,path:this.imgToBase64(loadedImage),type:ResourcesEnum.ImageRes});
     this.resourceLoaded();
   }
 

@@ -120,11 +120,19 @@ export class BulletManagerService {
   }
 
   generateExplodingBullet(levelInstance:LevelInstance, bulletDirection:BulletDirection, startX, startY, allowedMovement=60, destructable:boolean = false): any {
-      let newBullet = new ExplodingBullet(1,startX, startY, bulletDirection, false, [this.resourcesService.getRes().get("exploding-bullet")],16,16);
-      newBullet.allowedMovement = allowedMovement;
-      this.bulletsArr.push(newBullet);
-      this.bulletCreated.next(newBullet);
+    let newBullet = new ExplodingBullet(1,startX, startY, bulletDirection, false, [this.resourcesService.getRes().get("exploding-bullet")],16,16);
+    newBullet.allowedMovement = allowedMovement;
+    this.bulletsArr.push(newBullet);
+    this.bulletCreated.next(newBullet);
   }
+
+  generateBomberMine(levelInstance:LevelInstance, bulletDirection:BulletDirection, startX, startY, allowedMovement=60, destructable:boolean = false): any {
+    let newBullet = new ExplodingBullet(1,startX, startY, bulletDirection, false,
+        [this.resourcesService.getRes().get("boss-9-bomb-1"),this.resourcesService.getRes().get("boss-9-bomb-2")],18,18);
+    newBullet.allowedMovement = allowedMovement;
+    this.bulletsArr.push(newBullet);
+    this.bulletCreated.next(newBullet);
+}
 
   removeBullet(bullet:BulletInstance, botManagerService:BotManagerService, xOffset:number=0, createTiny:boolean=false, createSmall:boolean=false, createMedium:boolean=false) {
     if(createTiny) {

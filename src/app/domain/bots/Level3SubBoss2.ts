@@ -6,6 +6,7 @@ import { BulletManagerService, BulletDirection } from "src/app/manager/bullet-ma
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { LogicService } from "src/app/services/logic.service";
 import { CanvasContainer } from "../CanvasContainer";
+import { Turret } from "./Turret";
 
 export class Level3SubBoss2 extends  FlyingBotImpl {
     public phaseCounter = 0;
@@ -40,18 +41,49 @@ export class Level3SubBoss2 extends  FlyingBotImpl {
         { x: 295, y: 49 }
     ];
 
+    public rotationCenterX = 48;
+    public rotationCenterY = 66;
+
+    public turret:Turret;
+    public turretXoffset:number=0;
+    public turretYoffset:number=0;
+
     constructor(
 		public config:any={},
         public posX:number=0,
         public posY:number=0,
         public images:HTMLImageElement[]=null,
         public imageObj4Damaged: HTMLImageElement = null,
+        public imageObjTurret: HTMLImageElement = null,
+        public imageObjMuzzleFlash: HTMLImageElement = null,
         public imageSizeX:number=118,
         public imageSizeY:number=134,
         public hitBox:HitBox=new HitBox(0,0,imageSizeX,imageSizeY)
     ) {
       super(config, posX, posY, imageSizeX, imageSizeY, images, [imageObj4Damaged], null, true);
       this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score","moveSpeed","bulletSpeed"]);
+
+      this.turret = new Turret (
+        this.posX+this.turretXoffset,
+        this.posY+this.turretYoffset,
+        [this.imageObjTurret],
+        imageObjTurret,
+        null,
+        imageSizeX,//imageSizeX
+        imageSizeY,
+        this.rotationCenterX,this.rotationCenterY, // rotation offsets
+        "bullet",
+        [{muzzlePosXOffset:88, muzzlePosYOffset:64}], // Muzzle offsets
+        [this.imageObjMuzzleFlash],
+        14,//imageMuzzleSizeX
+        22,//imageMuzzleSizeY
+        [{bulletXOffset:88, bulletYOffset:64}],
+        22,// bullet sizex
+        14,
+        600
+      );
+      this.turret.turretSlowRotate = false;
+      this.turret.bTimerLimit = 45;
     }
 
 	update(levelInstance:LevelInstance, canvasContainer:CanvasContainer, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {
@@ -68,13 +100,15 @@ export class Level3SubBoss2 extends  FlyingBotImpl {
         this.phaseCounter = 0;
     }
 
-
-    LogicService.drawRotateImage(this.imageObj, ctx, this.moveDirection.angle, this.posX, this.posY, this.imageSizeX, this.imageSizeY);
+    LogicService.drawRotateImage(this.imageObj, ctx, this.moveDirection.angle, this.posX, this.posY, this.imageSizeX, this.imageSizeY, this.posX, this.posY, this.imageSizeX, this.imageSizeY, this.posX+this.rotationCenterX, this.posY+this.rotationCenterY);
     this.updateDamageAnimation(ctx, this.moveDirection.angle);
 
-    // TODO the turret
-    // if the health is less than a certain value, then activate the turret
-    // else just draw it in place
+    // Turret
+    if ( this.health < 290 ) { // if the health is less than a certain value, then activate the turret
+      this.turret.update(this.posX+this.turretXoffset,this.posY+this.turretYoffset,currentPlayer,levelInstance, ctx, ctx, botManagerService, bulletManagerService, playerService, true);
+    } else { // else just draw it in place
+      LogicService.drawRotateImage(this.imageObjTurret, ctx, this.moveDirection.angle, this.posX, this.posY, this.imageSizeX, this.imageSizeY, this.posX, this.posY, this.imageSizeX, this.imageSizeY, this.posX+this.rotationCenterX, this.posY+this.rotationCenterY);
+    }
 
     if(levelInstance.drawHitBox()){
       this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");
@@ -92,9 +126,9 @@ export class Level3SubBoss2 extends  FlyingBotImpl {
       this.health -= damage;
       this.triggerDamagedAnimation();
       if(this.health < 1){
-          playerService.currentPlayer.addScore(this.score);
-          botManagerService.removeBot(this,1);
-    levelInstance.updatePhaseCounter();
+        playerService.currentPlayer.addScore(this.score);
+        botManagerService.removeBot(this,1);
+        levelInstance.updatePhaseCounter();
       }
   }
 
@@ -103,7 +137,8 @@ export class Level3SubBoss2 extends  FlyingBotImpl {
 	}
 
   fireSomething(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D,bulletManagerService:BulletManagerService, currentPlayer:PlayerObj) {
-    console.log("Yes dropping bombs?");
+    let bm = bulletManagerService.calculateBulletDirection(this.getCenterX(), this.getCenterY(), this.getCenterX(), this.getCenterY()+1, 0, true);
+    bulletManagerService.generateBomberMine(levelInstance,bm,this.getCenterX(),this.getCenterY(),90);
   }
 
   isWithin(sourceX,tarX, distance):boolean{
@@ -119,5 +154,27 @@ export class Level3SubBoss2 extends  FlyingBotImpl {
 
   isDeathOnColision():boolean{
     return false;
+  }
+
+  /**
+   * draw the damaged sprite over the parent sprite to indicate damage.
+   * @param ctx
+   * @param angle when provided the damaged image will be drawn at this angle
+   */
+   updateDamageAnimation(ctx,angle=null){
+    if(this.damAnaimationTimer < this.damAnaimationTimerLimit) {
+      this.damAnaimationTimer++;
+      if(this.damAnaimationTimer %2 == 1) {
+        var damImage = this.imageObjDamaged[0]
+        if(this.animationIndex < this.imageObjDamaged.length){
+          damImage = this.imageObjDamaged[this.animationIndex];
+        }
+        if(angle != null){
+          LogicService.drawRotateImage(damImage,ctx,angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY,this.posX,this.posY,this.imageSizeX,this.imageSizeY, this.posX+this.rotationCenterX, this.posY+this.rotationCenterY);
+        } else {
+          ctx.drawImage(damImage, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
+        }
+      }
+    }
   }
 }

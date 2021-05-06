@@ -415,10 +415,12 @@ export class BotManagerService {
   generateLevel3SubBoss2Bomber(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -300, config: any = {}): any {
     let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
     let hitz = new HitBox(0, 0, 118, 134);
-    let newBot = new Level3SubBoss2(config, posObj.posX, posObj.posY,
+    let newBot = new Level3SubBoss2( config, posObj.posX, posObj.posY,
         [this.resourcesService.getRes().get("boss-9")],
         this.resourcesService.getRes().get("boss-9"),
-        118, 134, hitz);
+        this.resourcesService.getRes().get("boss-9-turret"),
+        this.resourcesService.getRes().get("miniboss-3-muzzle-flash"),
+        118, 134, hitz );
       this.botsArr.push(newBot);
       this.botCreated.next(newBot);
   }
