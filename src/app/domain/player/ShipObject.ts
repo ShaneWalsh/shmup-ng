@@ -51,6 +51,10 @@ export class ShipObject {
     // abstracted to subclass
   }
 
+  clearAbility( player, bulletManagerService:BulletManagerService ){
+    // abstracted to subclass
+  }
+
   getHitBox():HitBox {
     return this.hitBox;
   }
@@ -59,6 +63,8 @@ export class ShipObject {
 
 
 export class ShipBlade extends ShipObject {
+
+  lastShieldInstance = null;
 
   drawMuzzleFlash(ctx: CanvasRenderingContext2D, posX: number, posY: number, levelInstance: LevelInstance, canvasContainer: CanvasContainer, bulletManagerService: BulletManagerService, botManagerService: BotManagerService) {
     ctx.drawImage(this.imageObjMuzzle[this.muzzleIndex], 0, 0, 90,40, posX, posY-30, 90,40);
@@ -75,12 +81,20 @@ export class ShipBlade extends ShipObject {
   }
 
   activateAbility(player, posX: number, posY: number, bulletSpeed:number, levelInstance:LevelInstance, canvasContainer:CanvasContainer, bulletManagerService:BulletManagerService, botManagerService:BotManagerService) {
-    bulletManagerService.addPlayerShield(player);
+    this.lastShieldInstance = bulletManagerService.addPlayerShield(player);
+  }
+
+  clearAbility( player, bulletManagerService:BulletManagerService){
+    if(this.lastShieldInstance != null) {
+      bulletManagerService.removeShield( this.lastShieldInstance );
+    }
   }
 
 }
 
 export class ShipSpear extends ShipObject {
+  timeout1: any = null;
+  timeout2: any = null;
 
   drawMuzzleFlash(ctx: CanvasRenderingContext2D, posX: number, posY: number, levelInstance: LevelInstance, canvasContainer: CanvasContainer, bulletManagerService: BulletManagerService, botManagerService: BotManagerService) {
     ctx.drawImage(this.imageObjMuzzle[this.muzzleIndex], 0, 0, 90,40, posX-7, posY+5, 90,40);
@@ -100,13 +114,16 @@ export class ShipSpear extends ShipObject {
    * Fire 6 homing missiles.
    */
   activateAbility(player, posX: number, posY: number, bulletSpeed:number, levelInstance:LevelInstance, canvasContainer:CanvasContainer, bulletManagerService:BulletManagerService, botManagerService:BotManagerService) {
+    this.timeout1 = null;
+    this.timeout2 = null;
+
     bulletManagerService.generatePlayerHomingMissiles(levelInstance,
       [
         {startX:posX-20, startY:posY+50},
         {startX:posX+40, startY:posY+50},
       ],
       bulletSpeed);
-    setTimeout(()=> {
+    this.timeout1 = setTimeout(()=> {
       bulletManagerService.generatePlayerHomingMissiles(levelInstance,
         [
           {startX:posX+40, startY:posY+50},
@@ -114,7 +131,7 @@ export class ShipSpear extends ShipObject {
         ],
         bulletSpeed);
     }, 50);
-    setTimeout(()=> {
+    this.timeout2 = setTimeout(()=> {
       bulletManagerService.generatePlayerHomingMissiles(levelInstance,
         [
           {startX:posX-20, startY:posY+50},
@@ -122,6 +139,13 @@ export class ShipSpear extends ShipObject {
         ],
         bulletSpeed);
     }, 100);
+  }
+
+  clearAbility( player, bulletManagerService:BulletManagerService){
+    if ( this.timeout1 != null ) {
+      clearTimeout(this.timeout1);
+      clearTimeout(this.timeout2);
+    }
   }
 
 }

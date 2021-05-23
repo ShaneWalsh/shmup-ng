@@ -25,6 +25,10 @@ export class PilotObject {
     // abstracted to subclass
   }
 
+  clearAbility(){
+    // abstracted to subclass
+  }
+
 }
 
 export class Pilot1 extends PilotObject {

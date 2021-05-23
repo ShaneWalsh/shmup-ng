@@ -11,6 +11,8 @@ import { Turret } from "./Turret";
 export class Level3SubBoss2 extends  FlyingBotImpl {
     public phaseCounter = 0;
     public moveSpeed = 4;
+    public bTimerLimit = 60;
+    public turretHealthTrigger = 150;
 
     public angle:number;
     public moveDirection: BulletDirection;
@@ -62,6 +64,7 @@ export class Level3SubBoss2 extends  FlyingBotImpl {
     ) {
       super(config, posX, posY, imageSizeX, imageSizeY, images, [imageObj4Damaged], null, true);
       this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score","moveSpeed","bulletSpeed"]);
+      this.turretHealthTrigger = this.health/2;
 
       this.turret = new Turret (
         this.posX+this.turretXoffset,
@@ -104,7 +107,7 @@ export class Level3SubBoss2 extends  FlyingBotImpl {
     this.updateDamageAnimation(ctx, this.moveDirection.angle);
 
     // Turret
-    if ( this.health < 290 ) { // if the health is less than a certain value, then activate the turret
+    if ( this.health < this.turretHealthTrigger ) { // if the health is less than a certain value, then activate the turret
       this.turret.update(this.posX+this.turretXoffset,this.posY+this.turretYoffset,currentPlayer,levelInstance, ctx, ctx, botManagerService, bulletManagerService, playerService, true);
     } else { // else just draw it in place
       LogicService.drawRotateImage(this.imageObjTurret, ctx, this.moveDirection.angle, this.posX, this.posY, this.imageSizeX, this.imageSizeY, this.posX, this.posY, this.imageSizeX, this.imageSizeY, this.posX+this.rotationCenterX, this.posY+this.rotationCenterY);

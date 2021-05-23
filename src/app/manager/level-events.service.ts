@@ -771,9 +771,10 @@ export class LevelEventsService {
     };
 
     let level3MiniBoss2 = {
-			moveSpeed: 5,
+			moveSpeed: 4,
 			score: 15000,
-			health: 300,
+			health: 300, // the turret will trigger at health/2 so 300/2 = 150
+      bTimerLimit: 60,
     };
 
 		if(difficulty == 0){ // easy difficulty, so reducing the bots health

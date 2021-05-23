@@ -12,7 +12,7 @@ export class LevelOneInstance implements LevelInstance{
   public mapHeight:number=640;
   public scrollWidth:number=this.mapWidth;
   public scrollHeight:number=this.mapHeight;
-  protected backgroundImage = new Image();
+  protected backgroundImages:any[] = [];
   protected backgroundShadowImage = null;
   protected hudImage:HTMLImageElement;
 
@@ -26,9 +26,14 @@ export class LevelOneInstance implements LevelInstance{
   protected tickCounter:number = 0;
   protected phaseCounter:number = 0; // when phase updates, tick counter goes back to zero
 
+  protected dTimer: number = 0;
+  protected dTimerLimit: number = 4;
+  protected drawSequence: number = 0;
 
   constructor(public resourcesService:ResourcesService, protected botManagerService:BotManagerService, protected levelManagerService:LevelManagerService, public levelEventsService:LevelEventsService){
-    this.backgroundImage = this.resourcesService.getRes().get("level-1-background");
+    this.backgroundImages = [];
+    this.backgroundImages.push(this.resourcesService.getRes().get("level-1-bg-1"));
+    this.backgroundImages.push(this.resourcesService.getRes().get("level-1-bg-2"));
     this.hudImage = this.resourcesService.getRes().get("HUD-resized");
     this.eventArr = this.levelEventsService.getLevel1Events(levelManagerService.difficulty);
   }
@@ -42,31 +47,33 @@ export class LevelOneInstance implements LevelInstance{
 
   updateIntro(ctx: CanvasRenderingContext2D) {
     // just for the intro for displaying the background
-    ctx.drawImage(this.backgroundImage, this.scrollerXIncrement, this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
+    let drawImage = this.getNextDrawImage();
+    ctx.drawImage(drawImage, this.scrollerXIncrement, this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
     if (this.isVertical()) {
-      ctx.drawImage(this.backgroundImage, this.scrollerXIncrement, (this.scrollerYIncrement - this.getScrollHeight()), this.getScrollWidth(), this.getScrollHeight());
+      ctx.drawImage(drawImage, this.scrollerXIncrement, (this.scrollerYIncrement - this.getScrollHeight()), this.getScrollWidth(), this.getScrollHeight());
       this.scrollerYIncrement++;
       if (this.scrollerYIncrement > this.getScrollHeight()) { this.scrollerYIncrement = 0 };
     } else {
-      ctx.drawImage(this.backgroundImage, (this.scrollerXIncrement - this.getScrollWidth()), this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
+      ctx.drawImage(drawImage, (this.scrollerXIncrement - this.getScrollWidth()), this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
       this.scrollerXIncrement++;
       if (this.scrollerXIncrement > this.getScrollWidth()) { this.scrollerXIncrement = 0 };
     }
   }
   updateBackground(canvasContainer:CanvasContainer, playerService:PlayerService, levelManagerService:LevelManagerService) {
-    canvasContainer.bgCtx.drawImage(this.backgroundImage, this.scrollerXIncrement, this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
+    let drawImage = this.getNextDrawImage();
+    canvasContainer.bgCtx.drawImage(drawImage, this.scrollerXIncrement, this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
     if(this.backgroundShadowImage) {
       canvasContainer.shadowCtx.drawImage(this.backgroundShadowImage, this.scrollerXIncrement, this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
     }
     if(this.isVertical()) {
-      canvasContainer.bgCtx.drawImage(this.backgroundImage, this.scrollerXIncrement, (this.scrollerYIncrement - this.getScrollHeight()), this.getScrollWidth(), this.getScrollHeight());
+      canvasContainer.bgCtx.drawImage(drawImage, this.scrollerXIncrement, (this.scrollerYIncrement - this.getScrollHeight()), this.getScrollWidth(), this.getScrollHeight());
       if(this.backgroundShadowImage) {
         canvasContainer.shadowCtx.drawImage(this.backgroundShadowImage, this.scrollerXIncrement, (this.scrollerYIncrement - this.getScrollHeight()), this.getScrollWidth(), this.getScrollHeight());
       }
       this.scrollerYIncrement++;
       if(this.scrollerYIncrement > this.getScrollHeight()){this.scrollerYIncrement = 0};
     } else {
-      canvasContainer.bgCtx.drawImage(this.backgroundImage, (this.scrollerXIncrement-this.getScrollWidth()), this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
+      canvasContainer.bgCtx.drawImage(drawImage, (this.scrollerXIncrement-this.getScrollWidth()), this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
       if(this.backgroundShadowImage) {
         canvasContainer.shadowCtx.drawImage(this.backgroundShadowImage, (this.scrollerXIncrement-this.getScrollWidth()), this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
       }
@@ -103,13 +110,27 @@ export class LevelOneInstance implements LevelInstance{
     this.updateTickCounter();
   }
 
-  updateTickCounter(){
+  updateTickCounter() {
       this.tickCounter++;
   }
 
-  updatePhaseCounter(){
+  updatePhaseCounter() {
       this.phaseCounter++;
       this.tickCounter = 0;
+  }
+
+  getNextDrawImage():HTMLImageElement {
+    if(this.dTimer >= this.dTimerLimit) {
+      this.dTimer = 0;
+      this.drawSequence++;
+      if ( this.drawSequence >= this.backgroundImages.length ) {
+        this.drawSequence = 0;
+      }
+    }
+    else {
+      this.dTimer++;
+    }
+    return this.backgroundImages[this.drawSequence];
   }
 
   getMapHeight() {

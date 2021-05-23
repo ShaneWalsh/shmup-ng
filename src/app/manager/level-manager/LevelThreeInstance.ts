@@ -22,7 +22,8 @@ export class LevelThreeInstance extends LevelOneInstance {
 
   constructor(resourcesService:ResourcesService, botManagerService:BotManagerService, levelManagerService:LevelManagerService, levelEventsService:LevelEventsService){
       super(resourcesService,botManagerService,levelManagerService,levelEventsService);
-      this.backgroundImage = this.resourcesService.getRes().get("level-3-bg-2");
+      this.backgroundImages = [];
+      this.backgroundImages.push(this.resourcesService.getRes().get("level-3-bg-2"));
       this.backgroundImageSlowScroll = this.resourcesService.getRes().get("level-3-bg-1");
       this.hudImage = this.resourcesService.getRes().get("HUD-resized");
       this.eventArr = this.levelEventsService.getLevel3Events(levelManagerService.difficulty);
@@ -37,9 +38,9 @@ export class LevelThreeInstance extends LevelOneInstance {
     } else {
       console.log("NO IMPLEMTENTED");
     }
-    canvasContainer.bgCtx.drawImage(this.backgroundImage, this.scrollerXIncrement, this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
+    canvasContainer.bgCtx.drawImage(this.getNextDrawImage(), this.scrollerXIncrement, this.scrollerYIncrement, this.getScrollWidth(), this.getScrollHeight());
     if(this.isVertical()) {
-      canvasContainer.bgCtx.drawImage(this.backgroundImage, this.scrollerXIncrement, (this.scrollerYIncrement - this.getScrollHeight()), this.getScrollWidth(), this.getScrollHeight());
+      canvasContainer.bgCtx.drawImage(this.getNextDrawImage(), this.scrollerXIncrement, (this.scrollerYIncrement - this.getScrollHeight()), this.getScrollWidth(), this.getScrollHeight());
     } else {
       console.log("NO IMPLEMTENTED");
     }

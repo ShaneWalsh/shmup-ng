@@ -23,6 +23,9 @@ export class ResourcesService {
 /*
       this.resourcesToLoad = [
 
+        {code:"level-1-bg-1", path:"assets/img/levels/level1/level-1-bg-1.png", type:ResourcesEnum.ImageRes},
+        {code:"level-1-bg-2", path:"assets/img/levels/level1/level-1-bg-2.png", type:ResourcesEnum.ImageRes},
+
         {code:"boss-9-bomb-1", path:"/assets/img/boss/boss-9-bomber/bomb-1.png", type:ResourcesEnum.ImageRes},
         {code:"boss-9-bomb-2", path:"/assets/img/boss/boss-9-bomber/bomb-2.png", type:ResourcesEnum.ImageRes},
 
@@ -397,6 +400,7 @@ export class ResourcesService {
       // offline loading of files.
       let compiledRes = new CompiledResources();
       this.resourcesToLoad = compiledRes.res;
+
       // add in sound files.
       this.audioResourcesToLoad.push({code:"Space-Cannon", path:"assets/sound/effects/Space-Cannon.mp3", type:ResourcesEnum.SoundRes});
       this.audioResourcesToLoad.push({code:"Trouble-on-Mercury", path:"assets/sound/bg/Trouble-on-Mercury_Looping.mp3", type:ResourcesEnum.SoundRes});

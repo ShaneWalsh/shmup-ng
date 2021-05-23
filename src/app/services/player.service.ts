@@ -21,59 +21,60 @@ import { AudioServiceService } from './audio-service.service';
   providedIn: 'root'
 })
 export class PlayerService {
-    public currentPlayer:PlayerObj = new PlayerObj();
-    private playerLivesGoneSubject:Subject<PlayerObj> = new Subject();
+  public currentPlayer:PlayerObj = new PlayerObj();
+  private playerLivesGoneSubject:Subject<PlayerObj> = new Subject();
 
-    public selectedShip:ShipEnum = ShipEnum.BLADE1;
-    public selectedPilot:PilotEnum = PilotEnum.NAOMI1;
+  public selectedShip:ShipEnum = ShipEnum.BLADE1;
+  public selectedPilot:PilotEnum = PilotEnum.NAOMI1;
 
-    constructor(private keyboardEventService:KeyboardEventService, private levelManagerService:LevelManagerService,
-      private resourcesService:ResourcesService, private botManagerService:BotManagerService,
-      private shipFactoryService:ShipFactoryService, private pilotFactoryService:PilotFactoryService ) {
-      keyboardEventService.getKeyDownEventSubject().subscribe(customKeyboardEvent => {
-          //if(this.levelManagerService.getNotPaused()){
-              this.currentPlayer.processKeyDown(customKeyboardEvent);
-          //}
-      });
-      keyboardEventService.getKeyUpEventSubject().subscribe(customKeyboardEvent => {
-          //if(this.levelManagerService.getNotPaused()){
-              this.currentPlayer.processKeyUp(customKeyboardEvent);
-          //}
-      });
-    }
+  constructor(private keyboardEventService:KeyboardEventService, private levelManagerService:LevelManagerService,
+    private resourcesService:ResourcesService, private botManagerService:BotManagerService,
+    private bulletManagerService:BulletManagerService,
+    private shipFactoryService:ShipFactoryService, private pilotFactoryService:PilotFactoryService ) {
+    keyboardEventService.getKeyDownEventSubject().subscribe(customKeyboardEvent => {
+        //if(this.levelManagerService.getNotPaused()){
+            this.currentPlayer.processKeyDown(customKeyboardEvent);
+        //}
+    });
+    keyboardEventService.getKeyUpEventSubject().subscribe(customKeyboardEvent => {
+        //if(this.levelManagerService.getNotPaused()){
+            this.currentPlayer.processKeyUp(customKeyboardEvent);
+        //}
+    });
+  }
 
-    killCurrentPlayer(): any {
-        this.currentPlayer.lives--;
-        this.currentPlayer.invincibilityTimer = 120;
-		    this.botManagerService.createPlayerDeath(this.currentPlayer.getCenterX(),this.currentPlayer.getCenterY());
-        if(this.currentPlayer.lives > 0){
-            this.currentPlayer.reset();
-        } else { // game over.
-            this.getPlayerLivesGoneSubject().next(this.currentPlayer);
-        }
-    }
-
-    getPlayerLivesGoneSubject(): Subject<PlayerObj> {
-        return this.playerLivesGoneSubject;
-    }
-
-    // creates an entirely new player
-    initPlayer(init:boolean=true, score=0,lives=3,startPositionX=210, startPositionY=640): any {
-      this.currentPlayer.reset(startPositionX,startPositionY); // position
-      this.currentPlayer.pressedKeys = {"left":false,"up":false,"right":false,"down":false};
-      this.currentPlayer.bulletsFiring = false;
-      this.currentPlayer.invincibilityTimer = 0;
-      this.currentPlayer.score = score;
-      this.currentPlayer.lives = lives;
-      this.currentPlayer.abilityCooldown = 0;
-      this.currentPlayer.activateAbilityNow = false;
-      // are these need here? Or should these decide other objects that are inserted onto the ship? Pilot and ability seem like things that should be extracted
-      this.currentPlayer.selectedShip = this.shipFactoryService.createShip(this.selectedShip);
-      this.currentPlayer.selectedPilot = this.pilotFactoryService.createPilot(this.selectedPilot);
-      if(init){
-        this.currentPlayer.selectedPilot.playerInit(this.currentPlayer)
+  killCurrentPlayer(): any {
+      this.currentPlayer.lives--;
+      this.currentPlayer.invincibilityTimer = 120;
+      this.botManagerService.createPlayerDeath(this.currentPlayer.getCenterX(),this.currentPlayer.getCenterY());
+      if(this.currentPlayer.lives > 0){
+          this.currentPlayer.reset(this.bulletManagerService);
+      } else { // game over.
+          this.getPlayerLivesGoneSubject().next(this.currentPlayer);
       }
+  }
+
+  getPlayerLivesGoneSubject(): Subject<PlayerObj> {
+      return this.playerLivesGoneSubject;
+  }
+
+  // creates an entirely new player
+  initPlayer(init:boolean=true, score=0,lives=3,startPositionX=210, startPositionY=640): any {
+    this.currentPlayer.reset(this.bulletManagerService, startPositionX,startPositionY); // position
+    this.currentPlayer.pressedKeys = {"left":false,"up":false,"right":false,"down":false};
+    this.currentPlayer.bulletsFiring = false;
+    this.currentPlayer.invincibilityTimer = 0;
+    this.currentPlayer.score = score;
+    this.currentPlayer.lives = lives;
+    this.currentPlayer.abilityCooldown = 0;
+    this.currentPlayer.activateAbilityNow = false;
+    // are these need here? Or should these decide other objects that are inserted onto the ship? Pilot and ability seem like things that should be extracted
+    this.currentPlayer.selectedShip = this.shipFactoryService.createShip(this.selectedShip);
+    this.currentPlayer.selectedPilot = this.pilotFactoryService.createPilot(this.selectedPilot);
+    if(init){
+      this.currentPlayer.selectedPilot.playerInit(this.currentPlayer)
     }
+  }
 
 }
 
@@ -229,7 +230,7 @@ export class PlayerObj implements ShieldBot {
   }
 
   hasPlayerBeenHit(hitter:any,hitterBox:HitBox):boolean {
-    if (!this.isInvincible()){
+    if (!this.isInvincible()) {
       return this.selectedShip.getHitBox().areCentersToClose(hitter,hitterBox,this,this.selectedShip.getHitBox());
     } else {
       return false;
@@ -240,9 +241,13 @@ export class PlayerObj implements ShieldBot {
     this.score+= arg0;
   }
 
-  reset(resetPositionX= this.resetPositionX, resetPositionY=this.resetPositionY): any {
+  reset( bulletManagerService:BulletManagerService, resetPositionX= this.resetPositionX, resetPositionY=this.resetPositionY): any {
     this.posX = resetPositionX;
     this.posY = resetPositionY;
+    this.activateAbilityNow = false;
+    this.abilityCooldown = 0;
+    if (this.selectedPilot) this.selectedPilot.clearAbility();
+    if (this.selectedShip) this.selectedShip.clearAbility(this, bulletManagerService);
   }
 
 	processKeyDown(customKeyboardEvent:CustomKeyboardEvent){

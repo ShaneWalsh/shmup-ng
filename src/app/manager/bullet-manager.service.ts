@@ -156,18 +156,19 @@ export class BulletManagerService {
     return this.bulletRemoved;
   }
 
-  addPlayerShield(playerObj:PlayerObj) {
-    this.shieldsArr.push(new Shield({},playerObj.getShieldX(),playerObj.getShieldY(),
-      [ this.resourcesService.getRes().get("shield-1"),
-        this.resourcesService.getRes().get("shield-2"),
-        this.resourcesService.getRes().get("shield-3"),
-        this.resourcesService.getRes().get("shield-4"),
-        this.resourcesService.getRes().get("shield-5"),
-        this.resourcesService.getRes().get("shield-6"),
-        this.resourcesService.getRes().get("shield-7"),
-        this.resourcesService.getRes().get("shield-8"),
-      ],90,90,playerObj)
-    );
+  addPlayerShield(playerObj:PlayerObj):Shield {
+    let s = new Shield({},playerObj.getShieldX(),playerObj.getShieldY(),
+    [ this.resourcesService.getRes().get("shield-1"),
+      this.resourcesService.getRes().get("shield-2"),
+      this.resourcesService.getRes().get("shield-3"),
+      this.resourcesService.getRes().get("shield-4"),
+      this.resourcesService.getRes().get("shield-5"),
+      this.resourcesService.getRes().get("shield-6"),
+      this.resourcesService.getRes().get("shield-7"),
+      this.resourcesService.getRes().get("shield-8"),
+    ],90,90,playerObj );
+    this.shieldsArr.push(s);
+    return s;
   }
 
   getShields() : Shield[] {
@@ -175,7 +176,9 @@ export class BulletManagerService {
   }
 
   removeShield(shieldToRemove: Shield) {
-    this.shieldsArr.splice(this.shieldsArr.indexOf(shieldToRemove),1);
+    if(this.shieldsArr.indexOf(shieldToRemove) > -1){
+      this.shieldsArr.splice(this.shieldsArr.indexOf(shieldToRemove),1);
+    }
   }
 
   calculateBulletDirection(origX:number, origY:number, targetX:number, targetY:number, speed:number, performRotation=false, targetObject:any=null):BulletDirection {
