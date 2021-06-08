@@ -4,7 +4,6 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class LogicService {
-
   public static RADIANCAL= 180/Math.PI;
   public static DEGREECAL= Math.PI/180;
 
@@ -82,6 +81,7 @@ export class LogicService {
     //ctx.fill();
   }
 
+  // 0 : (max -1)
   public static getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
   }
@@ -102,6 +102,19 @@ export class LogicService {
 
   public static degreeToRadian(degrees){
     return degrees * this.DEGREECAL;
+  }
+
+  public static getRandomInSquare(startX, startY, sizeX, sizeY):{x:number,y:number} {
+    return {
+      x: startX + this.getRandomInt(sizeX),
+      y: startY + this.getRandomInt(sizeY)
+    }
+  }
+
+  // loop around on a value
+  static incrementLoop(index: number, length: number, increment:number=1): number {
+    index = index+increment;
+    return (index >= length)?0:index;
   }
 
   // maybe one day I can try and draw odd shapes using points
