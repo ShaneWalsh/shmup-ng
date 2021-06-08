@@ -33,6 +33,7 @@ import { Kamikaze } from '../domain/bots/Kamikaze';
 import { Level3SubBoss } from '../domain/bots/Level3SubBoss';
 import { Swordfish } from '../domain/bots/Swordfish';
 import { Level3SubBoss2 } from '../domain/bots/Level3SubBoss2';
+import { DeathManagerService } from './death-manager.service';
 
 /**
  * Going to manage the created bots, spawned by the level manager. Its going to emit when they are destroyed or when they leave the screen.
@@ -50,7 +51,7 @@ export class BotManagerService {
   private backgroundElementsArr: BackgroundElement[] = [];
   private spriteSheetArr: SpriteSheet[] = [];
 
-  constructor(private resourcesService: ResourcesService) {
+  constructor(private resourcesService: ResourcesService, private deathManagerService:DeathManagerService) {
 
   }
 
@@ -558,6 +559,7 @@ export class BotManagerService {
   }
 
   removeBot(bot: BotInstance, botDeathSize:number=0) {
+    this.deathManagerService.dynamicDeath(bot);
     if(botDeathSize == 0) {
       this.createBotDeath(bot.getCenterX(),bot.getCenterY());
     } else if(botDeathSize == 1) {

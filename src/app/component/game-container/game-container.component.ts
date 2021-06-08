@@ -10,6 +10,7 @@ import { IntroAnimation } from 'src/app/domain/IntroAnimation';
 import { OptionsService } from 'src/app/services/options.service';
 import { KeyboardEventService } from 'src/app/services/keyboard-event.service';
 import { AudioServiceService } from 'src/app/services/audio-service.service';
+import { DeathManagerService } from 'src/app/manager/death-manager.service';
 
 @Component({
   selector: 'app-game-container',
@@ -53,6 +54,7 @@ export class GameContainerComponent implements OnInit, OnDestroy {
                 private audioServiceService:AudioServiceService,
                 protected levelManagerService:LevelManagerService,
                 private bulletManagerService: BulletManagerService,
+                private deathManagerService:DeathManagerService,
                 private playerService:PlayerService, private botManagerService:BotManagerService, private keyboardEventService:KeyboardEventService) {
       this.introOver = this.optionsService.isSkipIntro();
       this.subs.push(this.levelManagerService.getGameTickSubject().subscribe(result => {
@@ -181,6 +183,8 @@ export class GameContainerComponent implements OnInit, OnDestroy {
 
               // have a bot manager to move the bots (gen bullets, patterns etc)
               this.botManagerService.update(currentLevel, this.canvasContainer, this.bulletManagerService, this.playerService);
+
+              this.deathManagerService.update(currentLevel, this.canvasContainer, this.playerService);
 
               // update for the player (Gen bullets)
               this.playerService.currentPlayer.update(currentLevel, this.canvasContainer, this.bulletManagerService, this.botManagerService, this.audioServiceService);

@@ -103,6 +103,9 @@ export class LogicService {
   public static degreeToRadian(degrees){
     return degrees * this.DEGREECAL;
   }
+
+  // maybe one day I can try and draw odd shapes using points
+  // https://stackoverflow.com/questions/27213413/canvas-cropping-images-in-different-shapes
 }
 
 

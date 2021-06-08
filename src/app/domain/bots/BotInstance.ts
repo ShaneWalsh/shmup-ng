@@ -6,6 +6,7 @@ import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { CanvasContainer } from "../CanvasContainer";
 import { LogicService } from "src/app/services/logic.service";
 import { ShieldBot } from "../skills/ShieldBotInterface";
+import { DeathDetails } from "../DeathDetails";
 
 export interface BotInstance {
     update(levelInstance:LevelInstance, canvasContainer:CanvasContainer, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService);
@@ -25,6 +26,9 @@ export interface BotInstance {
     isGroundBot():boolean;
 
     isDeathOnColision():boolean;
+
+    getDeathDetails():DeathDetails;
+    getCurrentAngle():number;
 }
 
 
@@ -37,22 +41,29 @@ export class BotInstanceImpl implements BotInstance, ShieldBot {
   }
 
   getCenterY(): number {
-      throw new Error("Method not implemented.");
+    throw new Error("Method not implemented.");
   }
   getCenterX(): number {
-      throw new Error("Method not implemented.");
+    throw new Error("Method not implemented.");
   }
   applyDamage(damage: number, botManagerService: BotManagerService, bulletManagerService:BulletManagerService, playerService: PlayerService, levelInstance:LevelInstance) {
-      throw new Error("Method not implemented.");
+    throw new Error("Method not implemented.");
   }
   hasBotBeenHit(hitter: any, hitterBox: HitBox) {
-      throw new Error("Method not implemented.");
+    throw new Error("Method not implemented.");
   }
   update(levelInstance: LevelInstance, canvasContainer:CanvasContainer, botManagerService: BotManagerService, bulletManagerService: BulletManagerService, playerService: PlayerService) {
-      throw new Error("Method not implemented.");
+    throw new Error("Method not implemented.");
   }
   getPlayerCollisionHitBoxes(): HitBox[] {
-      throw new Error("Method not implemented.");
+    throw new Error("Method not implemented.");
+  }
+
+  getDeathDetails() {
+    return null;
+  }
+  getCurrentAngle() {
+    return null;
   }
 
   applyArmorDamage(damage:number, botManagerService:BotManagerService, playerService:PlayerService, levelInstance:LevelInstance){
@@ -95,6 +106,8 @@ export class BotInstanceImpl implements BotInstance, ShieldBot {
   getShieldY(): number {
     return this.getCenterY();
   }
+
+
 }
 
 export class FlyingBotImpl extends BotInstanceImpl {
@@ -269,6 +282,13 @@ export class FlyingBotImpl extends BotInstanceImpl {
     } else {
       this.drawShadow(canvasContainer.shadowCtx,this.getShadowImage(),posX,posY,imageSizeX,imageSizeY,shadowX,shadowY)
     }
+  }
+
+  /**
+   * Return the current image
+   */
+  getDeathDetails():DeathDetails{
+    return new DeathDetails(this.imageObj, this.posX, this.posY, this.imageSizeX, this.imageSizeY, this.getCurrentAngle());
   }
 
 }

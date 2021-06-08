@@ -19,9 +19,9 @@ export class OptionsService {
   * Default level order, Just change the index value to change the order they are played in.
   */
   private _levelOrder : {level:LevelEnum,levelIndex:number}[] = [
-    {level:LevelEnum.LevelOne, levelIndex:3},
+    {level:LevelEnum.LevelOne, levelIndex:1},
     {level:LevelEnum.LevelTwo, levelIndex:2},
-    {level:LevelEnum.LevelThree, levelIndex:1},
+    {level:LevelEnum.LevelThree, levelIndex:3},
     {level:LevelEnum.LevelFour, levelIndex:4}
   ];
 
@@ -31,7 +31,7 @@ export class OptionsService {
    * skip the game introduction vid
    */
   isSkipIntro() :boolean {
-    return false;
+    return true;
   }
 
   /**
