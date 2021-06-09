@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BotInstance } from '../domain/bots/BotInstance';
 import { CanvasContainer } from '../domain/CanvasContainer';
 import { DeathDetails } from '../domain/DeathDetails';
+import { HitBox } from '../domain/HitBox';
 import { LogicService } from '../services/logic.service';
 import { PlayerService } from '../services/player.service';
 import { LevelInstance } from './level-manager.service';
@@ -100,10 +101,25 @@ class Direction {
   constructor(
     public directionY,
     public directionX,
-    public angle,
-    public speed = 0.1) {
+    public angle = LogicService.degreeToRadian(360),
+    public speed = 1) {
 
   }
+
+  updateAngle(rotateClockwise: boolean) {
+    if( this.angle != null) {
+      if(rotateClockwise) {
+        let angleDegree = LogicService.radianToDegreeFloor(this.angle);
+        angleDegree = ((angleDegree+1) > 360)? 1: (angleDegree+1);
+        this.angle = LogicService.degreeToRadian(angleDegree);
+      } else {
+        let angleDegree = LogicService.radianToDegreeFloor(this.angle);
+        angleDegree = ((angleDegree-1) < 0)? 359: (angleDegree-1);
+        this.angle = LogicService.degreeToRadian(angleDegree);
+      }
+    }
+  }
+
 }
 
 
@@ -158,7 +174,7 @@ class ShardAnimation {
     let arr = [...this.shardGroups];
     for(let i = 0; i < arr.length; i++) {
       let shardGroup = arr[i];
-      shardGroup.update(levelInstance, canvasContainer, this.dd, this);
+      shardGroup.update(levelInstance, canvasContainer, this);
     }
   }
 
@@ -189,7 +205,7 @@ class ShardAnimation {
         }
       }
 
-      let shardGroup = new ShardGroup(shard);
+      let shardGroup = new ShardGroup(shard, this.dd);
       this.shardGroups.push(shardGroup);
     }
   }
@@ -198,7 +214,7 @@ class ShardAnimation {
     let shatteredFully = false; // keep growing until all is consumed.
     while(!shatteredFully) {
       shatteredFully = true;
-      let growableShardGroups = this.shardGroups.filter(group => !group.shatteredFully);
+      let growableShardGroups = this.shardGroups.filter(group => !group.isShatteredFully());
       for ( let i = 0; i < growableShardGroups.length; i++) {
         let sg = growableShardGroups[i];
 
@@ -207,7 +223,7 @@ class ShardAnimation {
         // set paramter for how many shards can be added at once?
         let growableShards = sg.shards.filter(val => val.canGrow);
         if(growableShards.length < 1){
-          sg.shatteredFully = true;
+          sg.shattered();
           growableShardGroups.splice(i,1);
         } else {
           while(grown < growPerLoop && growableShards.length > 0) {
@@ -230,6 +246,7 @@ class ShardAnimation {
         }
       }
     }
+    this.shardGroups.forEach(sg => {if(!sg.isShatteredFully())sg.shattered()})
   }
 
   /**
@@ -266,53 +283,91 @@ class ShardAnimation {
 }
 
 class ShardGroup {
-  shatteredFully:boolean=false;
+  private shatteredFully:boolean=false;
   shards:ShardSquare[] = [];
   direction:Direction = null;
   distanceMoved:{x:number,y:number} = null;
 
   updateTicksCount = 0;
+  rotateClockwise:boolean = false;
 
-  constructor(shard:ShardSquare) {
+  // the center of the shard, so where everyshard should rotate around
+  shardGroupCentre:{x:number,y:number};
+
+  constructor(shard:ShardSquare, public dd:DeathDetails) {
     shard.occupied = true;
     this.shards.push(shard);
-    this.direction = this.genRandomDirection();
   }
 
-  update ( levelInstance: LevelInstance, canvasContainer: CanvasContainer, dd:DeathDetails, sA:ShardAnimation, updateTicksCountMax:number = 150) {
+  update ( levelInstance: LevelInstance, canvasContainer: CanvasContainer, sA:ShardAnimation, updateTicksCountMax:number = 150) {
     if(this.distanceMoved != null) {
       this.distanceMoved.x += this.direction.speed * this.direction.directionX;
       this.distanceMoved.y += this.direction.speed * this.direction.directionY;
     } else {
       this.distanceMoved = {x:this.direction.speed * this.direction.directionX, y:this.direction.speed * this.direction.directionX}
     }
+    // the shardgroup center will be the same for all of the shards
+    let shardGroupCentrePlusBot = {x: this.dd.posX + this.shardGroupCentre.x + this.distanceMoved.x, y: this.dd.posY + this.shardGroupCentre.y + this.distanceMoved.y}
     this.shards.forEach(shard => {
-      let posX = dd.posX + shard.offsetX + this.distanceMoved.x;
-      let posY = dd.posY + shard.offsetY + this.distanceMoved.y;
-      if(dd.rotation != null) {
-        //LogicService.drawRotateImage(damImage,ctx,angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY);
+      let posX = this.dd.posX + shard.offsetX + this.distanceMoved.x;
+      let posY = this.dd.posY + shard.offsetY + this.distanceMoved.y;
+      if(this.direction.angle != null) {
+        LogicService.drawRotateImage(this.dd.imageObj, canvasContainer.mainCtx,
+          this.direction.angle,
+          posX, posY, shard.imageSizeX, shard.imageSizeY,
+          shard.offsetX, shard.offsetY, shard.imageSizeX, shard.imageSizeY,
+          shardGroupCentrePlusBot.x, shardGroupCentrePlusBot.y);
       } else {
-        canvasContainer.mainCtx.drawImage(dd.imageObj, shard.offsetX, shard.offsetY, shard.imageSizeX, shard.imageSizeY, posX, posY, shard.imageSizeX, shard.imageSizeY);
+        canvasContainer.mainCtx.drawImage(this.dd.imageObj, shard.offsetX, shard.offsetY, shard.imageSizeX, shard.imageSizeY, posX, posY, shard.imageSizeX, shard.imageSizeY);
       }
     });
+    this.direction.updateAngle(this.rotateClockwise);
     this.updateTicksCount += 1;
     if(this.updateTicksCount > updateTicksCountMax){
       sA.removeShardGroup(this);
     }
   }
 
-  genRandomDirection(): Direction {
-    let targetX:number =  Math.floor((Math.random()*10)-5)
-    let targetY:number = Math.floor((Math.random()*10)-5)
+  genDirection( shardX, shardY, botX, botY, currentAngle): Direction {
     // make sure its not 0
-    var directionY = targetY-Math.floor((Math.random()*10)-5);
-    var directionX = targetX-Math.floor((Math.random()*10)-5);
-    var angle = Math.atan2(directionY,directionX); // bullet angle
+    var directionY = shardY-botY;
+    var directionX = shardX-botX;
+
     // Normalize the direction
     var len = Math.sqrt(directionX * directionX + directionY * directionY);
     directionX /= len;
     directionY /= len;
-    return new Direction(directionY,directionX,angle);
+    return new Direction(directionY,directionX,currentAngle);
+  }
+
+  /**
+   * Mark the shard as Shattered and find the center, roughly
+   */
+  shattered(){
+    this.shatteredFully = true;
+    let highestAndLowestPositions:{hX:number, lX:number, hY:number,lY:number} = {
+      hX:this.shards[0].offsetX,
+      lX:this.shards[0].offsetX,
+      hY:this.shards[0].offsetY,
+      lY:this.shards[0].offsetY,
+    }
+
+    this.shards.forEach(shard => {
+      highestAndLowestPositions.hX = (shard.offsetX > highestAndLowestPositions.hX)? shard.offsetX:highestAndLowestPositions.hX;
+      highestAndLowestPositions.lX = (shard.offsetX < highestAndLowestPositions.lX)? shard.offsetX:highestAndLowestPositions.lX;
+      highestAndLowestPositions.hY = (shard.offsetY > highestAndLowestPositions.hY)? shard.offsetY:highestAndLowestPositions.hY;
+      highestAndLowestPositions.lY = (shard.offsetY < highestAndLowestPositions.lY)? shard.offsetY:highestAndLowestPositions.lY;
+    });
+
+    this.shardGroupCentre = {
+      x: highestAndLowestPositions.lX + Math.floor((highestAndLowestPositions.hX - highestAndLowestPositions.lX)/2),
+      y: highestAndLowestPositions.lY + Math.floor((highestAndLowestPositions.hY - highestAndLowestPositions.lY)/2)
+    }
+    this.direction = this.genDirection(this.dd.posX+this.shardGroupCentre.x, this.dd.posY+this.shardGroupCentre.y, this.dd.centreX, this.dd.centreY, this.dd.rotation);
+  }
+
+  isShatteredFully(){
+    return this.shatteredFully;
   }
 
 }

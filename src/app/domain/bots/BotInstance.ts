@@ -63,7 +63,7 @@ export class BotInstanceImpl implements BotInstance, ShieldBot {
     return null;
   }
   getCurrentAngle() {
-    return null;
+    return 0;
   }
 
   applyArmorDamage(damage:number, botManagerService:BotManagerService, playerService:PlayerService, levelInstance:LevelInstance){

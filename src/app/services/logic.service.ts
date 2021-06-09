@@ -44,17 +44,18 @@ export class LogicService {
     return { x: newX, y: newY }; // so i can drop it straight into assignments
   }
 	/**
-	 * l are the actual canvas positions
+   * xy are the actual canvas positions
+	 * lxly are the image draw positions
 	 * the translateX + Y when drawing something that is its own source of truth, e.g a turret, the defaults are fine.
 	 * When calcualting the rotation of an object based off the rotation of another, eg. a bullet from a turret
 	 * the translateX + Y need to be calcualted by rotating the center of the bullet, and use this rotated center as the translateX + Y
 	 * and workout the x,y from the translateX + Y - sx+sy.
 	 *
 	 */
-  public static drawRotateImage(imageObj, ctx, rotation, x, y, sx, sy, lx = x, ly = y, lxs = sx, lys = sy, translateX = x + (sx / 2), translateY = y + (sy / 2)) {
+  public static drawRotateImage(imageObj, ctx, rotation, x, y, sx, sy, lx = 0, ly = 0, lxs = sx, lys = sy, translateX = x + (sx / 2), translateY = y + (sy / 2)) {
     // bitwise transformations to remove floating point values, canvas drawimage is faster with integers
-    lx = (0.5 + lx) << 0;
-    ly = (0.5 + ly) << 0;
+    // lx = (0.5 + lx) << 0;
+    // ly = (0.5 + ly) << 0;
 
     translateX = (0.5 + translateX) << 0;
     translateY = (0.5 + translateY) << 0;
@@ -63,7 +64,7 @@ export class LogicService {
     ctx.translate(translateX, translateY); // this moves the point of drawing and rotation to the center.
     ctx.rotate(rotation);
     ctx.translate(translateX * -1, translateY * -1); // this moves the point of drawing and rotation to the center.
-    ctx.drawImage(imageObj, 0, 0, sx, sy, x, y, sx, sy);
+    ctx.drawImage(imageObj, lx, ly, lxs, lys, x, y, sx, sy);
 
     ctx.restore();
   }
