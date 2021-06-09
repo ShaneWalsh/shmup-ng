@@ -101,7 +101,7 @@ class Direction {
     public directionY,
     public directionX,
     public angle,
-    public speed = 5) {
+    public speed = 0.1) {
 
   }
 }
@@ -129,6 +129,9 @@ class Direction {
     Gloss, instead of shrinking the bot shards into nothingness,
       - could we start to break it down, vanishing a random square at a time until its all gone?
 
+    TODO
+    rotate slowly
+    project all from a point (Probably center, but make it configurable)
   */
 
 class ShardAnimation {
@@ -152,9 +155,15 @@ class ShardAnimation {
   }
 
   update(levelInstance: LevelInstance, canvasContainer:CanvasContainer) {
-    this.shardGroups.forEach(shardGroup => {
-      shardGroup.update(levelInstance, canvasContainer, this.dd)
-    });
+    let arr = [...this.shardGroups];
+    for(let i = 0; i < arr.length; i++) {
+      let shardGroup = arr[i];
+      shardGroup.update(levelInstance, canvasContainer, this.dd, this);
+    }
+  }
+
+  removeShardGroup(shardGroup: ShardGroup) {
+    this.shardGroups = this.shardGroups.filter(sg => sg != shardGroup);
   }
 
   selectStartingShards(totalShards:number = 8) {
@@ -185,7 +194,7 @@ class ShardAnimation {
     }
   }
 
-  growShards(growPerLoop:number = 10) {
+  growShards(growPerLoop:number = 5) {
     let shatteredFully = false; // keep growing until all is consumed.
     while(!shatteredFully) {
       shatteredFully = true;
@@ -228,7 +237,7 @@ class ShardAnimation {
    * @param shard
    */
   crackShard(shard:ShardSquare):ShardSquare {
-    let positions:{i,j}[] = [{i:-1,j:1},{i:-1,j:-1},{i:1,j:1},{i:1,j:-1}]
+    let positions:{i,j}[] = [{i:-1,j:0},{i:0,j:-1},{i:1,j:0},{i:0,j:1}]
     let index = LogicService.getRandomInt(4);
     let loop = 0;
     while(loop < 4) { // check all of the shards around this one in a random order
@@ -262,13 +271,15 @@ class ShardGroup {
   direction:Direction = null;
   distanceMoved:{x:number,y:number} = null;
 
-  constructor(shard:ShardSquare){
+  updateTicksCount = 0;
+
+  constructor(shard:ShardSquare) {
     shard.occupied = true;
     this.shards.push(shard);
     this.direction = this.genRandomDirection();
   }
 
-  update(levelInstance: LevelInstance, canvasContainer: CanvasContainer, dd:DeathDetails) {
+  update ( levelInstance: LevelInstance, canvasContainer: CanvasContainer, dd:DeathDetails, sA:ShardAnimation, updateTicksCountMax:number = 150) {
     if(this.distanceMoved != null) {
       this.distanceMoved.x += this.direction.speed * this.direction.directionX;
       this.distanceMoved.y += this.direction.speed * this.direction.directionY;
@@ -284,6 +295,10 @@ class ShardGroup {
         canvasContainer.mainCtx.drawImage(dd.imageObj, shard.offsetX, shard.offsetY, shard.imageSizeX, shard.imageSizeY, posX, posY, shard.imageSizeX, shard.imageSizeY);
       }
     });
+    this.updateTicksCount += 1;
+    if(this.updateTicksCount > updateTicksCountMax){
+      sA.removeShardGroup(this);
+    }
   }
 
   genRandomDirection(): Direction {
