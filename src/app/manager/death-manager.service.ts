@@ -289,7 +289,7 @@ class ShardGroup {
   distanceMoved:{x:number,y:number} = null;
 
   updateTicksCount = 0;
-  rotateClockwise:boolean = false;
+  rotateClockwise:boolean = (LogicService.getRandomInt(10)>4); // completely random rotations
 
   // the center of the shard, so where everyshard should rotate around
   shardGroupCentre:{x:number,y:number};
@@ -321,11 +321,16 @@ class ShardGroup {
         canvasContainer.mainCtx.drawImage(this.dd.imageObj, shard.offsetX, shard.offsetY, shard.imageSizeX, shard.imageSizeY, posX, posY, shard.imageSizeX, shard.imageSizeY);
       }
     });
+    this.removeRandomShard();
     this.direction.updateAngle(this.rotateClockwise);
     this.updateTicksCount += 1;
     if(this.updateTicksCount > updateTicksCountMax){
       sA.removeShardGroup(this);
     }
+  }
+
+  removeRandomShard() {
+    this.shards.splice(LogicService.getRandomInt(this.shards.length),1);
   }
 
   genDirection( shardX, shardY, botX, botY, currentAngle): Direction {
