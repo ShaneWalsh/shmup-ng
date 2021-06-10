@@ -5,6 +5,7 @@ import { BotManagerService } from "src/app/manager/bot-manager.service";
 import { BulletManagerService, BulletDirection } from "src/app/manager/bullet-manager.service";
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { CanvasContainer } from "../CanvasContainer";
+import { DeathConfig } from "../DeathDetails";
 
 export class Diver extends FlyingBotImpl{
 
@@ -74,4 +75,9 @@ export class Diver extends FlyingBotImpl{
   getPlayerCollisionHitBoxes(): HitBox[] {
       return [this.hitBox];
   }
+
+  getDeathConfig(): DeathConfig {
+    return new DeathConfig(6);
+  }
+
 }

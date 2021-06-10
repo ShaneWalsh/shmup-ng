@@ -6,7 +6,7 @@ import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { CanvasContainer } from "../CanvasContainer";
 import { LogicService } from "src/app/services/logic.service";
 import { ShieldBot } from "../skills/ShieldBotInterface";
-import { DeathDetails } from "../DeathDetails";
+import { DeathConfig, DeathDetails } from "../DeathDetails";
 
 export interface BotInstance {
     update(levelInstance:LevelInstance, canvasContainer:CanvasContainer, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService);
@@ -28,6 +28,7 @@ export interface BotInstance {
     isDeathOnColision():boolean;
 
     getDeathDetails():DeathDetails;
+    getDeathConfig():DeathConfig;
     getCurrentAngle():number;
 }
 
@@ -64,6 +65,9 @@ export class BotInstanceImpl implements BotInstance, ShieldBot {
   }
   getCurrentAngle() {
     return 0;
+  }
+  getDeathConfig(): DeathConfig {
+    return new DeathConfig();
   }
 
   applyArmorDamage(damage:number, botManagerService:BotManagerService, playerService:PlayerService, levelInstance:LevelInstance){
@@ -287,8 +291,8 @@ export class FlyingBotImpl extends BotInstanceImpl {
   /**
    * Return the current image
    */
-  getDeathDetails():DeathDetails{
-    return new DeathDetails(this.imageObj, this.posX, this.posY, this.imageSizeX, this.imageSizeY, this.getCurrentAngle());
+  getDeathDetails():DeathDetails {
+    return new DeathDetails(this.imageObj, this.posX, this.posY, this.imageSizeX, this.imageSizeY, this.getCurrentAngle(),this.getCenterX(), this.getCenterY(),this.getDeathConfig());
   }
 
 }

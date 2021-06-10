@@ -29,7 +29,7 @@ export class BackgroundElement {
         let ctx = canvasContainer.bgCtx;
         this.posY += this.posYSpeed;
         this.posX += this.posXSpeed;
-        LogicService.drawRotateImage(this.imageObj,ctx,this.rotationAngle,this.posX,this.posY,this.imageSizeX,this.imageSizeY,this.posX,this.posY,this.imageSizeX,this.imageSizeY);
+        LogicService.drawRotateImage(this.imageObj,ctx,this.rotationAngle,this.posX,this.posY,this.imageSizeX,this.imageSizeY,0,0,this.imageSizeX,this.imageSizeY);
         this.timeCount++;
         if(this.timeCount >= this.timeLimit){
           botManagerService.removeBGElement(this);

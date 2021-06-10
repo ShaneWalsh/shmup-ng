@@ -65,7 +65,7 @@ export class Turret {
       if(levelInstance.drawShadow() && this.imageObjTurretShadow != null) {
         this.drawShadow(ctxShadow,this.imageObjTurretShadow,this.turretShadowX,this.turretShadowY);
       }
-      LogicService.drawRotateImage(this.getNextTurretImage(drawDamage),ctx,this.angleDirection.angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY,this.posX,this.posY,this.imageSizeX,this.imageSizeY,this.posX+this.rotationXOffset,this.posY+this.rotationYOffset);
+      LogicService.drawRotateImage(this.getNextTurretImage(drawDamage),ctx,this.angleDirection.angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY,0,0,this.imageSizeX,this.imageSizeY,this.posX+this.rotationXOffset,this.posY+this.rotationYOffset);
     } else { // will always point straight ahead
       this.angleDirection = bulletManagerService.calculateTurretDirection(this.posX+this.rotationXOffset, this.posY+this.rotationYOffset, this.posX+this.rotationXOffset, this.posY+this.rotationYOffset+100, this.bulletSpeed, true, null);
       LogicService.drawRotateImage(this.getNextTurretImage(drawDamage),ctx,this.angleDirection.angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY);
@@ -178,7 +178,7 @@ export class Turret {
     //LogicService.drawRotateImage(imageObjShadow,ctx,this.angleDirection.angle,posX+shadowX, posY+shadowY,imageSizeX, imageSizeY);
     let posX = this.posX+shadowX;
     let posY = this.posY+shadowY;
-    LogicService.drawRotateImage(imageObjShadow,ctx,this.angleDirection.angle,posX,posY,this.imageSizeX,this.imageSizeY,posX,posY,this.imageSizeX,this.imageSizeY,posX+this.rotationXOffset,posY+this.rotationYOffset);
+    LogicService.drawRotateImage(imageObjShadow,ctx,this.angleDirection.angle,posX,posY,this.imageSizeX,this.imageSizeY,0,0,this.imageSizeX,this.imageSizeY,posX+this.rotationXOffset,posY+this.rotationYOffset);
   }
 }
 
@@ -263,7 +263,7 @@ export class LaserTurret extends Turret {
 					if(this.loadingIndex == this.loadingImages.length )
 						this.loadingIndex = 0;
         }
-        LogicService.drawRotateImage(this.loadingImages[this.loadingIndex],ctx,this.angleDirection.angle,drawPosX, drawPosY, this.imageFiringSizeX, this.imageFiringSizeY, drawPosX,drawPosY,this.imageFiringSizeX, this.imageFiringSizeY,drawPosX+laserRotationXOffset,drawPosY+laserRotationYOffset);
+        LogicService.drawRotateImage(this.loadingImages[this.loadingIndex],ctx,this.angleDirection.angle,drawPosX, drawPosY, this.imageFiringSizeX, this.imageFiringSizeY, 0,0,this.imageFiringSizeX, this.imageFiringSizeY,drawPosX+laserRotationXOffset,drawPosY+laserRotationYOffset);
 				//ctx.drawImage(this.loadingImages[this.loadingIndex], 0, 0, this.imageFiringSizeX, this.imageFiringSizeY, drawPosX, drawPosY,this.imageFiringSizeX, this.imageFiringSizeY);
 			} else {
 				this.firingLoading = false;
@@ -274,7 +274,7 @@ export class LaserTurret extends Turret {
 			if(this.bTimerFiring < this.bTimerFiringLimit) {
 				this.bTimerFiring++;
 				if(this.bTimerFiring < this.bTimerFiringPase2){
-          LogicService.drawRotateImage(this.firingStartImage,ctx,this.angleDirection.angle,drawPosX, drawPosY, this.imageFiringSizeX, this.imageFiringSizeY, drawPosX,drawPosY,this.imageFiringSizeX, this.imageFiringSizeY,drawPosX+laserRotationXOffset,drawPosY+laserRotationYOffset);
+          LogicService.drawRotateImage(this.firingStartImage,ctx,this.angleDirection.angle,drawPosX, drawPosY, this.imageFiringSizeX, this.imageFiringSizeY, 0,0,this.imageFiringSizeX, this.imageFiringSizeY,drawPosX+laserRotationXOffset,drawPosY+laserRotationYOffset);
 					//ctx.drawImage(this.firingStartImage, 0, 0, this.imageFiringSizeX, this.imageFiringSizeY, drawPosX, drawPosY,this.imageFiringSizeX, this.imageFiringSizeY);
 				} else if(this.bTimerFiring < this.bTimerFiringPase3){
 					if(this.bTimerFiring % 2 == 0){
@@ -282,10 +282,10 @@ export class LaserTurret extends Turret {
 						if(this.loadingIndex == this.firingImages.length )
 							this.loadingIndex = 0;
           }
-          LogicService.drawRotateImage(this.firingImages[this.loadingIndex],ctx,this.angleDirection.angle,drawPosX, drawPosY, this.imageFiringSizeX, this.imageFiringSizeY, drawPosX,drawPosY,this.imageFiringSizeX, this.imageFiringSizeY,drawPosX+laserRotationXOffset,drawPosY+laserRotationYOffset);
+          LogicService.drawRotateImage(this.firingImages[this.loadingIndex],ctx,this.angleDirection.angle,drawPosX, drawPosY, this.imageFiringSizeX, this.imageFiringSizeY, 0,0,this.imageFiringSizeX, this.imageFiringSizeY,drawPosX+laserRotationXOffset,drawPosY+laserRotationYOffset);
 					//ctx.drawImage(this.firingImages[this.loadingIndex], 0, 0, this.imageFiringSizeX, this.imageFiringSizeY, drawPosX, drawPosY,this.imageFiringSizeX, this.imageFiringSizeY);
 				} else if(this.bTimerFiring < this.bTimerFiringLimit){
-          LogicService.drawRotateImage(this.firingStartImage,ctx,this.angleDirection.angle,drawPosX, drawPosY, this.imageFiringSizeX, this.imageFiringSizeY, drawPosX,drawPosY,this.imageFiringSizeX, this.imageFiringSizeY,drawPosX+laserRotationXOffset,drawPosY+laserRotationYOffset);
+          LogicService.drawRotateImage(this.firingStartImage,ctx,this.angleDirection.angle,drawPosX, drawPosY, this.imageFiringSizeX, this.imageFiringSizeY, 0,0,this.imageFiringSizeX, this.imageFiringSizeY,drawPosX+laserRotationXOffset,drawPosY+laserRotationYOffset);
           //ctx.drawImage(this.firingStartImage, 0, 0, this.imageFiringSizeX, this.imageFiringSizeY, this.posX, drawPosY,this.imageFiringSizeX, this.imageFiringSizeY);
         }
         if(currentPlayer) {

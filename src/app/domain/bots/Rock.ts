@@ -5,6 +5,7 @@ import { BulletDirection, BulletManagerService } from "src/app/manager/bullet-ma
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { BotManagerService } from "src/app/manager/bot-manager.service";
 import { CanvasContainer } from "../CanvasContainer";
+import { DeathConfig } from "../DeathDetails";
 
 
 export class Rock extends Fighter {
@@ -61,5 +62,9 @@ export class Rock extends Fighter {
 
   getPlayerCollisionHitBoxes(): HitBox[] {
       return [this.hitBox];
+  }
+
+  getDeathConfig(): DeathConfig {
+    return new DeathConfig(6);
   }
 }

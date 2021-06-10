@@ -13,6 +13,7 @@ import { LevelTwoInstance } from './level-manager/LevelTwoInstance';
 import { LevelThreeInstance } from './level-manager/LevelThreeInstance';
 import { LevelEnum } from './level-manager/LevelEnum';
 import { AudioServiceService } from '../services/audio-service.service';
+import { DeathManagerService } from './death-manager.service';
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +39,11 @@ export class LevelManagerService {
   public showPauseMenu:boolean = false;
   public showPauseMenuIndex:number = 0;
 
-  constructor(private optionsService:OptionsService, private resourcesService:ResourcesService, private botManagerService:BotManagerService, private bulletManagerService: BulletManagerService,private levelEventsService:LevelEventsService, private keyboardEventService:KeyboardEventService, private audioServiceService:AudioServiceService) {
+  constructor(
+    private optionsService:OptionsService, private resourcesService:ResourcesService, private botManagerService:BotManagerService,
+    private bulletManagerService: BulletManagerService, private levelEventsService:LevelEventsService,
+    private keyboardEventService:KeyboardEventService, private audioServiceService:AudioServiceService,
+    private deathManagerService:DeathManagerService ) {
     this.loadEvents();
     keyboardEventService.getKeyUpEventSubject().subscribe(customKeyboardEvent => {
       if(customKeyboardEvent.event.keyCode == 80 || customKeyboardEvent.event.keyCode == 27){ // p || esc
@@ -75,6 +80,7 @@ export class LevelManagerService {
     // clear down the managers
     this.botManagerService.clean();
     this.bulletManagerService.clean();
+    this.deathManagerService.clean();
     this.currentLevelEnum = level;
 
     let index = this.optionsService.getLevelIndex(level);

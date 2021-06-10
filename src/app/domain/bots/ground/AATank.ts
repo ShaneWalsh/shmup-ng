@@ -136,12 +136,12 @@ export class AATank extends BotInstanceImpl{
         this.drawShadow(ctxShadow,this.imageObjShadow,this.posX,this.posY,this.imageSizeX, this.imageSizeY);
       }
       let drawDamage = false;
-      LogicService.drawRotateImage(this.imageObj,ctx,this.rotationAngle,this.posX,this.posY,this.imageSizeX,this.imageSizeY,this.posX,this.posY,this.imageSizeX,this.imageSizeY);
+      LogicService.drawRotateImage(this.imageObj,ctx,this.rotationAngle,this.posX,this.posY,this.imageSizeX,this.imageSizeY,0,0,this.imageSizeX,this.imageSizeY);
         if(this.damAnaimationTimer < this.damAnaimationTimerLimit){
           this.damAnaimationTimer++;
           if(this.damAnaimationTimer %2 == 1){
             drawDamage = true;
-            LogicService.drawRotateImage(this.imageObjDamaged,ctx,this.rotationAngle,this.posX,this.posY,this.imageSizeX,this.imageSizeY,this.posX,this.posY,this.imageSizeX,this.imageSizeY);
+            LogicService.drawRotateImage(this.imageObjDamaged,ctx,this.rotationAngle,this.posX,this.posY,this.imageSizeX,this.imageSizeY,0,0,this.imageSizeX,this.imageSizeY);
           }
         }
         this.turret.update(this.posX+this.turretXoffset,this.posY+this.turretYoffset,currentPlayer,levelInstance, canvasContainer.groundCtx, canvasContainer.groundCtx, botManagerService, bulletManagerService, playerService, drawDamage);

@@ -11,88 +11,24 @@ import { LevelInstance } from './level-manager.service';
   providedIn: 'root'
 })
 export class DeathManagerService {
+  clean() {
+    this.shards = [];
+  }
 
-  deaths:DeathAnimation[] = [];
   shards:ShardAnimation[] = [];
 
   constructor() { }
 
   public update(levelInstance: LevelInstance, canvasContainer:CanvasContainer, playerService: PlayerService): any {
-    this.deaths.forEach(element => {
-      element.update(levelInstance, canvasContainer);
-    });
     this.shards.forEach(element => {
       element.update(levelInstance, canvasContainer);
     });
   }
 
-  public dynamicDeath(bot:BotInstance){
-    //this.deaths.push(new DeathAnimation(bot));
-    this.shards.push(new ShardAnimation(bot));
-  }
-
-}
-
-// pretty simple implementation
-// TODO add rotation and shrinking of fragments to complete
-class DeathAnimation {
-
-  fragments:Fragment[] = [];
-  deathDetails: DeathDetails;
-
-  constructor(bot:BotInstance) {
-    this.deathDetails = bot.getDeathDetails();
-    let dd = this.deathDetails;
-    this.fragments.push(new Fragment(dd.posX,           dd.posY,           0,           0,            dd.sizeX/2,dd.sizeY/2,dd.rotation,  {x:dd.posX-20,y:dd.posY-20} ));
-    this.fragments.push(new Fragment(dd.posX,           dd.posY+dd.sizeY/2,0,  dd.sizeY/2,   dd.sizeX/2,dd.sizeY/2,dd.rotation,           {x:dd.posX-20,y:dd.posY+dd.sizeY/2+20} ));
-
-    this.fragments.push(new Fragment(dd.posX+dd.sizeX/2,dd.posY,           dd.sizeX/2,  0,            dd.sizeX/2,dd.sizeY/2,dd.rotation, {x:dd.posX+dd.sizeX/2+20,y:dd.posY-20}));
-    this.fragments.push(new Fragment(dd.posX+dd.sizeX/2,dd.posY+dd.sizeY/2,dd.sizeX/2,  dd.sizeY/2,   dd.sizeX/2,dd.sizeY/2,dd.rotation, {x:dd.posX+dd.sizeX/2+20,y:dd.posY+dd.sizeY/2+20}));
-  }
-
-  update(levelInstance: LevelInstance, canvasContainer:CanvasContainer) {
-    this.fragments.forEach(fragment => {
-      fragment.posX += fragment.dir.speed * fragment.dir.directionX;
-      fragment.posY += fragment.dir.speed * fragment.dir.directionY;
-      if(fragment.rotation != null){
-        //LogicService.drawRotateImage(damImage,ctx,angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY);
-      } else {
-        canvasContainer.mainCtx.drawImage(this.deathDetails.imageObj, fragment.startX, fragment.startY, fragment.imageSizeX, fragment.imageSizeY, fragment.posX, fragment.posY,fragment.imageSizeX, fragment.imageSizeY);
-      }
-    });
-  }
-}
-
-class Fragment {
-  public dir:Direction;
-
-  constructor(
-    public posX,
-    public posY,
-    public startX,
-    public startY,
-    public imageSizeX,
-    public imageSizeY,
-    public rotation,
-    public moveAwayFrom:{x:number,y:number} = null) {
-      if ( moveAwayFrom != null ) {
-        this.dir = this.genRandomDirection(moveAwayFrom.x,moveAwayFrom.y);
-      }
-      if(this.dir == null) {
-        this.dir = this.genRandomDirection();
-      }
-  }
-
-  genRandomDirection(targetX:number = this.posY + Math.floor((Math.random()*10)-5) ,targetY:number = this.posX + Math.floor((Math.random()*10)-5)): Direction {
-    // make sure its not 0
-    var directionY = targetY-this.posY;
-    var directionX = targetX-this.posX;
-    var angle = Math.atan2(directionY,directionX); // bullet angle
-    // Normalize the direction
-    var len = Math.sqrt(directionX * directionX + directionY * directionY);
-    directionX /= len;
-    directionY /= len;
-    return new Direction(directionY,directionX,angle);
+  public dynamicDeath(bot:BotInstance) {
+    let dd = bot.getDeathDetails();
+    if(dd != null)
+      this.shards.push(new ShardAnimation(dd));
   }
 
 }
@@ -119,7 +55,6 @@ class Direction {
       }
     }
   }
-
 }
 
 
@@ -145,17 +80,21 @@ class Direction {
     Gloss, instead of shrinking the bot shards into nothingness,
       - could we start to break it down, vanishing a random square at a time until its all gone?
 
-    TODO
+    DONE
     rotate slowly
     project all from a point (Probably center, but make it configurable)
+    TODO
+    I want to configure a death config in the bots that can do it, so it can updated by game dev per bot instance
+    this should be passed all the way down to here and used in the config, so size, growthfactor, rate of decay etc
+      canvas to draw on!
+    Shadow bots will need to duplicate the drawing with an offset?
   */
 
 class ShardAnimation {
   shards:ShardSquare[][] = [];
   shardGroups:ShardGroup[]= [];
-  dd:DeathDetails = null;
-  constructor(public bot:BotInstance, public squareSize:number=4) {
-    this.dd = bot.getDeathDetails();
+  constructor(public dd:DeathDetails) {
+    let squareSize = dd.deathConfig.squareSize;
     for(let  i = 0; i < (this.dd.sizeX+squareSize-1)/squareSize; i++ ) {
       let iSize = (i*squareSize);
       this.shards[i] = [];
@@ -167,7 +106,7 @@ class ShardAnimation {
 
     // select the starting shardsquares
     this.selectStartingShards();
-    this.growShards();
+    this.growShards(dd.deathConfig.growPerLoop);
   }
 
   update(levelInstance: LevelInstance, canvasContainer:CanvasContainer) {
@@ -210,7 +149,7 @@ class ShardAnimation {
     }
   }
 
-  growShards(growPerLoop:number = 5) {
+  growShards(growPerLoop) {
     let shatteredFully = false; // keep growing until all is consumed.
     while(!shatteredFully) {
       shatteredFully = true;
@@ -293,6 +232,7 @@ class ShardGroup {
 
   // the center of the shard, so where everyshard should rotate around
   shardGroupCentre:{x:number,y:number};
+  rateOfDecayCount:number = 0;
 
   constructor(shard:ShardSquare, public dd:DeathDetails) {
     shard.occupied = true;
@@ -321,10 +261,14 @@ class ShardGroup {
         canvasContainer.mainCtx.drawImage(this.dd.imageObj, shard.offsetX, shard.offsetY, shard.imageSizeX, shard.imageSizeY, posX, posY, shard.imageSizeX, shard.imageSizeY);
       }
     });
-    this.removeRandomShard();
+
+    //Decay
+    this.rateOfDecayCount = LogicService.incrementLoop(this.rateOfDecayCount, this.dd.deathConfig.decayPerLoop);
+    if(this.rateOfDecayCount == 0) this.removeRandomShard();
+
     this.direction.updateAngle(this.rotateClockwise);
     this.updateTicksCount += 1;
-    if(this.updateTicksCount > updateTicksCountMax){
+    if(this.updateTicksCount > this.dd.deathConfig.updateTicksCountMax){
       sA.removeShardGroup(this);
     }
   }

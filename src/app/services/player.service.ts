@@ -59,7 +59,7 @@ export class PlayerService {
   }
 
   // creates an entirely new player
-  initPlayer(init:boolean=true, score=0,lives=3,startPositionX=210, startPositionY=640): any {
+  initPlayer(init:boolean=true, score=0,lives=30,startPositionX=210, startPositionY=640): any {
     this.currentPlayer.reset(this.bulletManagerService, startPositionX,startPositionY); // position
     this.currentPlayer.pressedKeys = {"left":false,"up":false,"right":false,"down":false};
     this.currentPlayer.bulletsFiring = false;

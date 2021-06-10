@@ -9,6 +9,30 @@ export class DeathDetails {
     public rotation:number = 0,
     public centreX = posX+(sizeX/2),
     public centreY = posY+(sizeY/2),
+    public deathConfig = new DeathConfig(),
+    public ShadowDetails = null
+  ){
+
+  }
+}
+
+export class ShadowDetails {
+  constructor(
+    public imageObj:HTMLImageElement,
+    public offsetX:number,
+    public offsetY:number,
+  ){
+
+  }
+}
+
+export class DeathConfig {
+  constructor(
+    public squareSize:number = 4, // the size of each piece
+    public totalShards:number = 8, // how many shards the bot should break into
+    public growPerLoop:number = 5, // how many pieces to add to a shard per loop, higher = more chunky
+    public decayPerLoop:number = 0, // how many loop iterations before a shard piece is lost
+    public updateTicksCountMax:number = 240 // max time it can remain before being removed from death animation loop
   ){
 
   }

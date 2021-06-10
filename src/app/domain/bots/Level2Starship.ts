@@ -133,7 +133,7 @@ export class Level2Starship extends  FlyingBotImpl {
     this.hitBoxWeakpoint.hitBoxX = topLeftCords.x - (this.posX-10);
     this.hitBoxWeakpoint.hitBoxY = topLeftCords.y - this.posY;
     // weakpoint
-    LogicService.drawRotateImage(this.starshipWeakpoint,ctx,this.lazerTurret.angleDirection.angle,this.posX+(-20),this.posY+(29),224,110, this.posX+(-20),this.posY+(29),224,110, this.posX+86,this.posY+ 87);
+    LogicService.drawRotateImage(this.starshipWeakpoint,ctx,this.lazerTurret.angleDirection.angle,this.posX+(-20),this.posY+(29),224,110, 0,0,224,110, this.posX+86,this.posY+ 87);
     this.updateArmorDamageAnimation(ctx, this.lazerTurret.angleDirection.angle);
     // bullet
     this.bulletTurret.update(topLeftCords.x,topLeftCords.y,currentPlayer,levelInstance, canvasContainer.mainCtx, canvasContainer.shadowCtx, botManagerService, bulletManagerService, playerService,drawTurretDamage);
@@ -189,7 +189,7 @@ export class Level2Starship extends  FlyingBotImpl {
       this.armorDamAnaimationTimer++;
       if(this.armorDamAnaimationTimer %2 == 1) {
         if(angle != null){
-          LogicService.drawRotateImage(this.starshipWeakpointDamage,ctx,this.lazerTurret.angleDirection.angle,this.posX+(-20),this.posY+(29),224,110, this.posX+(-20),this.posY+(29),224,110, this.posX+86,this.posY+ 87);
+          LogicService.drawRotateImage(this.starshipWeakpointDamage,ctx,this.lazerTurret.angleDirection.angle,this.posX+(-20),this.posY+(29),224,110, 0,0,224,110, this.posX+86,this.posY+ 87);
         }
       }
     }

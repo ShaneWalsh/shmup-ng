@@ -7,6 +7,7 @@ import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { LogicService } from "src/app/services/logic.service";
 import { CanvasContainer } from "../CanvasContainer";
 import { Turret } from "./Turret";
+import { DeathDetails } from "../DeathDetails";
 
 export class Level3SubBoss2 extends  FlyingBotImpl {
     public phaseCounter = 0;
@@ -103,14 +104,14 @@ export class Level3SubBoss2 extends  FlyingBotImpl {
         this.phaseCounter = 0;
     }
 
-    LogicService.drawRotateImage(this.imageObj, ctx, this.moveDirection.angle, this.posX, this.posY, this.imageSizeX, this.imageSizeY, this.posX, this.posY, this.imageSizeX, this.imageSizeY, this.posX+this.rotationCenterX, this.posY+this.rotationCenterY);
+    LogicService.drawRotateImage(this.imageObj, ctx, this.moveDirection.angle, this.posX, this.posY, this.imageSizeX, this.imageSizeY, 0, 0, this.imageSizeX, this.imageSizeY, this.posX+this.rotationCenterX, this.posY+this.rotationCenterY);
     this.updateDamageAnimation(ctx, this.moveDirection.angle);
 
     // Turret
     if ( this.health < this.turretHealthTrigger ) { // if the health is less than a certain value, then activate the turret
       this.turret.update(this.posX+this.turretXoffset,this.posY+this.turretYoffset,currentPlayer,levelInstance, ctx, ctx, botManagerService, bulletManagerService, playerService, true);
     } else { // else just draw it in place
-      LogicService.drawRotateImage(this.imageObjTurret, ctx, this.moveDirection.angle, this.posX, this.posY, this.imageSizeX, this.imageSizeY, this.posX, this.posY, this.imageSizeX, this.imageSizeY, this.posX+this.rotationCenterX, this.posY+this.rotationCenterY);
+      LogicService.drawRotateImage(this.imageObjTurret, ctx, this.moveDirection.angle, this.posX, this.posY, this.imageSizeX, this.imageSizeY, 0, 0, this.imageSizeX, this.imageSizeY, this.posX+this.rotationCenterX, this.posY+this.rotationCenterY);
     }
 
     if(levelInstance.drawHitBox()){
@@ -173,11 +174,23 @@ export class Level3SubBoss2 extends  FlyingBotImpl {
           damImage = this.imageObjDamaged[this.animationIndex];
         }
         if(angle != null){
-          LogicService.drawRotateImage(damImage,ctx,angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY,this.posX,this.posY,this.imageSizeX,this.imageSizeY, this.posX+this.rotationCenterX, this.posY+this.rotationCenterY);
+          LogicService.drawRotateImage(damImage,ctx,angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY,0,0,this.imageSizeX,this.imageSizeY, this.posX+this.rotationCenterX, this.posY+this.rotationCenterY);
         } else {
           ctx.drawImage(damImage, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
         }
       }
     }
   }
+
+  /**
+   * Return the current image
+   */
+  getDeathDetails():DeathDetails {
+    return new DeathDetails(this.imageObj, this.posX, this.posY, this.imageSizeX, this.imageSizeY, this.getCurrentAngle());
+  }
+
+  getCurrentAngle() {
+    return this.moveDirection.angle;
+  }
+
 }
