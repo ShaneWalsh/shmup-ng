@@ -5,7 +5,7 @@ import { BotManagerService } from "src/app/manager/bot-manager.service";
 import { BulletManagerService, BulletDirection } from "src/app/manager/bullet-manager.service";
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { CanvasContainer } from "../CanvasContainer";
-import { DeathDetails } from "../DeathDetails";
+import { DeathConfig, DeathDetails } from "../DeathDetails";
 
 export class Level1SubBoss extends  BotInstanceImpl {
 
@@ -183,7 +183,7 @@ export class Level1SubBoss extends  BotInstanceImpl {
    * Return the current image
    */
    getDeathDetails():DeathDetails {
-    return new DeathDetails(this.imageObj, this.posX, this.posY, this.imageSizeX, this.imageSizeY, this.getCurrentAngle());
+    return new DeathDetails(this.imageObj, this.posX, this.posY, this.imageSizeX, this.imageSizeY, this.getCurrentAngle(), this.getCenterX(), this.getCenterY(), new DeathConfig(8,12));
   }
 
 }
