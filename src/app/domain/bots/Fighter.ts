@@ -33,7 +33,7 @@ export class Fighter extends FlyingBotImpl{
     let ctx = canvasContainer.mainCtx;
     this.posY += this.posYSpeed;
     if(this.posY + this.imageSizeY > (levelInstance.getMapHeight()+this.imageSizeY)){
-      botManagerService.removeBot(this);
+      botManagerService.removeBotOOB(this);
     } else {
       if(levelInstance.drawShadow()) {
         this.drawShadowFlying(null,canvasContainer,this.posX,this.posY,this.imageSizeX, this.imageSizeY);

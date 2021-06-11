@@ -14,6 +14,8 @@ import { PilotFactoryService } from './pilot-factory.service';
 import { ShipEnum, ShipObject } from '../domain/player/ShipObject';
 import { PilotEnum, PilotObject } from '../domain/player/PilotObject';
 import { AudioServiceService } from './audio-service.service';
+import { DeathManagerService } from '../manager/death-manager.service';
+import { DeathDetails } from '../domain/DeathDetails';
 
 
 
@@ -29,7 +31,7 @@ export class PlayerService {
 
   constructor(private keyboardEventService:KeyboardEventService, private levelManagerService:LevelManagerService,
     private resourcesService:ResourcesService, private botManagerService:BotManagerService,
-    private bulletManagerService:BulletManagerService,
+    private bulletManagerService:BulletManagerService, private deathManagerService:DeathManagerService,
     private shipFactoryService:ShipFactoryService, private pilotFactoryService:PilotFactoryService ) {
     keyboardEventService.getKeyDownEventSubject().subscribe(customKeyboardEvent => {
         //if(this.levelManagerService.getNotPaused()){
@@ -47,6 +49,7 @@ export class PlayerService {
       this.currentPlayer.lives--;
       this.currentPlayer.invincibilityTimer = 120;
       this.botManagerService.createPlayerDeath(this.currentPlayer.getCenterX(),this.currentPlayer.getCenterY());
+      this.deathManagerService.addDynamicDeath(this.currentPlayer.getDeathDetails());
       if(this.currentPlayer.lives > 0){
           this.currentPlayer.reset(this.bulletManagerService);
       } else { // game over.
@@ -298,5 +301,9 @@ export class PlayerObj implements ShieldBot {
 
   moveToMiddle(){
     this.hasMovedToMiddle=false;
+  }
+
+  getDeathDetails(): DeathDetails {
+    return new DeathDetails(this.selectedShip.imageObj, this.posX, this.posY, this.selectedShip.imageSizeX, this.selectedShip.imageSizeY);
   }
 }

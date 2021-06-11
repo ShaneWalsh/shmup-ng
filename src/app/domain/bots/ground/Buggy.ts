@@ -85,7 +85,7 @@ export class Buggy extends BotInstanceImpl{
     }
     if(this.posY + this.imageSizeY > (levelInstance.getMapHeight()+this.imageSizeY)
       || (this.posX < -400 || this.posX > 800)){
-        botManagerService.removeBot(this);
+        botManagerService.removeBotOOB(this);
     } else {
         ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
         if(levelInstance.drawShadow() && this.imageObjShadow != null) {

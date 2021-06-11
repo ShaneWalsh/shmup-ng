@@ -118,6 +118,10 @@ export class LogicService {
     return (index >= length)?0:index;
   }
 
+  static randomColor(): string {
+    return "#" + ((1<<24)*Math.random() | 0).toString(16)
+  }
+
   // maybe one day I can try and draw odd shapes using points
   // https://stackoverflow.com/questions/27213413/canvas-cropping-images-in-different-shapes
 }

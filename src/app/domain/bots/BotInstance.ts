@@ -63,7 +63,7 @@ export class BotInstanceImpl implements BotInstance, ShieldBot {
   getDeathDetails() {
     return null;
   }
-  getCurrentAngle() {
+  getCurrentAngle():number {
     return 0;
   }
   getDeathConfig(): DeathConfig {

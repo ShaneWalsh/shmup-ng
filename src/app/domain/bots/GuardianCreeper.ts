@@ -48,7 +48,7 @@ export class GuardianCreeper extends FlyingBotImpl {
 			this.posY -= this.posYSpeed;
 			this.canShootNow = false;
 			if(this.posY < -400){
-				botManagerService.removeBot(this);
+				botManagerService.removeBotOOB(this);
 			}
 		}
 		if(this.posX < (this.targetX-3) || this.posX > (this.targetX+3)){
@@ -86,6 +86,10 @@ export class GuardianCreeper extends FlyingBotImpl {
 
   getPlayerCollisionHitBoxes(): HitBox[] {
     return [this.hitBox];
+  }
+
+  getCurrentAngle():number {
+    return this.angleDirection.angle;
   }
 
 }

@@ -36,7 +36,7 @@ export class Rock extends Fighter {
     let ctx = canvasContainer.mainCtx;
     this.posY += this.posYSpeed;
     if(this.posY + this.imageSizeY > (levelInstance.getMapHeight()+this.imageSizeY)){
-      botManagerService.removeBot(this);
+      botManagerService.removeBotOOB(this);
     } else {
       ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
       this.updateDamageAnimation(ctx);

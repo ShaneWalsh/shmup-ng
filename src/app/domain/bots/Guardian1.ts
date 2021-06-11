@@ -71,4 +71,8 @@ export class Guardian1 extends FlyingBotImpl{
   getPlayerCollisionHitBoxes(): HitBox[] {
       return [this.hitBox];
   }
+
+  getCurrentAngle():number {
+    return this.angleDirection.angle;
+  }
 }

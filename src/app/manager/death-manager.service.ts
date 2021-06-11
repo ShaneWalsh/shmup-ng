@@ -20,14 +20,20 @@ export class DeathManagerService {
   constructor() { }
 
   public update(levelInstance: LevelInstance, canvasContainer:CanvasContainer, playerService: PlayerService): any {
-    this.shards.forEach(element => {
-      element.update(levelInstance, canvasContainer);
-    });
+    let arr = [...this.shards];
+    for(let i = 0; i < arr.length; i++) {
+      let shardAnimation = arr[i];
+      shardAnimation.update(levelInstance, canvasContainer);
+    }
   }
 
   public dynamicDeath(bot:BotInstance) {
     let dd = bot.getDeathDetails();
     if(dd != null)
+      this.shards.push(new ShardAnimation(dd));
+  }
+
+  public addDynamicDeath(dd:DeathDetails) {
       this.shards.push(new ShardAnimation(dd));
   }
 
@@ -39,17 +45,16 @@ class Direction {
     public directionX,
     public angle = LogicService.degreeToRadian(360),
     public speed = 1) {
-
   }
 
   updateAngle(rotateClockwise: boolean) {
     if( this.angle != null) {
       if(rotateClockwise) {
-        let angleDegree = LogicService.radianToDegreeFloor(this.angle);
+        let angleDegree = LogicService.radianToDegree(this.angle);
         angleDegree = ((angleDegree+1) > 360)? 1: (angleDegree+1);
         this.angle = LogicService.degreeToRadian(angleDegree);
       } else {
-        let angleDegree = LogicService.radianToDegreeFloor(this.angle);
+        let angleDegree = LogicService.radianToDegree(this.angle);
         angleDegree = ((angleDegree-1) < 0)? 359: (angleDegree-1);
         this.angle = LogicService.degreeToRadian(angleDegree);
       }
@@ -100,7 +105,7 @@ class ShardAnimation {
       this.shards[i] = [];
       for(let  j = 0; j < (this.dd.sizeY+squareSize-1)/squareSize; j++ ) {
         let jSize = (j*squareSize)
-        this.shards[i][j] = new ShardSquare(i,j,iSize, jSize,squareSize,squareSize);
+        this.shards[i][j] = new ShardSquare( i, j, dd.posX+iSize, dd.posY+jSize, iSize, jSize, squareSize, squareSize);
       }
     }
 
@@ -111,9 +116,11 @@ class ShardAnimation {
 
   update(levelInstance: LevelInstance, canvasContainer:CanvasContainer) {
     let arr = [...this.shardGroups];
-    for(let i = 0; i < arr.length; i++) {
-      let shardGroup = arr[i];
-      shardGroup.update(levelInstance, canvasContainer, this);
+    if(arr.length > 0) {
+      for(let i = 0; i < arr.length; i++) {
+        let shardGroup = arr[i];
+        shardGroup.update(levelInstance, canvasContainer, this);
+      }
     }
   }
 
@@ -144,7 +151,7 @@ class ShardAnimation {
         }
       }
 
-      let shardGroup = new ShardGroup(shard, this.dd);
+      let shardGroup = (this.dd.rotation != null && this.dd.rotation != 0)? new ShardGroupWithRotation(shard, this.dd) : new ShardGroup(shard, this.dd);
       this.shardGroups.push(shardGroup);
     }
   }
@@ -232,11 +239,14 @@ class ShardGroup {
 
   // the center of the shard, so where everyshard should rotate around
   shardGroupCentre:{x:number,y:number};
+  highestAndLowestPositions:{hX:number, lX:number, hY:number,lY:number};
   rateOfDecayCount:number = 0;
 
   constructor(shard:ShardSquare, public dd:DeathDetails) {
-    shard.occupied = true;
-    this.shards.push(shard);
+    if(shard != null ){
+      shard.occupied = true;
+      this.shards.push(shard);
+    }
   }
 
   update ( levelInstance: LevelInstance, canvasContainer: CanvasContainer, sA:ShardAnimation, updateTicksCountMax:number = 150) {
@@ -244,14 +254,25 @@ class ShardGroup {
       this.distanceMoved.x += this.direction.speed * this.direction.directionX;
       this.distanceMoved.y += this.direction.speed * this.direction.directionY;
     } else {
-      this.distanceMoved = {x:this.direction.speed * this.direction.directionX, y:this.direction.speed * this.direction.directionX}
+      this.distanceMoved = {x:this.direction.speed * this.direction.directionX, y:this.direction.speed * this.direction.directionY}
     }
     // the shardgroup center will be the same for all of the shards
-    let shardGroupCentrePlusBot = {x: this.dd.posX + this.shardGroupCentre.x + this.distanceMoved.x, y: this.dd.posY + this.shardGroupCentre.y + this.distanceMoved.y}
-    this.shards.forEach(shard => {
-      let posX = this.dd.posX + shard.offsetX + this.distanceMoved.x;
-      let posY = this.dd.posY + shard.offsetY + this.distanceMoved.y;
-      if(this.direction.angle != null) {
+    let shardGroupCentrePlusBot = {x: this.shardGroupCentre.x + this.distanceMoved.x, y: this.shardGroupCentre.y + this.distanceMoved.y}
+
+    // var randomColor = "#" + ((1<<24)*Math.random() | 0).toString(16)
+    // LogicService.drawBorder(this.highestAndLowestPositions.lX, this.highestAndLowestPositions.lY,
+    //   (this.highestAndLowestPositions.hX - this.highestAndLowestPositions.lX),
+    //   (this.highestAndLowestPositions.hY - this.highestAndLowestPositions.lY),
+    //   canvasContainer.topCtx, randomColor);
+    // LogicService.drawBorder(shardGroupCentrePlusBot.x-4, shardGroupCentrePlusBot.y-4,8,8,
+    //     canvasContainer.topCtx, randomColor);
+
+    let arr = [...this.shards];
+    for(let i = 0; i < arr.length; i++) {
+      let shard = arr[i];
+      let posX = shard.posX + this.distanceMoved.x;
+      let posY = shard.posY + this.distanceMoved.y;
+      if( this.direction.angle != null && this.direction.angle != 0 ) {
         LogicService.drawRotateImage(this.dd.imageObj, canvasContainer.mainCtx,
           this.direction.angle,
           posX, posY, shard.imageSizeX, shard.imageSizeY,
@@ -260,7 +281,7 @@ class ShardGroup {
       } else {
         canvasContainer.mainCtx.drawImage(this.dd.imageObj, shard.offsetX, shard.offsetY, shard.imageSizeX, shard.imageSizeY, posX, posY, shard.imageSizeX, shard.imageSizeY);
       }
-    });
+    }
 
     //Decay
     this.rateOfDecayCount = LogicService.incrementLoop(this.rateOfDecayCount, this.dd.deathConfig.decayPerLoop);
@@ -268,7 +289,7 @@ class ShardGroup {
 
     this.direction.updateAngle(this.rotateClockwise);
     this.updateTicksCount += 1;
-    if(this.updateTicksCount > this.dd.deathConfig.updateTicksCountMax){
+    if( (this.updateTicksCount > this.dd.deathConfig.updateTicksCountMax) || this.shards.length < 1){
       sA.removeShardGroup(this);
     }
   }
@@ -277,7 +298,7 @@ class ShardGroup {
     this.shards.splice(LogicService.getRandomInt(this.shards.length),1);
   }
 
-  genDirection( shardX, shardY, botX, botY, currentAngle): Direction {
+  genDirection( shardX, shardY, botX, botY, currentAngle, speed): Direction {
     // make sure its not 0
     var directionY = shardY-botY;
     var directionX = shardX-botX;
@@ -286,7 +307,7 @@ class ShardGroup {
     var len = Math.sqrt(directionX * directionX + directionY * directionY);
     directionX /= len;
     directionY /= len;
-    return new Direction(directionY,directionX,currentAngle);
+    return new Direction(directionY,directionX,currentAngle, speed);
   }
 
   /**
@@ -294,25 +315,27 @@ class ShardGroup {
    */
   shattered(){
     this.shatteredFully = true;
-    let highestAndLowestPositions:{hX:number, lX:number, hY:number,lY:number} = {
-      hX:this.shards[0].offsetX,
-      lX:this.shards[0].offsetX,
-      hY:this.shards[0].offsetY,
-      lY:this.shards[0].offsetY,
+
+    let rotation = this.dd.rotation;
+    this.highestAndLowestPositions = {
+      hX:this.shards[0].posX,
+      lX:this.shards[0].posX,
+      hY:this.shards[0].posY,
+      lY:this.shards[0].posY,
     }
 
     this.shards.forEach(shard => {
-      highestAndLowestPositions.hX = (shard.offsetX > highestAndLowestPositions.hX)? shard.offsetX:highestAndLowestPositions.hX;
-      highestAndLowestPositions.lX = (shard.offsetX < highestAndLowestPositions.lX)? shard.offsetX:highestAndLowestPositions.lX;
-      highestAndLowestPositions.hY = (shard.offsetY > highestAndLowestPositions.hY)? shard.offsetY:highestAndLowestPositions.hY;
-      highestAndLowestPositions.lY = (shard.offsetY < highestAndLowestPositions.lY)? shard.offsetY:highestAndLowestPositions.lY;
+      this.highestAndLowestPositions.hX = (shard.posX > this.highestAndLowestPositions.hX)? shard.posX:this.highestAndLowestPositions.hX;
+      this.highestAndLowestPositions.lX = (shard.posX < this.highestAndLowestPositions.lX)? shard.posX:this.highestAndLowestPositions.lX;
+      this.highestAndLowestPositions.hY = (shard.posY > this.highestAndLowestPositions.hY)? shard.posY:this.highestAndLowestPositions.hY;
+      this.highestAndLowestPositions.lY = (shard.posY < this.highestAndLowestPositions.lY)? shard.posY:this.highestAndLowestPositions.lY;
     });
 
     this.shardGroupCentre = {
-      x: highestAndLowestPositions.lX + Math.floor((highestAndLowestPositions.hX - highestAndLowestPositions.lX)/2),
-      y: highestAndLowestPositions.lY + Math.floor((highestAndLowestPositions.hY - highestAndLowestPositions.lY)/2)
+      x: this.highestAndLowestPositions.lX + Math.floor((this.highestAndLowestPositions.hX - this.highestAndLowestPositions.lX)/2),
+      y: this.highestAndLowestPositions.lY + Math.floor((this.highestAndLowestPositions.hY - this.highestAndLowestPositions.lY)/2)
     }
-    this.direction = this.genDirection(this.dd.posX+this.shardGroupCentre.x, this.dd.posY+this.shardGroupCentre.y, this.dd.centreX, this.dd.centreY, this.dd.rotation);
+    this.direction = this.genDirection(this.shardGroupCentre.x, this.shardGroupCentre.y, this.dd.centreX, this.dd.centreY, rotation, this.dd.deathConfig.speed);
   }
 
   isShatteredFully(){
@@ -320,6 +343,64 @@ class ShardGroup {
   }
 
 }
+
+class ShardGroupWithRotation extends ShardGroup {
+
+  // this is required for rotated images, in order to maintin the correct orentiation
+  originalBotCentre:{x:number,y:number} = null;
+
+  constructor(shard:ShardSquare, dd:DeathDetails) {
+    super(shard,dd);
+    this.originalBotCentre = {x:dd.centreX, y:dd.centreY};
+  }
+
+  // because the angle is > 0 then this is not going to be an easy rotation.
+    // It can work, but this whole group will have to remember the original centerX+Y
+      // Draw Loop
+        //1. Move the Shard + original bot CenterX+Y by distance
+        //2.  Draw the shards, rotate them around the bot CenterX+Y ((original bot CenterX+Y moved by distance))
+  update ( levelInstance: LevelInstance, canvasContainer: CanvasContainer, sA:ShardAnimation, updateTicksCountMax:number = 150) {
+    if(this.distanceMoved == null) {
+      this.distanceMoved = {x:this.direction.speed * this.direction.directionX, y:this.direction.speed * this.direction.directionY}
+    }
+    // the shardgroup center will be used to rotate the original bot center around the shard group. The group will then draw rotate around the original bot center
+    this.shardGroupCentre = {x: this.shardGroupCentre.x + this.distanceMoved.x, y: this.shardGroupCentre.y + this.distanceMoved.y}
+    //1. update the rotation point (OriginalBotCentre) by the movement distance also
+    this.originalBotCentre = {x: this.originalBotCentre.x + this.distanceMoved.x, y: this.originalBotCentre.y + this.distanceMoved.y}
+
+    let arr = [...this.shards];
+    for(let i = 0; i < arr.length; i++) {
+      let shard = arr[i];
+      shard.posX = shard.posX + this.distanceMoved.x;
+      shard.posY = shard.posY + this.distanceMoved.y;
+      //2.
+      LogicService.drawRotateImage(this.dd.imageObj, canvasContainer.mainCtx,
+        this.direction.angle,
+        shard.posX, shard.posY, shard.imageSizeX, shard.imageSizeY,
+        shard.offsetX, shard.offsetY, shard.imageSizeX, shard.imageSizeY,
+        this.originalBotCentre.x, this.originalBotCentre.y);
+    }
+
+    //Decay
+    this.rateOfDecayCount = LogicService.incrementLoop(this.rateOfDecayCount, this.dd.deathConfig.decayPerLoop);
+    if(this.rateOfDecayCount == 0) this.removeRandomShard();
+
+    this.direction.updateAngle(this.rotateClockwise);
+    // deprecated, not required
+    // this.updateRotateOriginalBotCenterXY(this.rotateClockwise);
+
+    this.updateTicksCount += 1;
+    if(this.updateTicksCount > this.dd.deathConfig.updateTicksCountMax){
+      sA.removeShardGroup(this);
+    }
+  }
+
+  updateRotateOriginalBotCenterXY(rotateClockwise: boolean) {
+    this.originalBotCentre = LogicService.pointAfterRotation(this.shardGroupCentre.x,this.shardGroupCentre.y,this.originalBotCentre.x, this.originalBotCentre.y,(rotateClockwise)?1:359);
+  }
+
+}
+
 
 enum SectionEnum {
   ONE,TWO,THREE, Four
@@ -331,6 +412,8 @@ class ShardSquare {
   constructor(
     public i, // position in grid
     public j,
+    public posX, // these are the offsets from original boxs posX/Y
+    public posY,
     public offsetX, // these are the offsets from original boxs posX/Y
     public offsetY,
     public imageSizeX,

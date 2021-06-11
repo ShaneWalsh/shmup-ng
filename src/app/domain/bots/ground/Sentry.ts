@@ -92,7 +92,7 @@ export class Sentry extends BotInstanceImpl{
     this.posY += this.posYSpeed;
     if(this.posY + this.imageSizeY > (levelInstance.getMapHeight()+this.imageSizeY)
         || (this.posX < -2000 || this.posX > 2000)){
-        botManagerService.removeBot(this);
+        botManagerService.removeBotOOB(this);
     } else {
       if(levelInstance.drawShadow() && this.imageObjShadow != null) {
         this.drawShadow(ctxShadow,this.imageObjShadow,this.posX,this.posY,this.imageSizeX, this.imageSizeY);

@@ -65,7 +65,7 @@ export class HeavyJet extends FlyingBotImpl {
         && (this.getCenterY() > (targetCord.targetY - range) && this.getCenterY() < (targetCord.targetY + range))) {
       this.targetCordsIndex++;
       if ( this.targetCordsIndex >= this.targetCords.length){
-        botManagerService.removeBot(this);
+        botManagerService.removeBotOOB(this);
         return;
       } else {
         targetCord = this.getCurrentTargetCords();
@@ -99,5 +99,9 @@ export class HeavyJet extends FlyingBotImpl {
 
   getPlayerCollisionHitBoxes(): HitBox[] {
     return [this.hitBox];
+  }
+
+  getCurrentAngle():number {
+    return this.angleDirection.angle;
   }
 }

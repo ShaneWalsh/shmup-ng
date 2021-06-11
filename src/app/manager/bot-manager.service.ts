@@ -569,6 +569,12 @@ export class BotManagerService {
     this.botRemoved.next(bot);
   }
 
+  // Bot left the field of play, so remove it, no animations or explosions
+  removeBotOOB(bot: BotInstance) {
+    this.botsArr.splice(this.botsArr.indexOf(bot), 1);
+    this.botRemoved.next(bot);
+  }
+
   removeSpriteSheet(bot: SpriteSheet) {
     this.spriteSheetArr.splice(this.spriteSheetArr.indexOf(bot), 1);
   }

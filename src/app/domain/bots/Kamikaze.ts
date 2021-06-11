@@ -81,4 +81,8 @@ export class Kamikaze extends FlyingBotImpl {
       }
     }
   }
+
+  getCurrentAngle():number {
+    return this.angleDirection.angle;
+  }
 }

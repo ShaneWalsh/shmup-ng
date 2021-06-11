@@ -65,7 +65,7 @@ export class Creeper extends BotInstanceImpl{
 			this.posY -= this.posYSpeed;
 		}
         if(this.posY < -200){
-            botManagerService.removeBot(this);
+            botManagerService.removeBotOOB(this);
         } else {
             ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
 			// todo add damage calcualtion

@@ -189,7 +189,7 @@ export class Level3SubBoss2 extends  FlyingBotImpl {
     return new DeathDetails(this.imageObj, this.posX, this.posY, this.imageSizeX, this.imageSizeY, this.getCurrentAngle());
   }
 
-  getCurrentAngle() {
+  getCurrentAngle():number {
     return this.moveDirection.angle;
   }
 
