@@ -31,6 +31,15 @@ export class LogicService {
     return { x: (cords.x-halfImageSizeX), y: (cords.y-halfImageSizeY), xR: cords.x, yR: cords.y };
   }
 
+  /**
+   * Performs a rotation of point2X/Y around centerX/Y by angle(Radian) degrees.
+   * @param centerX rotation origin x coordinate
+   * @param centerY rotation origin y coordinate
+   * @param point2X point to rotate x coordinate
+   * @param point2Y point to rotate y coordinate
+   * @param angle Radian value
+   * @returns the new positions of point2X+Y after rotation
+   */
   public static pointAfterRotation(centerX, centerY, point2X, point2Y, angle) :{x:number,y:number} {
     var x1 = point2X - centerX;
     var y1 = point2Y - centerY;
@@ -54,8 +63,8 @@ export class LogicService {
 	 */
   public static drawRotateImage(imageObj, ctx, rotation, x, y, sx, sy, lx = 0, ly = 0, lxs = sx, lys = sy, translateX = x + (sx / 2), translateY = y + (sy / 2)) {
     // bitwise transformations to remove floating point values, canvas drawimage is faster with integers
-    // lx = (0.5 + lx) << 0;
-    // ly = (0.5 + ly) << 0;
+    lx = (0.5 + lx) << 0;
+    ly = (0.5 + ly) << 0;
 
     translateX = (0.5 + translateX) << 0;
     translateY = (0.5 + translateY) << 0;
@@ -82,11 +91,16 @@ export class LogicService {
     //ctx.fill();
   }
 
-  // 0 : (max -1)
+  /**
+   * Returns an integer in the range of 0 : (max -1)
+   */
   public static getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
   }
 
+  /**
+   * Converts a Radian value to a Dregree with floating point
+   */
   public static radianToDegree(radians){
     var deg = radians * this.RADIANCAL;
     if(deg < 0){
@@ -97,10 +111,17 @@ export class LogicService {
       }
   }
 
+  /**
+   * Converts a Radian value to a Dregree integer
+   */
   public static radianToDegreeFloor(radians){
     return Math.floor(this.radianToDegree(radians))
   }
 
+  /**
+   * Converts a Dregree value to a Radian value
+   * The Radian value can be passed directly to canvas methods as the angle parameter
+   */
   public static degreeToRadian(degrees){
     return degrees * this.DEGREECAL;
   }
@@ -112,7 +133,13 @@ export class LogicService {
     }
   }
 
-  // loop around on a value
+  /**
+   * Loop around on a value
+   * @param index the current index position
+   * @param length the maximum value before the loop resets to 0
+   * @param increment the amount to increment on each loop
+   * @returns
+   */
   static incrementLoop(index: number, length: number, increment:number=1): number {
     index = index+increment;
     return (index >= length)?0:index;

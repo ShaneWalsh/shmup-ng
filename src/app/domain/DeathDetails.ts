@@ -1,5 +1,6 @@
-export class DeathDetails {
+import { CanvasContainer } from "./CanvasContainer";
 
+export class DeathDetails {
   constructor(
     public imageObj:HTMLImageElement,
     public posX:number,
@@ -10,10 +11,16 @@ export class DeathDetails {
     public centreX = posX+(sizeX/2),
     public centreY = posY+(sizeY/2),
     public deathConfig = new DeathConfig(),
+    public ctxToDrawOn = null,
     public ShadowDetails = null
   ){
 
   }
+
+  getCtxToDrawOn(canvasContainer: CanvasContainer): any {
+    return (this.ctxToDrawOn != null)? this.ctxToDrawOn : canvasContainer.mainCtx;
+  }
+
 }
 
 export class ShadowDetails {
@@ -21,9 +28,15 @@ export class ShadowDetails {
     public imageObj:HTMLImageElement,
     public offsetX:number,
     public offsetY:number,
+    public ctxToDrawOn:any,
   ){
 
   }
+
+  getCtxToDrawOn(canvasContainer: CanvasContainer): any {
+    return (this.ctxToDrawOn != null)? this.ctxToDrawOn : canvasContainer.mainCtx;
+  }
+
 }
 
 export class DeathConfig {

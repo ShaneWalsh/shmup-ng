@@ -64,34 +64,8 @@ class Direction {
 
 
 
-/*
-    Better solution.
-    Break the bot image up into small squares. Maybe even along hitboxes? Just clip anything that overlaps.
-    ~ This can be cached, it only needs to be calcualted once, on startup and the same data can be used every time.
-
-    Now pick a random number of starting points, put one in each of the four sections + any extra randomly placed looping on the four sections.
-    Then loop on the shards, each one will have a starting square.
-      - pick a random square from available shard squares, and check if up,down,left,right(starting position random) is free, if it is add it to the shard.
-      -- if none are free, this is landlocked, remove it from the loop of squares.
-      Each shard gets to consume one more square each loop.
-      - when all of a shards squares are landlocked, its finished.
-
-    Now I should have multiple shards, which are a collection of squares.
-      - MVP would draw all of the tiny squares.
-      - Ideally, any squares that align and can form a clean rect should be joined into one larger square, less drawing and calcualtions.
-
-    Now we are ready to shred and draw shards going in all directions.
-
-    Gloss, instead of shrinking the bot shards into nothingness,
-      - could we start to break it down, vanishing a random square at a time until its all gone?
-
-    DONE
-    rotate slowly
-    project all from a point (Probably center, but make it configurable)
-    TODO
-    I want to configure a death config in the bots that can do it, so it can updated by game dev per bot instance
-    this should be passed all the way down to here and used in the config, so size, growthfactor, rate of decay etc
-      canvas to draw on!
+  /*
+    TODO List
     Shadow bots will need to duplicate the drawing with an offset?
   */
 
@@ -374,7 +348,7 @@ class ShardGroupWithRotation extends ShardGroup {
       shard.posX = shard.posX + this.distanceMoved.x;
       shard.posY = shard.posY + this.distanceMoved.y;
       //2.
-      LogicService.drawRotateImage(this.dd.imageObj, canvasContainer.mainCtx,
+      LogicService.drawRotateImage(this.dd.imageObj, this.dd.getCtxToDrawOn(canvasContainer),
         this.direction.angle,
         shard.posX, shard.posY, shard.imageSizeX, shard.imageSizeY,
         shard.offsetX, shard.offsetY, shard.imageSizeX, shard.imageSizeY,
