@@ -5,6 +5,8 @@ import { DeathDetails } from '../domain/DeathDetails';
 import { HitBox } from '../domain/HitBox';
 import { LogicService } from '../services/logic.service';
 import { PlayerService } from '../services/player.service';
+import Splatter from './death-splatter/Splatter';
+import { SplatterChunk } from './death-splatter/SplatterChunk';
 import { LevelInstance } from './level-manager.service';
 
 @Injectable({
@@ -16,6 +18,7 @@ export class DeathManagerService {
   }
 
   shards:ShardAnimation[] = [];
+  splatters:Splatter[] = [];
 
   constructor() { }
 
@@ -25,12 +28,30 @@ export class DeathManagerService {
       let shardAnimation = arr[i];
       shardAnimation.update(levelInstance, canvasContainer);
     }
+    let arr2 = [...this.splatters];
+    for(let i = 0; i < arr2.length; i++) {
+      let splatterChunk = arr2[i];
+      splatterChunk.update(canvasContainer.mainCtx);
+    }
   }
 
   public dynamicDeath(bot:BotInstance) {
     let dd = bot.getDeathDetails();
     if(dd != null)
       this.shards.push(new ShardAnimation(dd));
+    // if(dd != null) {
+    //   this.splatters.push( new Splatter(dd.ctxToDrawOn,dd.posX, dd.posY,0,0,dd.sizeX, dd.sizeY,dd.imageObj, dd.rotation,4, dd.sizeX/2, dd.sizeY/2));
+    // }
+  }
+
+  /**
+   * Extracted from Missilestrom 2 WIP
+   */
+  public splatterDeath(bot:BotInstance) {
+    let dd = bot.getDeathDetails();
+    if(dd != null) {
+      this.splatters.push( new Splatter(dd.ctxToDrawOn,dd.posX, dd.posY,0,0,dd.sizeX, dd.sizeY,dd.imageObj, dd.rotation,4, dd.sizeX/2, dd.sizeY/2));
+    }
   }
 
   public addDynamicDeath(dd:DeathDetails) {

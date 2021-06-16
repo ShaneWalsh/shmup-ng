@@ -78,6 +78,20 @@ export class LogicService {
     ctx.restore();
   }
 
+/**
+ * gives you a tragectory between two points at a certain speed.
+ * e.g, something explodes and you want it to keep moving in a certain direction at a certain pace, this will return a x+y dif to apply to your x+y to move you in that direction at that speed.
+ */
+public static moveBetweenPointsAtSpeed(speed,targetX,targetY,sourceX, sourceY){
+  var y = targetY - sourceY;
+  var x = targetX - sourceX;
+  //var angle = Math.atan2(y, x);
+  var len = Math.sqrt(x * x + y * y);
+  x /= len;
+  y /= len;
+  return{moveX:speed * x,moveY:speed * y};
+}
+
 	public static drawBorder(x,y,sizeX,sizeY,ctx,color){
     ctx.lineWidth = 1;
   	ctx.strokeStyle = color;
