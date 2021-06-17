@@ -394,6 +394,14 @@ class ShardGroupWithRotation extends ShardGroup {
     this.originalBotCentre = LogicService.pointAfterRotation(this.shardGroupCentre.x,this.shardGroupCentre.y,this.originalBotCentre.x, this.originalBotCentre.y,(rotateClockwise)?1:359);
   }
 
+  shattered() {
+    super.shattered();
+    // the only behaviour I want to overide is where the shard group center is for the angle of explosion.
+    // because im not moving the actual shard positions, they are draw rotating, but they are exploding at the unrotated angle, so move the shard center to the draw position before calcualting the explostion direction
+    let res:{x:number,y:number} = LogicService.pointAfterRotation(this.dd.centreX, this.dd.centreY, this.shardGroupCentre.x, this.shardGroupCentre.y, this.dd.rotation);
+    this.direction = this.genDirection(res.x, res.y, this.dd.centreX, this.dd.centreY, this.dd.rotation, this.dd.deathConfig.speed);
+  }
+
 }
 
 
