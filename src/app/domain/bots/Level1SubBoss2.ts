@@ -36,14 +36,14 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
     public rotationCordsCenter: { x: number, y: number };
     public moveDirection: BulletDirection;
     public movePositions: {x:number,y:number}[] = [
-        { x: 540, y: 120 },
-        { x: 600, y: 240 },
-        { x: 540, y: 400 },
-        { x: 320, y: 440 },
-        { x: 120, y: 400 },
-        { x: 40, y: 240 },
+        { x: 420, y: 120 },
+        { x: 320, y: 40 },
         { x: 120, y: 120 },
-        { x: 320, y: 40 }
+        { x: 40, y: 240 },
+        { x: 120, y: 400 },
+        { x: 320, y: 440 },
+        { x: 540, y: 400 },
+        { x: 600, y: 240 }
     ];
 
     constructor(
@@ -66,9 +66,9 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
 	update(levelInstance:LevelInstance, canvasContainer:CanvasContainer, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {
     let currentPlayer = playerService.currentPlayer;
     let ctx = canvasContainer.mainCtx;
-		if (this.phaseCounter == -1){
+		if (this.phaseCounter == -1) {
 			this.posY += this.moveSpeed;
-			if(this.posY > -10){
+			if ( this.posY > -25 ) {
 				this.phaseCounter++;
 			}
 		} else {

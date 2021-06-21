@@ -274,6 +274,7 @@ export class ResourcesService {
           {code:"miniboss-3-missile", path:"assets/img/boss/level2-boss-update/miniboss-3-missile.png", type:ResourcesEnum.ImageRes},
           {code:"miniboss-3-muzzle-flash", path:"assets/img/boss/level2-boss-update/miniboss-3-muzzle-flash.png", type:ResourcesEnum.ImageRes},
 
+
           {code:"enemy-08-1", path:"assets/img/bots/enemy-08-update/enemy-08-1.png", type:ResourcesEnum.ImageRes},
           {code:"enemy-08-2", path:"assets/img/bots/enemy-08-update/enemy-08-2.png", type:ResourcesEnum.ImageRes},
           {code:"enemy-08-damaged", path:"assets/img/bots/enemy-08-update/enemy-08-damaged.png", type:ResourcesEnum.ImageRes},
