@@ -182,7 +182,7 @@ export class Level1SubBoss extends  BotInstanceImpl {
   /**
    * Return the current image
    */
-   getDeathDetails():DeathDetails {
+  getDeathDetails():DeathDetails {
     return new DeathDetails(this.imageObj, this.posX, this.posY, this.imageSizeX, this.imageSizeY, this.getCurrentAngle(), this.getCenterX(), this.getCenterY(), new DeathConfig(8,12));
   }
 

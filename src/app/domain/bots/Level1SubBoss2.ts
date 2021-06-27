@@ -6,6 +6,7 @@ import { BulletManagerService, BulletDirection } from "src/app/manager/bullet-ma
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { LogicService } from "src/app/services/logic.service";
 import { CanvasContainer } from "../CanvasContainer";
+import { DeathConfig, DeathDetails } from "../DeathDetails";
 
 export class Level1SubBoss2 extends  BotInstanceImpl {
     public phaseCounter = -1;
@@ -36,32 +37,42 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
     public rotationCordsCenter: { x: number, y: number };
     public moveDirection: BulletDirection;
     public movePositions: {x:number,y:number}[] = [
-        { x: 420, y: 120 },
-        { x: 320, y: 40 },
-        { x: 120, y: 120 },
-        { x: 40, y: 240 },
-        { x: 120, y: 400 },
-        { x: 320, y: 440 },
-        { x: 540, y: 400 },
-        { x: 600, y: 240 }
+      { x: 420, y: 100 },
+        { x: 500, y: 350 },
+      { x: 420, y: 600 },
+        { x: 240, y: 700 },
+      { x: 100, y: 600 },
+        { x: 0, y: 350 },
+      { x: 100, y: 100 },
+        { x: 240, y: 0 },
+
+
+        // { x: 420, y: 120 },
+        // { x: 320, y: 40 },
+        // { x: 120, y: 120 },
+        // { x: 40, y: 240 },
+        // { x: 120, y: 400 },
+        // { x: 320, y: 440 },
+        // { x: 540, y: 400 },
+        // { x: 600, y: 240 }
     ];
 
     constructor(
-		public config:any={},
-        public posX:number=0,
-        public posY:number=0,
-        public imageObj1: HTMLImageElement = null,
-        public imageObj2: HTMLImageElement = null,
-        public imageObj3: HTMLImageElement = null,
-        public imageObj4Damaged: HTMLImageElement = null,
-        public imageSizeX:number=90,
-        public imageSizeY:number=60,
-        public hitBox:HitBox=new HitBox(0,0,50,50)
+      public config:any={},
+      public posX:number=0,
+      public posY:number=0,
+      public imageObj1: HTMLImageElement = null,
+      public imageObj2: HTMLImageElement = null,
+      public imageObj3: HTMLImageElement = null,
+      public imageObj4Damaged: HTMLImageElement = null,
+      public imageSizeX:number=90,
+      public imageSizeY:number=60,
+      public hitBox:HitBox=new HitBox(0,0,50,50)
     ){
-        super(config);
-        this.imageObj = imageObj2;
-		this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score","moveSpeed","bulletSpeed"]);
-    }
+      super(config);
+      this.imageObj = imageObj2;
+      this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score","moveSpeed","bulletSpeed"]);
+  }
 
 	update(levelInstance:LevelInstance, canvasContainer:CanvasContainer, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {
     let currentPlayer = playerService.currentPlayer;
@@ -78,12 +89,12 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
 			this.posY += this.moveDirection.speed * this.moveDirection.directionY;
 			if (this.isWithin(this.posX + 112, positions.x, 10) && this.isWithin(this.posY + 118, positions.y, 10)){
 				this.phaseCounter++;
-				if(this.phaseCounter == 8)
-				this.phaseCounter = 0;
+				if(this.phaseCounter == this.movePositions.length)
+				  this.phaseCounter = 0;
 			}
 		}
 			this.turnDirection = bulletManagerService.calculateBulletDirection(
-			this.posX + 112, this.posY + 118, 320, 240, this.bulletSpeed, true);
+			this.posX + 112, this.posY + 118, currentPlayer.posX, currentPlayer.posY, this.bulletSpeed, true);
 
 			//    28 44
 			this.rotationCordsCenter = LogicService.pointAfterRotation(this.posX + 112, this.posY + 118,this.posX + 236, this.posY + 95, this.turnDirection.angle)
@@ -132,7 +143,7 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
         let bullDirection:BulletDirection;
         if(levelInstance.isVertical()){
             // this.hitBox.drawBorder(cords.x, cords.y, 5, 5, ctx, "#FFFF00");
-            bullDirection = bulletManagerService.calculateBulletDirection(this.rotationCordsCenter.x, this.rotationCordsCenter.y, 320, 240, this.bulletSpeed, true);
+            bullDirection = bulletManagerService.calculateBulletDirection(this.rotationCordsCenter.x, this.rotationCordsCenter.y, currentPlayer.getCenterX(), currentPlayer.getCenterY(), this.bulletSpeed, true);
             bulletManagerService.generateMuzzleBlazer(levelInstance, bullDirection, this.rotationCordsCenter.x, this.rotationCordsCenter.y);
         } else {
 
@@ -201,4 +212,15 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
     isDeathOnColision():boolean{
       return false;
     }
+
+  /**
+   * Return the current image
+   */
+  getDeathDetails():DeathDetails {
+    return new DeathDetails(this.imageObj, this.posX, this.posY, this.imageSizeX, this.imageSizeY, this.getCurrentAngle(), this.getCenterX(), this.getCenterY(), new DeathConfig(8,16,3,0,2,240,-1));
+  }
+  getCurrentAngle():number {
+    return this.turnDirection.angle;
+  }
+
 }

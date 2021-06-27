@@ -147,8 +147,8 @@ export class BotManagerService {
 
     let newBot = new GuardianCreeper(config, posObj.posX, posObj.posY,
     this.resourcesService.getRes().get("enemy-08-1"),
-    this.resourcesService.getRes().get("enemy-08-2"),
-    this.resourcesService.getRes().get("enemy-08-damaged"));
+    this.resourcesService.getRes().get("enemy-08-damaged"),
+    this.resourcesService.getRes().get("enemy-08-shadow"));
     this.botsArr.push(newBot);
     this.botCreated.next(newBot);
   }

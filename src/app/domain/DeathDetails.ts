@@ -46,7 +46,8 @@ export class DeathConfig {
     public growPerLoop:number = 5, //5 how many pieces to add to a shard per loop, higher = more chunky
     public decayPerLoop:number = 0, //0 how many loop iterations before a shard piece is lost
     public speed:number = 1, //1 speed the shards move out from center
-    public updateTicksCountMax:number = 240 // max time it can remain before being removed from death animation loop
+    public updateTicksCountMax:number = 240, // 240 max time it can remain before being removed from death animation loop
+    public degreeOfRotation:number = 1 //1 the no of degrees this shard will rotate each tick, if -1 it will be random between 1-4
   ){
 
   }

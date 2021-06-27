@@ -20,7 +20,7 @@ export class ResourcesService {
 			this.resources = new Map();
 			this.resourcesLoaded = new Subject();
 
-/*
+      /*
       this.resourcesToLoad = [
 
         {code:"level-1-bg-1", path:"assets/img/levels/level1/level-1-bg-1.png", type:ResourcesEnum.ImageRes},
@@ -274,10 +274,9 @@ export class ResourcesService {
           {code:"miniboss-3-missile", path:"assets/img/boss/level2-boss-update/miniboss-3-missile.png", type:ResourcesEnum.ImageRes},
           {code:"miniboss-3-muzzle-flash", path:"assets/img/boss/level2-boss-update/miniboss-3-muzzle-flash.png", type:ResourcesEnum.ImageRes},
 
-
-          {code:"enemy-08-1", path:"assets/img/bots/enemy-08-update/enemy-08-1.png", type:ResourcesEnum.ImageRes},
-          {code:"enemy-08-2", path:"assets/img/bots/enemy-08-update/enemy-08-2.png", type:ResourcesEnum.ImageRes},
-          {code:"enemy-08-damaged", path:"assets/img/bots/enemy-08-update/enemy-08-damaged.png", type:ResourcesEnum.ImageRes},
+          {code:"enemy-08-1", path:"assets/img/bots/enemy-8-new/enemy-08-new.png", type:ResourcesEnum.ImageRes},
+          {code:"enemy-08-shadow", path:"assets/img/bots/enemy-8-new/enemy-08-new-shadow.png", type:ResourcesEnum.ImageRes},
+          {code:"enemy-08-damaged", path:"assets/img/bots/enemy-8-new/enemy-08-new-damaged.png", type:ResourcesEnum.ImageRes},
 
           {code:"player-explosion-1", path:"assets/img/player/player-explosion-1.png", type:ResourcesEnum.ImageRes},
           {code:"player-explosion-2", path:"assets/img/player/player-explosion-2.png", type:ResourcesEnum.ImageRes},
@@ -395,8 +394,8 @@ export class ResourcesService {
           {
               code: "enemy-bullet-target", path: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAOCAYAAAArMezNAAAABGdBTUEAAK/INwWK6QAAAAlwSFlzAAAOwwAADsMBx2+oZAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMS42/U4J6AAAAGRJREFUOE/VkDEOgEAIBImv8v8fW7UgAXZFLM7EYgrIMJecARixYUdH9dPQoWKR6qfhQh29wTvrw0qK2Kl2kL8sTAtxNIE6tBBHE6jzvz/28PSBJ7zzXfgOFYlUPw0dKhbJPuwA7VOl229hSMgAAAAASUVORK5CYII=",
               type: ResourcesEnum.ImageRes }
-       ]; */
-
+       ];
+       */
 
       // offline loading of files.
       let compiledRes = new CompiledResources();

@@ -65,18 +65,22 @@ class Direction {
     public directionY,
     public directionX,
     public angle = LogicService.degreeToRadian(360),
-    public speed = 1) {
+    public speed:number = 1,
+    public degreeOfRotation:number = 1) {
+      if(this.degreeOfRotation == -1){
+        this.degreeOfRotation = LogicService.getRandomInt(4)+1
+      }
   }
 
   updateAngle(rotateClockwise: boolean) {
     if( this.angle != null) {
       if(rotateClockwise) {
         let angleDegree = LogicService.radianToDegree(this.angle);
-        angleDegree = ((angleDegree+1) > 360)? 1: (angleDegree+1);
+        angleDegree = ((angleDegree+this.degreeOfRotation) > 360)? 1: (angleDegree+this.degreeOfRotation);
         this.angle = LogicService.degreeToRadian(angleDegree);
       } else {
         let angleDegree = LogicService.radianToDegree(this.angle);
-        angleDegree = ((angleDegree-1) < 0)? 359: (angleDegree-1);
+        angleDegree = ((angleDegree-this.degreeOfRotation) < 0)? 359: (angleDegree-this.degreeOfRotation);
         this.angle = LogicService.degreeToRadian(angleDegree);
       }
     }
@@ -293,7 +297,7 @@ class ShardGroup {
     this.shards.splice(LogicService.getRandomInt(this.shards.length),1);
   }
 
-  genDirection( shardX, shardY, botX, botY, currentAngle, speed): Direction {
+  genDirection( shardX, shardY, botX, botY, currentAngle, speed, degreeOfRotation): Direction {
     // make sure its not 0
     var directionY = shardY-botY;
     var directionX = shardX-botX;
@@ -302,7 +306,7 @@ class ShardGroup {
     var len = Math.sqrt(directionX * directionX + directionY * directionY);
     directionX /= len;
     directionY /= len;
-    return new Direction(directionY,directionX,currentAngle, speed);
+    return new Direction(directionY,directionX,currentAngle, speed, degreeOfRotation);
   }
 
   /**
@@ -330,7 +334,7 @@ class ShardGroup {
       x: this.highestAndLowestPositions.lX + Math.floor((this.highestAndLowestPositions.hX - this.highestAndLowestPositions.lX)/2),
       y: this.highestAndLowestPositions.lY + Math.floor((this.highestAndLowestPositions.hY - this.highestAndLowestPositions.lY)/2)
     }
-    this.direction = this.genDirection(this.shardGroupCentre.x, this.shardGroupCentre.y, this.dd.centreX, this.dd.centreY, rotation, this.dd.deathConfig.speed);
+    this.direction = this.genDirection(this.shardGroupCentre.x, this.shardGroupCentre.y, this.dd.centreX, this.dd.centreY, rotation, this.dd.deathConfig.speed, this.dd.deathConfig.degreeOfRotation);
   }
 
   isShatteredFully(){
@@ -399,7 +403,7 @@ class ShardGroupWithRotation extends ShardGroup {
     // the only behaviour I want to overide is where the shard group center is for the angle of explosion.
     // because im not moving the actual shard positions, they are draw rotating, but they are exploding at the unrotated angle, so move the shard center to the draw position before calcualting the explostion direction
     let res:{x:number,y:number} = LogicService.pointAfterRotation(this.dd.centreX, this.dd.centreY, this.shardGroupCentre.x, this.shardGroupCentre.y, this.dd.rotation);
-    this.direction = this.genDirection(res.x, res.y, this.dd.centreX, this.dd.centreY, this.dd.rotation, this.dd.deathConfig.speed);
+    this.direction = this.genDirection(res.x, res.y, this.dd.centreX, this.dd.centreY, this.dd.rotation, this.dd.deathConfig.speed, this.dd.deathConfig.degreeOfRotation);
   }
 
 }

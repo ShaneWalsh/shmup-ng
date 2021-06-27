@@ -19,15 +19,15 @@ export class GuardianCreeper extends FlyingBotImpl {
 		posX:number=0,
 		posY:number=0,
 		imageObj1:HTMLImageElement=null,
-		imageObj2:HTMLImageElement=null,
 		imageObjDamaged:HTMLImageElement=null,
+		imageObjShadow:HTMLImageElement=null,
 		imageSizeX:number=100,
 		imageSizeY:number=102,
 		public hitBox:HitBox=new HitBox(0,0,imageSizeX-10,imageSizeY-10),
 		public targetX:number=posX,
 		public targetY:number=posY+200
 	){
-		super(config, posX, posY, imageSizeX, imageSizeY, [imageObj1,imageObj2], [imageObjDamaged], null);
+		super(config, posX, posY, imageSizeX, imageSizeY, [imageObj1], [imageObjDamaged], [imageObjShadow]);
 		this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score","targetX","targetY","posXSpeed","posYSpeed","bulletSpeed","retreatAfterShotsFiredLimit","canShootNow"]);
 		this.imageObj = imageObj1;
 	}
