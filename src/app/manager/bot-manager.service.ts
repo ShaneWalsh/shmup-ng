@@ -34,6 +34,7 @@ import { Level3SubBoss } from '../domain/bots/Level3SubBoss';
 import { Swordfish } from '../domain/bots/Swordfish';
 import { Level3SubBoss2 } from '../domain/bots/Level3SubBoss2';
 import { DeathManagerService } from './death-manager.service';
+import { FinalBoss } from '../domain/bots/FinalBoss';
 
 /**
  * Going to manage the created bots, spawned by the level manager. Its going to emit when they are destroyed or when they leave the screen.
@@ -259,6 +260,35 @@ export class BotManagerService {
 
       [this.resourcesService.getRes().get("enemy-07-firing-5"),
       this.resourcesService.getRes().get("enemy-07-firing-6")]);
+    this.botsArr.push(newBot);
+    this.botCreated.next(newBot);
+  }
+
+
+  generateFinalBoss(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -300, config: any = {}): any {
+    let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
+    let newBot = new FinalBoss(config, posObj.posX, posObj.posY,
+      this.resourcesService.getRes().get("final-boss-head"),
+      this.resourcesService.getRes().get("final-boss-head-damaged"),
+      this.resourcesService.getRes().get("final-boss-main"),
+      this.resourcesService.getRes().get("final-boss-main-damaged"),
+      [
+        this.resourcesService.getRes().get("final-boss-wings-1"),
+        this.resourcesService.getRes().get("final-boss-wings-2"),
+        this.resourcesService.getRes().get("final-boss-wings-3"),
+        this.resourcesService.getRes().get("final-boss-wings-4"),
+        this.resourcesService.getRes().get("final-boss-wings-5"),
+        this.resourcesService.getRes().get("final-boss-wings-6")
+      ],
+      [
+        this.resourcesService.getRes().get("final-boss-wings-1-damaged"),
+        this.resourcesService.getRes().get("final-boss-wings-2-damaged"),
+        this.resourcesService.getRes().get("final-boss-wings-3-damaged"),
+        this.resourcesService.getRes().get("final-boss-wings-4-damaged"),
+        this.resourcesService.getRes().get("final-boss-wings-5-damaged"),
+        this.resourcesService.getRes().get("final-boss-wings-6-damaged"),
+      ],
+    );
     this.botsArr.push(newBot);
     this.botCreated.next(newBot);
   }

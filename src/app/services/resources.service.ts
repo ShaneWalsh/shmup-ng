@@ -20,8 +20,27 @@ export class ResourcesService {
 			this.resources = new Map();
 			this.resourcesLoaded = new Subject();
 
-      /*
+
       this.resourcesToLoad = [
+
+        {code:"final-boss-head", path:"assets/img/boss/final-boss/final-boss-head.png", type:ResourcesEnum.ImageRes},
+        {code:"final-boss-head-damaged", path:"assets/img/boss/final-boss/final-boss-head-damaged.png", type:ResourcesEnum.ImageRes},
+        {code:"final-boss-main", path:"assets/img/boss/final-boss/final-boss-main.png", type:ResourcesEnum.ImageRes},
+        {code:"final-boss-main-damaged", path:"assets/img/boss/final-boss/final-boss-main-damaged.png", type:ResourcesEnum.ImageRes},
+        {code:"final-boss-main-headless", path:"assets/img/boss/final-boss/final-boss-main-headless.png", type:ResourcesEnum.ImageRes},
+        {code:"final-boss-main-headless-da", path:"assets/img/boss/final-boss/final-boss-main-headless-da.png", type:ResourcesEnum.ImageRes},
+        {code:"final-boss-wings-1", path:"assets/img/boss/final-boss/final-boss-wings-1.png", type:ResourcesEnum.ImageRes},
+        {code:"final-boss-wings-1-damaged", path:"assets/img/boss/final-boss/final-boss-wings-1-damaged.png", type:ResourcesEnum.ImageRes},
+        {code:"final-boss-wings-2", path:"assets/img/boss/final-boss/final-boss-wings-2.png", type:ResourcesEnum.ImageRes},
+        {code:"final-boss-wings-2-damaged", path:"assets/img/boss/final-boss/final-boss-wings-2-damaged.png", type:ResourcesEnum.ImageRes},
+        {code:"final-boss-wings-3", path:"assets/img/boss/final-boss/final-boss-wings-3.png", type:ResourcesEnum.ImageRes},
+        {code:"final-boss-wings-3-damaged", path:"assets/img/boss/final-boss/final-boss-wings-3-damaged.png", type:ResourcesEnum.ImageRes},
+        {code:"final-boss-wings-4", path:"assets/img/boss/final-boss/final-boss-wings-4.png", type:ResourcesEnum.ImageRes},
+        {code:"final-boss-wings-4-damaged", path:"assets/img/boss/final-boss/final-boss-wings-4-damaged.png", type:ResourcesEnum.ImageRes},
+        {code:"final-boss-wings-5", path:"assets/img/boss/final-boss/final-boss-wings-5.png", type:ResourcesEnum.ImageRes},
+        {code:"final-boss-wings-5-damaged", path:"assets/img/boss/final-boss/final-boss-wings-5-damaged.png", type:ResourcesEnum.ImageRes},
+        {code:"final-boss-wings-6", path:"assets/img/boss/final-boss/final-boss-wings-6.png", type:ResourcesEnum.ImageRes},
+        {code:"final-boss-wings-6-damaged", path:"assets/img/boss/final-boss/final-boss-wings-6-damaged.png", type:ResourcesEnum.ImageRes},
 
         {code:"level-1-bg-1", path:"assets/img/levels/level1/level-1-bg-1.png", type:ResourcesEnum.ImageRes},
         {code:"level-1-bg-2", path:"assets/img/levels/level1/level-1-bg-2.png", type:ResourcesEnum.ImageRes},
@@ -395,11 +414,11 @@ export class ResourcesService {
               code: "enemy-bullet-target", path: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAOCAYAAAArMezNAAAABGdBTUEAAK/INwWK6QAAAAlwSFlzAAAOwwAADsMBx2+oZAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMS42/U4J6AAAAGRJREFUOE/VkDEOgEAIBImv8v8fW7UgAXZFLM7EYgrIMJecARixYUdH9dPQoWKR6qfhQh29wTvrw0qK2Kl2kL8sTAtxNIE6tBBHE6jzvz/28PSBJ7zzXfgOFYlUPw0dKhbJPuwA7VOl229hSMgAAAAASUVORK5CYII=",
               type: ResourcesEnum.ImageRes }
        ];
-       */
+
 
       // offline loading of files.
-      let compiledRes = new CompiledResources();
-      this.resourcesToLoad = compiledRes.res;
+      // let compiledRes = new CompiledResources();
+      // this.resourcesToLoad = compiledRes.res;
 
       // add in sound files.
       this.audioResourcesToLoad.push({code:"Space-Cannon", path:"assets/sound/effects/Space-Cannon.mp3", type:ResourcesEnum.SoundRes});
