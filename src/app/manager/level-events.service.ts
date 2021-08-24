@@ -832,7 +832,7 @@ export class LevelEventsService {
     le.push(new SpawnBotEvent(0, 30, false, 0, BotType.SWORDFISH, swordfishConfig, false, 180, -185));
     le.push(new SpawnBotEvent(0, 30, false, 0, BotType.SWORDFISH, swordfishConfig, false, 50, -185));
     le.push(new SpawnBotEvent(0, 30, false, 0, BotType.SWORDFISH, swordfishConfig, false, 300, -185));
-    le.push(new SpawnBotEvent(0, 80, false, 0, BotType.FINALBOSS, finalBossAttr, false, 0, -645));
+    le.push(new SpawnBotEvent(0, 80, false, 0, BotType.FINALBOSS, finalBossAttr, false, 100, -645));
 
     le.push(new SpawnBotEvent(1, 30, false, 0, BotType.CAUTIONANIMATION, null, false, 108, 278));
     le.push(new SpawnBotEvent(1, 80, false, 0, BotType.MINIBOSS1L3, level3MiniBoss1, false, 0, -645));

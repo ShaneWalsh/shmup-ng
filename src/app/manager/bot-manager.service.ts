@@ -270,8 +270,8 @@ export class BotManagerService {
     let newBot = new FinalBoss(config, posObj.posX, posObj.posY,
       this.resourcesService.getRes().get("final-boss-head"),
       this.resourcesService.getRes().get("final-boss-head-damaged"),
-      this.resourcesService.getRes().get("final-boss-main"),
-      this.resourcesService.getRes().get("final-boss-main-damaged"),
+      this.resourcesService.getRes().get("final-boss-main-headless"),
+      this.resourcesService.getRes().get("final-boss-main-headless-da"),
       [
         this.resourcesService.getRes().get("final-boss-wings-1"),
         this.resourcesService.getRes().get("final-boss-wings-2"),

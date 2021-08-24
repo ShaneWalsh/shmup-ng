@@ -32,6 +32,8 @@ export class FinalBoss extends BotInstanceImpl {
     public imageObjWing: HTMLImageElement = null;
     public angleDirection:BulletDirection;
 
+
+
     constructor(
         public config: any = {},
         public posX: number = 0,
@@ -60,7 +62,7 @@ export class FinalBoss extends BotInstanceImpl {
     update(levelInstance: LevelInstance, canvasContainer:CanvasContainer, botManagerService: BotManagerService, bulletManagerService: BulletManagerService, playerService: PlayerService, ) {
       let currentPlayer = playerService.currentPlayer;
       let ctx = canvasContainer.mainCtx;
-      this.angleDirection = bulletManagerService.calculateBulletDirection(this.posX+(this.imageSizeX/2), this.posY+(this.imageSizeY/2), currentPlayer.getCenterX(), currentPlayer.getCenterY(), this.bulletSpeed, true, currentPlayer);
+      this.angleDirection = bulletManagerService.calculateBulletDirection(this.posX+105+(this.imageHeadSizeX/2), this.posY+65+(this.imageHeadSizeY/2), currentPlayer.getCenterX(), currentPlayer.getCenterY(), this.bulletSpeed, true, currentPlayer);
 
       if(this.posY < 0) {
         this.posY += this.moveSpeed;
@@ -80,9 +82,9 @@ export class FinalBoss extends BotInstanceImpl {
       } else {
         this.animationTimer++;
       }
-      LogicService.drawRotateImage(this.imageObjHead,ctx,this.angleDirection.angle,this.posX,this.posY,this.imageHeadSizeX,this.imageHeadSizeY);
+      ctx.drawImage(this.imageObjWing, 0, 0, this.imageWingsSizeX, this.imageWingsSizeY, this.posX-165, this.posY-50,this.imageWingsSizeX, this.imageWingsSizeY);
+      LogicService.drawRotateImage(this.imageObjHead,ctx,this.angleDirection.angle,this.posX+105,this.posY+65,this.imageHeadSizeX,this.imageHeadSizeY);
       ctx.drawImage(this.imageObjBody, 0, 0, this.imageBodySizeX, this.imageBodySizeY, this.posX, this.posY,this.imageBodySizeX, this.imageBodySizeY);
-      ctx.drawImage(this.imageObjWing, 0, 0, this.imageWingsSizeX, this.imageWingsSizeY, this.posX, this.posY,this.imageWingsSizeX, this.imageWingsSizeY);
     }
 
     updateDamageAnimation(ctx){
@@ -93,9 +95,9 @@ export class FinalBoss extends BotInstanceImpl {
           if(this.animationIndex < this.imageObjWingsDamagedArr.length){
             damImage = this.imageObjWingsDamagedArr[this.animationIndex];
           }
-          LogicService.drawRotateImage(this.imageObjHeadDamanged,ctx,this.angleDirection.angle,this.posX,this.posY,this.imageHeadSizeX,this.imageHeadSizeY);
+          ctx.drawImage(damImage, 0, 0, this.imageWingsSizeX, this.imageWingsSizeY, this.posX-165, this.posY-50,this.imageWingsSizeX, this.imageWingsSizeY);
+          LogicService.drawRotateImage(this.imageObjHeadDamanged,ctx,this.angleDirection.angle,this.posX+105,this.posY+65,this.imageHeadSizeX,this.imageHeadSizeY);
           ctx.drawImage(this.imageObjBodyDamanged, 0, 0, this.imageBodySizeX, this.imageBodySizeY, this.posX, this.posY,this.imageBodySizeX, this.imageBodySizeY);
-          ctx.drawImage(damImage, 0, 0, this.imageWingsSizeX, this.imageWingsSizeY, this.posX, this.posY,this.imageWingsSizeX, this.imageWingsSizeY);
         }
       }
     }
@@ -106,7 +108,7 @@ export class FinalBoss extends BotInstanceImpl {
     }
 
     hasBotArmorBeenHit(hitter: any, hitterBox: HitBox) {
-      return this.hitBox.areCentersToClose(hitter,hitterBox,this,this.hitBox);
+      return false
     }
 
     applyDamage(damage: number, botManagerService: BotManagerService, bulletManagerService:BulletManagerService, playerService: PlayerService, levelInstance: LevelInstance) {
