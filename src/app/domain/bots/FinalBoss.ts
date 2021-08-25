@@ -18,7 +18,7 @@ export class FinalBoss extends BotInstanceImpl {
     public bTimerLimit: number = 20; // 30
 
     public animationTimer:number = 0;
-    public animationTimerLimit:number =4;
+    public animationTimerLimit:number =8;
     public animationIndex:number= 0;
 
     public damAnaimationTimer: number = 8;
@@ -27,12 +27,10 @@ export class FinalBoss extends BotInstanceImpl {
     public score: number = 100;
     public angle: number;
 
-    public hitBox: HitBox = new HitBox(140, 0, 200, 300);
+    public hitBox: HitBox = new HitBox(105, 65, this.imageHeadSizeX, this.imageHeadSizeY);
 
     public imageObjWing: HTMLImageElement = null;
     public angleDirection:BulletDirection;
-
-
 
     constructor(
         public config: any = {},
@@ -69,6 +67,7 @@ export class FinalBoss extends BotInstanceImpl {
       }
       this.updateAnimation(ctx);
       this.updateDamageAnimation(ctx);
+      this.updateBulletTimer(levelInstance, ctx, botManagerService, bulletManagerService,currentPlayer);
     }
 
     updateAnimation(ctx){
@@ -102,6 +101,36 @@ export class FinalBoss extends BotInstanceImpl {
       }
     }
 
+    fireSomething(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D,bulletManagerService:BulletManagerService, currentPlayer:PlayerObj){
+      let bullDirection:BulletDirection;
+      if(levelInstance.isVertical()) {
+        let headX = this.posX+105;
+        let headY = this.posY+65;
+        let headXCenter = this.posX+(this.imageHeadSizeX/2)+105;
+        let headYCenter = this.posY+(this.imageHeadSizeY/2)+65;
+        let cords :{x:number,y:number} = LogicService.pointAfterRotation(headXCenter, headYCenter, headX+this.imageHeadSizeX, headY+(this.imageHeadSizeY/2), this.angleDirection.angle)
+        bullDirection = bulletManagerService.calculateBulletDirection(cords.x, cords.y, currentPlayer.getCenterX(), currentPlayer.getCenterY(), this.bulletSpeed, true, null);
+        bulletManagerService.generateGuardianTracker(levelInstance, bullDirection, cords.x, cords.y, 500);
+      } else {
+        // todo
+      }
+    }
+
+    /**
+     * Common method for looping a firing timer for single firing bots.
+     * @param levelInstance
+     * @param ctx
+     * @param bulletManagerService
+     * @param currentPlayer
+     */
+    updateBulletTimer(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D,botManagerService:BotManagerService, bulletManagerService:BulletManagerService, currentPlayer:PlayerObj) {
+      if(this.bTimer >= this.bTimerLimit && this.canShoot(levelInstance,currentPlayer)) {
+        this.bTimer = 0;
+        this.fireSomething(levelInstance,ctx,bulletManagerService,currentPlayer);
+      } else {
+        this.bTimer++;
+      }
+    }
 
     hasBotBeenHit(hitter: any, hitterBox: HitBox): boolean {
       return this.hitBox.areCentersToClose(hitter,hitterBox,this,this.hitBox);
@@ -126,9 +155,9 @@ export class FinalBoss extends BotInstanceImpl {
     }
 
     canShoot(levelInstance: LevelInstance, currentPlayer: PlayerObj) {
-        if (levelInstance.isVertical() && this.getCenterY() < currentPlayer.getCenterY()) {
+        if (levelInstance.isVertical()) {
             return true;
-        } else if (!levelInstance.isVertical() && this.getCenterX() > currentPlayer.getCenterX()) {
+        } else if (!levelInstance.isVertical()) {
             return true;
         }
         return false;

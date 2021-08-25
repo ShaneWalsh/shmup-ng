@@ -278,7 +278,11 @@ export class BotManagerService {
         this.resourcesService.getRes().get("final-boss-wings-3"),
         this.resourcesService.getRes().get("final-boss-wings-4"),
         this.resourcesService.getRes().get("final-boss-wings-5"),
-        this.resourcesService.getRes().get("final-boss-wings-6")
+        this.resourcesService.getRes().get("final-boss-wings-6"),
+        this.resourcesService.getRes().get("final-boss-wings-5"),
+        this.resourcesService.getRes().get("final-boss-wings-4"),
+        this.resourcesService.getRes().get("final-boss-wings-3"),
+        this.resourcesService.getRes().get("final-boss-wings-2")
       ],
       [
         this.resourcesService.getRes().get("final-boss-wings-1-damaged"),
@@ -287,6 +291,10 @@ export class BotManagerService {
         this.resourcesService.getRes().get("final-boss-wings-4-damaged"),
         this.resourcesService.getRes().get("final-boss-wings-5-damaged"),
         this.resourcesService.getRes().get("final-boss-wings-6-damaged"),
+        this.resourcesService.getRes().get("final-boss-wings-5-damaged"),
+        this.resourcesService.getRes().get("final-boss-wings-4-damaged"),
+        this.resourcesService.getRes().get("final-boss-wings-3-damaged"),
+        this.resourcesService.getRes().get("final-boss-wings-2-damaged"),
       ],
     );
     this.botsArr.push(newBot);
