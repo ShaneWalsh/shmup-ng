@@ -12,7 +12,7 @@ export class FinalBoss extends BotInstanceImpl {
     // todo make these config values
     public health: number = 50;
     public bulletSpeed: number = 6; // 6
-    public moveSpeed: number = 5; // 5
+    public moveSpeed: number = 2; // 5
 
     public bTimer: number = 0; // bullet timer
     public bTimerLimit: number = 20; // 30
@@ -31,6 +31,10 @@ export class FinalBoss extends BotInstanceImpl {
 
     public imageObjWing: HTMLImageElement = null;
     public angleDirection:BulletDirection;
+    public targetDirection:BulletDirection;
+
+    public movePoints:{x,y}[] = [{x:100,y:100}, {x:100, y:0}];
+    public movePointIndex = 0;
 
     constructor(
         public config: any = {},
@@ -62,8 +66,18 @@ export class FinalBoss extends BotInstanceImpl {
       let ctx = canvasContainer.mainCtx;
       this.angleDirection = bulletManagerService.calculateBulletDirection(this.posX+105+(this.imageHeadSizeX/2), this.posY+65+(this.imageHeadSizeY/2), currentPlayer.getCenterX(), currentPlayer.getCenterY(), this.bulletSpeed, true, currentPlayer);
 
-      if(this.posY < 0) {
-        this.posY += this.moveSpeed;
+      let mp = this.movePoints[this.movePointIndex];
+      let range = 5;
+      this.targetDirection = bulletManagerService.calculateBulletDirection(this.posX, this.posY, mp.x, mp.y, this.moveSpeed, false);
+
+      this.posX += this.targetDirection.speed * this.targetDirection.directionX;
+      this.posY += this.targetDirection.speed * this.targetDirection.directionY;
+      if ( (this.posX > (mp.x - range) && this.posX < (mp.x + range)) && (this.posY > (mp.y - range) && this.posY < (mp.y + range))) {
+        this.movePointIndex++;
+        if ( this.movePointIndex >= this.movePoints.length) {
+          //botManagerService.removeBot(this);
+          this.movePointIndex = 0;
+        }
       }
       this.updateAnimation(ctx);
       this.updateDamageAnimation(ctx);
