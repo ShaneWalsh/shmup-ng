@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from '../../../node_modules/rxjs';
-import { AudioServiceService } from './audio-service.service';
+import { AudioServiceService, SoundResEnum } from './audio-service.service';
 import { CompiledResources } from './res/CompiledResources';
 import { ResourcesEnum } from './res/ResourcesEnum';
 
@@ -8,7 +8,7 @@ import { ResourcesEnum } from './res/ResourcesEnum';
   providedIn: 'root'
 })
 export class ResourcesService {
-    private audioResourcesToLoad:{code:string,path:string, type:ResourcesEnum}[] = [];
+    private audioResourcesToLoad:{code:string,path:string, type:ResourcesEnum, sound:SoundResEnum}[] = [];
     private resourcesToLoad:{code:string,path:string, type:ResourcesEnum}[]=[];
 	  private resourcesToLoadB64:{code:string,path:string, type:ResourcesEnum}[]=[];
     private resourcesLoaded: Subject<boolean>; // all resources loaded
@@ -422,8 +422,10 @@ export class ResourcesService {
       this.resourcesToLoad = compiledRes.res;
 
       // add in sound files.
-      this.audioResourcesToLoad.push({code:"Space-Cannon", path:"assets/sound/effects/Space-Cannon.mp3", type:ResourcesEnum.SoundRes});
-      this.audioResourcesToLoad.push({code:"Trouble-on-Mercury", path:"assets/sound/bg/Trouble-on-Mercury_Looping.mp3", type:ResourcesEnum.SoundRes});
+      this.audioResourcesToLoad.push({code:"Space-Cannon", path:"assets/sound/effects/Space-Cannon.mp3", type:ResourcesEnum.SoundRes, sound:SoundResEnum.TYPESOUND});
+      this.audioResourcesToLoad.push({code:"Trouble-on-Mercury", path:"assets/sound/bg/Trouble-on-Mercury_Looping.mp3", type:ResourcesEnum.SoundRes, sound:SoundResEnum.TYPEBG});
+      this.audioResourcesToLoad.push({code:"level1", path:"assets/sound/bg/level1.mp3", type:ResourcesEnum.SoundRes, sound:SoundResEnum.TYPEBG});
+      this.audioResourcesToLoad.push({code:"titlescreen", path:"assets/sound/bg/titlescreen.mp3", type:ResourcesEnum.SoundRes, sound:SoundResEnum.TYPEBG});
     }
 
   /**
@@ -432,7 +434,7 @@ export class ResourcesService {
    */
   setAudio(audioServiceService: AudioServiceService) {
     for(let audioRes of this.audioResourcesToLoad ){
-      audioServiceService.addAudio(audioRes.code,this.resources.get(audioRes.code));
+      audioServiceService.addAudio(audioRes.code,this.resources.get(audioRes.code),audioRes.sound);
     }
   }
 

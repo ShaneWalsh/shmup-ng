@@ -152,225 +152,215 @@ export class LevelEventsService {
 		  // todo
     }
 	  //#########################################################################################
-	  //######################          Phase Zero        #######################################
-	  //#########################################################################################
-		// wings middle
-		le.push(new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));
-		le.push(new SpawnBotEvent(0, 80, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));
-		le.push(new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
-		// blade right
-		le.push(new SpawnBotEvent(0, 190, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
-		le.push(new SpawnBotEvent(0, 200, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
+    //######################          Phase Zero        #######################################
+    //#########################################################################################
+    // wings middle
+    le.push(new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));
+    le.push(new SpawnBotEvent(0, 80, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));
+    le.push(new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
+    // blade right
+    le.push(new SpawnBotEvent(0, 190, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
+    le.push(new SpawnBotEvent(0, 200, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
     le.push(new SpawnBotEvent(0, 210, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
-		// blade left
-		le.push(new SpawnBotEvent(0, 260, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
-		le.push(new SpawnBotEvent(0, 270, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
-		le.push(new SpawnBotEvent(0, 280, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
-		le.push(new SpawnBotEvent(0, 400, false, 0, BotType.DIVER, diverConfig, false, 10, -60));
-		le.push(new SpawnBotEvent(0, 450, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));
-		le.push(new SpawnBotEvent(0, 430, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));
-		le.push(new SpawnBotEvent(0, 450, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
-		le.push(new SpawnBotEvent(0, 400, false, 0, BotType.DIVER, diverConfig, false, 420, -60));
-		le.push(new SpawnBotEvent(0, 700, false, 0, BotType.DRONE, droneConfig, false, 100, -60));
-		le.push(new SpawnBotEvent(0, 720, false, 0, BotType.DRONE, droneConfig, false, 160, -60));
-		le.push(new SpawnBotEvent(0, 740, false, 0, BotType.DRONE, droneConfig, false, 220, -60));
-		le.push(new SpawnBotEvent(0, 720, false, 0, BotType.DRONE, droneConfig, false, 280, -60));
-		le.push(new SpawnBotEvent(0, 700, false, 0, BotType.DRONE, droneConfig, false, 340, -60));
-		le.push(new SpawnBotEvent(0, 900, false, 0, BotType.ROCK, rockConfig, false, 220, -80));
-		le.push(new SpawnBotEvent(0, 1200, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
-		le.push(new SpawnBotEvent(0, 1210, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
-		le.push(new SpawnBotEvent(0, 1220, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
-		le.push(new SpawnBotEvent(0, 1210, false, 0, BotType.DIVER, diverConfig, false, 70, -60));
-		le.push(new SpawnBotEvent(0, 1500, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
-		le.push(new SpawnBotEvent(0, 1510, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
-		le.push(new SpawnBotEvent(0, 1520, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
-		le.push(new SpawnBotEvent(0, 1510, false, 0, BotType.DIVER, diverConfig, false, 360, -60));
-		le.push(new SpawnBotEvent(0, 1600, false, 0, BotType.ROCK, rockConfig, false, 120, -80));
-		le.push(new SpawnBotEvent(0, 1600, false, 0, BotType.ROCK, rockConfig, false, 320, -80));
-		le.push(new SpawnBotEvent(0, 1800, false, 0, BotType.DIVER, diverConfig, false, 200, -60));
-		le.push(new SpawnBotEvent(0, 1800, false, 0, BotType.DIVER, diverConfig, false, 280, -60));
-		le.push(new SpawnBotEvent(0, 1960, false, 0, BotType.DRONE, droneConfig, false, 10, -60));
-		le.push(new SpawnBotEvent(0, 1930, false, 0, BotType.DRONE, droneConfig, false, 70, -60));
-		le.push(new SpawnBotEvent(0, 1930, false, 0, BotType.DRONE, droneConfig, false, 360, -60));
-		le.push(new SpawnBotEvent(0, 1960, false, 0, BotType.DRONE, droneConfig, false, 420, -60));
-		le.push(new SpawnBotEvent(0, 2200, false, 0, BotType.FIGHTER, fighterConfig, false, 60, -60));
-		le.push(new SpawnBotEvent(0, 2215, false, 0, BotType.FIGHTER, fighterConfig, false, 120, -60));
-		le.push(new SpawnBotEvent(0, 2230, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));
-		le.push(new SpawnBotEvent(0, 2245, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));
-		le.push(new SpawnBotEvent(0, 2230, false, 0, BotType.DIVER, diverConfig, false, 420, -60));
-		le.push(new SpawnBotEvent(0, 2500, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
-		le.push(new SpawnBotEvent(0, 2515, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
-		le.push(new SpawnBotEvent(0, 2530, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
-		le.push(new SpawnBotEvent(0, 2545, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));
-		le.push(new SpawnBotEvent(0, 2530, false, 0, BotType.DIVER, diverConfig, false, 60, -60));
-		le.push(new SpawnBotEvent(0, 2700, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
-		le.push(new SpawnBotEvent(0, 2730, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
-		le.push(new SpawnBotEvent(0, 2760, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
-		le.push(new SpawnBotEvent(0, 2700, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
-		le.push(new SpawnBotEvent(0, 2730, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
-		le.push(new SpawnBotEvent(0, 2760, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
-		le.push(new SpawnBotEvent(0, 2960, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
-		le.push(new SpawnBotEvent(0, 2930, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
-		le.push(new SpawnBotEvent(0, 2900, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
-		le.push(new SpawnBotEvent(0, 2960, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
-		le.push(new SpawnBotEvent(0, 2930, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
-		le.push(new SpawnBotEvent(0, 2900, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
-		le.push(new SpawnBotEvent(0, 3000, false, 0, BotType.ROCK, rockConfig, false, 240, -80));
-		le.push(new SpawnBotEvent(0, 3100, false, 0, BotType.DRONE, droneConfig, false, 100, -60));
-		le.push(new SpawnBotEvent(0, 3120, false, 0, BotType.DRONE, droneConfig, false, 160, -60));
-		le.push(new SpawnBotEvent(0, 3140, false, 0, BotType.DRONE, droneConfig, false, 220, -60));
-		le.push(new SpawnBotEvent(0, 3120, false, 0, BotType.DRONE, droneConfig, false, 280, -60));
-		le.push(new SpawnBotEvent(0, 3100, false, 0, BotType.DRONE, droneConfig, false, 340, -60));
-
-
-		le.push(new SpawnBotEvent(0, 3240, false, 0, BotType.ROCK, rockConfig, false, 240, -80));
-		le.push(new SpawnBotEvent(0, 3300, false, 0, BotType.FIGHTER, fighterConfig, false, 120, -60));
-		le.push(new SpawnBotEvent(0, 3300, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
-		// these are repeat events that will keep spawning while you fight the mini boss. They spawn at random positions.
-		// le.push(new SpawnBotEvent(0,400,true,120,BotType.DIVER,diverConfig, true, 0, -60));
-		// le.push(new SpawnBotEvent(0,350,true,90,BotType.FIGHTER,fighterConfig, true, 0, -60));
-		// le.push(new SpawnBotEvent(0,350,true,90,BotType.FIGHTER,fighterConfig, true, 0, -60));
-		// when a mini boss dies, the Phase moves forward by One.
-		le.push(new SpawnBotEvent(0, 3700, false, 0, BotType.MINIBOSS1, level1MiniBoss1, false, 240, -300));
-
-		// I've put in the new boss here so you can see him in action!
-		//le.push(new SpawnBotEvent(0, 3700, false, 0, BotType.MINIBOSS1L2, level2MiniBoss1, false, 100, -300));
-
-		// le.push(new SpawnBotEvent(0, 2200, true, 120, BotType.FIGHTER, fighterConfig, false, 360, -60));
-		// le.push(new SpawnBotEvent(0, 2200, true, 120, BotType.FIGHTER, fighterConfig, false, 70, -60));
-		//le.push(new NextPhaseEvent(0,1600));
-		//#########################################################################################
-		//######################          Phase One        #######################################
-		//#########################################################################################
-		// these are Phase 1 events, it will become phase 1 when MINIBOSS1 dies
-		le.push(new SpawnBotEvent(1, 120, false, 0, BotType.DIVER, diverConfig, false, 120, -60));
-		le.push(new SpawnBotEvent(1, 120, false, 0, BotType.DIVER, diverConfig, false, 240, -60));
-		le.push(new SpawnBotEvent(1, 120, false, 0, BotType.DIVER, diverConfig, false, 360, -60));
-		le.push(new SpawnBotEvent(1, 180, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));
-		le.push(new SpawnBotEvent(1, 180, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
-		le.push(new SpawnBotEvent(1, 300, false, 0, BotType.DIVER, diverConfig, false, 180, -60));
-		le.push(new SpawnBotEvent(1, 300, false, 0, BotType.DIVER, diverConfig, false, 300, -60));
-		le.push(new SpawnBotEvent(1, 360, false, 0, BotType.FIGHTER, fighterConfig, false, 120, -60));
-		le.push(new SpawnBotEvent(1, 340, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));
-		le.push(new SpawnBotEvent(1, 360, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
-		le.push(new SpawnBotEvent(1, 460, false, 0, BotType.ROCK, rockConfig, false, 240, -80));
-		le.push(new SpawnBotEvent(1, 570, false, 0, BotType.FIGHTER, fighterConfig, false, 30, -60));
-		le.push(new SpawnBotEvent(1, 550, false, 0, BotType.FIGHTER, fighterConfig, false, 90, -60));
-		le.push(new SpawnBotEvent(1, 550, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
-		le.push(new SpawnBotEvent(1, 570, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
-		le.push(new SpawnBotEvent(1, 690, false, 0, BotType.DRONE, droneConfig, false, 180, -60));
-		le.push(new SpawnBotEvent(1, 670, false, 0, BotType.DRONE, droneConfig, false, 240, -60));
-		le.push(new SpawnBotEvent(1, 690, false, 0, BotType.DRONE, droneConfig, false, 300, -60));
-		le.push(new SpawnBotEvent(1, 760, false, 0, BotType.DRONE, droneConfig, false, 300, -60));
-		le.push(new SpawnBotEvent(1, 775, false, 0, BotType.DRONE, droneConfig, false, 360, -60));
-		le.push(new SpawnBotEvent(1, 785, false, 0, BotType.DRONE, droneConfig, false, 420, -60));
-		le.push(new SpawnBotEvent(1, 830, false, 0, BotType.DRONE, droneConfig, false, 130, -60));
-		le.push(new SpawnBotEvent(1, 845, false, 0, BotType.DRONE, droneConfig, false, 70, -60));
-		le.push(new SpawnBotEvent(1, 855, false, 0, BotType.DRONE, droneConfig, false, 10, -60));
-		le.push(new SpawnBotEvent(1, 950, false, 0, BotType.ROCK, rockConfig, false, 40, -60));
-		le.push(new SpawnBotEvent(1, 1040, false, 0, BotType.ROCK, rockConfig, false, 140, -60));
-		le.push(new SpawnBotEvent(1, 1130, false, 0, BotType.ROCK, rockConfig, false, 240, -60));
-		le.push(new SpawnBotEvent(1, 1240, false, 0, BotType.ROCK, rockConfig, false, 340, -60));
-		le.push(new SpawnBotEvent(1, 1330, false, 0, BotType.ROCK, rockConfig, false, 240, -60));
-		le.push(new SpawnBotEvent(1, 1420, false, 0, BotType.ROCK, rockConfig, false, 140, -60));
-		le.push(new SpawnBotEvent(1, 1510, false, 0, BotType.ROCK, rockConfig, false, 40, -60));
-		le.push(new SpawnBotEvent(1, 1600, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
-		le.push(new SpawnBotEvent(1, 1620, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
-		le.push(new SpawnBotEvent(1, 1640, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
-		le.push(new SpawnBotEvent(1, 1660, false, 0, BotType.FIGHTER, fighterConfig, false, 190, -60));
-		le.push(new SpawnBotEvent(1, 1680, false, 0, BotType.FIGHTER, fighterConfig, false, 250, -60));
-		le.push(new SpawnBotEvent(1, 1700, false, 0, BotType.FIGHTER, fighterConfig, false, 310, -60));
-		le.push(new SpawnBotEvent(1, 1720, false, 0, BotType.FIGHTER, fighterConfig, false, 370, -60));
-		le.push(new SpawnBotEvent(1, 1740, false, 0, BotType.FIGHTER, fighterConfig, false, 430, -60));
-		le.push(new SpawnBotEvent(1, 1920, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
-		le.push(new SpawnBotEvent(1, 1900, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
-		le.push(new SpawnBotEvent(1, 1880, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
-		le.push(new SpawnBotEvent(1, 1860, false, 0, BotType.FIGHTER, fighterConfig, false, 190, -60));
-		le.push(new SpawnBotEvent(1, 1840, false, 0, BotType.FIGHTER, fighterConfig, false, 250, -60));
-		le.push(new SpawnBotEvent(1, 1820, false, 0, BotType.FIGHTER, fighterConfig, false, 310, -60));
-		le.push(new SpawnBotEvent(1, 1800, false, 0, BotType.FIGHTER, fighterConfig, false, 370, -60));
-		le.push(new SpawnBotEvent(1, 1780, false, 0, BotType.FIGHTER, fighterConfig, false, 430, -60));
-		le.push(new SpawnBotEvent(1, 1960, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
-		le.push(new SpawnBotEvent(1, 1980, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
-		le.push(new SpawnBotEvent(1, 2000, false, 0, BotType.FIGHTER, fighterConfig, false, 190, -60));
-		le.push(new SpawnBotEvent(1, 2020, false, 0, BotType.FIGHTER, fighterConfig, false, 250, -60));
-		le.push(new SpawnBotEvent(1, 2040, false, 0, BotType.FIGHTER, fighterConfig, false, 310, -60));
-		le.push(new SpawnBotEvent(1, 2060, false, 0, BotType.FIGHTER, fighterConfig, false, 370, -60));
-		le.push(new SpawnBotEvent(1, 2080, false, 0, BotType.FIGHTER, fighterConfig, false, 430, -60));
-		le.push(new SpawnBotEvent(1, 2240, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
-		le.push(new SpawnBotEvent(1, 2220, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
-		le.push(new SpawnBotEvent(1, 2200, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
-		le.push(new SpawnBotEvent(1, 2180, false, 0, BotType.FIGHTER, fighterConfig, false, 190, -60));
-		le.push(new SpawnBotEvent(1, 2160, false, 0, BotType.FIGHTER, fighterConfig, false, 250, -60));
-		le.push(new SpawnBotEvent(1, 2140, false, 0, BotType.FIGHTER, fighterConfig, false, 310, -60));
-		le.push(new SpawnBotEvent(1, 2120, false, 0, BotType.FIGHTER, fighterConfig, false, 370, -60));
-		le.push(new SpawnBotEvent(1, 2310, false, 0, BotType.FIGHTER, fighterConfig, false, 140, -60));
-		le.push(new SpawnBotEvent(1, 2280, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 250, -60));
-		le.push(new SpawnBotEvent(1, 2310, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
-		le.push(new SpawnBotEvent(1, 2420, false, 0, BotType.FIGHTER, fighterConfig, false, 200, -60));
-		le.push(new SpawnBotEvent(1, 2440, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
-		le.push(new SpawnBotEvent(1, 2460, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 400, -60));
-		le.push(new SpawnBotEvent(1, 2600, false, 0, BotType.FIGHTER, fighterConfig, false, 250, -60));
-		le.push(new SpawnBotEvent(1, 2620, false, 0, BotType.FIGHTER, fighterConfig, false, 150, -60));
-		le.push(new SpawnBotEvent(1, 2640, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 50, -60));
-		le.push(new SpawnBotEvent(1, 2800, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 100, -80));
-		le.push(new SpawnBotEvent(1, 2800, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 300, -80));
-		le.push(new SpawnBotEvent(1, 3020, false, 0, BotType.DIVER, diverConfig, false, 60, -60));
-		le.push(new SpawnBotEvent(1, 3020, false, 0, BotType.DIVER, diverConfig, false, 420, -60));
-		le.push(new SpawnBotEvent(1, 3100, false, 0, BotType.DRONE, droneConfig, false, 180, -60));
-		le.push(new SpawnBotEvent(1, 3050, false, 0, BotType.DRONE, droneConfig, false, 240, -60));
-		le.push(new SpawnBotEvent(1, 3100, false, 0, BotType.DRONE, droneConfig, false, 300, -60));
-		le.push(new SpawnBotEvent(1, 3300, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 100, -60));
-		le.push(new SpawnBotEvent(1, 3400, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 240, -50));
-		le.push(new SpawnBotEvent(1, 3350, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 400, -60));
-		// le.push(new SpawnBotEvent(1, 400, true, 120, BotType.DIVER, diverConfig, true, 0, -60));
-		// le.push(new SpawnBotEvent(1, 350, true, 90, BotType.FIGHTER, fighterConfig, true, 0, -60));
-		// le.push(new SpawnBotEvent(1, 350, true, 90, BotType.FIGHTER, fighterConfig, true, 0, -60));
-		le.push(new SpawnBotEvent(1, 3800, false, 0, BotType.MINIBOSS2, level1MiniBoss2, false, 300, -300));
-		//#########################################################################################
-		//######################          Phase Two       #######################################
-		//#########################################################################################
-		// these are Phase 2 events, it will become phase 2 when MINIBOSS2 dies
-		le.push(new SpawnBotEvent(2, 120, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
-		le.push(new SpawnBotEvent(2, 140, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
-		le.push(new SpawnBotEvent(2, 160, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
-		le.push(new SpawnBotEvent(2, 120, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
-		le.push(new SpawnBotEvent(2, 140, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
-		le.push(new SpawnBotEvent(2, 160, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
-		le.push(new SpawnBotEvent(2, 260, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
-		le.push(new SpawnBotEvent(2, 240, false, 0, BotType.FIGHTER, fighterConfig, false, 220, -60));
-		le.push(new SpawnBotEvent(2, 260, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
-		le.push(new SpawnBotEvent(2, 360, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
-		le.push(new SpawnBotEvent(2, 380, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
-		le.push(new SpawnBotEvent(2, 400, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
-		le.push(new SpawnBotEvent(2, 360, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
-		le.push(new SpawnBotEvent(2, 380, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
-		le.push(new SpawnBotEvent(2, 400, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
-		le.push(new SpawnBotEvent(2, 500, false, 0, BotType.CREEPER, creeperConfig, false, 220, -60));
-		le.push(new SpawnBotEvent(2, 660, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
-		le.push(new SpawnBotEvent(2, 680, false, 0, BotType.CREEPER, creeperConfig, false, 360, -60));
-		le.push(new SpawnBotEvent(2, 700, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
-		le.push(new SpawnBotEvent(2, 720, false, 0, BotType.CREEPER, creeperConfig, false, 220, -60));
-		le.push(new SpawnBotEvent(2, 660, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
-		le.push(new SpawnBotEvent(2, 680, false, 0, BotType.CREEPER, creeperConfig, false, 70, -60));
-		le.push(new SpawnBotEvent(2, 700, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
-		le.push(new SpawnBotEvent(2, 800, false, 0, BotType.CREEPER, creeperConfig, false, 10, -60));
-		le.push(new SpawnBotEvent(2, 850, false, 0, BotType.CREEPER, creeperConfig, false, 70, -60));
-		le.push(new SpawnBotEvent(2, 900, false, 0, BotType.CREEPER, creeperConfig, false, 130, -60));
-		le.push(new SpawnBotEvent(2, 950, false, 0, BotType.CREEPER, creeperConfig, false, 190, -60));
-		le.push(new SpawnBotEvent(2, 1000, false, 0, BotType.CREEPER, creeperConfig, false, 250, -60));
-		le.push(new SpawnBotEvent(2, 1050, false, 0, BotType.CREEPER, creeperConfig, false, 310, -60));
-		le.push(new SpawnBotEvent(2, 1100, false, 0, BotType.CREEPER, creeperConfig, false, 370, -60));
-		le.push(new SpawnBotEvent(2, 1150, false, 0, BotType.CREEPER, creeperConfig, false, 430, -60));
-
-		le.push(new SpawnBotEvent(2, 1800, false, 0, BotType.GUARDIAN1, guardian1Config, false, 380, -60));
-		le.push(new SpawnBotEvent(2, 1800, false, 0, BotType.GUARDIAN1, guardian1Config, false, 5, -60));
-		le.push(new SpawnBotEvent(2, 1500, false, 0, BotType.MAINBOSS1, level1MainBoss1, false, 0, -300));
-	  // after 100 ticks of Phase 2, level over is triggered.
-	  le.push(new LevelOverEvent(3,100));
-
-
-      return le;
+    // blade left
+    le.push(new SpawnBotEvent(0, 260, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
+    le.push(new SpawnBotEvent(0, 270, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
+    le.push(new SpawnBotEvent(0, 280, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
+    le.push(new SpawnBotEvent(0, 400, false, 0, BotType.DIVER, diverConfig, false, 10, -60));
+    le.push(new SpawnBotEvent(0, 450, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));
+    le.push(new SpawnBotEvent(0, 430, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));
+    le.push(new SpawnBotEvent(0, 450, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
+    le.push(new SpawnBotEvent(0, 400, false, 0, BotType.DIVER, diverConfig, false, 346, -60));
+    le.push(new SpawnBotEvent(0, 700, false, 0, BotType.DRONE, droneConfig, false, 100, -60));
+    le.push(new SpawnBotEvent(0, 720, false, 0, BotType.DRONE, droneConfig, false, 160, -60));
+    le.push(new SpawnBotEvent(0, 740, false, 0, BotType.DRONE, droneConfig, false, 220, -60));
+    le.push(new SpawnBotEvent(0, 720, false, 0, BotType.DRONE, droneConfig, false, 280, -60));
+    le.push(new SpawnBotEvent(0, 700, false, 0, BotType.DRONE, droneConfig, false, 340, -60));
+    le.push(new SpawnBotEvent(0, 900, false, 0, BotType.ROCK, rockConfig, false, 220, -80));
+    le.push(new SpawnBotEvent(0, 1200, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
+    le.push(new SpawnBotEvent(0, 1210, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
+    le.push(new SpawnBotEvent(0, 1220, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
+    le.push(new SpawnBotEvent(0, 1210, false, 0, BotType.DIVER, diverConfig, false, 70, -60));
+    le.push(new SpawnBotEvent(0, 1500, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
+    le.push(new SpawnBotEvent(0, 1510, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
+    le.push(new SpawnBotEvent(0, 1520, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
+    le.push(new SpawnBotEvent(0, 1510, false, 0, BotType.DIVER, diverConfig, false, 330, -60));
+    le.push(new SpawnBotEvent(0, 1600, false, 0, BotType.ROCK, rockConfig, false, 120, -80));
+    le.push(new SpawnBotEvent(0, 1600, false, 0, BotType.ROCK, rockConfig, false, 320, -80));
+    le.push(new SpawnBotEvent(0, 1800, false, 0, BotType.DIVER, diverConfig, false, 110, -60));
+    le.push(new SpawnBotEvent(0, 1800, false, 0, BotType.DIVER, diverConfig, false, 246, -60));
+    le.push(new SpawnBotEvent(0, 1960, false, 0, BotType.DRONE, droneConfig, false, 10, -60));
+    le.push(new SpawnBotEvent(0, 1930, false, 0, BotType.DRONE, droneConfig, false, 70, -60));
+    le.push(new SpawnBotEvent(0, 1930, false, 0, BotType.DRONE, droneConfig, false, 360, -60));
+    le.push(new SpawnBotEvent(0, 1960, false, 0, BotType.DRONE, droneConfig, false, 420, -60));
+    le.push(new SpawnBotEvent(0, 2200, false, 0, BotType.FIGHTER, fighterConfig, false, 60, -60));
+    le.push(new SpawnBotEvent(0, 2215, false, 0, BotType.FIGHTER, fighterConfig, false, 120, -60));
+    le.push(new SpawnBotEvent(0, 2230, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));
+    le.push(new SpawnBotEvent(0, 2245, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));
+    le.push(new SpawnBotEvent(0, 2230, false, 0, BotType.DIVER, diverConfig, false, 346, -60));
+    le.push(new SpawnBotEvent(0, 2500, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
+    le.push(new SpawnBotEvent(0, 2515, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
+    le.push(new SpawnBotEvent(0, 2530, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
+    le.push(new SpawnBotEvent(0, 2545, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));
+    le.push(new SpawnBotEvent(0, 2530, false, 0, BotType.DIVER, diverConfig, false, 60, -60));
+    le.push(new SpawnBotEvent(0, 2700, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
+    le.push(new SpawnBotEvent(0, 2730, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
+    le.push(new SpawnBotEvent(0, 2760, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
+    le.push(new SpawnBotEvent(0, 2700, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
+    le.push(new SpawnBotEvent(0, 2730, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
+    le.push(new SpawnBotEvent(0, 2760, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
+    le.push(new SpawnBotEvent(0, 2960, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
+    le.push(new SpawnBotEvent(0, 2930, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
+    le.push(new SpawnBotEvent(0, 2900, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
+    le.push(new SpawnBotEvent(0, 2960, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
+    le.push(new SpawnBotEvent(0, 2930, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
+    le.push(new SpawnBotEvent(0, 2900, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
+    le.push(new SpawnBotEvent(0, 3000, false, 0, BotType.ROCK, rockConfig, false, 240, -80));
+    le.push(new SpawnBotEvent(0, 3100, false, 0, BotType.DRONE, droneConfig, false, 100, -60));
+    le.push(new SpawnBotEvent(0, 3120, false, 0, BotType.DRONE, droneConfig, false, 160, -60));
+    le.push(new SpawnBotEvent(0, 3140, false, 0, BotType.DRONE, droneConfig, false, 220, -60));
+    le.push(new SpawnBotEvent(0, 3120, false, 0, BotType.DRONE, droneConfig, false, 280, -60));
+    le.push(new SpawnBotEvent(0, 3100, false, 0, BotType.DRONE, droneConfig, false, 340, -60));
+    le.push(new SpawnBotEvent(0, 3240, false, 0, BotType.ROCK, rockConfig, false, 240, -80));
+    le.push(new SpawnBotEvent(0, 3300, false, 0, BotType.FIGHTER, fighterConfig, false, 120, -60));
+    le.push(new SpawnBotEvent(0, 3300, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
+    // these are repeat events that will keep spawning while you fight the mini boss. They spawn at random positions.
+    // le.push(new SpawnBotEvent(0,400,true,120,BotType.DIVER,diverConfig, true, 0, -60));
+    // le.push(new SpawnBotEvent(0,350,true,90,BotType.FIGHTER,fighterConfig, true, 0, -60));
+    // le.push(new SpawnBotEvent(0,350,true,90,BotType.FIGHTER,fighterConfig, true, 0, -60));
+    // when a mini boss dies, the Phase moves forward by One.
+    le.push(new SpawnBotEvent(0, 3500, false, 0, BotType.CAUTIONANIMATION, null, false, 108, 278));
+    le.push(new SpawnBotEvent(0, 3600, false, 0, BotType.MINIBOSS1, level1MiniBoss1, false, 240, -300));
+    // I've put in the new boss here so you can see him in action!
+    //le.push(new SpawnBotEvent(0, 3700, false, 0, BotType.MINIBOSS1L2, level2MiniBoss1, false, 100, -300));
+    // le.push(new SpawnBotEvent(0, 2200, true, 120, BotType.FIGHTER, fighterConfig, false, 360, -60));
+    // le.push(new SpawnBotEvent(0, 2200, true, 120, BotType.FIGHTER, fighterConfig, false, 70, -60));
+    //le.push(new NextPhaseEvent(0,1600));
+    //#########################################################################################
+    //######################          Phase One        #######################################
+    //#########################################################################################
+    // these are Phase 1 events, it will become phase 1 when MINIBOSS1 dies
+    le.push(new SpawnBotEvent(1, 180, false, 0, BotType.DIVER, diverConfig, false, 5, -60));
+    le.push(new SpawnBotEvent(1, 180, false, 0, BotType.DIVER, diverConfig, false, 200, -60));
+    le.push(new SpawnBotEvent(1, 180, false, 0, BotType.DIVER, diverConfig, false, 355, -60));
+    le.push(new SpawnBotEvent(1, 120, false, 0, BotType.FIGHTER, fighterConfig, false, 145, -60));
+    le.push(new SpawnBotEvent(1, 120, false, 0, BotType.FIGHTER, fighterConfig, false, 320, -60));
+    le.push(new SpawnBotEvent(1, 300, false, 0, BotType.DIVER, diverConfig, false, 100, -60));
+    le.push(new SpawnBotEvent(1, 300, false, 0, BotType.DIVER, diverConfig, false, 280, -60));
+    le.push(new SpawnBotEvent(1, 360, false, 0, BotType.FIGHTER, fighterConfig, false, 50, -60));
+    le.push(new SpawnBotEvent(1, 340, false, 0, BotType.FIGHTER, fighterConfig, false, 230, -60));
+    le.push(new SpawnBotEvent(1, 360, false, 0, BotType.FIGHTER, fighterConfig, false, 410, -60));
+    le.push(new SpawnBotEvent(1, 460, false, 0, BotType.ROCK, rockConfig, false, 200, -80));
+    le.push(new SpawnBotEvent(1, 570, false, 0, BotType.FIGHTER, fighterConfig, false, 30, -60));
+    le.push(new SpawnBotEvent(1, 550, false, 0, BotType.FIGHTER, fighterConfig, false, 90, -60));
+    le.push(new SpawnBotEvent(1, 550, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
+    le.push(new SpawnBotEvent(1, 570, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
+    le.push(new SpawnBotEvent(1, 690, false, 0, BotType.DRONE, droneConfig, false, 170, -60));
+    le.push(new SpawnBotEvent(1, 670, false, 0, BotType.DRONE, droneConfig, false, 230, -60));
+    le.push(new SpawnBotEvent(1, 690, false, 0, BotType.DRONE, droneConfig, false, 290, -60));
+    le.push(new SpawnBotEvent(1, 760, false, 0, BotType.DRONE, droneConfig, false, 300, -60));
+    le.push(new SpawnBotEvent(1, 775, false, 0, BotType.DRONE, droneConfig, false, 360, -60));
+    le.push(new SpawnBotEvent(1, 785, false, 0, BotType.DRONE, droneConfig, false, 420, -60));
+    le.push(new SpawnBotEvent(1, 830, false, 0, BotType.DRONE, droneConfig, false, 130, -60));
+    le.push(new SpawnBotEvent(1, 845, false, 0, BotType.DRONE, droneConfig, false, 70, -60));
+    le.push(new SpawnBotEvent(1, 855, false, 0, BotType.DRONE, droneConfig, false, 10, -60));
+    le.push(new SpawnBotEvent(1, 950, false, 0, BotType.ROCK, rockConfig, false, 40, -60));
+    le.push(new SpawnBotEvent(1, 1040, false, 0, BotType.ROCK, rockConfig, false, 140, -60));
+    le.push(new SpawnBotEvent(1, 1130, false, 0, BotType.ROCK, rockConfig, false, 240, -60));
+    le.push(new SpawnBotEvent(1, 1240, false, 0, BotType.ROCK, rockConfig, false, 340, -60));
+    le.push(new SpawnBotEvent(1, 1330, false, 0, BotType.ROCK, rockConfig, false, 240, -60));
+    le.push(new SpawnBotEvent(1, 1420, false, 0, BotType.ROCK, rockConfig, false, 140, -60));
+    le.push(new SpawnBotEvent(1, 1510, false, 0, BotType.ROCK, rockConfig, false, 40, -60));
+    le.push(new SpawnBotEvent(1, 1600, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
+    le.push(new SpawnBotEvent(1, 1620, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
+    le.push(new SpawnBotEvent(1, 1640, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
+    le.push(new SpawnBotEvent(1, 1660, false, 0, BotType.FIGHTER, fighterConfig, false, 190, -60));
+    le.push(new SpawnBotEvent(1, 1680, false, 0, BotType.FIGHTER, fighterConfig, false, 250, -60));
+    le.push(new SpawnBotEvent(1, 1700, false, 0, BotType.FIGHTER, fighterConfig, false, 310, -60));
+    le.push(new SpawnBotEvent(1, 1720, false, 0, BotType.FIGHTER, fighterConfig, false, 370, -60));
+    le.push(new SpawnBotEvent(1, 1740, false, 0, BotType.FIGHTER, fighterConfig, false, 425, -60));
+    le.push(new SpawnBotEvent(1, 1920, false, 0, BotType.FIGHTER, fighterConfig, false, 5, -60));
+    le.push(new SpawnBotEvent(1, 1900, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
+    le.push(new SpawnBotEvent(1, 1880, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
+    le.push(new SpawnBotEvent(1, 1860, false, 0, BotType.FIGHTER, fighterConfig, false, 190, -60));
+    le.push(new SpawnBotEvent(1, 1840, false, 0, BotType.FIGHTER, fighterConfig, false, 250, -60));
+    le.push(new SpawnBotEvent(1, 1820, false, 0, BotType.FIGHTER, fighterConfig, false, 310, -60));
+    le.push(new SpawnBotEvent(1, 1800, false, 0, BotType.FIGHTER, fighterConfig, false, 370, -60));
+    le.push(new SpawnBotEvent(1, 1780, false, 0, BotType.FIGHTER, fighterConfig, false, 425, -60));
+    le.push(new SpawnBotEvent(1, 1960, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
+    le.push(new SpawnBotEvent(1, 1980, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
+    le.push(new SpawnBotEvent(1, 2000, false, 0, BotType.FIGHTER, fighterConfig, false, 190, -60));
+    le.push(new SpawnBotEvent(1, 2020, false, 0, BotType.FIGHTER, fighterConfig, false, 250, -60));
+    le.push(new SpawnBotEvent(1, 2040, false, 0, BotType.FIGHTER, fighterConfig, false, 310, -60));
+    le.push(new SpawnBotEvent(1, 2060, false, 0, BotType.FIGHTER, fighterConfig, false, 370, -60));
+    le.push(new SpawnBotEvent(1, 2080, false, 0, BotType.FIGHTER, fighterConfig, false, 425, -60));
+    le.push(new SpawnBotEvent(1, 2240, false, 0, BotType.FIGHTER, fighterConfig, false, 5, -60));
+    le.push(new SpawnBotEvent(1, 2220, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
+    le.push(new SpawnBotEvent(1, 2200, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
+    le.push(new SpawnBotEvent(1, 2180, false, 0, BotType.FIGHTER, fighterConfig, false, 190, -60));
+    le.push(new SpawnBotEvent(1, 2160, false, 0, BotType.FIGHTER, fighterConfig, false, 250, -60));
+    le.push(new SpawnBotEvent(1, 2140, false, 0, BotType.FIGHTER, fighterConfig, false, 310, -60));
+    le.push(new SpawnBotEvent(1, 2120, false, 0, BotType.FIGHTER, fighterConfig, false, 370, -60));
+    le.push(new SpawnBotEvent(1, 2280, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 220, -60));
+    le.push(new SpawnBotEvent(1, 2460, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 360, -60));
+    le.push(new SpawnBotEvent(1, 2600, false, 0, BotType.FIGHTER, fighterConfig, false, 320, -60));
+    le.push(new SpawnBotEvent(1, 2600, false, 0, BotType.FIGHTER, fighterConfig, false, 120, -60));
+    le.push(new SpawnBotEvent(1, 2640, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 200, -60));
+    le.push(new SpawnBotEvent(1, 2800, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 10, -90));
+    le.push(new SpawnBotEvent(1, 2800, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 368, -80));
+    le.push(new SpawnBotEvent(1, 3020, false, 0, BotType.DIVER, diverConfig, false, 125, -60));
+    le.push(new SpawnBotEvent(1, 3020, false, 0, BotType.DIVER, diverConfig, false, 255, -60));
+    le.push(new SpawnBotEvent(1, 3100, false, 0, BotType.DRONE, droneConfig, false, 230, -60));
+    le.push(new SpawnBotEvent(1, 3300, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 10, -60));
+    le.push(new SpawnBotEvent(1, 3400, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 200, -30));
+    le.push(new SpawnBotEvent(1, 3350, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 375, -60));
+    // le.push(new SpawnBotEvent(1, 400, true, 120, BotType.DIVER, diverConfig, true, 0, -60));
+    // le.push(new SpawnBotEvent(1, 350, true, 90, BotType.FIGHTER, fighterConfig, true, 0, -60));
+    // le.push(new SpawnBotEvent(1, 350, true, 90, BotType.FIGHTER, fighterConfig, true, 0, -60));
+    le.push(new SpawnBotEvent(1, 3700, false, 0, BotType.CAUTIONANIMATION, null, false, 108, 278));
+    le.push(new SpawnBotEvent(1, 3800, false, 0, BotType.MINIBOSS2, level1MiniBoss2, false, 300, -300));
+    //#########################################################################################
+    //######################          Phase Two       #######################################
+    //#########################################################################################
+    // these are Phase 2 events, it will become phase 2 when MINIBOSS2 dies
+    le.push(new SpawnBotEvent(2, 120, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
+    le.push(new SpawnBotEvent(2, 140, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
+    le.push(new SpawnBotEvent(2, 160, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
+    le.push(new SpawnBotEvent(2, 120, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
+    le.push(new SpawnBotEvent(2, 140, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
+    le.push(new SpawnBotEvent(2, 160, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
+    le.push(new SpawnBotEvent(2, 260, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
+    le.push(new SpawnBotEvent(2, 240, false, 0, BotType.FIGHTER, fighterConfig, false, 220, -60));
+    le.push(new SpawnBotEvent(2, 260, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
+    le.push(new SpawnBotEvent(2, 360, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
+    le.push(new SpawnBotEvent(2, 380, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
+    le.push(new SpawnBotEvent(2, 400, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
+    le.push(new SpawnBotEvent(2, 360, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
+    le.push(new SpawnBotEvent(2, 380, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
+    le.push(new SpawnBotEvent(2, 400, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
+    le.push(new SpawnBotEvent(2, 500, false, 0, BotType.CREEPER, creeperConfig, false, 220, -60));
+    le.push(new SpawnBotEvent(2, 660, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
+    le.push(new SpawnBotEvent(2, 680, false, 0, BotType.CREEPER, creeperConfig, false, 360, -60));
+    le.push(new SpawnBotEvent(2, 700, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
+    le.push(new SpawnBotEvent(2, 720, false, 0, BotType.CREEPER, creeperConfig, false, 220, -60));
+    le.push(new SpawnBotEvent(2, 660, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
+    le.push(new SpawnBotEvent(2, 680, false, 0, BotType.CREEPER, creeperConfig, false, 70, -60));
+    le.push(new SpawnBotEvent(2, 700, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
+    le.push(new SpawnBotEvent(2, 800, false, 0, BotType.CREEPER, creeperConfig, false, 10, -60));
+    le.push(new SpawnBotEvent(2, 850, false, 0, BotType.CREEPER, creeperConfig, false, 70, -60));
+    le.push(new SpawnBotEvent(2, 900, false, 0, BotType.CREEPER, creeperConfig, false, 130, -60));
+    le.push(new SpawnBotEvent(2, 950, false, 0, BotType.CREEPER, creeperConfig, false, 190, -60));
+    le.push(new SpawnBotEvent(2, 1000, false, 0, BotType.CREEPER, creeperConfig, false, 250, -60));
+    le.push(new SpawnBotEvent(2, 1050, false, 0, BotType.CREEPER, creeperConfig, false, 310, -60));
+    le.push(new SpawnBotEvent(2, 1100, false, 0, BotType.CREEPER, creeperConfig, false, 370, -60));
+    le.push(new SpawnBotEvent(2, 1150, false, 0, BotType.CREEPER, creeperConfig, false, 430, -60));
+    le.push(new SpawnBotEvent(2, 1800, false, 0, BotType.GUARDIAN1, guardian1Config, false, 380, -60));
+    le.push(new SpawnBotEvent(2, 1800, false, 0, BotType.GUARDIAN1, guardian1Config, false, 5, -60));
+    le.push(new SpawnBotEvent(2, 1400, false, 0, BotType.CAUTIONANIMATION, null, false, 108, 278));
+    le.push(new SpawnBotEvent(2, 1500, false, 0, BotType.MAINBOSS1, level1MainBoss1, false, 0, -300));
+    // after 100 ticks of Phase 2, level over is triggered.
+    le.push(new LevelOverEvent(3,100));
+    return le;
   }
 
 	getLevel2Events(difficulty:number):LevelEvent[] {

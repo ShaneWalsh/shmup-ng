@@ -5,6 +5,7 @@ import { LevelManagerService } from 'src/app/manager/level-manager.service';
 import { PlayerService} from '../../services/player.service';
 import { LevelEnum } from 'src/app/manager/level-manager/LevelEnum';
 import { NgApiService } from 'src/app/services/ng-api.service';
+import { AudioServiceService } from 'src/app/services/audio-service.service';
 
 @Component({
   selector: 'app-intro-screen',
@@ -27,7 +28,7 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
     public playerLives:number = 0;
     public requestAnimFrame:any; // have to ensure this is not created multiple times!
 
-    constructor(private keyboardEventService:KeyboardEventService, private levelManagerService: LevelManagerService, private playerService:PlayerService, private ngApiService:NgApiService) {
+    constructor(private keyboardEventService:KeyboardEventService, private levelManagerService: LevelManagerService, private playerService:PlayerService, private ngApiService:NgApiService, private audioServiceService:AudioServiceService) {
         this.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || // this redraws the canvas when the browser is updating. Crome 18 is execllent for canvas, makes it much faster by using os
                            window["mozRequestAnimationFrame"] || window["msRequestAnimationFrame"] || window["oRequestAnimationFrame"]
                            || function(callback) { window.setTimeout(callback,1000/60);};
@@ -36,6 +37,7 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
     }
 
     ngOnInit() {
+      this.landedOnTitleScreen();
       this.subs.push(this.keyboardEventService.getKeyDownEventSubject().subscribe(customKeyboardEvent => {
         console.log("customKeyboardEvent",customKeyboardEvent);
         if(customKeyboardEvent.event.keyCode == 13) { //  == 'Enter'
@@ -49,6 +51,7 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
             }
           } else if(this.screenId == 20) {
             this.screenId = 1;
+            this.landedOnTitleScreen();
           } else if(this.screenId == 30) {
             this.screenId = 35;
             this.playerService.initPlayer(false, this.playerScore, this.playerLives);
@@ -129,7 +132,11 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
       this.requestAnimFrame(this.update.bind(this)); // takes a function as para, it will keep calling loop over and over again
     }
 
-
+    landedOnTitleScreen(){
+      this.audioServiceService.stopAllAudio(true);
+      this.audioServiceService.update();
+      this.audioServiceService.playAudio("titlescreen", true);
+    }
 
   // // load image
   // try {

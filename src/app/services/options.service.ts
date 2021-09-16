@@ -14,14 +14,14 @@ export class OptionsService {
   /**
    * Default background volume.
    */
-  private _backgroundSoundVolume : number = 0; // .1
+  private _backgroundSoundVolume : number = .1; // .1
   /**
   * Default level order, Just change the index value to change the order they are played in.
   */
   private _levelOrder : {level:LevelEnum,levelIndex:number}[] = [
-    {level:LevelEnum.LevelThree, levelIndex:1},
+    {level:LevelEnum.LevelOne, levelIndex:1},
     {level:LevelEnum.LevelTwo, levelIndex:2},
-    {level:LevelEnum.LevelOne, levelIndex:3},
+    {level:LevelEnum.LevelThree, levelIndex:3},
     {level:LevelEnum.LevelFour, levelIndex:4}
   ];
 

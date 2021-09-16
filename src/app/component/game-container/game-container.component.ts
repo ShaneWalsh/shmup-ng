@@ -90,6 +90,7 @@ export class GameContainerComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.audioServiceService.stopAllAudio(true);
         this.subs.push(this.levelManagerService.getLevelCompleteSubject().subscribe(result => {
 
         }));
@@ -197,7 +198,7 @@ export class GameContainerComponent implements OnInit, OnDestroy {
 
               // vertical and horizontal, bare that in mind....
               this.audioServiceService.update();
-              this.audioServiceService.playAudio("Trouble-on-Mercury", true);
+              this.audioServiceService.playAudio("level1", true);
             }
         }
         this.tickComplete = true;

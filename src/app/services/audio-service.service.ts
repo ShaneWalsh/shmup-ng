@@ -30,9 +30,9 @@ export class AudioServiceService {
 	//https://developer.mozilla.org/en/docs/Web/HTML/Element/audio
 
 	addAudio( name, audio:HTMLAudioElement, type = SoundResEnum.TYPESOUND) {
-    if(type == SoundResEnum.TYPESOUND) {
+    if(type == SoundResEnum.TYPEBG) {
       this.audioMap.push(new AudioSound(name,audio,type,this.backgroundSoundVolume));
-    } else if(type == SoundResEnum.TYPEBG) {
+    } else if(type == SoundResEnum.TYPESOUND) {
       this.audioMap.push(new AudioSound(name,audio,type,this.soundAffectVolume));
     }
 	}
