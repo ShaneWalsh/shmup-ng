@@ -22,7 +22,9 @@ export class OptionsService {
     {level:LevelEnum.LevelOne, levelIndex:1},
     {level:LevelEnum.LevelTwo, levelIndex:2},
     {level:LevelEnum.LevelThree, levelIndex:3},
-    {level:LevelEnum.LevelFour, levelIndex:4}
+    {level:LevelEnum.LevelFour, levelIndex:4},
+    {level:LevelEnum.LevelFive, levelIndex:5},
+    {level:LevelEnum.LevelSix, levelIndex:6}
   ];
 
   constructor() { }

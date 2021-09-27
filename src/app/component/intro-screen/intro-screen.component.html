@@ -75,4 +75,27 @@
   <div class="screen-container" *ngIf="screenId==45">
     <app-game-container [requestAnimFrame]="requestAnimFrame"></app-game-container>
   </div>
+  <!-- Game over 50? -->
+
+  <div class="screen-container" *ngIf="screenId==55">
+    <app-game-container [requestAnimFrame]="requestAnimFrame"></app-game-container>
+  </div>
+  <div class="screen-container pink-text" *ngIf="screenId==60">
+    <img [src]="'assets/img/desc/stage-1-complete.png'">
+    <h2 class="player-score-vic">{{playerScore}}</h2>
+    <h2 class="player-lives-vic">{{playerLives}}</h2>
+  </div>
+  <div class="screen-container" *ngIf="screenId==65">
+    <app-game-container [requestAnimFrame]="requestAnimFrame"></app-game-container>
+  </div>
+  <div class="screen-container pink-text" *ngIf="screenId==70">
+    <img [src]="'assets/img/desc/stage-1-complete.png'">
+    <h2 class="player-score-vic">{{playerScore}}</h2>
+    <h2 class="player-lives-vic">{{playerLives}}</h2>
+  </div>
+  <div class="screen-container" *ngIf="screenId==75">
+    <app-game-container [requestAnimFrame]="requestAnimFrame"></app-game-container>
+  </div>
+  <!-- Game over 80? -->
+
 </div>

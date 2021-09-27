@@ -3,4 +3,6 @@ export enum LevelEnum{
   LevelTwo='LevelTwo',
   LevelThree='LevelThree',
   LevelFour='LevelFour',
+  LevelFive='LevelFive',
+  LevelSix='LevelSix',
 }

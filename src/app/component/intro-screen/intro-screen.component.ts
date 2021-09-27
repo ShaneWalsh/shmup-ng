@@ -37,19 +37,30 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
     }
 
     ngOnInit() {
-      this.landedOnTitleScreen();
+      //this.landedOnTitleScreen();
       this.subs.push(this.keyboardEventService.getKeyDownEventSubject().subscribe(customKeyboardEvent => {
         console.log("customKeyboardEvent",customKeyboardEvent);
         if(customKeyboardEvent.event.keyCode == 13) { //  == 'Enter'
           if(this.screenId < 6) {
-            this.screenId++;
-            if(this.screenId == 6) { // used to be 6 for screen 4+5 but those have been removed
-              // lets assume the user picked a player here
-              this.screenId = 6;
-              this.playerService.initPlayer();
-              this.levelManagerService.initLevel(LevelEnum.LevelOne);
+            if(this.screenId == 0){
+              this.landedOnTitleScreen();
+              this.screenId++;
+            } else { // we are past the title screen, on one of the menus
+              this.screenId++;
+              if(this.screenId == 6) { // used to be 6 for screen 4+5 but those have been removed
+                // lets assume the user picked a player here
+
+                this.playerService.initPlayer();
+                if(this.levelManagerService.mainMenuIndex == 0){
+                  this.screenId = 6;
+                  this.levelManagerService.initLevel(LevelEnum.LevelOne);
+                } else if(this.levelManagerService.mainMenuIndex == 1){
+                  this.screenId = 55;
+                  this.levelManagerService.initLevel(LevelEnum.LevelFour);
+                }
+              }
             }
-          } else if(this.screenId == 20) {
+          } else if(this.screenId == 20) { // game over screen
             this.screenId = 1;
             this.landedOnTitleScreen();
           } else if(this.screenId == 30) {
@@ -60,6 +71,17 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
             this.screenId = 45;
             this.playerService.initPlayer(false, this.playerScore, this.playerLives);
             this.levelManagerService.initLevel(LevelEnum.LevelThree);
+          } else if(this.screenId == 50) {
+
+            console.log("Should not be being called.");
+          } else if(this.screenId == 60) {
+            this.screenId = 65;
+            this.playerService.initPlayer(false, this.playerScore, this.playerLives);
+            this.levelManagerService.initLevel(LevelEnum.LevelFive);
+          } else if(this.screenId == 70) {
+            this.screenId = 75;
+            this.playerService.initPlayer(false, this.playerScore, this.playerLives);
+            this.levelManagerService.initLevel(LevelEnum.LevelSix);
           }
         }
         if(customKeyboardEvent.event.keyCode == 38 || customKeyboardEvent.event.keyCode == 40 || customKeyboardEvent.event.keyCode == 87 || customKeyboardEvent.event.keyCode == 83){
@@ -116,6 +138,14 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
           this.screenId = 40;
         } else if(this.levelManagerService.getCurrentLevelEnum() == LevelEnum.LevelThree){
           // game over? You win?
+          // 50?
+        } else if(this.levelManagerService.getCurrentLevelEnum() == LevelEnum.LevelFour){
+          this.screenId = 60;
+        } else if(this.levelManagerService.getCurrentLevelEnum() == LevelEnum.LevelFive){
+          this.screenId = 70;
+        } else if(this.levelManagerService.getCurrentLevelEnum() == LevelEnum.LevelSix){
+          // game over? You win?
+          // 80
         }
       }));
     }

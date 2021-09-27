@@ -14,6 +14,9 @@ import { LevelThreeInstance } from './level-manager/LevelThreeInstance';
 import { LevelEnum } from './level-manager/LevelEnum';
 import { AudioServiceService } from '../services/audio-service.service';
 import { DeathManagerService } from './death-manager.service';
+import { LevelFourInstance } from './level-manager/LevelFourInstance';
+import { LevelFiveInstance } from './level-manager/LevelFiveInstance';
+import { LevelSixInstance } from './level-manager/LevelSixInstance';
 
 @Injectable({
   providedIn: 'root'
@@ -90,6 +93,12 @@ export class LevelManagerService {
       this.currentLevel = new LevelTwoInstance(this.resourcesService, this.botManagerService, this, this.levelEventsService);
     } else if(index == 3) {
       this.currentLevel = new LevelThreeInstance(this.resourcesService, this.botManagerService, this, this.levelEventsService);
+    } else if(index == 4) {
+      this.currentLevel = new LevelFourInstance(this.resourcesService, this.botManagerService, this, this.levelEventsService);
+    } else if(index == 5) {
+      this.currentLevel = new LevelFiveInstance(this.resourcesService, this.botManagerService, this, this.levelEventsService);
+    } else if(index == 6) {
+      this.currentLevel = new LevelSixInstance(this.resourcesService, this.botManagerService, this, this.levelEventsService);
     }
 
     this.levelLoaded.next(this.currentLevel);
