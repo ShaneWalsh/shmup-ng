@@ -36,6 +36,7 @@ export class Buggy extends BotInstanceImpl{
         public posX:number=0,
         public posY:number=0,
         public imageObjMain:HTMLImageElement=null,
+        public imageObjMainReversed:HTMLImageElement=null,
         public imageObjTurret:HTMLImageElement=null,
         public imageObjMuzzleFlash:HTMLImageElement=null,
         public imageSizeX:number=90,
@@ -47,30 +48,61 @@ export class Buggy extends BotInstanceImpl{
       super(config);
 		  this.tryConfigValues(["bulletSpeed","posXSpeed","posYSpeed","bTimer","bTimerLimit","score","health", "moveToXCord", "moveRight"]);
 		  this.bTimer = this.bTimerLimit/2;
-      this.imageObj = imageObjMain;
-      this.turret = new Turret(
-        this.posX+this.turretXoffset,
-        this.posY+this.turretYoffset,
-        [this.imageObjTurret],
-        null,
-        null,
-        56,//imageSizeX
-        20,
-        18,6, // rotation offsets
-        "bullet",
-        [{muzzlePosXOffset:60, muzzlePosYOffset:5}], // Muzzle offsets
-        [this.imageObjMuzzleFlash],
-        14,//imageMuzzleSizeX
-        22,//imageMuzzleSizeY
-        [{bulletXOffset:50, bulletYOffset:10}],
-        22,// bullet sizex
-        14,
-        600,
-        this.bulletSpeed,
-        this.bTimer,
-        this.bTimerLimit,
-        0,5,false
-      );
+      if(this.moveRight){
+        this.turretXoffset=34;
+        this.turretYoffset=28;
+        this.imageObj = imageObjMain;
+        this.turret = new Turret(
+          this.posX+this.turretXoffset,
+          this.posY+this.turretYoffset,
+          [this.imageObjTurret],
+          null,
+          null,
+          56,//imageSizeX
+          20,
+          18,6, // rotation offsets
+          "bullet",
+          [{muzzlePosXOffset:60, muzzlePosYOffset:5}], // Muzzle offsets
+          [this.imageObjMuzzleFlash],
+          14,//imageMuzzleSizeX
+          22,//imageMuzzleSizeY
+          [{bulletXOffset:50, bulletYOffset:10}],
+          22,// bullet sizex
+          14,
+          600,
+          this.bulletSpeed,
+          this.bTimer,
+          this.bTimerLimit,
+          0,5,false
+        );
+      } else {
+        this.imageObj = imageObjMainReversed;
+        this.turretXoffset=48;
+        this.turretYoffset=28;
+        this.turret = new Turret(
+          this.posX+this.turretXoffset,
+          this.posY+this.turretYoffset,
+          [this.imageObjTurret],
+          null,
+          null,
+          56,//imageSizeX
+          20,
+          18,6, // rotation offsets
+          "bullet",
+          [{muzzlePosXOffset:60, muzzlePosYOffset:5}], // Muzzle offsets
+          [this.imageObjMuzzleFlash],
+          14,//imageMuzzleSizeX
+          22,//imageMuzzleSizeY
+          [{bulletXOffset:50, bulletYOffset:10}],
+          22,// bullet sizex
+          14,
+          600,
+          this.bulletSpeed,
+          this.bTimer,
+          this.bTimerLimit,
+          0,5,false
+        );
+      }
   }
 
 	update(levelInstance:LevelInstance, canvasContainer:CanvasContainer, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {

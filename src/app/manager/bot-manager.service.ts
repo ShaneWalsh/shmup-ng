@@ -157,6 +157,7 @@ export class BotManagerService {
   generateBuggy(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
     let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
     let newBot = new Buggy(config, posObj.posX, posObj.posY, this.resourcesService.getRes().get("ground-enemy-1-1"),
+    this.resourcesService.getRes().get("ground-enemy-1-1-reversed"),
     this.resourcesService.getRes().get("ground-enemy-1-1-cannon"),
     this.resourcesService.getRes().get("miniboss-3-muzzle-flash"),
     120, 70);
@@ -306,6 +307,8 @@ export class BotManagerService {
     let newBot = new Level1SubBoss(config, posObj.posX, posObj.posY,
       [ this.resourcesService.getRes().get("main-boss-1-1"),
         this.resourcesService.getRes().get("main-boss-1-2") ],
+      [ this.resourcesService.getRes().get("main-boss-1-1-shadow"),
+        this.resourcesService.getRes().get("main-boss-1-2-shadow") ],
       [ this.resourcesService.getRes().get("boss-1-damaged-1"),
        this.resourcesService.getRes().get("boss-1-damaged-2")],
       [this.resourcesService.getRes().get("boss-1-flames"),
@@ -322,9 +325,10 @@ export class BotManagerService {
     let hitz = new HitBox(44, 0, 162, 160);
     let newBot = new Level1SubBoss2(config, posObj.posX, posObj.posY,
       this.resourcesService.getRes().get("miniboss-2-muzzle-flash"),
-      this.resourcesService.getRes().get("miniboss-2-1"),
-      this.resourcesService.getRes().get("miniboss-2-2"),
-      this.resourcesService.getRes().get("miniboss-2-damaged"),
+      this.resourcesService.getRes().get("boss-2-new"),
+      this.resourcesService.getRes().get("boss-2-new"),
+      this.resourcesService.getRes().get("boss-2-new-shadow"),
+      this.resourcesService.getRes().get("boss-2-new-damaged"),
       224, 236, hitz);
     this.botsArr.push(newBot);
     this.botCreated.next(newBot);

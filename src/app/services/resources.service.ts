@@ -216,6 +216,7 @@ export class ResourcesService {
           {code:"enemy-1-2-shadow", path:"assets/img/bots/level-2/enemy-1-2-shadow.png", type:ResourcesEnum.ImageRes},
           {code:"enemy-1-2-shadow-separate", path:"assets/img/bots/level-2/enemy-1-2-shadow-separate.png", type:ResourcesEnum.ImageRes},
           {code:"ground-enemy-1-1", path:"assets/img/bots/level-2/ground-enemy-1-1.png", type:ResourcesEnum.ImageRes},
+          {code:"ground-enemy-1-1-reversed", path:"assets/img/bots/level-2/ground-enemy-1-1-reversed.png", type:ResourcesEnum.ImageRes},
           {code:"ground-enemy-1-1-cannon", path:"assets/img/bots/level-2/ground-enemy-1-1-cannon.png", type:ResourcesEnum.ImageRes},
           {code:"ground-enemy-1-1-example", path:"assets/img/bots/level-2/ground-enemy-1-1-example.png", type:ResourcesEnum.ImageRes},
           {code:"player-1-ship-shadow-separa", path:"assets/img/player/player-1-ship-shadow.png", type:ResourcesEnum.ImageRes},
@@ -318,6 +319,8 @@ export class ResourcesService {
           {code:"boss-1-flames-4", path:"assets/img/boss/boss-1/boss-1-flames-4.png", type:ResourcesEnum.ImageRes},
           {code:"main-boss-1-1", path:"assets/img/boss/boss-1/main-boss-1-1.png", type:ResourcesEnum.ImageRes},
           {code:"main-boss-1-2", path:"assets/img/boss/boss-1/main-boss-1-2.png", type:ResourcesEnum.ImageRes},
+          {code:"main-boss-1-1-shadow", path:"assets/img/boss/boss-1/main-boss-1-1-shadow.png", type:ResourcesEnum.ImageRes},
+          {code:"main-boss-1-2-shadow", path:"assets/img/boss/boss-1/main-boss-1-2-shadow.png", type:ResourcesEnum.ImageRes},
 
           {code:"player-1-muzzle-flash", path:"assets/img/bots/redesign/player-1-muzzle-flash.png", type:ResourcesEnum.ImageRes},
           {code:"enemy-3-1-damaged", path:"assets/img/bots/redesign/enemy-3-1-damaged.png", type:ResourcesEnum.ImageRes},
@@ -339,12 +342,16 @@ export class ResourcesService {
           {code:"enemy-07-firing-5", path:"assets/img/bots/enemy-08-update/enemy-07-firing-5.png", type:ResourcesEnum.ImageRes},
           {code:"enemy-07-firing-6", path:"assets/img/bots/enemy-08-update/enemy-07-firing-6.png", type:ResourcesEnum.ImageRes},
 
-          {code:"miniboss-2", path:"assets/img/boss/bos2/miniboss-2.png", type:ResourcesEnum.ImageRes},
-          {code:"miniboss-2-1", path:"assets/img/boss/bos2/miniboss-2-1.png", type:ResourcesEnum.ImageRes},
-          {code:"miniboss-2-2", path:"assets/img/boss/bos2/miniboss-2-2.png", type:ResourcesEnum.ImageRes},
+          //{code:"miniboss-2", path:"assets/img/boss/bos2/miniboss-2.png", type:ResourcesEnum.ImageRes},
+          //{code:"miniboss-2-1", path:"assets/img/boss/bos2/miniboss-2-1.png", type:ResourcesEnum.ImageRes},
+         // {code:"miniboss-2-2", path:"assets/img/boss/bos2/miniboss-2-2.png", type:ResourcesEnum.ImageRes},
           {code:"miniboss-2-bullet", path:"assets/img/boss/bos2/miniboss-2-bullet.png", type:ResourcesEnum.ImageRes},
           {code:"miniboss-2-muzzle-flash", path:"assets/img/boss/bos2/miniboss-2-muzzle-flash.png", type:ResourcesEnum.ImageRes},
-          {code:"miniboss-2-damaged", path:"assets/img/boss/bos2/miniboss-2-damaged.png", type:ResourcesEnum.ImageRes},
+          //{code:"miniboss-2-damaged", path:"assets/img/boss/bos2/miniboss-2-damaged.png", type:ResourcesEnum.ImageRes},
+          // reworked
+          {code:"boss-2-new", path:"assets/img/boss/bos2/boss-2-new.png", type:ResourcesEnum.ImageRes},
+          {code:"boss-2-new-damaged", path:"assets/img/boss/bos2/boss-2-new-damaged.png", type:ResourcesEnum.ImageRes},
+          {code:"boss-2-new-shadow", path:"assets/img/boss/bos2/boss-2-new-shadow.png", type:ResourcesEnum.ImageRes},
 
           {code:"boss1-laser-1", path:"assets/img/boss/main-boss-1/laser-1.png", type:ResourcesEnum.ImageRes},
           {code:"boss1-laser-2", path:"assets/img/boss/main-boss-1/laser-2.png", type:ResourcesEnum.ImageRes},

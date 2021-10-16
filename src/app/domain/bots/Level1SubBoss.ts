@@ -13,6 +13,7 @@ export class Level1SubBoss extends  BotInstanceImpl {
     public dirYDown:boolean = true;
 
     public imageObj:HTMLImageElement;
+    public imageShadow:HTMLImageElement;
     public imageObjFlame:HTMLImageElement;
 
     // todo make these config values
@@ -43,6 +44,7 @@ export class Level1SubBoss extends  BotInstanceImpl {
         public posX:number=0,
         public posY:number=0,
         public images:HTMLImageElement[]=null,
+        public imageShadows:HTMLImageElement[]=null,
         public imagesDamaged:HTMLImageElement[]=null,
         public imagesFlames:HTMLImageElement[]=null,
         public imageSizeX:number=90,
@@ -52,6 +54,7 @@ export class Level1SubBoss extends  BotInstanceImpl {
     ){
         super(config);
         this.imageObj = images[this.animationIndex];
+        this.imageShadow = imageShadows[this.animationIndex];
         this.imageObjFlame = imagesFlames[this.animationFlamesIndex];
 		this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score","posYSpeed","posXSpeed","bulletSpeed", "anaimationTimerLimit","animationFlamesTimerLimit"]);
     }
@@ -83,6 +86,9 @@ export class Level1SubBoss extends  BotInstanceImpl {
       }
     }
 
+    if(levelInstance.drawShadow()) {
+      this.drawShadow(canvasContainer.shadowCtx,this.imageShadow,this.posX,this.posY,this.imageSizeX, this.imageSizeY);
+    }
     ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
     ctx.drawImage(this.imageObjFlame, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
     if(this.damAnaimationTimer < this.damAnaimationTimerLimit){
@@ -107,6 +113,7 @@ export class Level1SubBoss extends  BotInstanceImpl {
       this.anaimationTimer = 0;
       this.animationIndex = (this.animationIndex +1 >= this.images.length)?0:this.animationIndex +1;
 			this.imageObj = this.images[this.animationIndex];
+			this.imageShadow = this.imageShadows[this.animationIndex];
 		} else{
 			this.anaimationTimer++;
     }

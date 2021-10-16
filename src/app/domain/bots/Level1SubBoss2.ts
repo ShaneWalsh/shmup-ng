@@ -64,6 +64,7 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
       public imageObj1: HTMLImageElement = null,
       public imageObj2: HTMLImageElement = null,
       public imageObj3: HTMLImageElement = null,
+      public imageShadow:HTMLImageElement = null,
       public imageObj4Damaged: HTMLImageElement = null,
       public imageSizeX:number=90,
       public imageSizeY:number=60,
@@ -99,6 +100,9 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
 			//    28 44
 			this.rotationCordsCenter = LogicService.pointAfterRotation(this.posX + 112, this.posY + 118,this.posX + 236, this.posY + 95, this.turnDirection.angle)
 
+      if(levelInstance.drawShadow()) {
+        this.drawShadowRotate(canvasContainer.shadowCtx, this.turnDirection.angle, this.imageShadow, this.posX, this.posY, this.imageSizeX, this.imageSizeY);
+      }
 			this.drawRotateImage(this.imageObj, ctx, this.turnDirection.angle, this.posX, this.posY, this.imageSizeX, this.imageSizeY);
 			if(this.damAnaimationTimer < this.damAnaimationTimerLimit){
 				this.damAnaimationTimer++;
