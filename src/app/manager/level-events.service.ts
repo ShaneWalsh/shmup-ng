@@ -156,6 +156,7 @@ export class LevelEventsService {
     //######################          Phase Zero        #######################################
     //#########################################################################################
     // wings middle
+    le.push(new SpawnBotEvent(0, 50, false, 0, BotType.LAZERGUARDIAN, fighterConfig, false, 200, 20));
     le.push(new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));
     le.push(new SpawnBotEvent(0, 80, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));
     le.push(new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
@@ -564,7 +565,7 @@ export class LevelEventsService {
     // trick of the eye here, by increasing the AATanks yspeed by .5 it will look like its driving down, or leave it at 1 and it will look parked.
     le.push(new SpawnBotEvent(0, 100, false, 0, BotType.SENTRY, sentryConfig, false, 140, -140));
     le.push(new SpawnBotEvent(0, 40, false, 0, BotType.BUGGY, { ...buggyConfigMR, moveRight: true }, false, -100, 0));
-    le.push(new SpawnBotEvent(0, 330, false, 0, BotType.AATANK, { ...AATankConfig, moveToXCord: 230, posYSpeed: 1.5 }), false, 230, -150);
+    le.push(new SpawnBotEvent(0, 330, false, 0, BotType.AATANK, { ...AATankConfig, moveToXCord: 230, posYSpeed: 1.5 }, false, 230, -150));
     le.push(new SpawnBotEvent(0, 650, false, 0, BotType.AATANK, { ...AATankConfig,  moveToXCord: -100 }, false, 400, 80));
     le.push(new SpawnBotEvent(0, 750, false, 0, BotType.AATANK, { ...AATankConfig, moveToXCord: -150 }, false, 450, 80));
     le.push(new SpawnBotEvent(0, 815, false, 0, BotType.SENTRY, sentryConfig, false, 225, -140));

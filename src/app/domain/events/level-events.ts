@@ -14,6 +14,7 @@ export enum BotType {
   ROCK="ROCK",
 	GUARDIAN1="GUARDIAN1",
   GUARDIANCREEPER="GUARDIANCREEPER",
+  LAZERGUARDIAN="LAZERGUARDIAN",
 
   BUGGY="BUGGY",
   AATANK="AATANK",
@@ -103,6 +104,8 @@ export class SpawnBotEvent extends LevelEvent {
             botManagerService.generateGuardian1(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.GUARDIANCREEPER) {
             botManagerService.generateGuardianCreeper(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
+        } else if (this.botType == BotType.LAZERGUARDIAN) {
+            botManagerService.generateGuardianLaser(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.BUGGY) {
             botManagerService.generateBuggy(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.AATANK) {

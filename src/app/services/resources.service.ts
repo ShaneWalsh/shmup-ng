@@ -71,6 +71,10 @@ export class ResourcesService {
         {code:"caution-7", path:"/assets/img/loading/caution/caution-7.png", type:ResourcesEnum.ImageRes},
         {code:"caution-8", path:"/assets/img/loading/caution/caution-8.png", type:ResourcesEnum.ImageRes},
 
+        {code:"laser-guardian-1", path:"/assets/img/bots/laser-guardian/laser-guardian-1.png", type:ResourcesEnum.ImageRes},
+        {code:"laser-guardian-2", path:"/assets/img/bots/laser-guardian/laser-guardian-2.png", type:ResourcesEnum.ImageRes},
+        {code:"laser-guardian-3", path:"/assets/img/bots/laser-guardian/laser-guardian-3.png", type:ResourcesEnum.ImageRes},
+
         {code:"swordfish", path:"/assets/img/bots/swordfish/swordfish.png", type:ResourcesEnum.ImageRes},
         {code:"swordfish-damaged", path:"/assets/img/bots/swordfish/swordfish-damaged.png", type:ResourcesEnum.ImageRes},
 
@@ -421,7 +425,7 @@ export class ResourcesService {
               code: "enemy-bullet-target", path: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAOCAYAAAArMezNAAAABGdBTUEAAK/INwWK6QAAAAlwSFlzAAAOwwAADsMBx2+oZAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMS42/U4J6AAAAGRJREFUOE/VkDEOgEAIBImv8v8fW7UgAXZFLM7EYgrIMJecARixYUdH9dPQoWKR6qfhQh29wTvrw0qK2Kl2kL8sTAtxNIE6tBBHE6jzvz/28PSBJ7zzXfgOFYlUPw0dKhbJPuwA7VOl229hSMgAAAAASUVORK5CYII=",
               type: ResourcesEnum.ImageRes }
        ];
-       */
+*/
 
 
       // offline loading of files.
@@ -501,7 +505,7 @@ export class ResourcesService {
   imageLoaded(code,loadedImage:HTMLImageElement){
     this.resources.set(code,loadedImage);
     // store as global variable and then copy(temp1) to copy the object
-    // this.resourcesToLoadB64.push({code:code,path:this.imgToBase64(loadedImage),type:ResourcesEnum.ImageRes});
+     //this.resourcesToLoadB64.push({code:code,path:this.imgToBase64(loadedImage),type:ResourcesEnum.ImageRes});
     this.resourceLoaded();
   }
 

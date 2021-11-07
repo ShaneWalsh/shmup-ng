@@ -153,6 +153,7 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
   checkMedals() {
     // todo replace this with a medal check function, see if the user has any medals to unlock. This is a test
     this.ngApiService.unlockMedal('CompleteLevel1onEasy');
+    // todo, add logic for new medals. Track events
   }
 
     update() {

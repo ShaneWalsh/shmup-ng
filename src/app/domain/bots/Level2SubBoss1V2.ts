@@ -7,6 +7,7 @@ import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { LogicService } from "src/app/services/logic.service";
 import { Turret } from "./Turret";
 import { CanvasContainer } from "../CanvasContainer";
+import { LazerAttack } from "./LazerAttack";
 
 export class Level2SubBoss1V2 extends  BotInstanceImpl {
 	public imageObj:HTMLImageElement;
@@ -40,8 +41,16 @@ export class Level2SubBoss1V2 extends  BotInstanceImpl {
   public angleDirection:BulletDirection;
   public turret:Turret;
 
+  public missileAttack:boolean = true;
+  public halfHealth:number = 0;
+  public moveXLeft = true;
+  public lazerRight = true;
+
+
 	constructor(
 		public config:any={},
+    public lazerAttack1:LazerAttack=null,
+    public lazerAttack2:LazerAttack=null,
 		public posX:number=0,
 		public posY:number=0,
 		public imageObjMuzzleFlash:HTMLImageElement=null,
@@ -57,6 +66,7 @@ export class Level2SubBoss1V2 extends  BotInstanceImpl {
 		super(config);
 		this.imageObj = imageObjMuzzleFlash;
     this.tryConfigValues(["bTimer", "bTimerLimit", "mTimer", "mTimerLimit", "missileSpeed", "health", "score","posYSpeed","posXSpeed","bulletSpeed", "anaimationTimerLimit","destinationY"]);
+    this.halfHealth = this.health/1.5;
     this.turret = new Turret(
       this.posX+114,
       this.posY+265,
@@ -88,9 +98,25 @@ export class Level2SubBoss1V2 extends  BotInstanceImpl {
 
     this.angleDirection = bulletManagerService.calculateBulletDirection(this.posX+(this.imageSizeX/2), this.posY+(this.imageSizeY/2), this.posX+(this.imageSizeX/2), this.posY+(this.imageSizeY/2)+100, this.bulletSpeed, true, currentPlayer);
 
-		if(this.posY < this.destinationY){
+		if(this.missileAttack && this.posY < this.destinationY){
 			this.posY += this.posYSpeed;
-		}
+		} else if( !this.missileAttack){
+      if(this.moveXLeft){
+        if(this.posX > 3 ){
+          this.posX -= this.posXSpeed;
+        } else {
+          this.posX -= this.posXSpeed;
+          this.moveXLeft = false;
+        }
+      } else {
+        if(this.posX < 300 ){
+          this.posX += this.posXSpeed;
+        } else {
+          this.posX += this.posXSpeed;
+          this.moveXLeft = true;
+        }
+      }
+    }
 
     this.turret.update(this.posX+114,this.posY+265,currentPlayer,levelInstance, canvasContainer.mainCtx, canvasContainer.shadowCtx, botManagerService, bulletManagerService, playerService);
     ctx.drawImage(this.imageObj2, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
@@ -109,17 +135,33 @@ export class Level2SubBoss1V2 extends  BotInstanceImpl {
 			this.hitBox2.drawBorder(this.posX+this.hitBox2.hitBoxX,this.posY+this.hitBox2.hitBoxY,this.hitBox2.hitBoxSizeX,this.hitBox2.hitBoxSizeY,ctx,"#FF0000");
 		}
 
-		if(this.mTimer >= this.mTimerLimit){
-			this.mTimer = 0;
-			this.fireHoming(levelInstance,ctx,bulletManagerService,currentPlayer,this.mSlot);
-			this.mSlot = this.mSlot+1 >= this.mSlots.length?0:this.mSlot+1;
-		} else {
-			this.mTimer++;
-			if (this.mTimer == (this.mTimerLimit-5)){
-				let slot = this.mSlots[this.mSlot];
-				botManagerService.createMisslePlume(slot.x+this.posX,slot.y+this.posY);
-			}
-		}
+    if(this.missileAttack){
+      if(this.mTimer >= this.mTimerLimit){
+        this.mTimer = 0;
+        this.fireHoming(levelInstance,ctx,bulletManagerService,currentPlayer,this.mSlot);
+        this.mSlot = this.mSlot+1 >= this.mSlots.length?0:this.mSlot+1;
+      } else {
+        this.mTimer++;
+        if (this.mTimer == (this.mTimerLimit-5)){
+          let slot = this.mSlots[this.mSlot];
+          botManagerService.createMisslePlume(slot.x+this.posX,slot.y+this.posY);
+        }
+      }
+    } else { // lazer
+      let adjustX = -30;
+      let adjustY = -45;
+      let firingPhasesComplete = this.lazerAttack1.firingPhasesComplete;
+      if(this.lazerRight){
+        this.lazerAttack1.update(this.posX+this.mSlots[1].x+adjustX,this.posY+this.mSlots[1].y+adjustY,levelInstance,ctx,botManagerService,bulletManagerService,playerService);
+        this.lazerAttack2.update(this.posX+this.mSlots[3].x+adjustX,this.posY+this.mSlots[3].y+adjustY,levelInstance,ctx,botManagerService,bulletManagerService,playerService);
+      } else {
+        this.lazerAttack1.update(this.posX+this.mSlots[0].x+adjustX,this.posY+this.mSlots[0].y+adjustY,levelInstance,ctx,botManagerService,bulletManagerService,playerService);
+        this.lazerAttack2.update(this.posX+this.mSlots[2].x+adjustX,this.posY+this.mSlots[2].y+adjustY,levelInstance,ctx,botManagerService,bulletManagerService,playerService);
+      }
+      if(firingPhasesComplete != this.lazerAttack1.firingPhasesComplete){
+        this.lazerRight = !this.lazerRight;
+      }
+    }
 	}
 
 	hasBotBeenHit(hitter:any,hitterBox:HitBox):boolean {
@@ -142,7 +184,9 @@ export class Level2SubBoss1V2 extends  BotInstanceImpl {
 			playerService.currentPlayer.addScore(this.score);
 			botManagerService.removeBot(this,1);
 			levelInstance.updatePhaseCounter();
-		}
+		} else if(this.missileAttack && this.health < this.halfHealth){
+      this.missileAttack = false;
+    }
 	}
 
 	canShoot(levelInstance:LevelInstance, currentPlayer:PlayerObj){

@@ -35,6 +35,8 @@ import { Swordfish } from '../domain/bots/Swordfish';
 import { Level3SubBoss2 } from '../domain/bots/Level3SubBoss2';
 import { DeathManagerService } from './death-manager.service';
 import { FinalBoss } from '../domain/bots/FinalBoss';
+import { LazerAttack } from '../domain/bots/LazerAttack';
+import { LazerGuardian } from '../domain/bots/LazerGuardian';
 
 /**
  * Going to manage the created bots, spawned by the level manager. Its going to emit when they are destroyed or when they leave the screen.
@@ -249,18 +251,44 @@ export class BotManagerService {
 
   generateCreeper(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
     let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
-    let newBot = new Creeper(config, posObj.posX, posObj.posY,
-      this.resourcesService.getRes().get("enemy-07"),
-      this.resourcesService.getRes().get("enemy-07-damaged"),
-
-      [this.resourcesService.getRes().get("enemy-07-firing-1"),
+    let lazer = new LazerAttack({},[this.resourcesService.getRes().get("enemy-07-firing-1"),
       this.resourcesService.getRes().get("enemy-07-firing-2"),
       this.resourcesService.getRes().get("enemy-07-firing-3")],
-
       this.resourcesService.getRes().get("enemy-07-firing-4"),
-
       [this.resourcesService.getRes().get("enemy-07-firing-5"),
-      this.resourcesService.getRes().get("enemy-07-firing-6")]);
+      this.resourcesService.getRes().get("enemy-07-firing-6")]
+    );
+
+    let newBot = new Creeper(config,lazer, posObj.posX, posObj.posY,
+      this.resourcesService.getRes().get("enemy-07"),
+      this.resourcesService.getRes().get("enemy-07-damaged")
+      );
+    this.botsArr.push(newBot);
+    this.botCreated.next(newBot);
+  }
+
+  generateGuardianLaser(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
+    let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
+    /*
+      laser-guardian-1
+      laser-guardian-2
+      laser-guardian-3
+    */
+    let lazer = new LazerAttack({},[this.resourcesService.getRes().get("enemy-07-firing-1"),
+      this.resourcesService.getRes().get("enemy-07-firing-2"),
+      this.resourcesService.getRes().get("enemy-07-firing-3")],
+      this.resourcesService.getRes().get("enemy-07-firing-4"),
+      [this.resourcesService.getRes().get("enemy-07-firing-5"),
+      this.resourcesService.getRes().get("enemy-07-firing-6")]
+    );
+    let newBot = new LazerGuardian(config, lazer, posObj.posX, posObj.posY,
+      [this.resourcesService.getRes().get("laser-guardian-3"),
+      this.resourcesService.getRes().get("laser-guardian-2"),
+      this.resourcesService.getRes().get("laser-guardian-1")],
+      [this.resourcesService.getRes().get("laser-guardian-3"),
+      this.resourcesService.getRes().get("laser-guardian-2"),
+      this.resourcesService.getRes().get("laser-guardian-1")],
+    );
     this.botsArr.push(newBot);
     this.botCreated.next(newBot);
   }
@@ -336,7 +364,22 @@ export class BotManagerService {
 
   generateLevel2SubBoss1(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 250, posY: number = -300, config: any = {}): any {
     let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
-    let newBot = new Level2SubBoss1V2(config, posObj.posX, posObj.posY,
+    let lazer1 = new LazerAttack({firingPhasesToComplete:60} ,[this.resourcesService.getRes().get("enemy-07-firing-1"),
+      this.resourcesService.getRes().get("enemy-07-firing-2"),
+      this.resourcesService.getRes().get("enemy-07-firing-3")],
+      this.resourcesService.getRes().get("enemy-07-firing-4"),
+      [this.resourcesService.getRes().get("enemy-07-firing-5"),
+      this.resourcesService.getRes().get("enemy-07-firing-6")]
+    );
+    let lazer2 = new LazerAttack({firingPhasesToComplete:60} ,[this.resourcesService.getRes().get("enemy-07-firing-1"),
+      this.resourcesService.getRes().get("enemy-07-firing-2"),
+      this.resourcesService.getRes().get("enemy-07-firing-3")],
+      this.resourcesService.getRes().get("enemy-07-firing-4"),
+      [this.resourcesService.getRes().get("enemy-07-firing-5"),
+      this.resourcesService.getRes().get("enemy-07-firing-6")]
+    );
+
+    let newBot = new Level2SubBoss1V2(config,lazer1,lazer2, posObj.posX, posObj.posY,
       this.resourcesService.getRes().get("miniboss-3-muzzle-flash"),
       this.resourcesService.getRes().get("miniboss-3-1-cannon"),
       this.resourcesService.getRes().get("miniboss-3-no-cannon"),
