@@ -28,7 +28,7 @@ export class Level2SubBoss1V2 extends  BotInstanceImpl {
 	public mTimer:number = 0; // bullet timer
 	public mTimerLimit:number = 60;
 	public mSlot:number = 0;
-	public mSlots:{x:number,y:number}[] = [{x:30,y:190},{x:60,y:195},{x:182,y:195},{x:207,y:190}];
+	public mSlots:{x:number,y:number}[] = [{x:30,y:190},{x:56,y:195},{x:182,y:195},{x:207,y:190}];
 
 	public anaimationTimer:number = 0;
 	public anaimationTimerLimit:number =4;
@@ -41,7 +41,7 @@ export class Level2SubBoss1V2 extends  BotInstanceImpl {
   public angleDirection:BulletDirection;
   public turret:Turret;
 
-  public missileAttack:boolean = true;
+  public missileAttack:boolean = false;
   public halfHealth:number = 0;
   public moveXLeft = true;
   public lazerRight = true;
@@ -98,7 +98,7 @@ export class Level2SubBoss1V2 extends  BotInstanceImpl {
 
     this.angleDirection = bulletManagerService.calculateBulletDirection(this.posX+(this.imageSizeX/2), this.posY+(this.imageSizeY/2), this.posX+(this.imageSizeX/2), this.posY+(this.imageSizeY/2)+100, this.bulletSpeed, true, currentPlayer);
 
-		if(this.missileAttack && this.posY < this.destinationY){
+		if(this.posY < this.destinationY){
 			this.posY += this.posYSpeed;
 		} else if( !this.missileAttack){
       if(this.moveXLeft){
@@ -151,15 +151,13 @@ export class Level2SubBoss1V2 extends  BotInstanceImpl {
       let adjustX = -30;
       let adjustY = -45;
       let firingPhasesComplete = this.lazerAttack1.firingPhasesComplete;
-      if(this.lazerRight){
-        this.lazerAttack1.update(this.posX+this.mSlots[1].x+adjustX,this.posY+this.mSlots[1].y+adjustY,levelInstance,ctx,botManagerService,bulletManagerService,playerService);
-        this.lazerAttack2.update(this.posX+this.mSlots[3].x+adjustX,this.posY+this.mSlots[3].y+adjustY,levelInstance,ctx,botManagerService,bulletManagerService,playerService);
-      } else {
-        this.lazerAttack1.update(this.posX+this.mSlots[0].x+adjustX,this.posY+this.mSlots[0].y+adjustY,levelInstance,ctx,botManagerService,bulletManagerService,playerService);
-        this.lazerAttack2.update(this.posX+this.mSlots[2].x+adjustX,this.posY+this.mSlots[2].y+adjustY,levelInstance,ctx,botManagerService,bulletManagerService,playerService);
-      }
+      
+	  let slot = this.mSlots[this.mSlot];
+      this.lazerAttack1.update(this.posX+slot.x+adjustX,this.posY+slot.y+adjustY,levelInstance,ctx,botManagerService,bulletManagerService,playerService);
+        
       if(firingPhasesComplete != this.lazerAttack1.firingPhasesComplete){
-        this.lazerRight = !this.lazerRight;
+        //this.lazerRight = !this.lazerRight;
+		this.mSlot = this.mSlot+1 >= this.mSlots.length?0:this.mSlot+1;
       }
     }
 	}

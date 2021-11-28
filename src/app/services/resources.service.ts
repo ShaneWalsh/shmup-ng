@@ -505,7 +505,7 @@ export class ResourcesService {
   imageLoaded(code,loadedImage:HTMLImageElement){
     this.resources.set(code,loadedImage);
     // store as global variable and then copy(temp1) to copy the object
-     //this.resourcesToLoadB64.push({code:code,path:this.imgToBase64(loadedImage),type:ResourcesEnum.ImageRes});
+    this.resourcesToLoadB64.push({code:code,path:this.imgToBase64(loadedImage),type:ResourcesEnum.ImageRes});
     this.resourceLoaded();
   }
 
