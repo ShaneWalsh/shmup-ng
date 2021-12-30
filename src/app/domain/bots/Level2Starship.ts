@@ -114,6 +114,7 @@ export class Level2Starship extends  FlyingBotImpl {
 
     if(this.posY < this.destinationY){
 			this.posY += this.posYSpeed;
+      this.bTimer = 0;
     }
 
     if(levelInstance.drawShadow()) {

@@ -34,6 +34,7 @@ export class KeyboardEventService {
 
     publishKeyboardUpEvent(event:KeyboardEvent){
         if(this.keyPressedMap.has(event.code)){
+            console.log(event.key);
             const keyboardEvent = new CustomKeyboardEvent(event);
             this.getKeyboardEventSubject().next(keyboardEvent);
             this.getKeyUpEventSubject().next(keyboardEvent);

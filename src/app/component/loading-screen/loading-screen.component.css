@@ -1,0 +1,36 @@
+.screen-container {
+  width: 480px;
+  height: 640px;
+}
+
+.pink-text {
+  color: #ff00ff;
+  background-color: black;
+}
+
+.player-score-vic{
+position: absolute;
+left: 280px;
+top: 150px;
+color: #ff00ff;
+}
+
+.black-out{
+background-color: black;
+}
+
+.grid-style{
+position: absolute;
+}
+
+.player-lives-vic{
+position: absolute;
+left: 280px;
+top: 208px;
+color: #ff00ff;
+}
+
+.effect-container{
+width: 480px;
+height: 640px;
+}

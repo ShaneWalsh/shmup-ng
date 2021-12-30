@@ -1,3 +1,4 @@
 <div style="background-color: grey;" class="game-container-center">
+    <app-loading-screen *ngIf="!loaded"></app-loading-screen>
     <app-intro-screen *ngIf="loaded"></app-intro-screen>
 </div>

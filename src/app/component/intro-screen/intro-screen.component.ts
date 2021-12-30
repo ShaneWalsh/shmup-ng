@@ -6,6 +6,7 @@ import { PlayerService} from '../../services/player.service';
 import { LevelEnum } from 'src/app/manager/level-manager/LevelEnum';
 import { NgApiService } from 'src/app/services/ng-api.service';
 import { AudioServiceService } from 'src/app/services/audio-service.service';
+import { ProfileService } from 'src/app/services/profile.service';
 
 @Component({
   selector: 'app-intro-screen',
@@ -28,7 +29,7 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
     public playerLives:number = 0;
     public requestAnimFrame:any; // have to ensure this is not created multiple times!
 
-    constructor(private keyboardEventService:KeyboardEventService, private levelManagerService: LevelManagerService, private playerService:PlayerService, private ngApiService:NgApiService, private audioServiceService:AudioServiceService) {
+    constructor(private profileService:ProfileService, private keyboardEventService:KeyboardEventService, private levelManagerService: LevelManagerService, private playerService:PlayerService, private audioServiceService:AudioServiceService) {
         this.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || // this redraws the canvas when the browser is updating. Crome 18 is execllent for canvas, makes it much faster by using os
                            window["mozRequestAnimationFrame"] || window["msRequestAnimationFrame"] || window["oRequestAnimationFrame"]
                            || function(callback) { window.setTimeout(callback,1000/60);};
@@ -40,7 +41,19 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
       //this.landedOnTitleScreen();
       this.subs.push(this.keyboardEventService.getKeyDownEventSubject().subscribe(customKeyboardEvent => {
         console.log("customKeyboardEvent",customKeyboardEvent);
-        if(customKeyboardEvent.event.keyCode == 13) { //  == 'Enter'
+        //var key = customKeyboardEvent.event.key || customKeyboardEvent.event.keyCode;
+        // todo fix this deprecation.
+        var key:any = customKeyboardEvent.event.keyCode;
+        // keyboard-event.service.ts:37 ArrowUp
+        // keyboard-event.service.ts:37 ArrowDown
+        // keyboard-event.service.ts:37 ArrowLeft
+        // keyboard-event.service.ts:37 ArrowRight
+        // keyboard-event.service.ts:37 a
+        // keyboard-event.service.ts:37 d
+        // keyboard-event.service.ts:37 s
+        // keyboard-event.service.ts:37 w
+        // Enter
+        if(key == 'Enter' || key == 13) { //  == 'Enter'
           if(this.screenId < 6) {
             if(this.screenId == 0){
               this.landedOnTitleScreen();
@@ -83,11 +96,12 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
             this.playerService.initPlayer(false, this.playerScore, this.playerLives);
             this.levelManagerService.initLevel(LevelEnum.LevelSix);
           }
+
         }
-        if(customKeyboardEvent.event.keyCode == 38 || customKeyboardEvent.event.keyCode == 40 || customKeyboardEvent.event.keyCode == 87 || customKeyboardEvent.event.keyCode == 83){
+        if(key == 38 || key == 40 || key == 87 || key == 83){
           if(this.screenId == 1) { // main menu select
             // perform a medal check again
-            if (customKeyboardEvent.event.keyCode == 87 || customKeyboardEvent.event.keyCode == 38) { // up
+            if (key == 87 || key == 38) { // up
               let mainMenuSelection =  this.levelManagerService.mainMenuIndex - 1 ;
               if(mainMenuSelection < 0) mainMenuSelection = 3;
               this.levelManagerService.mainMenuIndex = mainMenuSelection;
@@ -98,7 +112,7 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
             }
           }
           if(this.screenId == 3) { // diff select
-            if (customKeyboardEvent.event.keyCode == 87 || customKeyboardEvent.event.keyCode == 38) { // up
+            if (key == 87 || key == 38) { // up
               let diff =  this.levelManagerService.difficulty -1;
               if(diff < 0) diff = 2;
               this.levelManagerService.difficulty = diff;
@@ -122,14 +136,20 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
       }));
       this.subs.push(this.playerService.getPlayerLivesGoneSubject().subscribe(playerObj => {
           this.levelManagerService.pauseGame(); // no point in it running for eternity
-          this.checkMedals();
+          this.profileService.checkMedals();
           this.playerScore =  playerObj.score;
           this.playerLives =  playerObj.lives;
           this.screenId = 20;
       }));
+      this.subs.push(this.levelManagerService.getMenuQuitSubject().subscribe(bool => {
+        this.levelManagerService.pauseGame(); // no point in it running for eternity
+        this.profileService.checkMedals();
+        this.screenId = 1;
+        this.landedOnTitleScreen();
+      }));
       this.subs.push(this.levelManagerService.getLevelCompleteSubject().subscribe(result => {
         this.levelManagerService.pauseGame(); // no point in it running for eternity
-        this.checkMedals();
+        this.profileService.checkMedals();
         this.playerScore =  this.playerService.currentPlayer.score;
         this.playerLives =  this.playerService.currentPlayer.lives;
         if(this.levelManagerService.getCurrentLevelEnum() == LevelEnum.LevelOne){
@@ -149,12 +169,6 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
         }
       }));
     }
-
-  checkMedals() {
-    // todo replace this with a medal check function, see if the user has any medals to unlock. This is a test
-    this.ngApiService.unlockMedal('CompleteLevel1onEasy');
-    // todo, add logic for new medals. Track events
-  }
 
     update() {
       this.gifTimer++;

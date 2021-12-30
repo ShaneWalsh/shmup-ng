@@ -458,19 +458,28 @@ export class BulletDirection {
       this.targetObject = newTarget;
     }
     if(this.targetObject != null && this.targetObject != undefined && this.targetObject.posY != undefined && this.targetObject.posX != undefined){
+
+      // TODO before updating the direction, check if we have reached the target destinataion, if we have then we have to keep moving forward
+      // add logic that if we reach the center of the target, to remove the target and keep moving.
+
       var directionY = this.targetObject.getCenterY()-origY;
       var directionX = this.targetObject.getCenterX()-origX;
-      var angle = Math.atan2(directionY,directionX); // bullet angle
+      // if we are within one final push, then dont keep recalcualting, just go straight.
+      if( LogicService.isDiffLessThan(directionY,this.speed) && LogicService.isDiffLessThan(directionX,this.speed)){
+        this.targetObject = null;
+      } else { // do normal targeting.
+        var angle = Math.atan2(directionY,directionX); // bullet angle
 
-      // Normalize the direction
-      var len = Math.sqrt(directionX * directionX + directionY * directionY);
-      directionX /= len;
-      directionY /= len;
+        // Normalize the direction
+        var len = Math.sqrt(directionX * directionX + directionY * directionY);
+        directionX /= len;
+        directionY /= len;
 
-      this.len = len;
-      this.angle = angle;
-      this.directionY = directionY;
-      this.directionX = directionX;
+        this.len = len;
+        this.angle = angle;
+        this.directionY = directionY;
+        this.directionX = directionX;
+      }
     } else {
       //console.error("Cannot target this object.",this.targetObject);
     }
@@ -497,7 +506,10 @@ export class TurretDirection extends BulletDirection {
     super(directionY,directionX,angle,len,speed,performRotation,targetObject)
    }
 
-  update(origX=0, origY=0){
+  update(origX=0, origY=0, newTarget = null){
+    if(newTarget != null){
+      this.targetObject = newTarget;
+    }
     if(this.targetObject != null && this.targetObject != undefined && this.targetObject.posY != undefined && this.targetObject.posX != undefined){
       var directionY = this.targetObject.getCenterY()-origY;
       var directionX = this.targetObject.getCenterX()-origX;

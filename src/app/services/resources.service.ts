@@ -20,7 +20,7 @@ export class ResourcesService {
 			this.resources = new Map();
 			this.resourcesLoaded = new Subject();
 
-/*
+///*
       this.resourcesToLoad = [
 
         {code:"final-boss-head", path:"assets/img/boss/final-boss/final-boss-head.png", type:ResourcesEnum.ImageRes},
@@ -232,7 +232,67 @@ export class ResourcesService {
           {code:"HUD-resized", path:"assets/img/hud/HUD-resized.png", type:ResourcesEnum.ImageRes},
           {code:"stage-1-complete", path:"assets/img/desc/stage-1-complete.png", type:ResourcesEnum.ImageRes},
 
-          {code:"scene-1-1", path:"assets/img/loading/scene_1/scene-1-1.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-1-1", path:"assets/img/loading/intro-update/scene-1-1.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-1-10", path:"assets/img/loading/intro-update/scene-1-10.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-1-11", path:"assets/img/loading/intro-update/scene-1-11.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-1-12", path:"assets/img/loading/intro-update/scene-1-12.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-1-13", path:"assets/img/loading/intro-update/scene-1-13.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-1-14", path:"assets/img/loading/intro-update/scene-1-14.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-1-15", path:"assets/img/loading/intro-update/scene-1-15.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-1-16", path:"assets/img/loading/intro-update/scene-1-16.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-1-17", path:"assets/img/loading/intro-update/scene-1-17.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-1-18", path:"assets/img/loading/intro-update/scene-1-18.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-1-19", path:"assets/img/loading/intro-update/scene-1-19.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-1-2", path:"assets/img/loading/intro-update/scene-1-2.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-1-20", path:"assets/img/loading/intro-update/scene-1-20.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-1-3", path:"assets/img/loading/intro-update/scene-1-3.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-1-4", path:"assets/img/loading/intro-update/scene-1-4.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-1-5", path:"assets/img/loading/intro-update/scene-1-5.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-1-6", path:"assets/img/loading/intro-update/scene-1-6.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-1-7", path:"assets/img/loading/intro-update/scene-1-7.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-1-8", path:"assets/img/loading/intro-update/scene-1-8.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-1-9", path:"assets/img/loading/intro-update/scene-1-9.png", type:ResourcesEnum.ImageRes},
+
+          {code:"upd-scene-2-1", path:"assets/img/loading/intro-update/scene-2-1.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-2-10", path:"assets/img/loading/intro-update/scene-2-10.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-2-11", path:"assets/img/loading/intro-update/scene-2-11.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-2-12", path:"assets/img/loading/intro-update/scene-2-12.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-2-13", path:"assets/img/loading/intro-update/scene-2-13.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-2-14", path:"assets/img/loading/intro-update/scene-2-14.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-2-2", path:"assets/img/loading/intro-update/scene-2-2.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-2-3", path:"assets/img/loading/intro-update/scene-2-3.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-2-4", path:"assets/img/loading/intro-update/scene-2-4.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-2-5", path:"assets/img/loading/intro-update/scene-2-5.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-2-6", path:"assets/img/loading/intro-update/scene-2-6.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-2-7", path:"assets/img/loading/intro-update/scene-2-7.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-2-8", path:"assets/img/loading/intro-update/scene-2-8.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-2-9", path:"assets/img/loading/intro-update/scene-2-9.png", type:ResourcesEnum.ImageRes},
+
+          {code:"upd-scene-3-1", path:"assets/img/loading/intro-update/scene-3-1.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-3-10", path:"assets/img/loading/intro-update/scene-3-10.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-3-11", path:"assets/img/loading/intro-update/scene-3-11.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-3-12", path:"assets/img/loading/intro-update/scene-3-12.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-3-13", path:"assets/img/loading/intro-update/scene-3-13.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-3-14", path:"assets/img/loading/intro-update/scene-3-14.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-3-15", path:"assets/img/loading/intro-update/scene-3-15.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-3-16", path:"assets/img/loading/intro-update/scene-3-16.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-3-2", path:"assets/img/loading/intro-update/scene-3-2.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-3-3", path:"assets/img/loading/intro-update/scene-3-3.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-3-4", path:"assets/img/loading/intro-update/scene-3-4.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-3-5", path:"assets/img/loading/intro-update/scene-3-5.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-3-6", path:"assets/img/loading/intro-update/scene-3-6.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-3-7", path:"assets/img/loading/intro-update/scene-3-7.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-3-8", path:"assets/img/loading/intro-update/scene-3-8.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-3-9", path:"assets/img/loading/intro-update/scene-3-9.png", type:ResourcesEnum.ImageRes},
+
+          {code:"upd-scene-4-1", path:"assets/img/loading/intro-update/scene-4-1.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-4-2", path:"assets/img/loading/intro-update/scene-4-2.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-4-3", path:"assets/img/loading/intro-update/scene-4-3.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-4-4", path:"assets/img/loading/intro-update/scene-4-4.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-4-5", path:"assets/img/loading/intro-update/scene-4-5.png", type:ResourcesEnum.ImageRes},
+          {code:"upd-scene-4-6", path:"assets/img/loading/intro-update/scene-4-6.png", type:ResourcesEnum.ImageRes},
+
+          {code:"scene-1-1", path:"assets/img/loading/intro-update/scene-1-1.png", type:ResourcesEnum.ImageRes},
           {code:"scene-1-2", path:"assets/img/loading/scene_1/scene-1-2.png", type:ResourcesEnum.ImageRes},
           {code:"scene-1-3", path:"assets/img/loading/scene_1/scene-1-3.png", type:ResourcesEnum.ImageRes},
           {code:"scene-1-4", path:"assets/img/loading/scene_1/scene-1-4.png", type:ResourcesEnum.ImageRes},
@@ -425,12 +485,12 @@ export class ResourcesService {
               code: "enemy-bullet-target", path: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAOCAYAAAArMezNAAAABGdBTUEAAK/INwWK6QAAAAlwSFlzAAAOwwAADsMBx2+oZAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMS42/U4J6AAAAGRJREFUOE/VkDEOgEAIBImv8v8fW7UgAXZFLM7EYgrIMJecARixYUdH9dPQoWKR6qfhQh29wTvrw0qK2Kl2kL8sTAtxNIE6tBBHE6jzvz/28PSBJ7zzXfgOFYlUPw0dKhbJPuwA7VOl229hSMgAAAAASUVORK5CYII=",
               type: ResourcesEnum.ImageRes }
        ];
-*/
+// */
 
 
       // offline loading of files.
       let compiledRes = new CompiledResources();
-      this.resourcesToLoad = compiledRes.res;
+      // this.resourcesToLoad = compiledRes.res;
 
       // add in sound files.
       this.audioResourcesToLoad.push({code:"Space-Cannon", path:"assets/sound/effects/Space-Cannon.mp3", type:ResourcesEnum.SoundRes, sound:SoundResEnum.TYPESOUND});

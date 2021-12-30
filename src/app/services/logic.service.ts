@@ -165,6 +165,45 @@ public static moveBetweenPointsAtSpeed(speed,targetX,targetY,sourceX, sourceY){
 
   // maybe one day I can try and draw odd shapes using points
   // https://stackoverflow.com/questions/27213413/canvas-cropping-images-in-different-shapes
+
+  /**
+   * checks if the postive difference between number1 + 2 is less than the shouldBeLessThan value.
+   * @param number1
+   * @param number2
+   * @param shouldBeLessThan
+   * @returns
+   */
+  public static isDiffLessThanCalc(number1: number, number2: number, shouldBeLessThan:number){
+    var totalDiff = number1 - number2;
+    if(totalDiff < 0){
+      totalDiff = totalDiff*-1;
+    }
+    return totalDiff < shouldBeLessThan;
+  }
+
+  /**
+   * checks if the postive difference between number value is less than the shouldBeLessThan value.
+   * @param value
+   * @param shouldBeLessThan
+   * @returns
+   */
+  public static isDiffLessThan(value: number, shouldBeLessThan:number){
+    if(value < 0){
+      value = value*-1;
+    }
+    return value < shouldBeLessThan;
+  }
+
+  // move values from one array to another while iterating over them and running some logic
+  public static moveBetweenArrays(fromArray: any[], toArray: any[], func:any) {
+    for( let i = 0; i < fromArray.length; i++ ) {
+      if(func(fromArray[i])){
+        toArray.push(fromArray[i]);
+        i--;
+      }
+    }
+  }
+
 }
 
 

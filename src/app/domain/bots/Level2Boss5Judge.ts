@@ -85,7 +85,7 @@ export class Judge extends FlyingBotImpl {
         targetCord = this.getCurrentTargetCords();
       }
     }
-    if(this.health > 125){
+    if(this.health < 125){
       if(this.eTimer >= this.eTimerLimit){
         this.eTimer = 0;
         this.fireExploding(levelInstance,ctx,bulletManagerService,currentPlayer,this.eSlot);

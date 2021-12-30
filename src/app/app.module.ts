@@ -4,12 +4,14 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { IntroScreenComponent } from './component/intro-screen/intro-screen.component';
 import { GameContainerComponent } from './component/game-container/game-container.component';
+import { LoadingScreenComponent } from './component/loading-screen/loading-screen.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     IntroScreenComponent,
-    GameContainerComponent
+    GameContainerComponent,
+    LoadingScreenComponent
   ],
   imports: [
     BrowserModule

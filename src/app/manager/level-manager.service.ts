@@ -31,6 +31,7 @@ export class LevelManagerService {
   private gameTickSubject:Subject<boolean> = new Subject();
   private levelLoaded: Subject<LevelInstance> = new Subject();
   private levelComplete: Subject<LevelInstance> = new Subject();
+  private menuQuitSubject: Subject<boolean> = new Subject();
   private currentLevel:LevelInstance;
   private currentLevelEnum:LevelEnum;
 
@@ -68,6 +69,9 @@ export class LevelManagerService {
           if(diff > 2) diff = 0;
           this.showPauseMenuIndex = diff;
         } else if(customKeyboardEvent.event.keyCode == 13) { // enter
+          if(this.showPauseMenuIndex == 2) {
+            this.menuQuitSubject.next(true);
+          }
           this.unPauseGame();
           this.showPauseMenu = false;
         }
@@ -135,6 +139,10 @@ export class LevelManagerService {
 
   getGameTickSubject(): Subject<boolean> {
       return this.gameTickSubject;
+  }
+
+  getMenuQuitSubject(): Subject<boolean> {
+      return this.menuQuitSubject;
   }
 
   getCurrentLevelEnum():LevelEnum {

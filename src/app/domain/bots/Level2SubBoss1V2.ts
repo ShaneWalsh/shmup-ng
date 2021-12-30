@@ -117,8 +117,9 @@ export class Level2SubBoss1V2 extends  BotInstanceImpl {
         }
       }
     }
-
-    this.turret.update(this.posX+114,this.posY+265,currentPlayer,levelInstance, canvasContainer.mainCtx, canvasContainer.shadowCtx, botManagerService, bulletManagerService, playerService);
+    if(this.health <= this.halfHealth){
+      this.turret.update(this.posX+114,this.posY+265,currentPlayer,levelInstance, canvasContainer.mainCtx, canvasContainer.shadowCtx, botManagerService, bulletManagerService, playerService);
+    }
     ctx.drawImage(this.imageObj2, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
     if(levelInstance.drawShadow() && this.imageObjShadow != null) {
       this.drawShadow(canvasContainer.shadowCtx,this.imageObjShadow,this.posX,this.posY,this.imageSizeX, this.imageSizeY);
@@ -151,13 +152,13 @@ export class Level2SubBoss1V2 extends  BotInstanceImpl {
       let adjustX = -30;
       let adjustY = -45;
       let firingPhasesComplete = this.lazerAttack1.firingPhasesComplete;
-      
-	  let slot = this.mSlots[this.mSlot];
+
+	    let slot = this.mSlots[this.mSlot];
       this.lazerAttack1.update(this.posX+slot.x+adjustX,this.posY+slot.y+adjustY,levelInstance,ctx,botManagerService,bulletManagerService,playerService);
-        
+
       if(firingPhasesComplete != this.lazerAttack1.firingPhasesComplete){
         //this.lazerRight = !this.lazerRight;
-		this.mSlot = this.mSlot+1 >= this.mSlots.length?0:this.mSlot+1;
+		    this.mSlot = this.mSlot+1 >= this.mSlots.length?0:this.mSlot+1;
       }
     }
 	}
