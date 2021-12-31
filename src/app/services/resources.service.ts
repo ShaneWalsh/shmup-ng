@@ -20,7 +20,7 @@ export class ResourcesService {
 			this.resources = new Map();
 			this.resourcesLoaded = new Subject();
 
-///*
+/*
       this.resourcesToLoad = [
 
         {code:"final-boss-head", path:"assets/img/boss/final-boss/final-boss-head.png", type:ResourcesEnum.ImageRes},
@@ -292,6 +292,7 @@ export class ResourcesService {
           {code:"upd-scene-4-5", path:"assets/img/loading/intro-update/scene-4-5.png", type:ResourcesEnum.ImageRes},
           {code:"upd-scene-4-6", path:"assets/img/loading/intro-update/scene-4-6.png", type:ResourcesEnum.ImageRes},
 
+          //TODO Deprecated remove references and original sources.
           {code:"scene-1-1", path:"assets/img/loading/intro-update/scene-1-1.png", type:ResourcesEnum.ImageRes},
           {code:"scene-1-2", path:"assets/img/loading/scene_1/scene-1-2.png", type:ResourcesEnum.ImageRes},
           {code:"scene-1-3", path:"assets/img/loading/scene_1/scene-1-3.png", type:ResourcesEnum.ImageRes},
@@ -485,15 +486,20 @@ export class ResourcesService {
               code: "enemy-bullet-target", path: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAOCAYAAAArMezNAAAABGdBTUEAAK/INwWK6QAAAAlwSFlzAAAOwwAADsMBx2+oZAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMS42/U4J6AAAAGRJREFUOE/VkDEOgEAIBImv8v8fW7UgAXZFLM7EYgrIMJecARixYUdH9dPQoWKR6qfhQh29wTvrw0qK2Kl2kL8sTAtxNIE6tBBHE6jzvz/28PSBJ7zzXfgOFYlUPw0dKhbJPuwA7VOl229hSMgAAAAASUVORK5CYII=",
               type: ResourcesEnum.ImageRes }
        ];
-// */
+ */
 
 
       // offline loading of files.
       let compiledRes = new CompiledResources();
-      // this.resourcesToLoad = compiledRes.res;
+      this.resourcesToLoad = compiledRes.res;
 
       // add in sound files.
+      // TODO deprecated, remove references and source file.
       this.audioResourcesToLoad.push({code:"Space-Cannon", path:"assets/sound/effects/Space-Cannon.mp3", type:ResourcesEnum.SoundRes, sound:SoundResEnum.TYPESOUND});
+
+      this.audioResourcesToLoad.push({code:"snd_bigexplosion", path:"assets/sound/effects/snd_bigexplosion.mp3", type:ResourcesEnum.SoundRes, sound:SoundResEnum.TYPESOUND});
+      this.audioResourcesToLoad.push({code:"snd_enemybullet", path:"assets/sound/effects/snd_enemybullet.mp3", type:ResourcesEnum.SoundRes, sound:SoundResEnum.TYPESOUND});
+      this.audioResourcesToLoad.push({code:"snd_playerbullet", path:"assets/sound/effects/snd_playerbullet.mp3", type:ResourcesEnum.SoundRes, sound:SoundResEnum.TYPESOUND});
       this.audioResourcesToLoad.push({code:"Trouble-on-Mercury", path:"assets/sound/bg/Trouble-on-Mercury_Looping.mp3", type:ResourcesEnum.SoundRes, sound:SoundResEnum.TYPEBG});
       this.audioResourcesToLoad.push({code:"level1", path:"assets/sound/bg/level1.mp3", type:ResourcesEnum.SoundRes, sound:SoundResEnum.TYPEBG});
       this.audioResourcesToLoad.push({code:"titlescreen", path:"assets/sound/bg/titlescreen.mp3", type:ResourcesEnum.SoundRes, sound:SoundResEnum.TYPEBG});

@@ -38,7 +38,7 @@ export class ProfileService {
   // number increment
   public static increaseProfileValue( profileValuesEnum:ProfileValuesEnum, value:any) {
     let val = localStorage.getItem(profileValuesEnum.toString());
-    if(val != undefined || val != null){
+    if(val != undefined || val != null) {
       val = Number(val)+value;
       localStorage.setItem(profileValuesEnum.toString(), ""+val);
     } else {

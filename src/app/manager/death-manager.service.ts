@@ -109,7 +109,7 @@ class ShardAnimation {
     }
 
     // select the starting shardsquares
-    this.selectStartingShards();
+    this.selectStartingShards(dd.deathConfig.totalShards);
     this.growShards(dd.deathConfig.growPerLoop);
   }
 

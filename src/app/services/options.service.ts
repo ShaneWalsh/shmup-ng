@@ -10,7 +10,7 @@ export class OptionsService {
   /**
    * Default sound effect volume.
    */
-  private _soundAffectVolume : number = 0; //.2
+  private _soundAffectVolume : number = 0.2; //.2
   /**
    * Default background volume.
    */

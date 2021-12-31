@@ -46,7 +46,8 @@ export class AudioServiceService {
       const waitTime = this.audioWaitMap.find(waitTime => waitTime.name == name);
       if(!waitTime){
         audioObj.audio.volume = audioObj.volume;
-        audioObj.audio.play();
+        if(audioObj.audio.readyState > 0)
+          audioObj.audio.play();
         if(loop){
           audioObj.audio.loop = true;
         }

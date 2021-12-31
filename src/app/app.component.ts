@@ -30,10 +30,14 @@ export class AppComponent {
   constructor(private keyboardEventService:KeyboardEventService, private resourcesService:ResourcesService, private audioServiceService:AudioServiceService, private ngApiService:NgApiService){
       this.resourcesService.getResourcesLoaded().subscribe(load=>{
         this.resourcesService.setAudio(audioServiceService);
-        this.loaded = load;
         console.log("loaded");
+        setTimeout(()=> {
+          this.loaded = load;
+        }, 2000)
       })
-      this.resourcesService.loadResources();
       this.ngApiService.loadAll();
+  }
+  public ngAfterViewInit() {
+    this.resourcesService.loadResources();
   }
 }

@@ -8,6 +8,7 @@ import { LogicService } from "src/app/services/logic.service";
 import { Turret } from "./Turret";
 import { CanvasContainer } from "../CanvasContainer";
 import { LazerAttack } from "./LazerAttack";
+import { DeathConfig, DeathDetails } from "../DeathDetails";
 
 export class Level2SubBoss1V2 extends  BotInstanceImpl {
 	public imageObj:HTMLImageElement;
@@ -109,7 +110,7 @@ export class Level2SubBoss1V2 extends  BotInstanceImpl {
           this.moveXLeft = false;
         }
       } else {
-        if(this.posX < 300 ){
+        if(this.posX < 250 ){
           this.posX += this.posXSpeed;
         } else {
           this.posX += this.posXSpeed;
@@ -117,8 +118,9 @@ export class Level2SubBoss1V2 extends  BotInstanceImpl {
         }
       }
     }
-    if(this.health <= this.halfHealth){
-      this.turret.update(this.posX+114,this.posY+265,currentPlayer,levelInstance, canvasContainer.mainCtx, canvasContainer.shadowCtx, botManagerService, bulletManagerService, playerService);
+    this.turret.update(this.posX+114,this.posY+265,currentPlayer,levelInstance, canvasContainer.mainCtx, canvasContainer.shadowCtx, botManagerService, bulletManagerService, playerService);
+    if(this.health >= this.halfHealth) { // prevent the turret from firing until
+      this.turret.bTimer = 0;
     }
     ctx.drawImage(this.imageObj2, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
     if(levelInstance.drawShadow() && this.imageObjShadow != null) {
@@ -216,4 +218,8 @@ export class Level2SubBoss1V2 extends  BotInstanceImpl {
 	isDeathOnColision():boolean{
 		return false;
 	}
+
+  getDeathDetails():DeathDetails {
+    return new DeathDetails(this.imageObj2, this.posX, this.posY, this.imageSizeX, this.imageSizeY, this.getCurrentAngle(), this.getCenterX(), this.getCenterY(), new DeathConfig(6,24));
+  }
 }

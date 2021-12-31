@@ -515,7 +515,7 @@ export class LevelEventsService {
         bTimerLimit: 30,
         mTimerLimit: 60,
         missileSpeed: 4.5,
-        destinationY: 50,
+        destinationY: 220,
         anaimationTimerLimit: 4,
         score: 50000,
         health: 350,
@@ -1008,7 +1008,7 @@ export class LevelEventsService {
       bTimerLimit: 30,
       mTimerLimit: 60,
       missileSpeed: 4.5,
-      destinationY: 50,
+      destinationY: 220,
       anaimationTimerLimit:4, // the bot has an animation for its engine, this animation swaps every 4 ticks.
       score: 50000,
       health:350,

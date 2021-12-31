@@ -2,7 +2,7 @@ import { BotInstance, BotInstanceImpl } from "src/app/domain/bots/BotInstance";
 import { LevelInstance } from "src/app/manager/level-manager.service";
 import { HitBox } from "src/app/domain/HitBox";
 import { BotManagerService } from "src/app/manager/bot-manager.service";
-import { BulletManagerService, BulletDirection } from "src/app/manager/bullet-manager.service";
+import { BulletManagerService, BulletDirection, TurretDirection } from "src/app/manager/bullet-manager.service";
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { LogicService } from "src/app/services/logic.service";
 import { CanvasContainer } from "../CanvasContainer";
@@ -33,7 +33,7 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
     public score:number = 200;
 
     public angle:number;
-    public turnDirection: BulletDirection;
+    public turnDirection: TurretDirection;
     public rotationCordsCenter: { x: number, y: number };
     public moveDirection: BulletDirection;
     public movePositions: {x:number,y:number}[] = [
@@ -94,9 +94,12 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
 				  this.phaseCounter = 0;
 			}
 		}
-			this.turnDirection = bulletManagerService.calculateBulletDirection(
-			this.posX + 112, this.posY + 118, currentPlayer.posX, currentPlayer.posY, this.bulletSpeed, true);
-
+    if(this.turnDirection == null){
+			this.turnDirection = bulletManagerService.calculateTurretDirection(this.posX + 112, this.posY + 118, currentPlayer.posX, currentPlayer.posY, this.bulletSpeed, true, currentPlayer);
+      this.turnDirection.degreeChange = 2; // this guy can turn a bit faster.
+    } else {
+      this.turnDirection.update(this.getCenterX(), this.getCenterY());
+    }
 			//    28 44
 			this.rotationCordsCenter = LogicService.pointAfterRotation(this.posX + 112, this.posY + 118,this.posX + 236, this.posY + 95, this.turnDirection.angle)
 
@@ -115,12 +118,12 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
 			}
 
         // fire weapon
-			if(this.bTimer >= this.bTimerLimit){
+			if(this.bTimer >= this.bTimerLimit && this.canShoot(null,null)){
 				this.bTimer = 0;
 				this.fireTracker(levelInstance,ctx,bulletManagerService,currentPlayer);
 			} else {
 				this.bTimer++;
-				if (this.bTimer >= (this.bTimerLimit-5)){
+				if (this.bTimer >= (this.bTimerLimit-5) && this.canShoot(null,null)){
 					// todo get this position calc right, might need its own center rotation
 					this.drawRotateImage(this.imageObj1, ctx, this.turnDirection.angle, this.rotationCordsCenter.x - 14, this.rotationCordsCenter.y - 22, 28, 44);
 				}
@@ -142,7 +145,6 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
          return this.hitBox.areCentersToClose(hitter,hitterBox,this,this.hitBox);
     }
 
-    // lazers go straight, nothing fancy so no need to make them do anything fancy, cal a stright direction.
     fireTracker(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D,bulletManagerService:BulletManagerService, currentPlayer:PlayerObj){
         let bullDirection:BulletDirection;
         if(levelInstance.isVertical()){
@@ -169,12 +171,7 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
     }
 
 	canShoot(levelInstance:LevelInstance, currentPlayer:PlayerObj){
-		if(levelInstance.isVertical() && this.getCenterY() < currentPlayer.getCenterY()){
-			return true;
-		} else if(!levelInstance.isVertical() && this.getCenterX() > currentPlayer.getCenterX()){
-			return true;
-		}
-		return false;
+		return this.turnDirection.canShoot();
 	}
 
     getCenterX():number{

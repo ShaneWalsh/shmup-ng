@@ -13,7 +13,7 @@ export class Level2Starship extends  FlyingBotImpl {
 	public posXSpeed:number = 3;
 	public posYSpeed:number = 1.5;
 
-	public destinationY:number = 50;
+	public destinationY:number = 220;
 
   public angleDirection:BulletDirection;
   public lazerTurret:Turret;
@@ -115,6 +115,7 @@ export class Level2Starship extends  FlyingBotImpl {
     if(this.posY < this.destinationY){
 			this.posY += this.posYSpeed;
       this.bTimer = 0;
+      this.lazerTurret.bTimer = 0;
     }
 
     if(levelInstance.drawShadow()) {

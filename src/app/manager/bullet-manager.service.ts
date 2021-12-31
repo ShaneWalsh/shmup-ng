@@ -10,6 +10,7 @@ import { LogicService } from 'src/app/services/logic.service';
 import { CanvasContainer } from '../domain/CanvasContainer';
 import { Shield } from '../domain/skills/Shield';
 import { bloomAdd } from '@angular/core/src/render3/di';
+import { AudioServiceService } from '../services/audio-service.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,7 @@ export class BulletManagerService {
   private shieldsArr:Shield[] = [];
 
 
-  constructor(private resourcesService:ResourcesService, private botManagerService:BotManagerService) {
+  constructor(private resourcesService:ResourcesService, private botManagerService:BotManagerService, private audioService:AudioServiceService) {
 
   }
 
@@ -48,6 +49,11 @@ export class BulletManagerService {
       const shield = shieldsArrClone[i];
       shield.update(levelInstance, canvasContainer, botManagerService, this, playerService);
     }
+  }
+
+  // for bullet noises
+  playAudioNewInstance(code: string) {
+    this.audioService.playAudioNewInstance(code);
   }
 
   generatePlayerLazer(levelInstance:LevelInstance, bulletDirection:BulletDirection, startX, startY, bulletImages, bulletImageSizeX=30, bulletImageSizeY= 22): any {
@@ -78,13 +84,14 @@ export class BulletManagerService {
 
   generateBotBlazer(levelInstance:LevelInstance, bulletDirection:BulletDirection, startX, startY): any {
     let newBullet = new DumbLazer(1, startX, startY, bulletDirection, false, [this.resourcesService.getRes().get("enemy-bullet-target")], 22, 14);
+    this.audioService.playAudioNewInstance("snd_enemybullet");
     this.bulletsArr.push(newBullet);
     this.bulletCreated.next(newBullet);
   }
 
   generateBotRocket(levelInstance:LevelInstance, bulletDirection:BulletDirection, startX, startY): any {
     let newBullet = new DumbLazer(1, startX, startY, bulletDirection, false, [this.resourcesService.getRes().get("enemy-rocket-1"),
-      this.resourcesService.getRes().get("enemy-rocket-2")], 36, 26);
+    this.resourcesService.getRes().get("enemy-rocket-2")], 36, 26);
     this.bulletsArr.push(newBullet);
     this.bulletCreated.next(newBullet);
   }
@@ -97,6 +104,7 @@ export class BulletManagerService {
 
   generateBotTrackerBlob(levelInstance:LevelInstance, bulletDirection:BulletDirection, startX, startY, allowedMovement=30 ): any {
     let newBullet = new DumbLazer(1,startX, startY, bulletDirection, false, [this.resourcesService.getRes().get("enemy-bullet-target")],22,14);
+    this.audioService.playAudioNewInstance("snd_enemybullet");
     newBullet.allowedMovement = allowedMovement; // 2 seconds ish
     this.bulletsArr.push(newBullet);
     this.bulletCreated.next(newBullet);
@@ -192,7 +200,7 @@ export class BulletManagerService {
     return new BulletDirection(directionY,directionX,angle,len,speed, performRotation,targetObject);
   }
 
-  calculateTurretDirection(origX:number, origY:number, targetX:number, targetY:number, speed:number, performRotation=false, targetObject:any=null):BulletDirection {
+  calculateTurretDirection(origX:number, origY:number, targetX:number, targetY:number, speed:number, performRotation=false, targetObject:any=null):TurretDirection {
     var directionY = targetY-origY;
     var directionX = targetX-origX;
     var angle = Math.atan2(directionY,directionX); // bullet angle
@@ -492,7 +500,8 @@ export class BulletDirection {
 
 
 export class TurretDirection extends BulletDirection {
-  protected angDiff: number = 0;
+  public angDiff: number = 0;
+  public degreeChange: number = 1;
 
   constructor(
      directionY,
@@ -552,11 +561,11 @@ export class TurretDirection extends BulletDirection {
   }
 
   increaseAngle(currentAngleDeg):number{
-    currentAngleDeg = currentAngleDeg+1;
+    currentAngleDeg = currentAngleDeg+this.degreeChange;
     return (currentAngleDeg > 360)?1:currentAngleDeg;
   }
   decreaseAngle(currentAngleDeg):number{
-    currentAngleDeg = currentAngleDeg-1;
+    currentAngleDeg = currentAngleDeg-this.degreeChange;
     return (currentAngleDeg < 0)?359:currentAngleDeg;
   }
 

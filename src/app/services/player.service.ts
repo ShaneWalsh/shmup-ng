@@ -147,7 +147,7 @@ export class PlayerObj implements ShieldBot {
       this.firingSequence++;
     } else if(this.firingSequence == 5){
       this.selectedShip.fire(ctx, this.posX,this.posY, this.bulletSpeed, levelInstance, canvasContainer, bulletManagerService, botManagerService);
-      audioServiceService.playAudioNewInstance("Space-Cannon");
+      audioServiceService.playAudioNewInstance("snd_playerbullet");
       this.bulletsFired = true;
       this.firingSequence++;
     }

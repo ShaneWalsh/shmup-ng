@@ -2,7 +2,7 @@ import { BotInstance, BotInstanceImpl, FlyingBotImpl } from "src/app/domain/bots
 import { LevelInstance } from "src/app/manager/level-manager.service";
 import { HitBox } from "src/app/domain/HitBox";
 import { BotManagerService } from "src/app/manager/bot-manager.service";
-import { BulletManagerService, BulletDirection } from "src/app/manager/bullet-manager.service";
+import { BulletManagerService, BulletDirection, TurretDirection } from "src/app/manager/bullet-manager.service";
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { LogicService } from "src/app/services/logic.service";
 import { CanvasContainer } from "../CanvasContainer";
@@ -22,7 +22,7 @@ export class Judge extends FlyingBotImpl {
 
   public targetCordsIndex = 0;
   public angleDirection:BulletDirection;
-  public playerDirection:BulletDirection;
+  public playerDirection:TurretDirection;
   constructor(
       config:any={},
       posX:number=0,
@@ -54,7 +54,11 @@ export class Judge extends FlyingBotImpl {
 
     let targetCord : {targetX: number, targetY: number} = this.getCurrentTargetCords();
     let range = 10;
-    this.playerDirection = bulletManagerService.calculateBulletDirection(this.getCenterX(), this.getCenterY(), currentPlayer.posX, currentPlayer.posY, this.speed, true, currentPlayer);
+    if(this.playerDirection == null){
+      this.playerDirection = bulletManagerService.calculateTurretDirection(this.getCenterX(), this.getCenterY(), currentPlayer.posX, currentPlayer.posY, this.speed, true, currentPlayer);
+    } else {
+      this.playerDirection.update(this.getCenterX(), this.getCenterY());
+    }
     this.angleDirection = bulletManagerService.calculateBulletDirection(this.getCenterX(), this.getCenterY(), targetCord.targetX, targetCord.targetY, this.speed, true);
 
     this.posX += this.angleDirection.speed * this.angleDirection.directionX;
@@ -124,7 +128,7 @@ export class Judge extends FlyingBotImpl {
 	}
 
   fireSomething(levelInstance:LevelInstance, ctx:CanvasRenderingContext2D,bulletManagerService:BulletManagerService, currentPlayer:PlayerObj){
-    if(this.health <= 125){
+    if(this.health >= 125){
       let bullDirection:BulletDirection;
       if(levelInstance.isVertical()){
         let slot = this.bSlots[this.bSlot];
@@ -149,6 +153,9 @@ export class Judge extends FlyingBotImpl {
   }
 
 	canShoot(levelInstance:LevelInstance, currentPlayer:PlayerObj){
+    if(this.health >= 125) {
+      return this.playerDirection.angDiff < 0.8 && this.playerDirection.angDiff > -0.8;
+    }
 		return true;
 	}
 

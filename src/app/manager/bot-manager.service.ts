@@ -37,6 +37,7 @@ import { DeathManagerService } from './death-manager.service';
 import { FinalBoss } from '../domain/bots/FinalBoss';
 import { LazerAttack } from '../domain/bots/LazerAttack';
 import { LazerGuardian } from '../domain/bots/LazerGuardian';
+import { AudioServiceService } from '../services/audio-service.service';
 
 /**
  * Going to manage the created bots, spawned by the level manager. Its going to emit when they are destroyed or when they leave the screen.
@@ -54,7 +55,7 @@ export class BotManagerService {
   private backgroundElementsArr: BackgroundElement[] = [];
   private spriteSheetArr: SpriteSheet[] = [];
 
-  constructor(private resourcesService: ResourcesService, private deathManagerService:DeathManagerService) {
+  constructor(private resourcesService: ResourcesService, private deathManagerService:DeathManagerService, private audioService:AudioServiceService) {
 
   }
 
@@ -649,6 +650,7 @@ export class BotManagerService {
       this.createBotDeath(bot.getCenterX(),bot.getCenterY());
     } else if(botDeathSize == 1) {
       this.createExplosionHuge(bot.getCenterX(),bot.getCenterY());
+      this.audioService.playAudio("snd_bigexplosion", false);
     }
     this.botsArr.splice(this.botsArr.indexOf(bot), 1);
     this.botRemoved.next(bot);

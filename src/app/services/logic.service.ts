@@ -98,6 +98,15 @@ public static moveBetweenPointsAtSpeed(speed,targetX,targetY,sourceX, sourceY){
   	ctx.strokeRect(x,y,sizeX,sizeY);
   }
 
+  public static drawBox(x,y,sX,sY,ctx,colour,colour2){
+    ctx.lineWidth = 2;
+    ctx.fillStyle = colour;
+    ctx.fillRect(x, y, sX, sY);
+
+    ctx.strokeStyle = colour2;
+    ctx.strokeRect(x,y,sX,sY);
+  }
+
   public static writeOnCanvas(x,y,text,size,color1,ctx){
     ctx.font = size + "px 'Century Gothic'"; // Supertext 01
     ctx.fillStyle = color1;
@@ -198,7 +207,7 @@ public static moveBetweenPointsAtSpeed(speed,targetX,targetY,sourceX, sourceY){
   public static moveBetweenArrays(fromArray: any[], toArray: any[], func:any) {
     for( let i = 0; i < fromArray.length; i++ ) {
       if(func(fromArray[i])){
-        toArray.push(fromArray[i]);
+        toArray.push(fromArray.splice(i));
         i--;
       }
     }

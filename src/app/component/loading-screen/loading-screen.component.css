@@ -1,3 +1,7 @@
+.canvas-position {
+  position: absolute;
+}
+
 .screen-container {
   width: 480px;
   height: 640px;
@@ -33,4 +37,14 @@ color: #ff00ff;
 .effect-container{
 width: 480px;
 height: 640px;
+}
+
+.h1 {
+  top:200px;
+  padding-left: 150px;
+}
+
+.h2 {
+  top:250px;
+  padding-left: 80px;
 }

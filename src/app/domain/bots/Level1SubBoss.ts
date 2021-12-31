@@ -6,6 +6,7 @@ import { BulletManagerService, BulletDirection } from "src/app/manager/bullet-ma
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { CanvasContainer } from "../CanvasContainer";
 import { DeathConfig, DeathDetails } from "../DeathDetails";
+import { ProfileService, ProfileValuesEnum } from "src/app/services/profile.service";
 
 export class Level1SubBoss extends  BotInstanceImpl {
 
@@ -153,7 +154,8 @@ export class Level1SubBoss extends  BotInstanceImpl {
         if(this.health < 1){
             playerService.currentPlayer.addScore(this.score);
             botManagerService.removeBot(this,1);
-			levelInstance.updatePhaseCounter();
+            levelInstance.updatePhaseCounter();
+            ProfileService.setProfileValue(ProfileValuesEnum.BOTKILLER_LEVEL1_MINI_BOSS1_PHANTOM,"true");
         }
     }
 
