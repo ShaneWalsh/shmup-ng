@@ -33,7 +33,7 @@ export class OptionsService {
    * skip the game introduction vid
    */
   isSkipIntro() :boolean {
-    return true;
+    return false;
   }
 
   /**
