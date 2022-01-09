@@ -523,17 +523,22 @@ export class ResourcesService {
     return this.resourcesLoaded;
   }
 
-  // should only be called once.
-  loadResources(){
+  allowRerun(){
+    this.loaderRun = false;
+  }
+
+  // should only be called once. But for loading screen may need to split this up.
+  loadResources(offset=0, loadAmount=5){
     if(!this.loaderRun){
       this.loaderRun = true;
-      for(let i = 0; i < this.resourcesToLoad.length;i++){
+      const amount = (offset+loadAmount);
+      for(let i = offset; i < this.resourcesToLoad.length && i <= amount;i++){
         const res = this.resourcesToLoad[i];
         if(res.type == ResourcesEnum.ImageRes){
           this.loadImage(res.code,res.path);
         }
       }
-      for(let i = 0; i < this.audioResourcesToLoad.length;i++){
+      for(let i = offset; i < this.audioResourcesToLoad.length && i <= amount;i++){
         const res = this.audioResourcesToLoad[i];
         if(res.type == ResourcesEnum.SoundRes){
           this.loadSound(res.code,res.path);
@@ -585,7 +590,7 @@ export class ResourcesService {
   }
 
   resourceLoaded(){
-    if(this.resources.size == (this.resourcesToLoad.length && this.audioResourcesToLoad.length)){
+    if(this.resources.size == (this.resourcesToLoad.length + this.audioResourcesToLoad.length)){
       console.log("base64",this.resourcesToLoadB64);
       this.getResourcesLoaded().next(true);
     }

@@ -31,6 +31,7 @@ export class AppComponent {
       this.resourcesService.getResourcesLoaded().subscribe(load=>{
         this.resourcesService.setAudio(audioServiceService);
         console.log("loaded");
+        this.loaded = load;
         setTimeout(()=> {
           this.loaded = load;
         }, 2000)
@@ -38,6 +39,6 @@ export class AppComponent {
       this.ngApiService.loadAll();
   }
   public ngAfterViewInit() {
-    this.resourcesService.loadResources();
+
   }
 }

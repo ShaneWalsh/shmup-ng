@@ -1,5 +1,6 @@
 .canvas-position {
   position: absolute;
+  top: 0px;
 }
 
 .screen-container {
@@ -40,11 +41,9 @@ height: 640px;
 }
 
 .h1 {
-  top:200px;
-  padding-left: 150px;
+  text-align: center;
 }
 
 .h2 {
-  top:250px;
-  padding-left: 80px;
+  text-align: center;
 }
