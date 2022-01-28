@@ -40,7 +40,7 @@ export class Rock extends Fighter {
       botManagerService.removeBotOOB(this);
     } else {
       ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
-      this.drawShadowFlying(null,canvasContainer,this.posX,this.posY,this.imageSizeX, this.imageSizeY);
+      if(levelInstance.drawShadow()) this.drawShadowFlying(null,canvasContainer,this.posX,this.posY,this.imageSizeX, this.imageSizeY);
       this.updateDamageAnimation(ctx);
     }
 

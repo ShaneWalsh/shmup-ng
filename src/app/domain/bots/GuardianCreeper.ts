@@ -55,7 +55,7 @@ export class GuardianCreeper extends FlyingBotImpl {
 		}
 
 		LogicService.drawRotateImage(this.imageObj,ctx,this.angleDirection.angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY);
-    this.drawShadowFlying(this.angleDirection.angle,canvasContainer,this.posX,this.posY,this.imageSizeX, this.imageSizeY);
+    if(levelInstance.drawShadow()) this.drawShadowFlying(this.angleDirection.angle,canvasContainer,this.posX,this.posY,this.imageSizeX, this.imageSizeY);
 		this.updateDamageAnimation(ctx,this.angleDirection.angle);
 
 		if(levelInstance.drawHitBox()){
