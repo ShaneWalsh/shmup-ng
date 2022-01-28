@@ -1,11 +1,10 @@
-import { BotInstance, BotInstanceImpl, FlyingBotImpl } from "src/app/domain/bots/BotInstance";
-import { LevelInstance } from "src/app/manager/level-manager.service";
+import { FlyingBotImpl } from "src/app/domain/bots/BotInstance";
 import { HitBox } from "src/app/domain/HitBox";
 import { BotManagerService } from "src/app/manager/bot-manager.service";
-import { BulletManagerService, BulletDirection } from "src/app/manager/bullet-manager.service";
-import { PlayerObj, PlayerService } from "src/app/services/player.service";
+import { BulletDirection, BulletManagerService } from "src/app/manager/bullet-manager.service";
+import { LevelInstance } from "src/app/manager/level-manager.service";
 import { LogicService } from "src/app/services/logic.service";
-import { Guardian1 } from "src/app/domain/bots/Guardian1";
+import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { CanvasContainer } from "../CanvasContainer";
 
 export class GuardianCreeper extends FlyingBotImpl {
@@ -56,6 +55,7 @@ export class GuardianCreeper extends FlyingBotImpl {
 		}
 
 		LogicService.drawRotateImage(this.imageObj,ctx,this.angleDirection.angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY);
+    this.drawShadowFlying(this.angleDirection.angle,canvasContainer,this.posX,this.posY,this.imageSizeX, this.imageSizeY);
 		this.updateDamageAnimation(ctx,this.angleDirection.angle);
 
 		if(levelInstance.drawHitBox()){

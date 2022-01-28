@@ -225,7 +225,7 @@ export class BotManagerService {
 
   generateRock(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
     let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
-    let newBot = new Rock(config, posObj.posX, posObj.posY, this.resourcesService.getRes().get("enemy-2-1-v2"), this.resourcesService.getRes().get("enemy-2-2-v2"), 108, 140, new HitBox(0, 0, 108, 140), this.resourcesService.getRes().get("enemy-2-damaged-v2"));
+    let newBot = new Rock(config, posObj.posX, posObj.posY, this.resourcesService.getRes().get("enemy-2-1-v2"), this.resourcesService.getRes().get("enemy-2-2-v2"), this.resourcesService.getRes().get("enemy-2-1-shadow-v2"), 108, 140, new HitBox(0, 0, 108, 140), this.resourcesService.getRes().get("enemy-2-damaged-v2"));
     this.botsArr.push(newBot);
     this.botCreated.next(newBot);
   }
@@ -262,7 +262,8 @@ export class BotManagerService {
 
     let newBot = new Creeper(config,lazer, posObj.posX, posObj.posY,
       this.resourcesService.getRes().get("enemy-07"),
-      this.resourcesService.getRes().get("enemy-07-damaged")
+      this.resourcesService.getRes().get("enemy-07-damaged"),
+      this.resourcesService.getRes().get("enemy-07-shadow")
       );
     this.botsArr.push(newBot);
     this.botCreated.next(newBot);
@@ -617,6 +618,16 @@ export class BotManagerService {
 			this.resourcesService.getRes().get("player-explosion-3"),
 			this.resourcesService.getRes().get("player-explosion-4")],
 			80,80,this.deathAnimtionTimer,this.deathAnimtionTimer)
+		);
+  }
+
+	createPlayerBulletExplosion(x,y){
+		this.spriteSheetArr.push(new SpriteSheet(x-10,y-10,
+			[this.resourcesService.getRes().get("player-bullet-explosion-1"),
+			this.resourcesService.getRes().get("player-bullet-explosion-2"),
+			this.resourcesService.getRes().get("player-bullet-explosion-3"),
+			this.resourcesService.getRes().get("player-bullet-explosion-4")],
+			20,20,this.deathAnimtionTimer,this.deathAnimtionTimer)
 		);
   }
 

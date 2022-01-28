@@ -19,12 +19,13 @@ export class Rock extends Fighter {
       posY: number = 0,
       imageObj1: HTMLImageElement = null,
       imageObj2: HTMLImageElement = null,
+      shadow: HTMLImageElement = null,
       imageSizeX: number = 56,
       imageSizeY: number = 78,
       public hitBox: HitBox = new HitBox(0, 0, imageSizeX, imageSizeY),
       imageObjDamaged: HTMLImageElement = imageObj1
   ) {
-    super(config, posX,posY,imageObj1,imageObj2,imageSizeX,imageSizeY,hitBox,imageObjDamaged);
+    super(config, posX,posY,imageObj1,imageObj2,imageSizeX,imageSizeY,hitBox,imageObjDamaged,shadow);
     this.posXSpeed = 3;
     this.posYSpeed = 2;
     this.health = 24;
@@ -39,6 +40,7 @@ export class Rock extends Fighter {
       botManagerService.removeBotOOB(this);
     } else {
       ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
+      this.drawShadowFlying(null,canvasContainer,this.posX,this.posY,this.imageSizeX, this.imageSizeY);
       this.updateDamageAnimation(ctx);
     }
 

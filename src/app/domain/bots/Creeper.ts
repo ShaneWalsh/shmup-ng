@@ -40,6 +40,7 @@ export class Creeper extends BotInstanceImpl{
         public posY:number=0,
         public imageObj:HTMLImageElement=null,
         public imageObjDamaged:HTMLImageElement=null,
+        public imageObjShadow:HTMLImageElement=null,
         public imageSizeX:number=64,
         public imageSizeY:number=52,
         public hitBox:HitBox=new HitBox(4,0,imageSizeX-8,imageSizeY)
@@ -64,6 +65,9 @@ export class Creeper extends BotInstanceImpl{
         botManagerService.removeBotOOB(this);
     } else {
         ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
+        if(levelInstance.drawShadow() && this.imageObjShadow != null) {
+          this.drawShadow(canvasContainer.shadowCtx,this.imageObjShadow,this.posX,this.posY,this.imageSizeX, this.imageSizeY);
+        }
   // todo add damage calcualtion
     }
     if(levelInstance.drawHitBox()){

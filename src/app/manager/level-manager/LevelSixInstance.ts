@@ -20,6 +20,6 @@ export class LevelSixInstance extends LevelOneInstance {
   }
 
   hasIntro():boolean { // Set to false for no intro 2/2
-    return true;
+    return false;
   }
 }

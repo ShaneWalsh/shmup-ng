@@ -14,13 +14,17 @@ export class ResourcesService {
     private resourcesLoaded: Subject<boolean>; // all resources loaded
     private resources:Map<string,any>;// could be images, sounds, etc
     private loaderRun:boolean = false;
+
+    private useOffline:boolean = true;
+    private exportBase64:boolean = !this.useOffline; // will store base64 images and export for copy to file.
+
     constructor ( ) {
   		this.resourcesToLoadB64 = []
   		this.audioResourcesToLoad = []
 			this.resources = new Map();
 			this.resourcesLoaded = new Subject();
 
-/*
+
       this.resourcesToLoad = [
 
         {code:"final-boss-head", path:"assets/img/boss/final-boss/final-boss-head.png", type:ResourcesEnum.ImageRes},
@@ -292,59 +296,6 @@ export class ResourcesService {
           {code:"upd-scene-4-5", path:"assets/img/loading/intro-update/scene-4-5.png", type:ResourcesEnum.ImageRes},
           {code:"upd-scene-4-6", path:"assets/img/loading/intro-update/scene-4-6.png", type:ResourcesEnum.ImageRes},
 
-          //TODO Deprecated remove references and original sources.
-          {code:"scene-1-1", path:"assets/img/loading/intro-update/scene-1-1.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-1-2", path:"assets/img/loading/scene_1/scene-1-2.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-1-3", path:"assets/img/loading/scene_1/scene-1-3.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-1-4", path:"assets/img/loading/scene_1/scene-1-4.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-1-5", path:"assets/img/loading/scene_1/scene-1-5.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-1-6", path:"assets/img/loading/scene_1/scene-1-6.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-1-7", path:"assets/img/loading/scene_1/scene-1-7.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-1-8", path:"assets/img/loading/scene_1/scene-1-8.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-1-9", path:"assets/img/loading/scene_1/scene-1-9.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-1-10", path:"assets/img/loading/scene_1/scene-1-10.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-1-11", path:"assets/img/loading/scene_1/scene-1-11.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-1-12", path:"assets/img/loading/scene_1/scene-1-12.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-1-13", path:"assets/img/loading/scene_1/scene-1-13.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-1-14", path:"assets/img/loading/scene_1/scene-1-14.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-1-15", path:"assets/img/loading/scene_1/scene-1-15.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-1-16", path:"assets/img/loading/scene_1/scene-1-16.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-1-17", path:"assets/img/loading/scene_1/scene-1-17.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-1-18", path:"assets/img/loading/scene_1/scene-1-18.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-1-19", path:"assets/img/loading/scene_1/scene-1-19.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-1-20", path:"assets/img/loading/scene_1/scene-1-20.png", type:ResourcesEnum.ImageRes},
-
-          {code:"scene-2-1", path:"assets/img/loading/scene_2/scene-2-1.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-2-2", path:"assets/img/loading/scene_2/scene-2-2.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-2-3", path:"assets/img/loading/scene_2/scene-2-3.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-2-4", path:"assets/img/loading/scene_2/scene-2-4.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-2-5", path:"assets/img/loading/scene_2/scene-2-5.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-2-6", path:"assets/img/loading/scene_2/scene-2-6.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-2-7", path:"assets/img/loading/scene_2/scene-2-7.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-2-8", path:"assets/img/loading/scene_2/scene-2-8.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-2-9", path:"assets/img/loading/scene_2/scene-2-9.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-2-10", path:"assets/img/loading/scene_2/scene-2-10.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-2-11", path:"assets/img/loading/scene_2/scene-2-11.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-2-12", path:"assets/img/loading/scene_2/scene-2-12.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-2-13", path:"assets/img/loading/scene_2/scene-2-13.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-2-14", path:"assets/img/loading/scene_2/scene-2-14.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-2-15", path:"assets/img/loading/scene_2/scene-2-15.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-2-16", path:"assets/img/loading/scene_2/scene-2-16.png", type:ResourcesEnum.ImageRes},
-
-          {code:"scene-3-1", path:"assets/img/loading/scene_3/scene-3-1.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-3-2", path:"assets/img/loading/scene_3/scene-3-2.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-3-3", path:"assets/img/loading/scene_3/scene-3-3.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-3-4", path:"assets/img/loading/scene_3/scene-3-4.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-3-5", path:"assets/img/loading/scene_3/scene-3-5.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-3-6", path:"assets/img/loading/scene_3/scene-3-6.png", type:ResourcesEnum.ImageRes},
-
-          {code:"scene-4-1", path:"assets/img/loading/scene_4/scene-4-1.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-4-2", path:"assets/img/loading/scene_4/scene-4-2.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-4-3", path:"assets/img/loading/scene_4/scene-4-3.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-4-4", path:"assets/img/loading/scene_4/scene-4-4.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-4-5", path:"assets/img/loading/scene_4/scene-4-5.png", type:ResourcesEnum.ImageRes},
-          {code:"scene-4-6", path:"assets/img/loading/scene_4/scene-4-6.png", type:ResourcesEnum.ImageRes},
-
           {code:"miniboss-3-1-cannon", path:"assets/img/boss/miniboss-3-changes/miniboss-3-1-cannon.png", type:ResourcesEnum.ImageRes},
           {code:"miniboss-3-missile-no-cannon", path:"assets/img/boss/miniboss-3-changes/miniboss-3-missile.png", type:ResourcesEnum.ImageRes},
           {code:"miniboss-3-no-cannon", path:"assets/img/boss/miniboss-3-changes/miniboss-3-no-cannon.png", type:ResourcesEnum.ImageRes},
@@ -367,6 +318,11 @@ export class ResourcesService {
           {code:"player-explosion-2", path:"assets/img/player/player-explosion-2.png", type:ResourcesEnum.ImageRes},
           {code:"player-explosion-3", path:"assets/img/player/player-explosion-3.png", type:ResourcesEnum.ImageRes},
           {code:"player-explosion-4", path:"assets/img/player/player-explosion-4.png", type:ResourcesEnum.ImageRes},
+
+          {code:"player-bullet-explosion-1", path:"assets/img/player/player-bullet-explosion-1.png", type:ResourcesEnum.ImageRes},
+          {code:"player-bullet-explosion-2", path:"assets/img/player/player-bullet-explosion-2.png", type:ResourcesEnum.ImageRes},
+          {code:"player-bullet-explosion-3", path:"assets/img/player/player-bullet-explosion-3.png", type:ResourcesEnum.ImageRes},
+          {code:"player-bullet-explosion-4", path:"assets/img/player/player-bullet-explosion-4.png", type:ResourcesEnum.ImageRes},
 
           {code:"bot-explosion-1", path:"assets/img/bots/explosion/explosion-1.png", type:ResourcesEnum.ImageRes},
           {code:"bot-explosion-2", path:"assets/img/bots/explosion/explosion-2.png", type:ResourcesEnum.ImageRes},
@@ -396,10 +352,16 @@ export class ResourcesService {
 
           {code:"enemy-2-1-v2", path:"assets/img/bots/redesign/enemy-2-1.png", type:ResourcesEnum.ImageRes},
           {code:"enemy-2-2-v2", path:"assets/img/bots/redesign/enemy-2-2.png", type:ResourcesEnum.ImageRes},
+          {code:"enemy-2-1-shadow-v2", path:"assets/img/bots/redesign/enemy-2-1-shadow.png", type:ResourcesEnum.ImageRes},
           {code:"enemy-2-damaged-v2", path:"assets/img/bots/redesign/enemy-2-damaged.png", type:ResourcesEnum.ImageRes},
+
+          {code:"player-missile-1", path:"assets/img/player/player-missile-1.png", type:ResourcesEnum.ImageRes},
+          {code:"player-missile-2", path:"assets/img/player/player-missile-2.png", type:ResourcesEnum.ImageRes},
+          {code:"player-missile-3", path:"assets/img/player/player-missile-3.png", type:ResourcesEnum.ImageRes},
 
           {code:"enemy-07", path:"assets/img/bots/enemy-07/enemy-07.png", type:ResourcesEnum.ImageRes},
           {code:"enemy-07-damaged", path:"assets/img/bots/enemy-07/enemy-07-damaged.png", type:ResourcesEnum.ImageRes},
+          {code:"enemy-07-shadow", path:"assets/img/bots/enemy-07/enemy-07-shadow.png", type:ResourcesEnum.ImageRes},
           {code:"enemy-07-firing-1", path:"assets/img/bots/enemy-07/enemy-07-firing-1.png", type:ResourcesEnum.ImageRes},
           {code:"enemy-07-firing-2", path:"assets/img/bots/enemy-07/enemy-07-firing-2.png", type:ResourcesEnum.ImageRes},
           {code:"enemy-07-firing-3", path:"assets/img/bots/enemy-07/enemy-07-firing-3.png", type:ResourcesEnum.ImageRes},
@@ -407,12 +369,8 @@ export class ResourcesService {
           {code:"enemy-07-firing-5", path:"assets/img/bots/enemy-08-update/enemy-07-firing-5.png", type:ResourcesEnum.ImageRes},
           {code:"enemy-07-firing-6", path:"assets/img/bots/enemy-08-update/enemy-07-firing-6.png", type:ResourcesEnum.ImageRes},
 
-          //{code:"miniboss-2", path:"assets/img/boss/bos2/miniboss-2.png", type:ResourcesEnum.ImageRes},
-          //{code:"miniboss-2-1", path:"assets/img/boss/bos2/miniboss-2-1.png", type:ResourcesEnum.ImageRes},
-         // {code:"miniboss-2-2", path:"assets/img/boss/bos2/miniboss-2-2.png", type:ResourcesEnum.ImageRes},
           {code:"miniboss-2-bullet", path:"assets/img/boss/bos2/miniboss-2-bullet.png", type:ResourcesEnum.ImageRes},
           {code:"miniboss-2-muzzle-flash", path:"assets/img/boss/bos2/miniboss-2-muzzle-flash.png", type:ResourcesEnum.ImageRes},
-          //{code:"miniboss-2-damaged", path:"assets/img/boss/bos2/miniboss-2-damaged.png", type:ResourcesEnum.ImageRes},
           // reworked
           {code:"boss-2-new", path:"assets/img/boss/bos2/boss-2-new.png", type:ResourcesEnum.ImageRes},
           {code:"boss-2-new-damaged", path:"assets/img/boss/bos2/boss-2-new-damaged.png", type:ResourcesEnum.ImageRes},
@@ -486,12 +444,14 @@ export class ResourcesService {
               code: "enemy-bullet-target", path: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAOCAYAAAArMezNAAAABGdBTUEAAK/INwWK6QAAAAlwSFlzAAAOwwAADsMBx2+oZAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMS42/U4J6AAAAGRJREFUOE/VkDEOgEAIBImv8v8fW7UgAXZFLM7EYgrIMJecARixYUdH9dPQoWKR6qfhQh29wTvrw0qK2Kl2kL8sTAtxNIE6tBBHE6jzvz/28PSBJ7zzXfgOFYlUPw0dKhbJPuwA7VOl229hSMgAAAAASUVORK5CYII=",
               type: ResourcesEnum.ImageRes }
        ];
- */
+
 
 
       // offline loading of files.
-      let compiledRes = new CompiledResources();
-      this.resourcesToLoad = compiledRes.res;
+      if(this.useOffline){
+        let compiledRes = new CompiledResources();
+        this.resourcesToLoad = compiledRes.res;
+      }
 
       // add in sound files.
       // TODO deprecated, remove references and source file.
@@ -532,13 +492,13 @@ export class ResourcesService {
     if(!this.loaderRun){
       this.loaderRun = true;
       const amount = (offset+loadAmount);
-      for(let i = offset; i < this.resourcesToLoad.length && i <= amount;i++){
+      for(let i = offset; i < this.resourcesToLoad.length && i < amount;i++){
         const res = this.resourcesToLoad[i];
         if(res.type == ResourcesEnum.ImageRes){
           this.loadImage(res.code,res.path);
         }
       }
-      for(let i = offset; i < this.audioResourcesToLoad.length && i <= amount;i++){
+      for(let i = offset; i < this.audioResourcesToLoad.length && i < amount;i++){
         const res = this.audioResourcesToLoad[i];
         if(res.type == ResourcesEnum.SoundRes){
           this.loadSound(res.code,res.path);
@@ -576,7 +536,10 @@ export class ResourcesService {
   imageLoaded(code,loadedImage:HTMLImageElement){
     this.resources.set(code,loadedImage);
     // store as global variable and then copy(temp1) to copy the object
-    this.resourcesToLoadB64.push({code:code,path:this.imgToBase64(loadedImage),type:ResourcesEnum.ImageRes});
+    if(!this.useOffline && this.exportBase64){
+      console.log("base64:"+code+ " toLoad:"+this.resourcesToLoad.length + " loaded:"+this.resourcesToLoadB64.length)
+      this.resourcesToLoadB64.push({code:code,path:this.imgToBase64(loadedImage),type:ResourcesEnum.ImageRes});
+    }
     this.resourceLoaded();
   }
 
@@ -590,9 +553,15 @@ export class ResourcesService {
   }
 
   resourceLoaded(){
+    // why so many final-boss-main-headless-da in the output?
+    if(!this.useOffline) console.log(this.resources.size + " : "+(this.resourcesToLoad.length + this.audioResourcesToLoad.length))
     if(this.resources.size == (this.resourcesToLoad.length + this.audioResourcesToLoad.length)){
-      console.log("base64",this.resourcesToLoadB64);
+      if(this.exportBase64) this.outputResources();
       this.getResourcesLoaded().next(true);
     }
+  }
+
+  outputResources() {
+    console.log("base64",this.resourcesToLoadB64);
   }
 }

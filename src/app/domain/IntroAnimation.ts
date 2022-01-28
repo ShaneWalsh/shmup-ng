@@ -35,7 +35,7 @@ export class IntroAnimation {
     if (this.animationTimer >= this.currentSceneAnimTimerLimit) {
       this.animationTimer = 0;
       this.spritePosition++;
-      if (this.spritePosition >= this.currentScene.length){
+      if (this.spritePosition >= this.currentScene.length) {
         this.spritePosition = 0;
         if(this.currentScene == this.scene1){
           this.currentScene = this.scene2;
@@ -48,8 +48,10 @@ export class IntroAnimation {
           this.currentSceneAnimTimerLimit = this.scene4AnimTimerLimit;
         } else if(this.currentScene == this.scene4){
           this.complete = true;
+          return;
         } else {
           this.complete = true;
+          return;
         }
       }
     } else {

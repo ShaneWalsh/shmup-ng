@@ -169,15 +169,17 @@ export class Level3SubBoss extends  BotInstanceImpl {
 
 		if (this.dirYDown){
 			this.posY += this.posYSpeed;
-      if(this.posY > 30){
+      if(this.posY > 15){
         this.dirYDown = false;
       }
-		} else {
-			this.posY -= this.posYSpeed;
-			if (this.posY < -30) {
-        this.dirYDown = true;
-      }
 		}
+    // Removed up down logic as its too difficult,
+    // else {
+		// 	this.posY -= this.posYSpeed;
+		// 	if (this.posY < -30) {
+    //     this.dirYDown = true;
+    //   }
+		// }
     // if (this.dirXRight){
     //   this.posX += this.posXSpeed;
     //   if (this.posX > 300){

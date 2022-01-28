@@ -74,7 +74,7 @@ export class BulletManagerService {
         bullDirection = this.calculateBulletDirection(pod.startX, pod.startY, bot.getCenterX(), bot.getCenterY(), bulletSpeed, true, bot);
       }
       let newBullet = new DumbLazer(1, pod.startX, pod.startY, bullDirection, true,
-        [this.resourcesService.getRes().get("enemy-missile-1"),this.resourcesService.getRes().get("enemy-missile-2"),this.resourcesService.getRes().get("enemy-missile-3")],
+        [this.resourcesService.getRes().get("player-missile-1"),this.resourcesService.getRes().get("player-missile-2"),this.resourcesService.getRes().get("player-missile-3")],
         38, 16, new HitBox(0,0,38,16), false);
       this.bulletsArr.push(newBullet);
       this.bulletCreated.next(newBullet);
@@ -142,11 +142,13 @@ export class BulletManagerService {
     this.bulletCreated.next(newBullet);
 }
 
-  removeBullet(bullet:BulletInstance, botManagerService:BotManagerService, xOffset:number=0, createTiny:boolean=false, createSmall:boolean=false, createMedium:boolean=false) {
+  removeBullet(bullet:BulletInstance, botManagerService:BotManagerService, xOffset:number=0, createTiny:boolean=false, createSmall:boolean=false, createPlayerBulletExplosion:boolean=false) {
     if(createTiny) {
       botManagerService.createExplosionTiny(bullet.getCenterX()+xOffset,bullet.getCenterY(), bullet.getCurrentRotation())
     } else if(createSmall) {
       botManagerService.createMisslePlume(bullet.getCenterX()+xOffset,bullet.getCenterY(), bullet.getCurrentRotation())
+    } else if(createPlayerBulletExplosion){
+      botManagerService.createPlayerBulletExplosion(bullet.getCenterX()+xOffset,bullet.getCenterY());
     }
     this.bulletsArr.splice(this.bulletsArr.indexOf(bullet),1);
     this.bulletRemoved.next(bullet);
@@ -283,13 +285,13 @@ class DumbLazer implements BulletInstance {
           let bot = botArrClone[i];
           if(bot.hasBotArmorBeenHit(this,this.hitBox)) {
             bot.applyArmorDamage(this.damage, botManagerService,playerService,levelInstance);
-            bulletManagerService.removeBullet(this, botManagerService, LogicService.getRandomInt(this.imageSizeX-5),false,true);
+            bulletManagerService.removeBullet(this, botManagerService, LogicService.getRandomInt(this.imageSizeX-5),false,false,true);
             removed = true;
             break;
           }
           if(bot.hasBotBeenHit(this,this.hitBox)) {
             bot.applyDamage(this.damage, botManagerService, bulletManagerService, playerService,levelInstance);
-            bulletManagerService.removeBullet(this, botManagerService, LogicService.getRandomInt(this.imageSizeX-5),false,true);
+            bulletManagerService.removeBullet(this, botManagerService, LogicService.getRandomInt(this.imageSizeX-5),false,false,true);
             removed = true;
             break;
           }
@@ -299,7 +301,7 @@ class DumbLazer implements BulletInstance {
           let bull = bullArrClone[i];
           if(bull.canBeDestroyed() && bull.hasBulBeenHit(this,this.hitBox)) {
             bull.applyDamage(this.damage, bulletManagerService, botManagerService, playerService,levelInstance);
-            bulletManagerService.removeBullet(this, botManagerService, LogicService.getRandomInt(this.imageSizeX-5),false,true);
+            bulletManagerService.removeBullet(this, botManagerService, LogicService.getRandomInt(this.imageSizeX-5),false,false,true);
             removed = true;
             break;
           }
