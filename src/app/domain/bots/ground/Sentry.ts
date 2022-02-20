@@ -8,6 +8,7 @@ import { CanvasContainer } from "../../CanvasContainer";
 import { Turret } from "../Turret";
 import { LogicService, HardRotationAngle } from "src/app/services/logic.service";
 import { BackgroundElement } from "../../BackgroundElement";
+import { DeathDetails } from "../../DeathDetails";
 
 export class Sentry extends BotInstanceImpl{
 	public bulletSpeed:number = 6;
@@ -171,4 +172,12 @@ export class Sentry extends BotInstanceImpl{
   isGroundBot():boolean{
     return true;
   }
+
+    /**
+   * Return the current image
+   */
+     getDeathDetails() : DeathDetails {
+      return new DeathDetails ( this.sentryTurret1, this.posX+this.turretXoffset,this.posY+this.turretYoffset, 130, 62,
+                    this.turret.angleDirection.angle,this.posX+this.turretXoffset+42,this.posY+this.turretYoffset+30, this.getDeathConfig() );
+    }
 }

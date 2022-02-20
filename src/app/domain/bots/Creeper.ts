@@ -6,14 +6,15 @@ import { BulletManagerService, BulletDirection } from "src/app/manager/bullet-ma
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { CanvasContainer } from "../CanvasContainer";
 import { LazerAttack } from "./LazerAttack";
+import { DeathDetails } from "../DeathDetails";
 
-export class Creeper extends BotInstanceImpl{
-    public posXSpeed:number = 1.5;
-    public posYSpeed:number = 1.5;
+export class Creeper extends BotInstanceImpl {
+  public posXSpeed:number = 1.5;
+  public posYSpeed:number = 1.5;
 	public movedIn:boolean = false;
 
-    public bTimer:number = 0; // bullet timer
-    public bTimerLimit:number = 60;
+  public bTimer:number = 0; // bullet timer
+  public bTimerLimit:number = 60;
 	public firingLoading = false;
 	public firingPhase2 = false;
 
@@ -31,29 +32,29 @@ export class Creeper extends BotInstanceImpl{
 
 	public health:number=5;
 
-    public score:number = 50;
+  public score:number = 50;
 
-    constructor(
-        public config:any={},
-        public lazerAttack:LazerAttack=null,
-        public posX:number=0,
-        public posY:number=0,
-        public imageObj:HTMLImageElement=null,
-        public imageObjDamaged:HTMLImageElement=null,
-        public imageObjShadow:HTMLImageElement=null,
-        public imageSizeX:number=64,
-        public imageSizeY:number=52,
-        public hitBox:HitBox=new HitBox(4,0,imageSizeX-8,imageSizeY)
-    ){
-        super(config);
-		this.tryConfigValues(["bTimer","bTimerLimit","bTimerLoading","bTimerLoadingLimit","bTimerFiring","bTimerFiringPase2",
-			"bTimerFiringPase3", "bTimerFiringLimit", "health", "score", "firingPhasesToComplete","posYSpeed","posXSpeed"]);
-    }
+  constructor(
+    public config:any={},
+    public lazerAttack:LazerAttack=null,
+    public posX:number=0,
+    public posY:number=0,
+    public imageObj:HTMLImageElement=null,
+    public imageObjDamaged:HTMLImageElement=null,
+    public imageObjShadow:HTMLImageElement=null,
+    public imageSizeX:number=64,
+    public imageSizeY:number=52,
+    public hitBox:HitBox=new HitBox(4,0,imageSizeX-8,imageSizeY)
+  ) {
+    super(config);
+    this.tryConfigValues(["bTimer","bTimerLimit","bTimerLoading","bTimerLoadingLimit","bTimerFiring","bTimerFiringPase2",
+    "bTimerFiringPase3", "bTimerFiringLimit", "health", "score", "firingPhasesToComplete","posYSpeed","posXSpeed"]);
+  }
 
 	update(levelInstance:LevelInstance, canvasContainer:CanvasContainer, botManagerService:BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService) {
     let currentPlayer = playerService.currentPlayer;
     let ctx = canvasContainer.mainCtx;
-		if(!this.movedIn){
+		if(!this.movedIn) {
 			this.posY += this.posYSpeed;
 			if(this.posY > 5){
 				this.movedIn = true;
@@ -113,5 +114,13 @@ export class Creeper extends BotInstanceImpl{
 
     getPlayerCollisionHitBoxes(): HitBox[] {
         return [this.hitBox];
+    }
+
+    /**
+     * Return the current image
+     */
+    getDeathDetails() : DeathDetails {
+      return new DeathDetails ( this.imageObj, this.posX, this.posY, this.imageSizeX, this.imageSizeY,
+                    0,this.getCenterX(), this.getCenterY(), this.getDeathConfig() );
     }
 }

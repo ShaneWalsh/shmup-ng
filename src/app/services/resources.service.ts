@@ -230,8 +230,13 @@ export class ResourcesService {
           {code:"player-1-ship-shadow-separa", path:"assets/img/player/player-1-ship-shadow.png", type:ResourcesEnum.ImageRes},
           {code:"player-1-ship", path:"assets/img/player/player-1-ship.png", type:ResourcesEnum.ImageRes},
 
-          {code:"player-2-ship", path:"assets/img/player/player-2-ship.png", type:ResourcesEnum.ImageRes},
-          {code:"player-2-bullets", path:"assets/img/player/player-2-bullets.png", type:ResourcesEnum.ImageRes},
+          {code:"player-2-ship", path:"assets/img/player/player2/player-2-ship-new.png", type:ResourcesEnum.ImageRes},
+          {code:"player-2-bullets", path:"assets/img/player/player2/player-2-bullets.png", type:ResourcesEnum.ImageRes},
+
+          {code:"player-2-muzzle-flash-1", path:"assets/img/player/player2/player-2-muzzle-flash-1.png", type:ResourcesEnum.ImageRes},
+          {code:"player-2-muzzle-flash-2", path:"assets/img/player/player2/player-2-muzzle-flash-2.png", type:ResourcesEnum.ImageRes},
+          {code:"player-2-muzzle-flash-3", path:"assets/img/player/player2/player-2-muzzle-flash-3.png", type:ResourcesEnum.ImageRes},
+
 
           {code:"HUD-resized", path:"assets/img/hud/HUD-resized.png", type:ResourcesEnum.ImageRes},
           {code:"stage-1-complete", path:"assets/img/desc/stage-1-complete.png", type:ResourcesEnum.ImageRes},
@@ -323,6 +328,11 @@ export class ResourcesService {
           {code:"player-bullet-explosion-2", path:"assets/img/player/player-bullet-explosion-2.png", type:ResourcesEnum.ImageRes},
           {code:"player-bullet-explosion-3", path:"assets/img/player/player-bullet-explosion-3.png", type:ResourcesEnum.ImageRes},
           {code:"player-bullet-explosion-4", path:"assets/img/player/player-bullet-explosion-4.png", type:ResourcesEnum.ImageRes},
+
+          {code:"player-bullet-exp-new-1", path:"assets/img/player/player-bullet-exp-new-1.png", type:ResourcesEnum.ImageRes},
+          {code:"player-bullet-exp-new-2", path:"assets/img/player/player-bullet-exp-new-2.png", type:ResourcesEnum.ImageRes},
+          {code:"player-bullet-exp-new-3", path:"assets/img/player/player-bullet-exp-new-3.png", type:ResourcesEnum.ImageRes},
+          {code:"player-bullet-exp-new-4", path:"assets/img/player/player-bullet-exp-new-4.png", type:ResourcesEnum.ImageRes},
 
           {code:"bot-explosion-1", path:"assets/img/bots/explosion/explosion-1.png", type:ResourcesEnum.ImageRes},
           {code:"bot-explosion-2", path:"assets/img/bots/explosion/explosion-2.png", type:ResourcesEnum.ImageRes},

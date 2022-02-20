@@ -6,6 +6,7 @@ import { BulletManagerService, BulletDirection } from "src/app/manager/bullet-ma
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { CanvasContainer } from "../../CanvasContainer";
 import { Turret } from "../Turret";
+import { DeathDetails } from "../../DeathDetails";
 
 export class Buggy extends BotInstanceImpl{
 	public bulletSpeed:number = 6;
@@ -192,5 +193,13 @@ export class Buggy extends BotInstanceImpl{
 
   isGroundBot():boolean{
     return true;
+  }
+
+  /**
+     * Return the current image
+     */
+   getDeathDetails() : DeathDetails {
+    return new DeathDetails ( this.imageObj, this.posX, this.posY, this.imageSizeX, this.imageSizeY,
+                  this.getCurrentAngle(),this.getCenterX(), this.getCenterY(), this.getDeathConfig() );
   }
 }

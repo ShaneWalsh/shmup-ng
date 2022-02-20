@@ -97,14 +97,14 @@ export class ShipSpear extends ShipObject {
   timeout2: any = null;
 
   drawMuzzleFlash(ctx: CanvasRenderingContext2D, posX: number, posY: number, levelInstance: LevelInstance, canvasContainer: CanvasContainer, bulletManagerService: BulletManagerService, botManagerService: BotManagerService) {
-    ctx.drawImage(this.imageObjMuzzle[this.muzzleIndex], 0, 0, 90,40, posX-7, posY+5, 90,40);
+    ctx.drawImage(this.imageObjMuzzle[this.muzzleIndex], 0, 0, 90,40, posX, posY-20, 90,40);
   }
 
   fireLazer(posX: number, posY: number, bulletSpeed:number, levelInstance:LevelInstance, ctx:CanvasRenderingContext2D,bulletManagerService:BulletManagerService) {
     let bullDirection:BulletDirection;
     if (levelInstance.isVertical()) {
       bullDirection = bulletManagerService.calculateBulletDirection(posX, posY, posX, (posY-50), bulletSpeed);
-      bulletManagerService.generatePlayerLazer(levelInstance, bullDirection, posX+17, posY+22,this.imageBullets, 42,22);
+      bulletManagerService.generatePlayerLazer(levelInstance, bullDirection, posX+22, posY+14,this.imageBullets, 42,22);
     } else {
 
     }
@@ -117,25 +117,31 @@ export class ShipSpear extends ShipObject {
     this.timeout1 = null;
     this.timeout2 = null;
 
+    botManagerService.createPlayerMissilePlum(posX+30,posY+6);
+    botManagerService.createPlayerMissilePlum(posX+59,posY+6);
     bulletManagerService.generatePlayerHomingMissiles(levelInstance,
       [
-        {startX:posX-20, startY:posY+50},
-        {startX:posX+40, startY:posY+50},
+        {startX:posX+10, startY:posY+5},
+        {startX:posX+50, startY:posY+5},
       ],
       bulletSpeed);
     this.timeout1 = setTimeout(()=> {
+      botManagerService.createPlayerMissilePlum(posX+30,posY+6);
+      botManagerService.createPlayerMissilePlum(posX+59,posY+6);
       bulletManagerService.generatePlayerHomingMissiles(levelInstance,
         [
-          {startX:posX+40, startY:posY+50},
-          {startX:posX-20, startY:posY+50},
+          {startX:posX+10, startY:posY+5},
+          {startX:posX+50, startY:posY+5},
         ],
         bulletSpeed);
     }, 50);
     this.timeout2 = setTimeout(()=> {
+      botManagerService.createPlayerMissilePlum(posX+30,posY+6);
+      botManagerService.createPlayerMissilePlum(posX+59,posY+6);
       bulletManagerService.generatePlayerHomingMissiles(levelInstance,
         [
-          {startX:posX-20, startY:posY+50},
-          {startX:posX+40, startY:posY+50},
+          {startX:posX+10, startY:posY+5},
+          {startX:posX+50, startY:posY+5},
         ],
         bulletSpeed);
     }, 100);

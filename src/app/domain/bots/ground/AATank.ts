@@ -8,6 +8,7 @@ import { CanvasContainer } from "../../CanvasContainer";
 import { Turret } from "../Turret";
 import { LogicService, HardRotationAngle } from "src/app/services/logic.service";
 import { BackgroundElement } from "../../BackgroundElement";
+import { DeathDetails } from "../../DeathDetails";
 
 export class AATank extends BotInstanceImpl{
 	public bulletSpeed:number = 6;
@@ -216,5 +217,13 @@ export class AATank extends BotInstanceImpl{
 
   isGroundBot():boolean{
     return true;
+  }
+
+  /**
+   * Return the current image
+   */
+   getDeathDetails() : DeathDetails {
+    return new DeathDetails ( this.aaTankTurret1, this.posX+this.turretXoffset,this.posY+this.turretYoffset, 98, 68,
+                              this.turret.angleDirection.angle,this.posX+this.turretXoffset+34,this.posY+this.turretYoffset+33, this.getDeathConfig() );
   }
 }

@@ -29,9 +29,9 @@ export class ShipFactoryService {
       case ShipEnum.SPEAR2:
         return new ShipSpear (
           this.resourcesService.getRes().get("player-2-ship"),
-          [this.resourcesService.getRes().get("player-muzzle-flash-1"),
-            this.resourcesService.getRes().get("player-muzzle-flash-2"),
-            this.resourcesService.getRes().get("player-muzzle-flash-3")],
+          [this.resourcesService.getRes().get("player-2-muzzle-flash-1"),
+            this.resourcesService.getRes().get("player-2-muzzle-flash-2"),
+            this.resourcesService.getRes().get("player-2-muzzle-flash-3")],
           [this.resourcesService.getRes().get("player-2-bullets")],
           this.resourcesService.getRes().get("player-1-ship-shadow-separa")
         );

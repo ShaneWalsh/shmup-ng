@@ -622,6 +622,16 @@ export class BotManagerService {
   }
 
 	createPlayerBulletExplosion(x,y){
+		this.spriteSheetArr.push(new SpriteSheet(x-20,y-20,
+			[this.resourcesService.getRes().get("player-bullet-exp-new-1"),
+			this.resourcesService.getRes().get("player-bullet-exp-new-2"),
+			this.resourcesService.getRes().get("player-bullet-exp-new-3"),
+			this.resourcesService.getRes().get("player-bullet-exp-new-4")],
+			40,40,this.deathAnimtionTimer,this.deathAnimtionTimer)
+		);
+  }
+
+  createPlayerMissilePlum(x,y){
 		this.spriteSheetArr.push(new SpriteSheet(x-10,y-10,
 			[this.resourcesService.getRes().get("player-bullet-explosion-1"),
 			this.resourcesService.getRes().get("player-bullet-explosion-2"),
