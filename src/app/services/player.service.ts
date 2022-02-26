@@ -74,6 +74,7 @@ export class PlayerService {
     // are these need here? Or should these decide other objects that are inserted onto the ship? Pilot and ability seem like things that should be extracted
     this.currentPlayer.selectedShip = this.shipFactoryService.createShip(this.selectedShip);
     this.currentPlayer.selectedPilot = this.pilotFactoryService.createPilot(this.selectedPilot);
+    this.currentPlayer.calculateSpeed();
     if(init){
       this.currentPlayer.selectedPilot.playerInit(this.currentPlayer)
     }
@@ -305,5 +306,9 @@ export class PlayerObj implements ShieldBot {
 
   getDeathDetails(): DeathDetails {
     return new DeathDetails(this.selectedShip.imageObj, this.posX, this.posY, this.selectedShip.imageSizeX, this.selectedShip.imageSizeY);
+  }
+
+  calculateSpeed() {
+    this.speed = this.selectedPilot.getSpeed() + this.selectedShip.getSpeed();
   }
 }

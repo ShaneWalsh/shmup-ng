@@ -12,9 +12,9 @@ export class PilotFactoryService {
   public createPilot(selectedPilot:PilotEnum) : PilotObject {
     switch(selectedPilot){
       case PilotEnum.NAOMI1:
-        return new Pilot1(900, 1); // extra life
+        return new Pilot1(900, 1, 4); // extra life
       case PilotEnum.MYRA2:
-        return new Pilot2(800, 0); // faster cooldown
+        return new Pilot2(800, 0, 4); // faster cooldown
     }
   }
 }

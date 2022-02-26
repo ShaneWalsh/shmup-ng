@@ -13,10 +13,10 @@ export enum PilotEnum {
 
 
 export class PilotObject {
-
   constructor(
     public abilityCooldownLimit:number = 900,
     public extraLives:number = 0,
+    public speed:number = 4,
   ){
 
   }
@@ -27,6 +27,10 @@ export class PilotObject {
 
   clearAbility(){
     // abstracted to subclass
+  }
+
+  getSpeed():number {
+    return this.speed;
   }
 
 }

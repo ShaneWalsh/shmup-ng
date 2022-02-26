@@ -176,7 +176,7 @@ export class BulletManagerService {
       this.resourcesService.getRes().get("shield-6"),
       this.resourcesService.getRes().get("shield-7"),
       this.resourcesService.getRes().get("shield-8"),
-    ],90,90,playerObj );
+    ],90,90,playerObj, playerObj.selectedShip["lifeSpanLimit"] );
     this.shieldsArr.push(s);
     return s;
   }

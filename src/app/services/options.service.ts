@@ -7,6 +7,7 @@ import { LevelEnum } from '../manager/level-manager/LevelEnum';
 })
 export class OptionsService {
 
+
   /**
    * Default sound effect volume.
    */
@@ -56,6 +57,27 @@ export class OptionsService {
 
   getLevelOrder(){
 
+  }
+
+  /**
+   * Configurable Values For the Blade ship (Shield one)
+   */
+  getBladeConfig(): any {
+    return {
+      lifeSpanLimit:150,  // how many ticks the shield stays up for 60 ticks a second.
+      speed:4
+    };
+  }
+
+  /**
+   * Configurable Values For the spear ship (Missile one)
+   */
+  getSpearConfig(): any {
+    return {
+      missilesToCreate : 5,
+      missileSpeed : 8,
+      speed:4,
+    };
   }
 
   get backgroundSoundVolume(){
