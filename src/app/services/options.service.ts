@@ -51,6 +51,13 @@ export class OptionsService {
     return true;
   }
 
+  /**
+   * display the ability timer
+   */
+  displayAbilityTimer(): boolean {
+    return true;
+  }
+
   getLevelIndex(level:LevelEnum):number {
     return (this._levelOrder.find(lev => lev.level == level).levelIndex);
   }
@@ -65,7 +72,7 @@ export class OptionsService {
   getBladeConfig(): any {
     return {
       lifeSpanLimit:150,  // how many ticks the shield stays up for 60 ticks a second.
-      speed:4
+      speed:3
     };
   }
 
@@ -75,8 +82,8 @@ export class OptionsService {
   getSpearConfig(): any {
     return {
       missilesToCreate : 5,
-      missileSpeed : 8,
-      speed:4,
+      missileSpeed : 12,
+      speed:5,
     };
   }
 

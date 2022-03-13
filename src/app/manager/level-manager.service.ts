@@ -28,6 +28,9 @@ export class LevelManagerService {
   displayTicksAndPhases(): boolean {
       return this.optionsService.isDisplayTicksAndPhases();
   }
+  displayAbilityTimer(): boolean {
+      return this.optionsService.displayAbilityTimer();
+  }
   private gameTickSubject:Subject<boolean> = new Subject();
   private levelLoaded: Subject<LevelInstance> = new Subject();
   private levelComplete: Subject<LevelInstance> = new Subject();

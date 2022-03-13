@@ -60,6 +60,10 @@ export class ShipObject {
     // abstracted to subclass
   }
 
+  getIntroNumber():number{
+    return 0;
+  }
+
   getHitBox():HitBox {
     return this.hitBox;
   }
@@ -110,6 +114,10 @@ export class ShipBlade extends ShipObject {
     if(this.lastShieldInstance != null) {
       bulletManagerService.removeShield( this.lastShieldInstance );
     }
+  }
+
+  getIntroNumber():number{
+    return 1;
   }
 
 }
@@ -171,6 +179,10 @@ export class ShipSpear extends ShipObject {
       clearTimeout(s)
     });
     this.timeouts = [];
+  }
+
+  getIntroNumber():number{
+    return 2;
   }
 
 }

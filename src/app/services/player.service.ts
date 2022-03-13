@@ -175,7 +175,7 @@ export class PlayerObj implements ShieldBot {
     if (this.activateAbilityNow && this.abilityCooldown < 1) { // can I activate my ability now? Cooldown?
       this.selectedShip.activateAbility(this, this.posX, this.posY,this.bulletSpeed, levelInstance, canvasContainer, bulletManagerService, botManagerService);
       this.abilityCooldown = this.selectedPilot.abilityCooldownLimit;
-    } else {
+    } else if(this.abilityCooldown > 0) {
       this.abilityCooldown--;
     }
 
