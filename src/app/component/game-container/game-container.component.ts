@@ -104,7 +104,7 @@ export class GameContainerComponent implements OnInit, OnDestroy {
               resourcesService.getRes().get("alt-scene-3-13"),resourcesService.getRes().get("alt-scene-3-14"), resourcesService.getRes().get("alt-scene-3-15"),resourcesService.getRes().get("alt-scene-3-16"),
             ],
             [
-              resourcesService.getRes().get("alt-scene-4-1"),resourcesService.getRes().get("alt-scene-4-2"),resourcesService.getRes().get("alt-scene-4-3"),resourcesService.getRes().get("alt-scene-4-4"),resourcesService.getRes().get("upd-scene-4-5"),resourcesService.getRes().get("upd-scene-4-6")],
+              resourcesService.getRes().get("alt-scene-4-1"),resourcesService.getRes().get("alt-scene-4-2"),resourcesService.getRes().get("alt-scene-4-3"),resourcesService.getRes().get("alt-scene-4-4"),resourcesService.getRes().get("alt-scene-4-5"),resourcesService.getRes().get("alt-scene-4-6")],
           );
         }
       }

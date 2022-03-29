@@ -87,6 +87,10 @@ export class OptionsService {
     };
   }
 
+  extraLifeOnLevelComplete(){
+    return true;
+  }
+
   get backgroundSoundVolume(){
     return this._backgroundSoundVolume;
   }

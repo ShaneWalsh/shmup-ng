@@ -7,6 +7,7 @@ import { LevelEnum } from 'src/app/manager/level-manager/LevelEnum';
 import { NgApiService } from 'src/app/services/ng-api.service';
 import { AudioServiceService } from 'src/app/services/audio-service.service';
 import { ProfileService } from 'src/app/services/profile.service';
+import { OptionsService } from 'src/app/services/options.service';
 
 @Component({
   selector: 'app-intro-screen',
@@ -29,7 +30,7 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
     public playerLives:number = 0;
     public requestAnimFrame:any; // have to ensure this is not created multiple times!
 
-    constructor(private profileService:ProfileService, private keyboardEventService:KeyboardEventService, private levelManagerService: LevelManagerService, private playerService:PlayerService, private audioServiceService:AudioServiceService) {
+    constructor(private profileService:ProfileService, private keyboardEventService:KeyboardEventService, private levelManagerService: LevelManagerService, private playerService:PlayerService, private audioServiceService:AudioServiceService, private optionsService:OptionsService) {
         this.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || // this redraws the canvas when the browser is updating. Crome 18 is execllent for canvas, makes it much faster by using os
                            window["mozRequestAnimationFrame"] || window["msRequestAnimationFrame"] || window["oRequestAnimationFrame"]
                            || function(callback) { window.setTimeout(callback,1000/60);};
@@ -151,7 +152,11 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
         this.levelManagerService.pauseGame(); // no point in it running for eternity
         this.profileService.checkMedals();
         this.playerScore =  this.playerService.currentPlayer.score;
-        this.playerLives =  this.playerService.currentPlayer.lives;
+        if(this.optionsService.extraLifeOnLevelComplete()){
+          this.playerLives =  this.playerService.currentPlayer.lives +1;
+        } else {
+          this.playerLives =  this.playerService.currentPlayer.lives;
+        }
         if(this.levelManagerService.getCurrentLevelEnum() == LevelEnum.LevelOne){
           this.screenId = 30;
         } else if(this.levelManagerService.getCurrentLevelEnum() == LevelEnum.LevelTwo){

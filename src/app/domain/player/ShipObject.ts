@@ -80,6 +80,10 @@ export class ShipObject {
     }
   }
 
+  getABCode():string{
+    return "ab1";
+  }
+
 }
 
 
@@ -118,6 +122,10 @@ export class ShipBlade extends ShipObject {
 
   getIntroNumber():number{
     return 1;
+  }
+
+  getABCode():string{
+    return "ab1";
   }
 
 }
@@ -183,6 +191,10 @@ export class ShipSpear extends ShipObject {
 
   getIntroNumber():number{
     return 2;
+  }
+
+  getABCode():string{
+    return "ab2";
   }
 
 }
