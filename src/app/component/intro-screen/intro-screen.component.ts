@@ -60,21 +60,28 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
               this.landedOnTitleScreen();
               this.screenId++;
             } else { // we are past the title screen, on one of the menus
-              this.screenId++;
-              if(this.screenId == 6) { // used to be 6 for screen 4+5 but those have been removed
-                // lets assume the user picked a player here
+              if(this.screenId == 1 && this.levelManagerService.mainMenuIndex == 2){
+                this.screenId = 10;
+              } else { // will have to add credits at some point
+                this.screenId++;
+                if(this.screenId == 6) { // used to be 6 for screen 4+5 but those have been removed
+                  // lets assume the user picked a player here
 
-                this.playerService.initPlayer();
-                if(this.levelManagerService.mainMenuIndex == 0){
-                  this.screenId = 6;
-                  this.levelManagerService.initLevel(LevelEnum.LevelOne);
-                } else if(this.levelManagerService.mainMenuIndex == 1){
-                  this.screenId = 55;
-                  this.levelManagerService.initLevel(LevelEnum.LevelFour);
+                  this.playerService.initPlayer();
+                  if(this.levelManagerService.mainMenuIndex == 0){
+                    this.screenId = 6;
+                    this.levelManagerService.initLevel(LevelEnum.LevelOne);
+                  } else if(this.levelManagerService.mainMenuIndex == 1){
+                    this.screenId = 55;
+                    this.levelManagerService.initLevel(LevelEnum.LevelFour);
+                  }
                 }
               }
             }
-          } else if(this.screenId == 20) { // game over screen
+          } else if(this.screenId == 10) { // ops screen, back to MM.
+            this.screenId = 1;
+            this.landedOnTitleScreen();
+          }else if(this.screenId == 20) { // game over screen
             this.screenId = 1;
             this.landedOnTitleScreen();
           } else if(this.screenId == 30) {
@@ -112,6 +119,18 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
               this.levelManagerService.mainMenuIndex = mainMenuSelection;
             }
           }
+          if(this.screenId == 10) { // ops menu select
+            // perform a medal check again
+            if (key == 87 || key == 38) { // up
+              let opsMenuSelection =  this.levelManagerService.opsMenuIndex - 1 ;
+              if(opsMenuSelection < 0) opsMenuSelection = 3;
+              this.levelManagerService.opsMenuIndex = opsMenuSelection;
+            } else { //down 83 40
+              let opsMenuSelection =  this.levelManagerService.opsMenuIndex + 1;
+              if(opsMenuSelection > 3) opsMenuSelection = 0;
+              this.levelManagerService.opsMenuIndex = opsMenuSelection;
+            }
+          }
           if(this.screenId == 3) { // diff select
             if (key == 87 || key == 38) { // up
               let diff =  this.levelManagerService.difficulty -1;
@@ -132,6 +151,16 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
             let shipSelection =  this.playerService.selectedShip +1;
             if(shipSelection > 1) shipSelection = 0;
             this.playerService.selectedShip = shipSelection;
+          }
+        }
+        if(key == 65 || key == 37 || key == 68 || key == 39){
+          if(this.screenId == 10) { // ops menu select
+            // perform a medal check again
+            if (key == 65 || key == 37) { // left
+              this.levelManagerService.opsMenuDecrease()
+            } else { //right
+              this.levelManagerService.opsMenuIncrease();
+            }
           }
         }
       }));

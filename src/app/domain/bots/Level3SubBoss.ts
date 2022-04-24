@@ -97,9 +97,9 @@ export class Level3SubBoss extends  BotInstanceImpl {
       public imageTurretBulletDam:HTMLImageElement=null,
       public imageTurretBulletMuzzle:HTMLImageElement=null,
 
-      public hitBox:HitBox=new HitBox(0,0,imageSizeX,100),
-      public hitBox2:HitBox=new HitBox(0,0,160,imageSizeY),
-      public hitBox3:HitBox=new HitBox((imageSizeX-160),0,160,imageSizeY)
+      public hitBox:HitBox=new HitBox(0,0,imageSizeX,90),
+      public hitBox2:HitBox=new HitBox(0,0,150,imageSizeY),
+      public hitBox3:HitBox=new HitBox((imageSizeX-150),0,150,imageSizeY)
     ) {
       super(config);
       this.imageObj = imageObj;

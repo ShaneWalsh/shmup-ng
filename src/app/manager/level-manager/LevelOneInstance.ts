@@ -90,7 +90,7 @@ export class LevelOneInstance implements LevelInstance{
       LogicService.writeOnCanvas(400,60,this.phaseCounter,24,"#ff00ff",canvasContainer.topCtx);
     }
     if(levelManagerService.displayAbilityTimer()){
-      LogicService.writeOnCanvas(400,628,Math.round(playerService.currentPlayer.abilityCooldown/60),24,"#ff00ff",canvasContainer.topCtx);
+      LogicService.writeOnCanvas(440,628,Math.round(playerService.currentPlayer.abilityCooldown/60),24,"#ff00ff",canvasContainer.topCtx);
     }
   }
   updateEvent(canvasContainer:CanvasContainer, playerService:PlayerService, levelManagerService:LevelManagerService) {

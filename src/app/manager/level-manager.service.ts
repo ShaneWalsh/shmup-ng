@@ -42,6 +42,8 @@ export class LevelManagerService {
   public difficulty:number = 0;
   public mainMenuIndex:number = 0;
 
+  public opsMenuIndex:number = 0;
+
   // ingame menu
   public showPauseMenu:boolean = false;
   public showPauseMenuIndex:number = 0;
@@ -150,6 +152,22 @@ export class LevelManagerService {
 
   getCurrentLevelEnum():LevelEnum {
     return this.currentLevelEnum;
+  }
+
+  opsMenuIncrease() {
+    if(this.opsMenuIndex == 0){
+      this.optionsService.backgroundSoundVolume()
+    } else if(this.opsMenuIndex == 1){
+
+    } else if(this.opsMenuIndex == 2){
+
+    } else if(this.opsMenuIndex == 3){
+
+    }
+  }
+
+  opsMenuDecrease() {
+
   }
 }
 

@@ -15,7 +15,7 @@ export class ResourcesService {
     private resources:Map<string,any>;// could be images, sounds, etc
     private loaderRun:boolean = false;
 
-    private useOffline:boolean = true;
+    private useOffline:boolean = false;
     private exportBase64:boolean = !this.useOffline; // will store base64 images and export for copy to file.
 
     constructor ( ) {
@@ -82,19 +82,20 @@ export class ResourcesService {
         {code:"swordfish", path:"/assets/img/bots/swordfish/swordfish.png", type:ResourcesEnum.ImageRes},
         {code:"swordfish-damaged", path:"/assets/img/bots/swordfish/swordfish-damaged.png", type:ResourcesEnum.ImageRes},
 
-        {code:"b8-laser-1", path:"/assets/img/boss/boss-8-update/b8-laser-1.png", type:ResourcesEnum.ImageRes},
-        {code:"b8-laser-2", path:"/assets/img/boss/boss-8-update/b8-laser-2.png", type:ResourcesEnum.ImageRes},
-        {code:"b8-laser-3", path:"/assets/img/boss/boss-8-update/b8-laser-3.png", type:ResourcesEnum.ImageRes},
-        {code:"b8-laser-4", path:"/assets/img/boss/boss-8-update/b8-laser-4.png", type:ResourcesEnum.ImageRes},
-        {code:"b8-laser-5", path:"/assets/img/boss/boss-8-update/b8-laser-5.png", type:ResourcesEnum.ImageRes},
-        {code:"b8-laser-6", path:"/assets/img/boss/boss-8-update/b8-laser-6.png", type:ResourcesEnum.ImageRes},
-        {code:"b8-laser-7", path:"/assets/img/boss/boss-8-update/b8-laser-7.png", type:ResourcesEnum.ImageRes},
-        {code:"b8-laser-8", path:"/assets/img/boss/boss-8-update/b8-laser-8.png", type:ResourcesEnum.ImageRes},
-        {code:"b8-laser-9", path:"/assets/img/boss/boss-8-update/b8-laser-9.png", type:ResourcesEnum.ImageRes},
-        {code:"b8-laser-10", path:"/assets/img/boss/boss-8-update/b8-laser-10.png", type:ResourcesEnum.ImageRes},
-        {code:"b8-laser-11", path:"/assets/img/boss/boss-8-update/b8-laser-11.png", type:ResourcesEnum.ImageRes},
-        {code:"boss-8", path:"/assets/img/boss/boss-8-update/boss-8.png", type:ResourcesEnum.ImageRes},
-        {code:"boss-8-damaged", path:"/assets/img/boss/boss-8-update/boss-8-damaged.png", type:ResourcesEnum.ImageRes},
+        {code:"laser-1", path:"/assets/img/boss/boss-8-update/laser-1.png", type:ResourcesEnum.ImageRes},
+        {code:"laser-2", path:"/assets/img/boss/boss-8-update/laser-2.png", type:ResourcesEnum.ImageRes},
+        {code:"laser-3", path:"/assets/img/boss/boss-8-update/laser-3.png", type:ResourcesEnum.ImageRes},
+        {code:"laser-4", path:"/assets/img/boss/boss-8-update/laser-4.png", type:ResourcesEnum.ImageRes},
+        {code:"laser-5", path:"/assets/img/boss/boss-8-update/laser-5.png", type:ResourcesEnum.ImageRes},
+        {code:"laser-6", path:"/assets/img/boss/boss-8-update/laser-6.png", type:ResourcesEnum.ImageRes},
+        {code:"laser-7", path:"/assets/img/boss/boss-8-update/laser-7.png", type:ResourcesEnum.ImageRes},
+        {code:"laser-8", path:"/assets/img/boss/boss-8-update/laser-8.png", type:ResourcesEnum.ImageRes},
+        {code:"laser-9", path:"/assets/img/boss/boss-8-update/laser-9.png", type:ResourcesEnum.ImageRes},
+        {code:"laser-10", path:"/assets/img/boss/boss-8-update/laser-10.png", type:ResourcesEnum.ImageRes},
+        {code:"laser-11", path:"/assets/img/boss/boss-8-update/laser-11.png", type:ResourcesEnum.ImageRes},
+
+        {code:"boss-8", path:"/assets/img/boss/boss-8-update/boss-8-new.png", type:ResourcesEnum.ImageRes},
+        {code:"boss-8-damaged", path:"/assets/img/boss/boss-8-update/boss-8-new-damaged.png", type:ResourcesEnum.ImageRes},
         //{code:"boss-8-example", path:"/assets/img/boss/boss-8-update/boss-8-example.png ", type:ResourcesEnum.ImageRes},
         {code:"boss-8-turret", path:"/assets/img/boss/boss-8-update/boss-8-turret.png", type:ResourcesEnum.ImageRes},
         {code:"boss-8-turret-damaged", path:"/assets/img/boss/boss-8-update/boss-8-turret-damaged.png", type:ResourcesEnum.ImageRes},
@@ -237,8 +238,7 @@ export class ResourcesService {
           {code:"player-2-muzzle-flash-2", path:"assets/img/player/player2/player-2-muzzle-flash-2.png", type:ResourcesEnum.ImageRes},
           {code:"player-2-muzzle-flash-3", path:"assets/img/player/player2/player-2-muzzle-flash-3.png", type:ResourcesEnum.ImageRes},
 
-
-          {code:"HUD-resized", path:"assets/img/hud/HUD-resized.png", type:ResourcesEnum.ImageRes},
+          {code:"HUD-resized", path:"assets/img/hud/hud-updated.png", type:ResourcesEnum.ImageRes},
           {code:"stage-1-complete", path:"assets/img/desc/stage-1-complete.png", type:ResourcesEnum.ImageRes},
 
           {code:"upd-scene-1-1", path:"assets/img/loading/intro-update/scene-1-1.png", type:ResourcesEnum.ImageRes},
