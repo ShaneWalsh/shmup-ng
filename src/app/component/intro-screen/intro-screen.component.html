@@ -53,21 +53,9 @@
   </div>
   <div class="screen-container" *ngIf="screenId==6">
       <app-game-container [requestAnimFrame]="requestAnimFrame"></app-game-container>
-  </div>
-
+  </div>  
   <div class="screen-container" *ngIf="screenId==10">
-    <span *ngIf="levelManagerService.opsMenuIndex==0">
-      <img [src]="'assets/img/hud/options-menu-v1.png'">
-    </span>
-    <span *ngIf="levelManagerService.opsMenuIndex==1">
-      <img [src]="'assets/img/hud/options-menu-v2.png'">
-    </span>
-    <span *ngIf="levelManagerService.opsMenuIndex==2">
-      <img [src]="'assets/img/hud/options-menu-v3.png'">
-    </span>
-    <span *ngIf="levelManagerService.opsMenuIndex==3">
-      <img [src]="'assets/img/hud/options-menu-v4.png'">
-    </span>
+      <app-options-screen [requestAnimFrame]="requestAnimFrame"></app-options-screen>
   </div>
 
   <div class="screen-container pink-text" *ngIf="screenId==20">

@@ -241,6 +241,8 @@ export class ResourcesService {
           {code:"HUD-resized", path:"assets/img/hud/hud-updated.png", type:ResourcesEnum.ImageRes},
           {code:"stage-1-complete", path:"assets/img/desc/stage-1-complete.png", type:ResourcesEnum.ImageRes},
 
+          {code:"options-menu", path:"assets/img/hud/options-menu-v1.png", type:ResourcesEnum.ImageRes},
+          
           {code:"upd-scene-1-1", path:"assets/img/loading/intro-update/scene-1-1.png", type:ResourcesEnum.ImageRes},
           {code:"upd-scene-1-10", path:"assets/img/loading/intro-update/scene-1-10.png", type:ResourcesEnum.ImageRes},
           {code:"upd-scene-1-11", path:"assets/img/loading/intro-update/scene-1-11.png", type:ResourcesEnum.ImageRes},

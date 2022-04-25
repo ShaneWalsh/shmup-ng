@@ -119,18 +119,6 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
               this.levelManagerService.mainMenuIndex = mainMenuSelection;
             }
           }
-          if(this.screenId == 10) { // ops menu select
-            // perform a medal check again
-            if (key == 87 || key == 38) { // up
-              let opsMenuSelection =  this.levelManagerService.opsMenuIndex - 1 ;
-              if(opsMenuSelection < 0) opsMenuSelection = 3;
-              this.levelManagerService.opsMenuIndex = opsMenuSelection;
-            } else { //down 83 40
-              let opsMenuSelection =  this.levelManagerService.opsMenuIndex + 1;
-              if(opsMenuSelection > 3) opsMenuSelection = 0;
-              this.levelManagerService.opsMenuIndex = opsMenuSelection;
-            }
-          }
           if(this.screenId == 3) { // diff select
             if (key == 87 || key == 38) { // up
               let diff =  this.levelManagerService.difficulty -1;
@@ -151,16 +139,6 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
             let shipSelection =  this.playerService.selectedShip +1;
             if(shipSelection > 1) shipSelection = 0;
             this.playerService.selectedShip = shipSelection;
-          }
-        }
-        if(key == 65 || key == 37 || key == 68 || key == 39){
-          if(this.screenId == 10) { // ops menu select
-            // perform a medal check again
-            if (key == 65 || key == 37) { // left
-              this.levelManagerService.opsMenuDecrease()
-            } else { //right
-              this.levelManagerService.opsMenuIncrease();
-            }
           }
         }
       }));

@@ -5,13 +5,15 @@ import { AppComponent } from './app.component';
 import { IntroScreenComponent } from './component/intro-screen/intro-screen.component';
 import { GameContainerComponent } from './component/game-container/game-container.component';
 import { LoadingScreenComponent } from './component/loading-screen/loading-screen.component';
+import { OptionsScreenComponent } from './component/options-screen/options-screen.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     IntroScreenComponent,
     GameContainerComponent,
-    LoadingScreenComponent
+    LoadingScreenComponent,
+    OptionsScreenComponent
   ],
   imports: [
     BrowserModule

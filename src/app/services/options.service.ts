@@ -28,20 +28,25 @@ export class OptionsService {
     {level:LevelEnum.LevelSix, levelIndex:6}
   ];
 
+  // logic for screen
+  opsMenuIndex: number = 0;
+  _skipIntro: boolean = false;
+  _drawHitBox: boolean = true;
+
   constructor() { }
 
   /**
    * skip the game introduction vid
    */
   isSkipIntro() :boolean {
-    return false;
+    return this._skipIntro;
   }
 
   /**
    * draw the hit boxes
    */
   isDrawHitBox(): boolean {
-    return false;
+    return this._drawHitBox;
   }
 
   /**
@@ -105,6 +110,37 @@ export class OptionsService {
 
   set soundAffectVolume(v:number){
     this._soundAffectVolume = v;
+  }
+
+  opsMenuIncrease() {
+    if(this.opsMenuIndex == 0){
+      if(this.backgroundSoundVolume < 1){
+        this._backgroundSoundVolume += .1;
+      }
+    } else if(this.opsMenuIndex == 1){
+      if(this.soundAffectVolume < 1){
+        this._soundAffectVolume += .1;
+      }
+    } else if(this.opsMenuIndex == 2){
+      this._drawHitBox = true;
+    } else if(this.opsMenuIndex == 3){
+      this._skipIntro = true;
+    }
+  }
+  opsMenuDecrease() {
+    if(this.opsMenuIndex == 0){
+      if(this.backgroundSoundVolume > 0){
+        this._backgroundSoundVolume -= .1;
+      }
+    } else if(this.opsMenuIndex == 1){
+      if(this.soundAffectVolume > 0){
+        this._soundAffectVolume -= .1;
+      }
+    } else if(this.opsMenuIndex == 2){
+      this._drawHitBox = false;
+    } else if(this.opsMenuIndex == 3){
+      this._skipIntro = false;
+    }
   }
 
 }
