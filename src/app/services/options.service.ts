@@ -31,7 +31,7 @@ export class OptionsService {
   // logic for screen
   opsMenuIndex: number = 0;
   _skipIntro: boolean = false;
-  _drawHitBox: boolean = true;
+  _drawHitBox: boolean = false;
 
   constructor() { }
 
@@ -114,11 +114,11 @@ export class OptionsService {
 
   opsMenuIncrease() {
     if(this.opsMenuIndex == 0){
-      if(this.backgroundSoundVolume < 1){
+      if(this.backgroundSoundVolume < 0.91){
         this._backgroundSoundVolume += .1;
       }
     } else if(this.opsMenuIndex == 1){
-      if(this.soundAffectVolume < 1){
+      if(this.soundAffectVolume < 0.91){
         this._soundAffectVolume += .1;
       }
     } else if(this.opsMenuIndex == 2){
@@ -129,11 +129,11 @@ export class OptionsService {
   }
   opsMenuDecrease() {
     if(this.opsMenuIndex == 0){
-      if(this.backgroundSoundVolume > 0){
+      if(this.backgroundSoundVolume > 0.01){
         this._backgroundSoundVolume -= .1;
       }
     } else if(this.opsMenuIndex == 1){
-      if(this.soundAffectVolume > 0){
+      if(this.soundAffectVolume > 0.01){
         this._soundAffectVolume -= .1;
       }
     } else if(this.opsMenuIndex == 2){

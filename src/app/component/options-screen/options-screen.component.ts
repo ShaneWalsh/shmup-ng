@@ -23,9 +23,9 @@ export class OptionsScreenComponent implements OnInit, OnDestroy {
     })
   }
   private subs:Subscription[] = [];
-  
+
   @ViewChild('canvas') public canvasMain: ElementRef;
-  
+
     mainCtx: any;
     tickComplete:boolean=true;
 
@@ -79,7 +79,7 @@ export class OptionsScreenComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        
+
     }
 
 
@@ -100,9 +100,22 @@ export class OptionsScreenComponent implements OnInit, OnDestroy {
         this.tickComplete = false;
         this.mainCtx.clearRect(0, 0, this.width, this.height);
         let res = this.resourcesService.getRes().get("options-menu");
+        let arrow = this.resourcesService.getRes().get("options-arrow");
         this.mainCtx.drawImage(res, 0,0,this.width,this.height);
-        LogicService.writeOnCanvas(440,628,this.optionsService.backgroundSoundVolume*10,24,"#ff00ff",this.mainCtx);
-    
+        if(this.optionsService.opsMenuIndex == 0) {
+          this.mainCtx.drawImage(arrow, 286,196,19,21);
+        } else if(this.optionsService.opsMenuIndex == 1) {
+          this.mainCtx.drawImage(arrow, 286,250,19,21);
+        } else if(this.optionsService.opsMenuIndex == 2) {
+          this.mainCtx.drawImage(arrow, 286,315,19,21);
+        } else if(this.optionsService.opsMenuIndex == 3) {
+          this.mainCtx.drawImage(arrow, 286,370,19,21);
+        }
+        LogicService.writeOnCanvas(320,215,Math.round(this.optionsService.backgroundSoundVolume*100),24,"#ff00ff",this.mainCtx);
+        LogicService.writeOnCanvas(320,270,Math.round(this.optionsService.soundAffectVolume*100),24,"#ff00ff",this.mainCtx);
+        LogicService.writeOnCanvas(320,330,this.optionsService.isDrawHitBox(),24,"#ff00ff",this.mainCtx);
+        LogicService.writeOnCanvas(320,385,this.optionsService.isSkipIntro(),24,"#ff00ff",this.mainCtx);
+
         this.tickComplete = true;
     }
 }

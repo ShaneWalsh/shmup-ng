@@ -42,6 +42,8 @@ export class LevelManagerService {
   public difficulty:number = 0;
   public mainMenuIndex:number = 0;
 
+  public opsMenuIndex:number = 0;
+
   // ingame menu
   public showPauseMenu:boolean = false;
   public showPauseMenuIndex:number = 0;
