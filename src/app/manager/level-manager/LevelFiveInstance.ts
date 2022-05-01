@@ -1,4 +1,5 @@
 import { CanvasContainer } from "src/app/domain/CanvasContainer";
+import { AudioServiceService } from "src/app/services/audio-service.service";
 import { PlayerService } from "src/app/services/player.service";
 import { ResourcesService } from "src/app/services/resources.service";
 import { BotManagerService } from "../bot-manager.service";
@@ -26,6 +27,11 @@ export class LevelFiveInstance extends LevelOneInstance {
     this.eventArr = this.levelEventsService.getLevel5Events(levelManagerService.difficulty);
     this.scrollHeight = 640;
     this.scrollHeightSlowScroll = 640;
+  }
+
+  updateMusic(audioServiceService:AudioServiceService) {
+    audioServiceService.update();
+    audioServiceService.playAudio("level1", true);
   }
 
   updateBackground(canvasContainer:CanvasContainer, playerService:PlayerService, levelManagerService:LevelManagerService) {

@@ -57,6 +57,9 @@ export class GameContainerComponent implements OnInit, OnDestroy {
                 private deathManagerService:DeathManagerService,
                 private playerService:PlayerService, private botManagerService:BotManagerService, private keyboardEventService:KeyboardEventService) {
       this.introOver = this.optionsService.isSkipIntro();
+      if(this.introOver){
+        this.audioServiceService.stopAllAudio(true);
+      }
       this.subs.push(this.levelManagerService.getGameTickSubject().subscribe(result => {
         if(this.tickComplete){
             this.update();
@@ -64,6 +67,7 @@ export class GameContainerComponent implements OnInit, OnDestroy {
       }));
       this.playerService.currentPlayer.moveToMiddle();
       if(!this.levelManagerService.getCurrentLevel().hasIntro()){
+        this.audioServiceService.stopAllAudio(true);
         this.introOver = true;
       } else {
         if(this.playerService.currentPlayer.selectedShip.getIntroNumber() == 1){
@@ -111,7 +115,6 @@ export class GameContainerComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.audioServiceService.stopAllAudio(true);
         this.subs.push(this.levelManagerService.getLevelCompleteSubject().subscribe(result => {
 
         }));
@@ -148,6 +151,7 @@ export class GameContainerComponent implements OnInit, OnDestroy {
             this.levelManagerService.pauseGame();
             if(this.introAnimationInstance.isComplete()) {
               this.introOver = true;
+              this.audioServiceService.stopAllAudio();
               this.levelManagerService.unPauseGame();
             } else {
               this.introAnimationInstance.update(this.canvasContainer);
@@ -201,7 +205,7 @@ export class GameContainerComponent implements OnInit, OnDestroy {
 
               const currentLevel = this.levelManagerService.getCurrentLevel();
               // have a level manager, that controls the background and the spawning, updates first. 4 levels, controls boss spawn.
-              currentLevel.update(this.canvasContainer,this.playerService, this.levelManagerService);
+              currentLevel.update(this.canvasContainer,this.playerService, this.levelManagerService, this.audioServiceService);
 
               // have a bot manager to move the bots (gen bullets, patterns etc)
               this.botManagerService.update(currentLevel, this.canvasContainer, this.bulletManagerService, this.playerService);
@@ -216,10 +220,6 @@ export class GameContainerComponent implements OnInit, OnDestroy {
                 // some bullets should be destructable.
                 // some cannot be destroyed
               this.bulletManagerService.update(currentLevel, this.canvasContainer, this.botManagerService, this.playerService);
-
-              // vertical and horizontal, bare that in mind....
-              this.audioServiceService.update();
-              this.audioServiceService.playAudio("level1", true);
             }
         }
         this.tickComplete = true;

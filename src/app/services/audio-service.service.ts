@@ -11,16 +11,14 @@ export enum SoundResEnum {
 })
 export class AudioServiceService {
 
-  public soundAffectVolume:number;
-  public backgroundSoundVolume:number;
 
   public audioMap:AudioSound[] = [];
   public audioWaitMap:{name:string,time:number}[] = [];
 
-  constructor( optionsService: OptionsService ) {
-    this.soundAffectVolume = optionsService.soundAffectVolume;
-    this.backgroundSoundVolume = optionsService.backgroundSoundVolume;
-    // todo subscribers probably want to listen to the options setters
+  constructor(private optionsService: OptionsService ) {
+    this.optionsService.volumeUpdate.subscribe( () => {
+      this.volumeUpdate();
+    });
   }
 
   update() {
@@ -31,9 +29,9 @@ export class AudioServiceService {
 
 	addAudio( name, audio:HTMLAudioElement, type = SoundResEnum.TYPESOUND) {
     if(type == SoundResEnum.TYPEBG) {
-      this.audioMap.push(new AudioSound(name,audio,type,this.backgroundSoundVolume));
+      this.audioMap.push(new AudioSound(name,audio,type, this.optionsService.backgroundSoundVolume));
     } else if(type == SoundResEnum.TYPESOUND) {
-      this.audioMap.push(new AudioSound(name,audio,type,this.soundAffectVolume));
+      this.audioMap.push(new AudioSound(name,audio,type,this.optionsService.soundAffectVolume));
     }
 	}
 
@@ -45,7 +43,7 @@ export class AudioServiceService {
     if(audioObj){
       const waitTime = this.audioWaitMap.find(waitTime => waitTime.name == name);
       if(!waitTime){
-        audioObj.audio.volume = audioObj.volume;
+        audioObj.audio.volume = this.getVolume(audioObj);
         if(audioObj.audio.readyState > 0)
           audioObj.audio.play();
         if(loop){
@@ -68,7 +66,7 @@ export class AudioServiceService {
       if(!waitTime){
         var tmp = new Audio();
         tmp.src = audioObj.audio.src;
-        tmp.volume = audioObj.volume;
+        tmp.volume = this.getVolume(audioObj);
         tmp.play();
         this.audioWaitMap.push({name:name, time:5});
       }
@@ -92,6 +90,7 @@ export class AudioServiceService {
         audioObj.audio.currentTime = 0;
       }
     }
+    this.audioWaitMap = [];
 	}
 
 	loopAudio( name, bool = true ) {
@@ -100,6 +99,20 @@ export class AudioServiceService {
       audioObj.audio.loop = bool;
     }
 	}
+
+  getVolume(audioObj){
+    if(audioObj.type == SoundResEnum.TYPEBG) {
+      return this.optionsService.backgroundSoundVolume;
+    } else if(audioObj.type == SoundResEnum.TYPESOUND) {
+      return this.optionsService.soundAffectVolume;
+    }
+  }
+
+  volumeUpdate(){
+    this.audioMap.forEach(audioObj => {
+      audioObj.volume = this.getVolume(audioObj);
+    });
+  }
 
 	// adjustAudio(topic, {sav, bsv}){ // if a user moves a sound slider on sf or bg sound, have to loop over all sounds and set their volume. // some may be hard coded
 	// 	let p = this.props;

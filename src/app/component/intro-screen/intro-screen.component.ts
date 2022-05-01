@@ -35,7 +35,6 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
                            window["mozRequestAnimationFrame"] || window["msRequestAnimationFrame"] || window["oRequestAnimationFrame"]
                            || function(callback) { window.setTimeout(callback,1000/60);};
        this.update();
-
     }
 
     ngOnInit() {
@@ -79,6 +78,7 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
               }
             }
           } else if(this.screenId == 10) { // ops screen, back to MM.
+            // handled with subject.
             this.screenId = 1;
             this.landedOnTitleScreen();
           }else if(this.screenId == 20) { // game over screen

@@ -1,4 +1,5 @@
 import { CanvasContainer } from "src/app/domain/CanvasContainer";
+import { AudioServiceService } from "src/app/services/audio-service.service";
 import { PlayerService } from "src/app/services/player.service";
 import { ResourcesService } from "src/app/services/resources.service";
 import { BotManagerService } from "../bot-manager.service";
@@ -19,6 +20,8 @@ export class LevelThreeInstance extends LevelOneInstance {
   protected slowScrollIntervalLimit:number = 3;
 
   protected scrollerYIncrementSlowScroll:number = 0;
+  flipMusic: boolean = false;
+  musicTrack = "895136_Existence_lvl3";
 
   constructor(resourcesService:ResourcesService, botManagerService:BotManagerService, levelManagerService:LevelManagerService, levelEventsService:LevelEventsService){
       super(resourcesService,botManagerService,levelManagerService,levelEventsService);
@@ -29,6 +32,16 @@ export class LevelThreeInstance extends LevelOneInstance {
       this.eventArr = this.levelEventsService.getLevel3Events(levelManagerService.difficulty);
       this.scrollHeight = 640;
       this.scrollHeightSlowScroll = 640;
+  }
+
+  updateMusic(audioServiceService:AudioServiceService) {
+    if(this.flipMusic){
+      this.musicTrack = "1055567_Melody_boss";
+      this.flipMusic = false;
+      audioServiceService.stopAllAudio(true);
+    }
+    audioServiceService.update();
+    audioServiceService.playAudio(this.musicTrack, true);
   }
 
   updateBackground(canvasContainer:CanvasContainer, playerService:PlayerService, levelManagerService:LevelManagerService) {
@@ -59,6 +72,14 @@ export class LevelThreeInstance extends LevelOneInstance {
       if (this.scrollerYIncrementSlowScroll > this.getScrollHeight()) { this.scrollerYIncrementSlowScroll = 0 };
     }
   }
+
+  updatePhaseCounter() {
+    this.phaseCounter++;
+    if(this.phaseCounter == 2) {
+      this.flipMusic = true;
+    }
+    this.tickCounter = 0;
+}
 
   drawShadow(){
     return false;

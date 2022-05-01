@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 import { LevelEnum } from '../manager/level-manager/LevelEnum';
 
 
@@ -7,6 +8,8 @@ import { LevelEnum } from '../manager/level-manager/LevelEnum';
 })
 export class OptionsService {
 
+  public optionsQuitSubject: Subject<boolean> = new Subject();
+  public volumeUpdate: Subject<boolean> = new Subject();
 
   /**
    * Default sound effect volume.
@@ -116,10 +119,12 @@ export class OptionsService {
     if(this.opsMenuIndex == 0){
       if(this.backgroundSoundVolume < 0.91){
         this._backgroundSoundVolume += .1;
+        this.volumeUpdate.next(true);
       }
     } else if(this.opsMenuIndex == 1){
       if(this.soundAffectVolume < 0.91){
         this._soundAffectVolume += .1;
+        this.volumeUpdate.next(true);
       }
     } else if(this.opsMenuIndex == 2){
       this._drawHitBox = true;
@@ -131,10 +136,12 @@ export class OptionsService {
     if(this.opsMenuIndex == 0){
       if(this.backgroundSoundVolume > 0.01){
         this._backgroundSoundVolume -= .1;
+        this.volumeUpdate.next(true);
       }
     } else if(this.opsMenuIndex == 1){
       if(this.soundAffectVolume > 0.01){
         this._soundAffectVolume -= .1;
+        this.volumeUpdate.next(true);
       }
     } else if(this.opsMenuIndex == 2){
       this._drawHitBox = false;

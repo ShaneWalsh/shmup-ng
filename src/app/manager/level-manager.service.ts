@@ -48,6 +48,8 @@ export class LevelManagerService {
   public showPauseMenu:boolean = false;
   public showPauseMenuIndex:number = 0;
 
+  public showOptionsMenu:boolean = false;
+
   constructor(
     private optionsService:OptionsService, private resourcesService:ResourcesService, private botManagerService:BotManagerService,
     private bulletManagerService: BulletManagerService, private levelEventsService:LevelEventsService,
@@ -59,9 +61,11 @@ export class LevelManagerService {
         if(this.getNotPaused()){
           this.pauseGame();
           this.showPauseMenu = true;
+          this.showOptionsMenu = false;
         } else {
           this.unPauseGame();
           this.showPauseMenu = false;
+          this.showOptionsMenu = false;
         }
       }
       else if(this.getPaused()){
@@ -74,13 +78,22 @@ export class LevelManagerService {
           if(diff > 2) diff = 0;
           this.showPauseMenuIndex = diff;
         } else if(customKeyboardEvent.event.keyCode == 13) { // enter
-          if(this.showPauseMenuIndex == 2) {
+          if(this.showPauseMenuIndex == 2) { // quit
             this.menuQuitSubject.next(true);
+          } else if(this.showPauseMenuIndex == 1) { // options
+            this.showOptionsMenu = true;
+          } else { // return
+            this.unPauseGame();
           }
-          this.unPauseGame();
           this.showPauseMenu = false;
+
         }
       }
+    });
+    this.optionsService.optionsQuitSubject.subscribe(() => {
+        this.unPauseGame();
+        this.showPauseMenu = false;
+        this.showOptionsMenu = false;
     });
   }
 
@@ -156,7 +169,7 @@ export class LevelManagerService {
 }
 
 export interface LevelInstance {
-    update(canvasContainer:CanvasContainer,playerService:PlayerService, levelManagerService:LevelManagerService);
+    update(canvasContainer:CanvasContainer,playerService:PlayerService, levelManagerService:LevelManagerService,audioServiceService:AudioServiceService);
     updateBackground(canvasContainer:CanvasContainer,playerService:PlayerService, levelManagerService:LevelManagerService);
     updateHud(canvasContainer:CanvasContainer,playerService:PlayerService, levelManagerService:LevelManagerService);
     updateEvent(canvasContainer:CanvasContainer,playerService:PlayerService, levelManagerService:LevelManagerService);
@@ -170,4 +183,5 @@ export interface LevelInstance {
     updatePhaseCounter();
     drawShadow():boolean;
     hasIntro():boolean;
+    updateMusic(audioServiceService:AudioServiceService);
 }

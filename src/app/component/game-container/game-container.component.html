@@ -9,3 +9,6 @@
   <img *ngIf="levelManagerService.showPauseMenuIndex == 1" [src]="'assets/img/desc/menu-pics/paused-options.png'">
   <img *ngIf="levelManagerService.showPauseMenuIndex == 2" [src]="'assets/img/desc/menu-pics/paused-quit.png'">
 </span>
+<div *ngIf="levelManagerService.showOptionsMenu">
+  <app-options-screen [requestAnimFrame]="requestAnimFrame"></app-options-screen>
+</div>

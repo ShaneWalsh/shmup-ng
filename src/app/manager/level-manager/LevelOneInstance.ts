@@ -1,5 +1,6 @@
 import { CanvasContainer } from "src/app/domain/CanvasContainer";
 import { LevelEvent } from "src/app/domain/events/level-events";
+import { AudioServiceService } from "src/app/services/audio-service.service";
 import { LogicService } from "src/app/services/logic.service";
 import { PlayerService } from "src/app/services/player.service";
 import { ResourcesService } from "src/app/services/resources.service";
@@ -38,11 +39,17 @@ export class LevelOneInstance implements LevelInstance{
     this.eventArr = this.levelEventsService.getLevel1Events(levelManagerService.difficulty);
   }
 
-  update(canvasContainer:CanvasContainer, playerService:PlayerService, levelManagerService:LevelManagerService) {
+  updateMusic(audioServiceService:AudioServiceService) {
+    audioServiceService.update();
+    audioServiceService.playAudio("914831_Etherea_lvl1", true);
+  }
+
+  update(canvasContainer:CanvasContainer, playerService:PlayerService, levelManagerService:LevelManagerService, audioServiceService:AudioServiceService) {
     // infinite scroller
     this.updateBackground(canvasContainer, playerService, levelManagerService);
     this.updateHud(canvasContainer, playerService, levelManagerService);
     this.updateEvent(canvasContainer, playerService, levelManagerService);
+    this.updateMusic(audioServiceService);
   }
 
   updateIntro(ctx: CanvasRenderingContext2D) {

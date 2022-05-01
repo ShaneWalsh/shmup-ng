@@ -1,3 +1,4 @@
+import { AudioServiceService } from "src/app/services/audio-service.service";
 import { ResourcesService } from "src/app/services/resources.service";
 import { BotManagerService } from "../bot-manager.service";
 import { LevelEventsService } from "../level-events.service";
@@ -13,6 +14,11 @@ export class LevelSixInstance extends LevelOneInstance {
       this.backgroundImages.push(this.resourcesService.getRes().get("level-1-bg-2"));
       this.hudImage = this.resourcesService.getRes().get("HUD-resized");
       this.eventArr = this.levelEventsService.getLevel6Events(levelManagerService.difficulty);
+  }
+
+  updateMusic(audioServiceService:AudioServiceService) {
+    audioServiceService.update();
+    audioServiceService.playAudio("level1", true);
   }
 
   drawShadow(){

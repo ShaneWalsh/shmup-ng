@@ -78,7 +78,7 @@ export class Level3SubBoss extends  BotInstanceImpl {
     public currentOrder:any[] = null;
     public currentOrderIndex:number = 0;
     public currentOrderIndexLimit:number = 5;
-    public iLaserLocations:any[]= [{x:0,y:-102}, {x:0,y:0}, {x:0,y:102}, {x:0,y:204}, {x:0,y:306}];
+    public iLaserLocations:any[]= [{x:0,y:0}, {x:0,y:102}, {x:0,y:204}, {x:0,y:306}, {x:0,y:408}];
 
     constructor (
       public config:any={},
@@ -273,7 +273,7 @@ export class Level3SubBoss extends  BotInstanceImpl {
       }
     }
     if ( this.phase == PhaseLaser.PHASE_DAMAGE ) {
-      let hitty = new HitBox(162, 214, 150, 96);
+      let hitty = new HitBox(162, 112, 150, 96);
       for(let i = 0; i < currentLaserLength; i++) {
         let iX = this.iLaserLocations[currentLaserPositions[i]].x;
         let iY = this.iLaserLocations[currentLaserPositions[i]].y;

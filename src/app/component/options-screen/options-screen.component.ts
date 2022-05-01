@@ -36,11 +36,8 @@ export class OptionsScreenComponent implements OnInit, OnDestroy {
     constructor(
                 private optionsService:OptionsService,
                 private resourcesService:ResourcesService,
-                private audioServiceService:AudioServiceService,
                 protected levelManagerService:LevelManagerService,
-                private bulletManagerService: BulletManagerService,
-                private deathManagerService:DeathManagerService,
-                private playerService:PlayerService, private botManagerService:BotManagerService, private keyboardEventService:KeyboardEventService) {
+                 private keyboardEventService:KeyboardEventService) {
       this.subs.push(this.levelManagerService.getGameTickSubject().subscribe(result => {
         if(this.tickComplete){
             this.update();
@@ -54,7 +51,7 @@ export class OptionsScreenComponent implements OnInit, OnDestroy {
         var key:any = customKeyboardEvent.event.keyCode;
         // Enter
         if(key == 'Enter' || key == 13) { //  == 'Enter'
-          // options subject to return to MM
+          this.optionsService.optionsQuitSubject.next(true);
         }
         if(key == 38 || key == 40 || key == 87 || key == 83) {
           if (key == 87 || key == 38) { // up
