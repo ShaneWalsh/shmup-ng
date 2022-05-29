@@ -122,11 +122,11 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
           if(this.screenId == 3) { // diff select
             if (key == 87 || key == 38) { // up
               let diff =  this.levelManagerService.difficulty -1;
-              if(diff < 0) diff = 2;
+              if(diff < 0) diff = 1;
               this.levelManagerService.difficulty = diff;
             } else {
               let diff =  this.levelManagerService.difficulty +1;
-              if(diff > 2) diff = 0;
+              if(diff > 1) diff = 0;
               this.levelManagerService.difficulty = diff;
             }
           }

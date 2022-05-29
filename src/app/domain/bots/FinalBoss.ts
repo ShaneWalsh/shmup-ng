@@ -1,4 +1,4 @@
-import { BotInstance, BotInstanceImpl } from "src/app/domain/bots/BotInstance";
+import { BotInstanceImpl } from "src/app/domain/bots/BotInstance";
 import { LevelInstance } from "src/app/manager/level-manager.service";
 import { HitBox } from "src/app/domain/HitBox";
 import { BotManagerService } from "src/app/manager/bot-manager.service";
@@ -36,6 +36,8 @@ export class FinalBoss extends BotInstanceImpl {
     public movePoints:{x,y}[] = [{x:100,y:100}, {x:100, y:0}];
     public movePointIndex = 0;
 
+    public spawnBots : any = [];
+
     constructor(
         public config: any = {},
         public posX: number = 0,
@@ -57,7 +59,7 @@ export class FinalBoss extends BotInstanceImpl {
         public imageSizeY:number=472,
     ) {
       super(config);
-      this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score"]);
+      this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score", "spawnBots"]);
       this.imageObjWing = this.imageObjWingsArr[0];
     }
 

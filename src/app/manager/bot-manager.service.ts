@@ -115,7 +115,7 @@ export class BotManagerService {
     let newBot = new Kamikaze(config, posObj.posX, posObj.posY,
       [this.resourcesService.getRes().get("kamikaze-enemy-1")],
       [this.resourcesService.getRes().get("kamikaze-enemy-1-damaged")],
-      [],
+      [this.resourcesService.getRes().get("kamikaze-enemy-shadow-1")],
       110, 98);
     this.botsArr.push(newBot);
     this.botCreated.next(newBot);

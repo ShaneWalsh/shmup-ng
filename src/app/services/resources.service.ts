@@ -103,6 +103,7 @@ export class ResourcesService {
 
         {code:"kamikaze-enemy-1-damaged", path:"assets/img/bots/kamikaze/kamikaze-enemy-1-damaged.png", type:ResourcesEnum.ImageRes},
         {code:"kamikaze-enemy-1", path:"assets/img/bots/kamikaze/kamikaze-enemy-1.png", type:ResourcesEnum.ImageRes},
+        {code:"kamikaze-enemy-shadow-1", path:"assets/img/bots/kamikaze/kamikaze-enemy-shadow.png", type:ResourcesEnum.ImageRes},
 
         {code:"level-3-bg-1", path:"assets/img/levels/level-3-update/level-3-bg-1.png", type:ResourcesEnum.ImageRes},
         {code:"level-3-bg-2", path:"assets/img/levels/level-3-update/level-3-bg-2.png", type:ResourcesEnum.ImageRes},
