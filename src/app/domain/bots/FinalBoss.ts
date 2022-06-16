@@ -1,11 +1,12 @@
 import { BotInstanceImpl } from "src/app/domain/bots/BotInstance";
-import { LevelInstance } from "src/app/manager/level-manager.service";
+import { LevelInstance, LevelManagerService } from "src/app/manager/level-manager.service";
 import { HitBox } from "src/app/domain/HitBox";
 import { BotManagerService } from "src/app/manager/bot-manager.service";
 import { BulletManagerService, BulletDirection } from "src/app/manager/bullet-manager.service";
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { LogicService } from "src/app/services/logic.service";
 import { CanvasContainer } from "../CanvasContainer";
+import { SpawnBotEvent, SpawnTimer } from "../events/level-events";
 
 export class FinalBoss extends BotInstanceImpl {
 
@@ -36,7 +37,7 @@ export class FinalBoss extends BotInstanceImpl {
     public movePoints:{x,y}[] = [{x:100,y:100}, {x:100, y:0}];
     public movePointIndex = 0;
 
-    public spawnBots : any = [];
+    public spawnTimerCounter : number = 0;
 
     constructor(
         public config: any = {},
@@ -48,6 +49,7 @@ export class FinalBoss extends BotInstanceImpl {
         public imageObjBodyDamanged: HTMLImageElement = null,
         public imageObjWingsArr: HTMLImageElement[] = [],
         public imageObjWingsDamagedArr: HTMLImageElement[] = [],
+        public spawnTimer: SpawnTimer[]=[],
 
         public imageHeadSizeX: number = 66,
         public imageHeadSizeY: number = 68,
@@ -59,11 +61,13 @@ export class FinalBoss extends BotInstanceImpl {
         public imageSizeY:number=472,
     ) {
       super(config);
-      this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score", "spawnBots"]);
+      this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score", "spawnBots", "spawnTimer"]);
       this.imageObjWing = this.imageObjWingsArr[0];
     }
 
     update(levelInstance: LevelInstance, canvasContainer:CanvasContainer, botManagerService: BotManagerService, bulletManagerService: BulletManagerService, playerService: PlayerService, ) {
+      this.updateSpawning(botManagerService,levelInstance);
+
       let currentPlayer = playerService.currentPlayer;
       let ctx = canvasContainer.mainCtx;
       this.angleDirection = bulletManagerService.calculateBulletDirection(this.posX+105+(this.imageHeadSizeX/2), this.posY+65+(this.imageHeadSizeY/2), currentPlayer.getCenterX(), currentPlayer.getCenterY(), this.bulletSpeed, true, currentPlayer);
@@ -84,6 +88,24 @@ export class FinalBoss extends BotInstanceImpl {
       this.updateAnimation(ctx);
       this.updateDamageAnimation(ctx);
       this.updateBulletTimer(levelInstance, ctx, botManagerService, bulletManagerService,currentPlayer);
+    }
+
+    updateSpawning(botManagerService: BotManagerService, levelInstance:LevelInstance) {
+      this.spawnTimerCounter = this.spawnTimerCounter+1;
+      let spawnBot = this.spawnTimer.filter( ti => this.health < ti.healthLessThan)
+        .reduce((a,b) => a.healthLessThan < b.healthLessThan ? a:b)
+      let highestValue = 0;
+      spawnBot.spawnEvents.forEach( eve => {
+        if(eve.getHappenAfterTicks() > highestValue){
+          highestValue = eve.getHappenAfterTicks();
+        }
+        if(eve.getHappenAfterTicks() === this.spawnTimerCounter){
+          eve.triggerEventByLevel(botManagerService,levelInstance);
+        }
+      });
+      if(highestValue <= this.spawnTimerCounter){
+        this.spawnTimerCounter = 0;
+      } 
     }
 
     updateAnimation(ctx){

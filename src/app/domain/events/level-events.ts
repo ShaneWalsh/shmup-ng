@@ -1,4 +1,4 @@
-import { LevelManagerService } from "src/app/manager/level-manager.service";
+import { LevelInstance, LevelManagerService } from "src/app/manager/level-manager.service";
 import { BotManagerService } from "src/app/manager/bot-manager.service";
 
 // setup all four levels using this system, add a mini boss at the end of each one.
@@ -69,6 +69,16 @@ export class LevelEvent {
 	}
 }
 
+export class SpawnTimer {
+    constructor(
+        public healthLessThan: number,
+        public spawnEvents: SpawnBotEvent[]
+    ){
+
+    }
+}
+
+
 export class SpawnBotEvent extends LevelEvent {
     constructor(
         public phase:number = 0,
@@ -86,52 +96,55 @@ export class SpawnBotEvent extends LevelEvent {
     }
 
     public triggerEvent(botManagerService:BotManagerService, levelManagerService:LevelManagerService){
+        this.triggerEventByLevel(botManagerService, levelManagerService.getCurrentLevel());
+    }
+    public triggerEventByLevel(botManagerService:BotManagerService, levelInstance:LevelInstance){
 		if(this.botType == BotType.DIVER){
-			botManagerService.generateDiver(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
+			botManagerService.generateDiver(levelInstance, this.randomPosition, this.posX, this.posY, this.config);
 		} else if(this.botType == BotType.FIGHTER){
-			botManagerService.generateFighterV2(levelManagerService.getCurrentLevel(),this.randomPosition, this.posX, this.posY, this.config);
+			botManagerService.generateFighterV2(levelInstance,this.randomPosition, this.posX, this.posY, this.config);
       } else if(this.botType == BotType.ROCK){
-			     botManagerService.generateRock(levelManagerService.getCurrentLevel(),this.randomPosition, this.posX, this.posY, this.config);
+			     botManagerService.generateRock(levelInstance,this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.DRONE) {
-            botManagerService.generateDrone(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
+            botManagerService.generateDrone(levelInstance, this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.SWORDFISH) {
-            botManagerService.generateSwordfish(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
+            botManagerService.generateSwordfish(levelInstance, this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.KAMIKAZE) {
-            botManagerService.generateKamikaze(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
+            botManagerService.generateKamikaze(levelInstance, this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.CREEPER) {
-            botManagerService.generateCreeper(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
+            botManagerService.generateCreeper(levelInstance, this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.GUARDIAN1) {
-            botManagerService.generateGuardian1(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
+            botManagerService.generateGuardian1(levelInstance, this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.GUARDIANCREEPER) {
-            botManagerService.generateGuardianCreeper(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
+            botManagerService.generateGuardianCreeper(levelInstance, this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.LAZERGUARDIAN) {
-            botManagerService.generateGuardianLaser(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
+            botManagerService.generateGuardianLaser(levelInstance, this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.BUGGY) {
-            botManagerService.generateBuggy(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
+            botManagerService.generateBuggy(levelInstance, this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.AATANK) {
-            botManagerService.generateAATank(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
+            botManagerService.generateAATank(levelInstance, this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.SENTRY) {
-            botManagerService.generateSentry(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
+            botManagerService.generateSentry(levelInstance, this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.HEAVYJET) {
-            botManagerService.generateHeavyJet(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
+            botManagerService.generateHeavyJet(levelInstance, this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.MINIBOSS1) {
-            botManagerService.generateLevel1SubBoss1(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
+            botManagerService.generateLevel1SubBoss1(levelInstance, this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.MINIBOSS2) {
-            botManagerService.generateLevel1SubBoss2(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
+            botManagerService.generateLevel1SubBoss2(levelInstance, this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.MAINBOSS1) {
-            botManagerService.generateLevel1Boss1(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
+            botManagerService.generateLevel1Boss1(levelInstance, this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.MINIBOSS1L2) {
-            botManagerService.generateLevel2SubBoss1(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
+            botManagerService.generateLevel2SubBoss1(levelInstance, this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.STARSHIPL2) {
-            botManagerService.generateLevel2Starship(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
+            botManagerService.generateLevel2Starship(levelInstance, this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.JUDGEL2) {
-            botManagerService.generateLevel2Judge(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
+            botManagerService.generateLevel2Judge(levelInstance, this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.MINIBOSS1L3) {
-            botManagerService.generateLevel3SubBoss(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
+            botManagerService.generateLevel3SubBoss(levelInstance, this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.MINIBOSS2L3) {
-            botManagerService.generateLevel3SubBoss2Bomber(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
+            botManagerService.generateLevel3SubBoss2Bomber(levelInstance, this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.FINALBOSS) {
-            botManagerService.generateFinalBoss(levelManagerService.getCurrentLevel(), this.randomPosition, this.posX, this.posY, this.config);
+            botManagerService.generateFinalBoss(levelInstance, this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.CAUTIONANIMATION) {
             botManagerService.createCautionAnimation(this.posX, this.posY);
         } else {

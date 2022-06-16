@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LevelEvent, SpawnBotEvent, BotType, LevelOverEvent, NextPhaseEvent } from 'src/app/domain/events/level-events';
+import { LevelEvent, SpawnBotEvent, BotType, LevelOverEvent, NextPhaseEvent, SpawnTimer } from 'src/app/domain/events/level-events';
 import { Level3SubBoss2 } from '../domain/bots/Level3SubBoss2';
 
 @Injectable({
@@ -838,11 +838,31 @@ export class LevelEventsService {
           health: 300,
           bTimerLimit: 60,
       };
+      // The phase 0, is irrelevant 
+      let finalBossSpawns = [
+        new SpawnTimer(305,[
+            new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60),
+            new SpawnBotEvent(0, 80, false, 0, BotType.SWORDFISH, swordfishConfig, false, 205, -185),
+            new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60),
+            
+            new SpawnBotEvent(0, 180, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60),
+            new SpawnBotEvent(0, 170, false, 0, BotType.SWORDFISH, swordfishConfig, false, 205, -185),
+            new SpawnBotEvent(0, 180, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60)
+        ]),
+        new SpawnTimer(250,[
+            new SpawnBotEvent(0, 100, false, 0, BotType.SWORDFISH, swordfishConfig, false, 60, -185),
+            new SpawnBotEvent(0, 110, false, 0, BotType.SWORDFISH, swordfishConfig, false, 300, -185),
+
+            new SpawnBotEvent(0, 200, false, 0, BotType.SWORDFISH, swordfishConfig, false, 60, -185),
+            new SpawnBotEvent(0, 210, false, 0, BotType.SWORDFISH, swordfishConfig, false, 300, -185)
+        ])
+      ]
       let finalBossAttr = {
           moveSpeed: 4,
           score: 15000,
           health: 300,
           bTimerLimit: 60,
+          spawnTimer : finalBossSpawns
       };
       if (difficulty == 0) { // easy difficulty, so reducing the bots health
           // here I am overiding the fighters health and reducing it to one, and keeping all of the other values defined above.
@@ -874,96 +894,7 @@ export class LevelEventsService {
       //######################          Phase Zero        #######################################
       //#########################################################################################
       le.push(new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));
-      le.push(new SpawnBotEvent(0, 80, false, 0, BotType.SWORDFISH, swordfishConfig, false, 205, -185));
-      le.push(new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
-      // blade right
-      le.push(new SpawnBotEvent(0, 190, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
-      le.push(new SpawnBotEvent(0, 200, false, 0, BotType.SWORDFISH, swordfishConfig, false, 325, -185));
-      le.push(new SpawnBotEvent(0, 210, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
-      // blade left
-      le.push(new SpawnBotEvent(0, 260, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
-      le.push(new SpawnBotEvent(0, 270, false, 0, BotType.SWORDFISH, swordfishConfig, false, 35, -185));
-      le.push(new SpawnBotEvent(0, 280, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
-      le.push(new SpawnBotEvent(0, 400, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 10, -60));
-      le.push(new SpawnBotEvent(0, 500, false, 0, BotType.SWORDFISH, swordfishConfig, false, 200, -185));
-      le.push(new SpawnBotEvent(0, 400, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 375, -60));
-      le.push(new SpawnBotEvent(0, 650, false, 0, BotType.HEAVYJET, heavyJetConfig, false, 0, -150));
-      le.push(new SpawnBotEvent(0, 720, false, 0, BotType.KAMIKAZE, kamikazeConfig, false, 190, -40));
-      le.push(new SpawnBotEvent(0, 1200, false, 0, BotType.SWORDFISH, swordfishConfig, false, 25, -185));
-      le.push(new SpawnBotEvent(0, 1250, false, 0, BotType.ROCK, rockConfig, false, 190, -80));
-      le.push(new SpawnBotEvent(0, 1200, false, 0, BotType.SWORDFISH, swordfishConfig, false, 335, -185));
-      le.push(new SpawnBotEvent(0, 1300, false, 0, BotType.CREEPER, creeperConfig, false, 10, -60));
-      le.push(new SpawnBotEvent(0, 1350, false, 0, BotType.CREEPER, creeperConfig, false, 70, -60));
-      le.push(new SpawnBotEvent(0, 1350, false, 0, BotType.CREEPER, creeperConfig, false, 370, -60));
-      le.push(new SpawnBotEvent(0, 1300, false, 0, BotType.CREEPER, creeperConfig, false, 430, -60));
-      le.push(new SpawnBotEvent(0, 1400, false, 0, BotType.CREEPER, creeperConfig, false, 130, -60));
-      le.push(new SpawnBotEvent(0, 1400, false, 0, BotType.CREEPER, creeperConfig, false, 310, -60));
-      le.push(new SpawnBotEvent(0, 1500, false, 0, BotType.CREEPER, creeperConfig, false, 190, -60));
-      le.push(new SpawnBotEvent(0, 1500, false, 0, BotType.CREEPER, creeperConfig, false, 250, -60));
-      le.push(new SpawnBotEvent(0, 1550, false, 0, BotType.SWORDFISH, swordfishConfig, false, 35, -185));
-      le.push(new SpawnBotEvent(0, 1550, false, 0, BotType.SWORDFISH, swordfishConfig, false, 335, -185));
-      le.push(new SpawnBotEvent(0, 1700, false, 0, BotType.CREEPER, creeperConfig, false, 130, -60));
-      le.push(new SpawnBotEvent(0, 1700, false, 0, BotType.CREEPER, creeperConfig, false, 310, -60));
-      le.push(new SpawnBotEvent(0, 2000, false, 0, BotType.CAUTIONANIMATION, null, false, 108, 278));
-      le.push(new SpawnBotEvent(0, 2100, false, 0, BotType.MINIBOSS1L3, level3MiniBoss1, false, 0, -645));
-      //#########################################################################################
-      //######################          Phase One        #######################################
-      //#########################################################################################;
-      le.push(new SpawnBotEvent(1, 90, false, 0, BotType.CREEPER, creeperConfig, false, 10, -60));
-      le.push(new SpawnBotEvent(1, 90, false, 0, BotType.CREEPER, creeperConfig, false, 430, -60));
-      le.push(new SpawnBotEvent(1, 120, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 190, -40));
-      le.push(new SpawnBotEvent(1, 220, false, 0, BotType.SWORDFISH, swordfishConfig, false, 60, -185));
-      le.push(new SpawnBotEvent(1, 220, false, 0, BotType.SWORDFISH, swordfishConfig, false, 300, -185));
-      le.push(new SpawnBotEvent(1, 510, false, 0, BotType.FIGHTER, fighterConfig, false, 170, -60));
-      le.push(new SpawnBotEvent(1, 490, false, 0, BotType.FIGHTER, fighterConfig, false, 230, -60));
-      le.push(new SpawnBotEvent(1, 510, false, 0, BotType.FIGHTER, fighterConfig, false, 290, -60));
-      le.push(new SpawnBotEvent(1, 700, false, 0, BotType.HEAVYJET, heavyJetConfig, false, 0, -150));
-      le.push(new SpawnBotEvent(1, 700, false, 0, BotType.CREEPER, creeperConfig, false, 190, -60));
-      le.push(new SpawnBotEvent(1, 720, false, 0, BotType.CREEPER, creeperConfig, false, 250, -60));
-      le.push(new SpawnBotEvent(1, 740, false, 0, BotType.CREEPER, creeperConfig, false, 310, -60));
-      le.push(new SpawnBotEvent(1, 760, false, 0, BotType.CREEPER, creeperConfig, false, 370, -60));
-      le.push(new SpawnBotEvent(1, 780, false, 0, BotType.CREEPER, creeperConfig, false, 430, -60));
-      le.push(new SpawnBotEvent(1, 800, false, 0, BotType.CREEPER, creeperConfig, false, 10, -60));
-      le.push(new SpawnBotEvent(1, 820, false, 0, BotType.CREEPER, creeperConfig, false, 70, -60));
-      le.push(new SpawnBotEvent(1, 840, false, 0, BotType.CREEPER, creeperConfig, false, 130, -60));
-      le.push(new SpawnBotEvent(1, 860, false, 0, BotType.CREEPER, creeperConfig, false, 190, -60));
-      le.push(new SpawnBotEvent(1, 880, false, 0, BotType.CREEPER, creeperConfig, false, 250, -60));
-      le.push(new SpawnBotEvent(1, 1200, false, 0, BotType.SWORDFISH, swordfishConfig, false, 35, -185));
-      le.push(new SpawnBotEvent(1, 1200, false, 0, BotType.SWORDFISH, swordfishConfig, false, 335, -185));
-      le.push(new SpawnBotEvent(1, 1300, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 200, -60));
-      le.push(new SpawnBotEvent(1, 1400, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 10, -90));
-      le.push(new SpawnBotEvent(1, 1400, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 368, -80));
-      le.push(new SpawnBotEvent(1, 1550, false, 0, BotType.SWORDFISH, swordfishConfig, false, 60, -185));
-      le.push(new SpawnBotEvent(1, 1550, false, 0, BotType.SWORDFISH, swordfishConfig, false, 300, -185));
-      le.push(new SpawnBotEvent(1, 1900, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 10, -60));
-      le.push(new SpawnBotEvent(1, 2000, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 200, -30));
-      le.push(new SpawnBotEvent(1, 1900, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 375, -60));
-      le.push(new SpawnBotEvent(1, 2300, false, 0, BotType.CAUTIONANIMATION, null, false, 108, 278));
-      le.push(new SpawnBotEvent(1, 2400, false, 0, BotType.MINIBOSS2L3, level3MiniBoss2, false, 0, -645));
-      //#########################################################################################
-      //######################          Phase Two       #######################################
-      //#########################################################################################
-      le.push(new SpawnBotEvent(2, 60, false, 0, BotType.CREEPER, creeperConfig, false, 10, -60));
-      le.push(new SpawnBotEvent(2, 60, false, 0, BotType.CREEPER, creeperConfig, false, 430, -60));
-      le.push(new SpawnBotEvent(2, 120, false, 0, BotType.SWORDFISH, swordfishConfig, false, 60, -185));
-      le.push(new SpawnBotEvent(2, 120, false, 0, BotType.SWORDFISH, swordfishConfig, false, 300, -185));
-      le.push(new SpawnBotEvent(2, 200, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 200, -30));
-      le.push(new SpawnBotEvent(2, 300, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));
-      le.push(new SpawnBotEvent(2, 280, false, 0, BotType.SWORDFISH, swordfishConfig, false, 205, -185));
-      le.push(new SpawnBotEvent(2, 300, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
-      le.push(new SpawnBotEvent(2, 300, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
-      le.push(new SpawnBotEvent(2, 280, false, 0, BotType.SWORDFISH, swordfishConfig, false, 325, -185));
-      le.push(new SpawnBotEvent(2, 300, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
-      le.push(new SpawnBotEvent(2, 800, false, 0, BotType.CREEPER, creeperConfig, false, 10, -60));
-      le.push(new SpawnBotEvent(2, 850, false, 0, BotType.CREEPER, creeperConfig, false, 70, -60));
-      le.push(new SpawnBotEvent(2, 900, false, 0, BotType.CREEPER, creeperConfig, false, 130, -60));
-      le.push(new SpawnBotEvent(2, 950, false, 0, BotType.CREEPER, creeperConfig, false, 190, -60));
-      le.push(new SpawnBotEvent(2, 1000, false, 0, BotType.CREEPER, creeperConfig, false, 250, -60));
-      le.push(new SpawnBotEvent(2, 1050, false, 0, BotType.CREEPER, creeperConfig, false, 310, -60));
-      le.push(new SpawnBotEvent(2, 1100, false, 0, BotType.CREEPER, creeperConfig, false, 370, -60));
-      le.push(new SpawnBotEvent(2, 1150, false, 0, BotType.CREEPER, creeperConfig, false, 430, -60));
-      le.push(new SpawnBotEvent(2, 1400, false, 0, BotType.FINALBOSS, finalBossAttr, false, 100, -645));
-      le.push(new LevelOverEvent(3, 100));
+      le.push(new SpawnBotEvent(0, 100, false, 0, BotType.FINALBOSS, finalBossAttr, false, 100, -645));
       return le;
   };
 
