@@ -4,36 +4,39 @@ import { BotManagerService } from "src/app/manager/bot-manager.service";
 // setup all four levels using this system, add a mini boss at the end of each one.
 // to prove it all works. Then can think about how to expose this to yourman,
 // how to get past the cors, the problem is my images are from file :/ not included in the pollyfils due to the way i load them.
+
 export enum BotType {
-  DIVER="DIVER",
-  FIGHTER="FIGHTER",
-  DRONE="DRONE",
-  SWORDFISH="SWORDFISH",
-  KAMIKAZE="KAMIKAZE",
-  CREEPER="CREEPER",
-  ROCK="ROCK",
-	GUARDIAN1="GUARDIAN1",
-  GUARDIANCREEPER="GUARDIANCREEPER",
-  LAZERGUARDIAN="LAZERGUARDIAN",
+    DIVER = "DIVER",
+    FIGHTER = "FIGHTER",
+    DRONE = "DRONE",
+    SWORDFISH = "SWORDFISH",
+    KAMIKAZE = "KAMIKAZE",
+    CREEPER = "CREEPER",
+    ROCK = "ROCK",
+    GUARDIAN1 = "GUARDIAN1",
+    GUARDIANCREEPER = "GUARDIANCREEPER",
+    LAZERGUARDIAN = "LAZERGUARDIAN",
 
-  BUGGY="BUGGY",
-  AATANK="AATANK",
-  SENTRY="SENTRY",
-  HEAVYJET="HEAVYJET",
+    BUGGY = "BUGGY",
+    AATANK = "AATANK",
+    SENTRY = "SENTRY",
+    HEAVYJET = "HEAVYJET",
 
-  MINIBOSS1="MINIBOSS1", // move on a phase after a mini boss dies.
-  MINIBOSS2 = "MINIBOSS2",
-  MAINBOSS1 = "MAINBOSS1",
-  MINIBOSS1L2 = "MINIBOSS1L2",
-  STARSHIPL2 = "STARSHIPL2",
-  JUDGEL2 = "JUDGEL2",
-  MINIBOSS1L3 = "MINIBOSS1L3",
-  MINIBOSS2L3 = "MINIBOSS2L3",
-  FINALBOSS = "FINALBOSS",
+    MINIBOSS1 = "MINIBOSS1",
+    MINIBOSS2 = "MINIBOSS2",
+    MAINBOSS1 = "MAINBOSS1",
+    MINIBOSS1L2 = "MINIBOSS1L2",
+    STARSHIPL2 = "STARSHIPL2",
+    JUDGEL2 = "JUDGEL2",
+    MINIBOSS1L3 = "MINIBOSS1L3",
+    MINIBOSS2L3 = "MINIBOSS2L3",
+    FINALBOSS = "FINALBOSS",
 
-  BOSS1="BOSS1", // move on a phase after a mini boss dies.
-  // Animations
-  CAUTIONANIMATION="CAUTIONANIMATION"
+    BOSS1 = "BOSS1",
+
+    // Animations
+    CAUTIONANIMATION = "CAUTIONANIMATION",
+    SLIDER = "SLIDER"
 }
 
 // Extract Events to an events class.
@@ -113,6 +116,8 @@ export class SpawnBotEvent extends LevelEvent {
             botManagerService.generateKamikaze(levelInstance, this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.CREEPER) {
             botManagerService.generateCreeper(levelInstance, this.randomPosition, this.posX, this.posY, this.config);
+        } else if (this.botType == BotType.SLIDER) {
+            botManagerService.generateSlider(levelInstance, this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.GUARDIAN1) {
             botManagerService.generateGuardian1(levelInstance, this.randomPosition, this.posX, this.posY, this.config);
         } else if (this.botType == BotType.GUARDIANCREEPER) {

@@ -33,8 +33,8 @@ export class OptionsService {
 
   // logic for screen
   opsMenuIndex: number = 0;
-  _skipIntro: boolean = false;
-  _drawHitBox: boolean = false;
+  _skipIntro: boolean = true;
+  _drawHitBox: boolean = true;
 
   constructor() { }
 

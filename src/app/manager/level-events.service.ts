@@ -126,6 +126,15 @@ export class LevelEventsService {
           score: 20000,
           health: 250,
       };
+      // big fat slow guy, enemy-2-1
+      let sliderConfigLeft = {
+        posXSpeed: 2,
+        posYSpeed: 3,
+        score: 8000,
+        health: 20,
+        side: "LEFT"
+      };
+      let sliderConfigRight = {side:"RIGHT",posXSpeed:-2, ...sliderConfigLeft}
       if (difficulty == 0) { // easy difficulty, so reducing the bots health
           // here I am overiding the fighters health and reducing it to one, and keeping all of the other values defined above.
           fighterConfig = {... fighterConfig, health: 3 }
@@ -155,6 +164,10 @@ export class LevelEventsService {
       //#########################################################################################
       //######################          Phase Zero        #######################################
       //#########################################################################################
+      
+      le.push(new SpawnBotEvent(0, 50, false, 0, BotType.SLIDER, sliderConfigLeft, false, -40, 150));
+      le.push(new SpawnBotEvent(0, 50, false, 0, BotType.SLIDER, sliderConfigRight, false, 440, 250));
+     
       // wings middle
       le.push(new SpawnBotEvent(0, 50, false, 0, BotType.LAZERGUARDIAN, fighterConfig, false, 200, 20));
       le.push(new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));

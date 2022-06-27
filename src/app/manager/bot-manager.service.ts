@@ -38,6 +38,7 @@ import { FinalBoss } from '../domain/bots/FinalBoss';
 import { LazerAttack } from '../domain/bots/LazerAttack';
 import { LazerGuardian } from '../domain/bots/LazerGuardian';
 import { AudioServiceService } from '../services/audio-service.service';
+import { Slider } from '../domain/bots/Slider';
 
 /**
  * Going to manage the created bots, spawned by the level manager. Its going to emit when they are destroyed or when they leave the screen.
@@ -261,6 +262,25 @@ export class BotManagerService {
     );
 
     let newBot = new Creeper(config,lazer, posObj.posX, posObj.posY,
+      this.resourcesService.getRes().get("enemy-07"),
+      this.resourcesService.getRes().get("enemy-07-damaged"),
+      this.resourcesService.getRes().get("enemy-07-shadow")
+      );
+    this.botsArr.push(newBot);
+    this.botCreated.next(newBot);
+  }
+
+  generateSlider(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
+    let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
+    let lazer = new LazerAttack({},[this.resourcesService.getRes().get("enemy-07-firing-1"),
+      this.resourcesService.getRes().get("enemy-07-firing-2"),
+      this.resourcesService.getRes().get("enemy-07-firing-3")],
+      this.resourcesService.getRes().get("enemy-07-firing-4"),
+      [this.resourcesService.getRes().get("enemy-07-firing-5"),
+      this.resourcesService.getRes().get("enemy-07-firing-6")]
+    );
+
+    let newBot = new Slider(config,lazer, posObj.posX, posObj.posY,
       this.resourcesService.getRes().get("enemy-07"),
       this.resourcesService.getRes().get("enemy-07-damaged"),
       this.resourcesService.getRes().get("enemy-07-shadow")
