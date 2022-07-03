@@ -134,7 +134,7 @@ export class LevelEventsService {
         health: 20,
         side: "LEFT"
       };
-      let sliderConfigRight = {side:"RIGHT",posXSpeed:-2, ...sliderConfigLeft}
+      let sliderConfigRight = {...sliderConfigLeft,side:"RIGHT",posXSpeed:-2}
       if (difficulty == 0) { // easy difficulty, so reducing the bots health
           // here I am overiding the fighters health and reducing it to one, and keeping all of the other values defined above.
           fighterConfig = {... fighterConfig, health: 3 }
@@ -164,12 +164,13 @@ export class LevelEventsService {
       //#########################################################################################
       //######################          Phase Zero        #######################################
       //#########################################################################################
-      
-      le.push(new SpawnBotEvent(0, 50, false, 0, BotType.SLIDER, sliderConfigLeft, false, -40, 150));
-      le.push(new SpawnBotEvent(0, 50, false, 0, BotType.SLIDER, sliderConfigRight, false, 440, 250));
-     
-      // wings middle
+
+      le.push(new SpawnBotEvent(0, 50, false, 0, BotType.SLIDER, sliderConfigLeft, false, -150, 150));
+      le.push(new SpawnBotEvent(0, 50, false, 0, BotType.SLIDER, sliderConfigRight, false, 520, 250));
+
       le.push(new SpawnBotEvent(0, 50, false, 0, BotType.LAZERGUARDIAN, fighterConfig, false, 200, 20));
+
+      // wings middle
       le.push(new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));
       le.push(new SpawnBotEvent(0, 80, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));
       le.push(new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60));
@@ -181,6 +182,7 @@ export class LevelEventsService {
       le.push(new SpawnBotEvent(0, 260, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
       le.push(new SpawnBotEvent(0, 270, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
       le.push(new SpawnBotEvent(0, 280, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
+
       le.push(new SpawnBotEvent(0, 400, false, 0, BotType.DIVER, diverConfig, false, 10, -60));
       le.push(new SpawnBotEvent(0, 450, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));
       le.push(new SpawnBotEvent(0, 430, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));
@@ -851,13 +853,13 @@ export class LevelEventsService {
           health: 300,
           bTimerLimit: 60,
       };
-      // The phase 0, is irrelevant 
+      // The phase 0, is irrelevant
       let finalBossSpawns = [
         new SpawnTimer(305,[
             new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60),
             new SpawnBotEvent(0, 80, false, 0, BotType.SWORDFISH, swordfishConfig, false, 205, -185),
             new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60),
-            
+
             new SpawnBotEvent(0, 180, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60),
             new SpawnBotEvent(0, 170, false, 0, BotType.SWORDFISH, swordfishConfig, false, 205, -185),
             new SpawnBotEvent(0, 180, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60)

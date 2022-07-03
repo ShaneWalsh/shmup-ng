@@ -272,7 +272,14 @@ export class BotManagerService {
 
   generateSlider(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
     let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
-    let lazer = new LazerAttack({},[this.resourcesService.getRes().get("enemy-07-firing-1"),
+    let lazer1 = new LazerAttack({},[this.resourcesService.getRes().get("enemy-07-firing-1"),
+      this.resourcesService.getRes().get("enemy-07-firing-2"),
+      this.resourcesService.getRes().get("enemy-07-firing-3")],
+      this.resourcesService.getRes().get("enemy-07-firing-4"),
+      [this.resourcesService.getRes().get("enemy-07-firing-5"),
+      this.resourcesService.getRes().get("enemy-07-firing-6")]
+    );
+    let lazer2 = new LazerAttack({},[this.resourcesService.getRes().get("enemy-07-firing-1"),
       this.resourcesService.getRes().get("enemy-07-firing-2"),
       this.resourcesService.getRes().get("enemy-07-firing-3")],
       this.resourcesService.getRes().get("enemy-07-firing-4"),
@@ -280,10 +287,9 @@ export class BotManagerService {
       this.resourcesService.getRes().get("enemy-07-firing-6")]
     );
 
-    let newBot = new Slider(config,lazer, posObj.posX, posObj.posY,
-      this.resourcesService.getRes().get("enemy-07"),
-      this.resourcesService.getRes().get("enemy-07-damaged"),
-      this.resourcesService.getRes().get("enemy-07-shadow")
+    let newBot = new Slider(config,lazer1, lazer2, posObj.posX, posObj.posY,
+      this.resourcesService.getRes().get("sideways-laser-bot"),
+      this.resourcesService.getRes().get("sideways-laser-bot-damaged")
       );
     this.botsArr.push(newBot);
     this.botCreated.next(newBot);

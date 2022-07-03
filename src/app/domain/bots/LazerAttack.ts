@@ -49,7 +49,7 @@ export class LazerAttack {
     let currentPlayer = playerService.currentPlayer;
     this.posX=posX;
     this.posY=posY;
-    if(this.firingLoading){
+    if(this.firingLoading) {
 			if(this.bTimerLoading < this.bTimerLoadingLimit) {
 				this.bTimerLoading++;
 				if(this.bTimerLoading % 3 == 0){
@@ -78,9 +78,9 @@ export class LazerAttack {
 				} else if(this.bTimerFiring < this.bTimerFiringLimit){
 					this.drawImageRotate(this.firingStartImage,posX,posY,ctx);
 				}
-				if(currentPlayer && currentPlayer.hasPlayerBeenHit(this,this.getBeamHitBox())){
-	                playerService.killCurrentPlayer();
-	            }
+				if(currentPlayer && currentPlayer.hasPlayerBeenHit(this,this.getBeamHitBox(this.posX,this.posY))) {
+          playerService.killCurrentPlayer();
+        }
 			} else {
 				this.loadingIndex = 0;
 				this.firingPhase2 = false;
@@ -101,30 +101,30 @@ export class LazerAttack {
   }
 
   drawImageRotate(image:any, posX,posY,ctx) {
-	if(this.side === LazerSide.TOP){
-		ctx.drawImage(image, 0, 0, this.imageFiringSizeX, this.imageFiringSizeY, posX, posY,this.imageFiringSizeX, this.imageFiringSizeY);
-	} else { // left or right
-		LogicService.drawRotateImage(image,ctx,this.getRotationAngle(),this.posX,this.posY,this.imageFiringSizeX,this.imageFiringSizeY,0,0,this.imageFiringSizeX,this.imageFiringSizeY,this.posX+(this.imageFiringSizeX/2),this.posY+(this.imageFiringSizeX/2));
-		// ctx.drawImage(image, 0, 0, this.imageFiringSizeX, this.imageFiringSizeY, posX, posY,this.imageFiringSizeX, this.imageFiringSizeY);
-	}
+    if(this.side === LazerSide.TOP){
+      ctx.drawImage(image, 0, 0, this.imageFiringSizeX, this.imageFiringSizeY, posX, posY,this.imageFiringSizeX, this.imageFiringSizeY);
+    } else { // left or right
+      LogicService.drawRotateImage(image,ctx,this.getRotationAngle(),this.posX,this.posY,this.imageFiringSizeX,this.imageFiringSizeY,0,0,this.imageFiringSizeX,this.imageFiringSizeY,this.posX+(this.imageFiringSizeX/2),this.posY+(this.imageFiringSizeX/2));
+      // ctx.drawImage(image, 0, 0, this.imageFiringSizeX, this.imageFiringSizeY, posX, posY,this.imageFiringSizeX, this.imageFiringSizeY);
+    }
   }
 
   getRotationAngle(){
-	if(this.side === LazerSide.LEFT){
-		return HardRotationAngle.UP
-	} else if(this.side === LazerSide.RIGHT){ // left or right
-		return HardRotationAngle.DOWN
-	}
+    if(this.side === LazerSide.LEFT){
+      return HardRotationAngle.UP
+    } else if(this.side === LazerSide.RIGHT){ // left or right
+      return HardRotationAngle.DOWN
+    }
   }
 
-  getBeamHitBox():HitBox {
-	if(this.side === LazerSide.TOP){
-		return new HitBox(0,0,this.imageFiringSizeX,this.imageFiringSizeY);
-	} else if(this.side === LazerSide.RIGHT){ // left or right
-		return new HitBox(0-this.imageFiringSizeY,0-this.imageFiringSizeX,this.imageFiringSizeY,this.imageFiringSizeX);
-	} else if(this.side === LazerSide.LEFT){
-		return new HitBox(0,0,this.imageFiringSizeY,this.imageFiringSizeX);
-	}
+  getBeamHitBox(posX, posY):HitBox {
+    if(this.side === LazerSide.TOP) {
+      return new HitBox( 0, 0, this.imageFiringSizeX, this.imageFiringSizeY );
+    } else if(this.side === LazerSide.RIGHT) { // left or right
+      return new HitBox( 0-posX, 0, this.imageFiringSizeY, this.imageFiringSizeX );
+    } else if(this.side === LazerSide.LEFT) {
+      return new HitBox( 0, 0, this.imageFiringSizeY, this.imageFiringSizeX );
+    }
   }
 
   tryConfigValues(params){

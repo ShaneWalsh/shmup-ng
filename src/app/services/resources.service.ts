@@ -422,6 +422,9 @@ export class ResourcesService {
           {code:"enemy-07-firing-5", path:"assets/img/bots/enemy-08-update/enemy-07-firing-5.png", type:ResourcesEnum.ImageRes},
           {code:"enemy-07-firing-6", path:"assets/img/bots/enemy-08-update/enemy-07-firing-6.png", type:ResourcesEnum.ImageRes},
 
+          {code:"sideways-laser-bot", path:"assets/img/bots/sideways-laser-bot/sideways-laser-bot.png", type:ResourcesEnum.ImageRes},
+          {code:"sideways-laser-bot-damaged", path:"assets/img/bots/sideways-laser-bot/sideways-laser-bot-damaged.png", type:ResourcesEnum.ImageRes},
+
           {code:"miniboss-2-bullet", path:"assets/img/boss/bos2/miniboss-2-bullet.png", type:ResourcesEnum.ImageRes},
           {code:"miniboss-2-muzzle-flash", path:"assets/img/boss/bos2/miniboss-2-muzzle-flash.png", type:ResourcesEnum.ImageRes},
           // reworked

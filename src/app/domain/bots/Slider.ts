@@ -35,31 +35,34 @@ export class Slider extends BotInstanceImpl {
 
   public score:number = 50;
 
-  public rotationAngle:number = HardRotationAngle.LEFT; // right
-  public posXTarget:number = 5;
+  public rotationAngle:number = HardRotationAngle.RIGHT; // right
+  public posXTarget:number = 0;
 
   constructor(
     public config:any={},
-    public lazerAttack:LazerAttack=null,
+    public lazerAttack1:LazerAttack=null,
+    public lazerAttack2:LazerAttack=null,
     public posX:number=0,
     public posY:number=0,
     public imageObj:HTMLImageElement=null,
     public imageObjDamaged:HTMLImageElement=null,
     public imageObjShadow:HTMLImageElement=null,
     public side:string = "LEFT",
-    public imageSizeX:number=64,
-    public imageSizeY:number=52,
+    public imageSizeX:number=142,
+    public imageSizeY:number=152,
     public hitBox:HitBox=new HitBox(4,0,imageSizeX-8,imageSizeY)
   ) {
     super(config);
     this.tryConfigValues(["bTimer","bTimerLimit","bTimerLoading","bTimerLoadingLimit","bTimerFiring","bTimerFiringPase2",
-    "bTimerFiringPase3", "bTimerFiringLimit", "health", "score", "firingPhasesToComplete","posYSpeed","posXSpeed", "left"]);
+    "bTimerFiringPase3", "bTimerFiringLimit", "health", "score", "firingPhasesToComplete","posYSpeed","posXSpeed", "side"]);
     if(this.side === "RIGHT" ){ // coming in from the right, so we need a full 180 rotation.
       this.rotationAngle = HardRotationAngle.LEFT
-      this.lazerAttack.side = LazerSide.RIGHT
-      this.posXTarget = 400
+      this.lazerAttack1.side = LazerSide.RIGHT
+      this.lazerAttack2.side = LazerSide.RIGHT
+      this.posXTarget = 345
     } else {
-      this.lazerAttack.side = LazerSide.LEFT
+      this.lazerAttack1.side = LazerSide.LEFT
+      this.lazerAttack2.side = LazerSide.LEFT
     }
   }
 
@@ -91,8 +94,15 @@ export class Slider extends BotInstanceImpl {
     if(levelInstance.drawHitBox()){
         this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");
     }
-    this.lazerAttack.update(this.posX,this.posY,levelInstance,ctx,botManagerService,bulletManagerService,playerService);
-    this.firingPhasesComplete = this.lazerAttack.firingPhasesComplete;
+    // left
+    let xOffset = 94;
+    let yOffest = 29;
+    if(this.side === "RIGHT" ) {
+      xOffset = xOffset-110;
+    }
+    this.lazerAttack1.update(this.posX + xOffset,this.posY+yOffest,levelInstance,ctx,botManagerService,bulletManagerService,playerService);
+    this.lazerAttack2.update(this.posX + xOffset,this.posY+(yOffest*2),levelInstance,ctx,botManagerService,bulletManagerService,playerService);
+    this.firingPhasesComplete = this.lazerAttack1.firingPhasesComplete;
 	}
 
     hasBotBeenHit(hitter:any,hitterBox:HitBox):boolean {
