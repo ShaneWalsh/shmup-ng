@@ -128,32 +128,32 @@ export class LevelEventsService {
       };
       // big fat slow guy, enemy-2-1
       let sliderConfigLeft = {
-        posXSpeed: 2,
-        posYSpeed: 3,
-        score: 8000,
-        health: 20,
-        side: "LEFT"
+          posXSpeed: 2,
+          posYSpeed: 3,
+          score: 8000,
+          health: 40,
+          side: "LEFT"
       };
-      let sliderConfigRight = {...sliderConfigLeft,side:"RIGHT",posXSpeed:-2}
+      let sliderConfigRight = {...  sliderConfigLeft,  side: "RIGHT", posXSpeed: -2 };
       if (difficulty == 0) { // easy difficulty, so reducing the bots health
           // here I am overiding the fighters health and reducing it to one, and keeping all of the other values defined above.
-          fighterConfig = {... fighterConfig, health: 3 }
+          fighterConfig = {...  fighterConfig,  health: 3 };
           // reducing drones health
-          droneConfig = {... droneConfig, health: 3}
+          droneConfig = {...  droneConfig,  health: 3 };
           // reducing rocks health
-          rockConfig = {... rockConfig,  health: 26 }
+          rockConfig = {...  rockConfig,  health: 26 };
           // reducing diver fire rate
-          diverConfig = {... diverConfig,  bTimerLimit: 80 }
+          diverConfig = {...  diverConfig,  bTimerLimit: 80 };
           // reducing guardians health
-          guardian1Config = {... guardian1Config,  health: 75 }
+          guardian1Config = {...  guardian1Config,  health: 75 };
           // reducing guardianCreepers health and shot limit
-          guardianCreeperConfig = {... guardianCreeperConfig,  health: 22, retreatAfterShotsFiredLimit: 3 }
+          guardianCreeperConfig = {...  guardianCreeperConfig,  health: 22, retreatAfterShotsFiredLimit: 3 };
           // reducing miniboss 1 health and fire rate
-          level1MiniBoss1 = {... level1MiniBoss1,  health: 325, bTimerLimit: 65 }
+          level1MiniBoss1 = {...  level1MiniBoss1,  health: 325, bTimerLimit: 65 };
           // reducing miniboss 2 health and fire rate
-          level1MiniBoss2 = {... level1MiniBoss2,  health: 200, bTimerLimit: 35 }
+          level1MiniBoss2 = {...  level1MiniBoss2,  health: 200, bTimerLimit: 35 };
           // reducing main boss 1 health
-          level1MainBoss1 = {... level1MainBoss1,  health: 200 }
+          level1MainBoss1 = {...  level1MainBoss1,  health: 200 };
       }
       else if (difficulty == 1) { // normal, can just use the default settings above.
           // use the defaults defined above
@@ -164,12 +164,6 @@ export class LevelEventsService {
       //#########################################################################################
       //######################          Phase Zero        #######################################
       //#########################################################################################
-
-      le.push(new SpawnBotEvent(0, 50, false, 0, BotType.SLIDER, sliderConfigLeft, false, -150, 150));
-      le.push(new SpawnBotEvent(0, 50, false, 0, BotType.SLIDER, sliderConfigRight, false, 520, 250));
-
-      le.push(new SpawnBotEvent(0, 50, false, 0, BotType.LAZERGUARDIAN, fighterConfig, false, 200, 20));
-
       // wings middle
       le.push(new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));
       le.push(new SpawnBotEvent(0, 80, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));
@@ -182,7 +176,6 @@ export class LevelEventsService {
       le.push(new SpawnBotEvent(0, 260, false, 0, BotType.FIGHTER, fighterConfig, false, 130, -60));
       le.push(new SpawnBotEvent(0, 270, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
       le.push(new SpawnBotEvent(0, 280, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
-
       le.push(new SpawnBotEvent(0, 400, false, 0, BotType.DIVER, diverConfig, false, 10, -60));
       le.push(new SpawnBotEvent(0, 450, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60));
       le.push(new SpawnBotEvent(0, 430, false, 0, BotType.FIGHTER, fighterConfig, false, 240, -60));
@@ -376,7 +369,7 @@ export class LevelEventsService {
       le.push(new SpawnBotEvent(2, 1400, false, 0, BotType.CAUTIONANIMATION, null, false, 108, 278));
       le.push(new SpawnBotEvent(2, 1500, false, 0, BotType.MAINBOSS1, level1MainBoss1, false, 0, -300));
       // after 100 ticks of Phase 2, level over is triggered.
-      le.push(new LevelOverEvent(3, 100));
+      le.push(new LevelOverEvent(3, 200));
       return le;
   };
   getLevel2Events(difficulty:number):LevelEvent[] {
@@ -391,7 +384,7 @@ export class LevelEventsService {
           score: 2000,
           health: 15,
       };
-      let buggyConfigML = {... buggyConfigMR,  moveRight: false }
+      let buggyConfigML = {...  buggyConfigMR,  moveRight: false };
       let AATankConfig = {
           bulletSpeed: 6,
           posXSpeed: 1.5,
@@ -428,10 +421,10 @@ export class LevelEventsService {
       };
       let kamikazeConfig = {
           bulletSpeed: 5,
-          posXSpeed: 4,
-          posYSpeed: 4,
+          posXSpeed: 3,
+          posYSpeed: 3,
           bTimerLimit: 60,
-          score: 1500,
+          score: 3000,
           health: 9,
       };
       // main boss guardian
@@ -483,7 +476,7 @@ export class LevelEventsService {
       let rockConfig = {
           posXSpeed: 3,
           posYSpeed: 2,
-          score: 8000,
+          score: 6000,
           health: 36,
           driftXDistance: 50
       };
@@ -520,7 +513,7 @@ export class LevelEventsService {
           destinationY: 1,
           anaimationTimerLimit: 4,
           score: 250000,
-          health: 250,
+          health: 325,
       };
       let level2Starship = {
           bulletSpeed: 6,
@@ -532,15 +525,15 @@ export class LevelEventsService {
           destinationY: 220,
           anaimationTimerLimit: 4,
           score: 500000,
-          health: 350,
-          weakPointHealth: 100,
+          health: 450,
+          weakPointHealth: 200,
       };
       let judgeL2Config = {
           bulletSpeed: 6,
           speed: 3,
           bTimerLimit: 30,
           score: 350000,
-          health: 300,
+          health: 350,
           targetCords: [
               { targetX: 90, targetY: 535 }, { targetX: 90, targetY: 90 },
               { targetX: 380, targetY: 90 }, { targetX: 380, targetY: 535 },
@@ -549,23 +542,23 @@ export class LevelEventsService {
       };
       if (difficulty == 0) { // easy difficulty, so reducing the bots health
           // here I am overiding the fighters health and reducing it to one, and keeping all of the other values defined above.
-          fighterConfig = {... fighterConfig, health: 3 }
+          fighterConfig = {...  fighterConfig,  health: 3 };
           // reducing drones health
-          droneConfig = {... droneConfig,  health: 3 }
+          droneConfig = {...  droneConfig,  health: 3 };
           // reducing rocks health
-          rockConfig = {... rockConfig,  health: 26 }
+          rockConfig = {...  rockConfig,  health: 26 };
           // reducing diver fire rate
-          diverConfig = {... diverConfig,  bTimerLimit: 80 }
+          diverConfig = {...  diverConfig,  bTimerLimit: 80 };
           // reducing guardians health
-          guardian1Config = {... guardian1Config,  health: 75 }
+          guardian1Config = {...  guardian1Config,  health: 75 };
           // reducing guardianCreepers health and shot limit
-          guardianCreeperConfig = {... guardianCreeperConfig,  health: 22, retreatAfterShotsFiredLimit: 3 }
-          // reducing miniboss 1 health and fire rate
-          level1MiniBoss1 = {... level1MiniBoss1,  health: 325, bTimerLimit: 65 }
-          // reducing miniboss 2 health and fire rate
-          level1MiniBoss2 = {... level1MiniBoss2,  health: 200, bTimerLimit: 35 }
-          // reducing main boss 1 health
-          level1MainBoss1 = {... level1MainBoss1,  health: 200 }
+          guardianCreeperConfig = {...  guardianCreeperConfig,  health: 22, retreatAfterShotsFiredLimit: 3 };
+          // reducing level 2 miniboss 1 health and fire rate
+          level2MiniBoss1 = {...  level2MiniBoss1,  health: 275, bTimerLimit: 65 };
+          // reducing Judge health and fire rate
+          judgeL2Config = {...  judgeL2Config, health: 300, bTimerLimit: 45 };
+          // reducing Starship health
+          level2Starship = {...  level2Starship,  health: 400 };
       }
       else if (difficulty == 1) { // normal, can just use the default settings above.
           // use the defaults defined above
@@ -578,30 +571,29 @@ export class LevelEventsService {
       //#########################################################################################
       // trick of the eye here, by increasing the AATanks yspeed by .5 it will look like its driving down, or leave it at 1 and it will look parked.
       le.push(new SpawnBotEvent(0, 100, false, 0, BotType.SENTRY, sentryConfig, false, 140, -140));
-      le.push(new SpawnBotEvent(0, 40, false, 0, BotType.BUGGY, {... buggyConfigMR,  moveRight: true }, false, -100, 0));
-      le.push(new SpawnBotEvent(0, 330, false, 0, BotType.AATANK, {... AATankConfig,  moveToXCord: 230, posYSpeed: 1.5 }, false, 230, -150));
-      le.push(new SpawnBotEvent(0, 650, false, 0, BotType.AATANK, {... AATankConfig,  moveToXCord: -100 }, false, 400, 80));
-      le.push(new SpawnBotEvent(0, 750, false, 0, BotType.AATANK, {... AATankConfig,  moveToXCord: -150 }, false, 450, 80));
+      le.push(new SpawnBotEvent(0, 40, false, 0, BotType.BUGGY, {...  buggyConfigMR,  moveRight: true }), false, -100, 0);
+      le.push(new SpawnBotEvent(0, 330, false, 0, BotType.AATANK, {...  AATankConfig,  moveToXCord: 230, posYSpeed: 1.5 }), false, 230, -150);
+      le.push(new SpawnBotEvent(0, 650, false, 0, BotType.AATANK, {...  AATankConfig,  moveToXCord: -100 }), false, 400, 80);
+      le.push(new SpawnBotEvent(0, 750, false, 0, BotType.AATANK, {...  AATankConfig,  moveToXCord: -150 }), false, 450, 80);
       le.push(new SpawnBotEvent(0, 815, false, 0, BotType.SENTRY, sentryConfig, false, 225, -140));
       le.push(new SpawnBotEvent(0, 850, false, 0, BotType.DIVER, diverConfig, false, 5, -80));
       le.push(new SpawnBotEvent(0, 850, false, 0, BotType.DIVER, diverConfig, false, 355, -80));
-      le.push(new SpawnBotEvent(0, 1100, false, 0, BotType.AATANK, {... AATankConfig,  moveToXCord: 130, posYSpeed: 1.5 }, false, 130, -150));
-      le.push(new SpawnBotEvent(0, 1365, false, 0, BotType.BUGGY, {... buggyConfigMR,  moveRight: true }, false, -10, 0));
-      le.push(new SpawnBotEvent(0, 1450, false, 0, BotType.BUGGY, {... buggyConfigMR,  moveRight: false }, false, 500, 0));
-      le.push(new SpawnBotEvent(0, 1520, false, 0, BotType.AATANK, {... AATankConfig,  moveToXCord: 20, posYSpeed: 1.5 }, false, 20, -150));
-      le.push(new SpawnBotEvent(0, 1520, false, 0, BotType.AATANK, {... AATankConfig,  moveToXCord: 350, posYSpeed: 1.5 }, false, 350, -150));
+      le.push(new SpawnBotEvent(0, 1100, false, 0, BotType.AATANK, {...  AATankConfig,  moveToXCord: 130, posYSpeed: 1.5 }), false, 130, -150);
+      le.push(new SpawnBotEvent(0, 1365, false, 0, BotType.BUGGY, {...  buggyConfigMR,  moveRight: true }), false, -10, 0);
+      le.push(new SpawnBotEvent(0, 1520, false, 0, BotType.AATANK, {...  AATankConfig,  moveToXCord: 20, posYSpeed: 1.5 }), false, 20, -150);
+      le.push(new SpawnBotEvent(0, 1520, false, 0, BotType.AATANK, {...  AATankConfig,  moveToXCord: 350, posYSpeed: 1.5 }), false, 350, -150);
       le.push(new SpawnBotEvent(0, 1700, false, 0, BotType.SENTRY, sentryConfig, false, 30, -140));
-      le.push(new SpawnBotEvent(0, 1920, false, 0, BotType.BUGGY, {... buggyConfigMR,  moveRight: true }, false, -100, 0));
-      le.push(new SpawnBotEvent(0, 2000, false, 0, BotType.BUGGY, {... buggyConfigMR, moveRight: true }, false, -100, 0));
+      le.push(new SpawnBotEvent(0, 1920, false, 0, BotType.BUGGY, {...  buggyConfigMR,  moveRight: true }), false, -100, 0);
+      le.push(new SpawnBotEvent(0, 2000, false, 0, BotType.BUGGY, {...  buggyConfigMR,  moveRight: true }), false, -100, 0);
       le.push(new SpawnBotEvent(0, 2120, false, 0, BotType.SENTRY, sentryConfig, false, 330, -140));
       le.push(new SpawnBotEvent(0, 2270, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
       le.push(new SpawnBotEvent(0, 2270, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
       le.push(new SpawnBotEvent(0, 2330, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
       le.push(new SpawnBotEvent(0, 2330, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
-      le.push(new SpawnBotEvent(0, 2550, false, 0, BotType.AATANK, {... AATankConfig,  moveToXCord: -200 }, false, 400, 80));
-      le.push(new SpawnBotEvent(0, 2630, false, 0, BotType.AATANK, {... AATankConfig,  moveToXCord: 600 }, false, -100, 80));
-      le.push(new SpawnBotEvent(0, 2680, false, 0, BotType.AATANK, {... AATankConfig,  moveToXCord: 130, posYSpeed: 1.5 }, false, 130, -150));
-      le.push(new SpawnBotEvent(0, 2800, false, 0, BotType.AATANK, {... AATankConfig,  moveToXCord: 215, posYSpeed: 1.5 }, false, 215, -150));
+      le.push(new SpawnBotEvent(0, 2550, false, 0, BotType.AATANK, {...  AATankConfig,  moveToXCord: -200 }), false, 400, 80);
+      le.push(new SpawnBotEvent(0, 2630, false, 0, BotType.AATANK, {...  AATankConfig,  moveToXCord: 600 }), false, -100, 80);
+      le.push(new SpawnBotEvent(0, 2680, false, 0, BotType.AATANK, {...  AATankConfig,  moveToXCord: 130, posYSpeed: 1.5 }), false, 130, -150);
+      le.push(new SpawnBotEvent(0, 2800, false, 0, BotType.AATANK, {...  AATankConfig,  moveToXCord: 215, posYSpeed: 1.5 }), false, 215, -150);
       le.push(new SpawnBotEvent(0, 3200, false, 0, BotType.CAUTIONANIMATION, null, false, 108, 278));
       le.push(new SpawnBotEvent(0, 3300, false, 0, BotType.MINIBOSS1L2, level2MiniBoss1, false, 100, -300));
       //#########################################################################################
@@ -627,12 +619,12 @@ export class LevelEventsService {
       le.push(new SpawnBotEvent(1, 1300, false, 0, BotType.CREEPER, creeperConfig, false, 340, -60));
       le.push(new SpawnBotEvent(1, 1360, false, 0, BotType.ROCK, rockConfig, false, 200, -80));
       le.push(new SpawnBotEvent(1, 1300, false, 0, BotType.CREEPER, creeperConfig, false, 100, -60));
-      le.push(new SpawnBotEvent(1, 1500, false, 0, BotType.KAMIKAZE, kamikazeConfig, false, 190, -40))
+      le.push(new SpawnBotEvent(1, 1500, false, 0, BotType.KAMIKAZE, kamikazeConfig, false, 190, -40));
       le.push(new SpawnBotEvent(1, 1700, false, 0, BotType.DIVER, diverConfig, false, 5, -60));
       le.push(new SpawnBotEvent(1, 1800, false, 0, BotType.ROCK, rockConfig, false, 220, -80));
       le.push(new SpawnBotEvent(1, 1700, false, 0, BotType.DIVER, diverConfig, false, 355, -60));
-      le.push(new SpawnBotEvent(1, 1900, false, 0, BotType.KAMIKAZE, kamikazeConfig, false, 90, -40))
-      le.push(new SpawnBotEvent(1, 1900, false, 0, BotType.KAMIKAZE, kamikazeConfig, false, 290, -40))
+      le.push(new SpawnBotEvent(1, 1900, false, 0, BotType.KAMIKAZE, kamikazeConfig, false, 90, -40));
+      le.push(new SpawnBotEvent(1, 1900, false, 0, BotType.KAMIKAZE, kamikazeConfig, false, 290, -40));
       le.push(new SpawnBotEvent(1, 2000, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 190, -40));
       le.push(new SpawnBotEvent(1, 2050, false, 0, BotType.DIVER, diverConfig, false, 5, -60));
       le.push(new SpawnBotEvent(1, 2050, false, 0, BotType.DIVER, diverConfig, false, 355, -60));
@@ -642,9 +634,9 @@ export class LevelEventsService {
       le.push(new SpawnBotEvent(1, 2250, false, 0, BotType.DIVER, diverConfig, false, 5, -60));
       le.push(new SpawnBotEvent(1, 2400, false, 0, BotType.DIVER, diverConfig, false, 180, -60));
       le.push(new SpawnBotEvent(1, 2250, false, 0, BotType.DIVER, diverConfig, false, 355, -60));
-      le.push(new SpawnBotEvent(1, 2600, false, 0, BotType.KAMIKAZE, kamikazeConfig, false, 90, -40))
-      le.push(new SpawnBotEvent(1, 2700, false, 0, BotType.KAMIKAZE, kamikazeConfig, false, 190, -40))
-      le.push(new SpawnBotEvent(1, 2800, false, 0, BotType.KAMIKAZE, kamikazeConfig, false, 290, -40))
+      le.push(new SpawnBotEvent(1, 2600, false, 0, BotType.KAMIKAZE, kamikazeConfig, false, 90, -40));
+      le.push(new SpawnBotEvent(1, 2700, false, 0, BotType.KAMIKAZE, kamikazeConfig, false, 190, -40));
+      le.push(new SpawnBotEvent(1, 2800, false, 0, BotType.KAMIKAZE, kamikazeConfig, false, 290, -40));
       le.push(new SpawnBotEvent(1, 3100, false, 0, BotType.CAUTIONANIMATION, null, false, 108, 278));
       le.push(new SpawnBotEvent(1, 3200, false, 0, BotType.JUDGEL2, judgeL2Config, false, 90, -300));
       //#########################################################################################
@@ -653,8 +645,8 @@ export class LevelEventsService {
       le.push(new SpawnBotEvent(2, 100, false, 0, BotType.DIVER, diverConfig, false, 5, -60));
       le.push(new SpawnBotEvent(2, 60, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 190, -40));
       le.push(new SpawnBotEvent(2, 100, false, 0, BotType.DIVER, diverConfig, false, 355, -60));
-      le.push(new SpawnBotEvent(2, 320, false, 0, BotType.KAMIKAZE, kamikazeConfig, false, 90, -40))
-      le.push(new SpawnBotEvent(2, 360, false, 0, BotType.KAMIKAZE, kamikazeConfig, false, 290, -40))
+      le.push(new SpawnBotEvent(2, 320, false, 0, BotType.KAMIKAZE, kamikazeConfig, false, 90, -40));
+      le.push(new SpawnBotEvent(2, 360, false, 0, BotType.KAMIKAZE, kamikazeConfig, false, 290, -40));
       le.push(new SpawnBotEvent(2, 500, false, 0, BotType.HEAVYJET, heavyJetConfig, false, 0, -150));
       le.push(new SpawnBotEvent(2, 700, false, 0, BotType.CREEPER, creeperConfig, false, 10, -60));
       le.push(new SpawnBotEvent(2, 710, false, 0, BotType.CREEPER, creeperConfig, false, 70, -60));
@@ -692,7 +684,7 @@ export class LevelEventsService {
       le.push(new SpawnBotEvent(2, 2000, false, 0, BotType.CREEPER, creeperConfig, false, 430, -60));
       le.push(new SpawnBotEvent(2, 2400, false, 0, BotType.CAUTIONANIMATION, null, false, 108, 278));
       le.push(new SpawnBotEvent(2, 2500, false, 0, BotType.STARSHIPL2, level2Starship, false, 150, -300));
-      le.push(new LevelOverEvent(3, 100));
+      le.push(new LevelOverEvent(3, 200));
       return le;
   };
   getLevel3Events(difficulty:number):LevelEvent[] {
@@ -707,7 +699,7 @@ export class LevelEventsService {
           score: 2000,
           health: 15,
       };
-      let buggyConfigML = {... buggyConfigMR,  moveRight: false }
+      let buggyConfigML = {...  buggyConfigMR, moveRight: false };
       let AATankConfig = {
           bulletSpeed: 6,
           posXSpeed: 1.5,
@@ -744,10 +736,10 @@ export class LevelEventsService {
       };
       let kamikazeConfig = {
           bulletSpeed: 5,
-          posXSpeed: 4,
-          posYSpeed: 4,
+          posXSpeed: 3,
+          posYSpeed: 3,
           bTimerLimit: 60,
-          score: 1500,
+          score: 3000,
           health: 9,
       };
       // main boss guardian
@@ -799,7 +791,7 @@ export class LevelEventsService {
       let rockConfig = {
           posXSpeed: 3,
           posYSpeed: 2,
-          score: 8000,
+          score: 6000,
           health: 36,
           driftXDistance: 50
       };
@@ -835,6 +827,18 @@ export class LevelEventsService {
           score: 500000,
           health: 250,
       };
+      // big fat slow guy, enemy-2-1
+      let sliderConfigLeft = {
+          posXSpeed: 2,
+          posYSpeed: 3,
+          score: 8000,
+          health: 40,
+          side: "LEFT"
+      };
+
+      let sliderConfigRight = {...  sliderConfigLeft,  side: "RIGHT", posXSpeed: -2 };
+
+
       let level3MiniBoss1 = {
           bulletSpeed: 4,
           posXSpeed: 3,
@@ -844,40 +848,64 @@ export class LevelEventsService {
           missileSpeed: 4.5,
           destinationY: 1,
           anaimationTimerLimit: 4,
-          score: 20000,
+          score: 200000,
           health: 750,
       };
       let level3MiniBoss2 = {
-          moveSpeed: 3.5,
-          score: 15000,
+          moveSpeed: 2.5,
+          score: 350000,
           health: 300,
-          bTimerLimit: 60,
+          bTimerLimit: 100,
       };
       // The phase 0, is irrelevant
       let finalBossSpawns = [
-        new SpawnTimer(305,[
-            new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60),
-            new SpawnBotEvent(0, 80, false, 0, BotType.SWORDFISH, swordfishConfig, false, 205, -185),
-            new SpawnBotEvent(0, 90, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60),
-
-            new SpawnBotEvent(0, 180, false, 0, BotType.FIGHTER, fighterConfig, false, 180, -60),
-            new SpawnBotEvent(0, 170, false, 0, BotType.SWORDFISH, swordfishConfig, false, 205, -185),
-            new SpawnBotEvent(0, 180, false, 0, BotType.FIGHTER, fighterConfig, false, 300, -60)
-        ]),
-        new SpawnTimer(250,[
-            new SpawnBotEvent(0, 100, false, 0, BotType.SWORDFISH, swordfishConfig, false, 60, -185),
-            new SpawnBotEvent(0, 110, false, 0, BotType.SWORDFISH, swordfishConfig, false, 300, -185),
-
-            new SpawnBotEvent(0, 200, false, 0, BotType.SWORDFISH, swordfishConfig, false, 60, -185),
-            new SpawnBotEvent(0, 210, false, 0, BotType.SWORDFISH, swordfishConfig, false, 300, -185)
-        ])
-      ]
+          new SpawnTimer(1205, [
+          ]),
+          new SpawnTimer(990, [
+  new SpawnBotEvent(0, 240, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 10, -60),
+        new SpawnBotEvent(0, 350, false, 0, BotType.FIGHTER, fighterConfig, false, 400, -60),
+        new SpawnBotEvent(0, 640, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 375, -60),
+        new SpawnBotEvent(0, 750, false, 0, BotType.FIGHTER, fighterConfig, false, 30, -60)
+          ]),
+          new SpawnTimer(800, [
+  new SpawnBotEvent(0, 100, false, 0, BotType.CREEPER, creeperConfig, false, 10, -60),
+        new SpawnBotEvent(0, 200, false, 0, BotType.CREEPER, creeperConfig, false, 70, -60),
+        new SpawnBotEvent(0, 300, false, 0, BotType.CREEPER, creeperConfig, false, 130, -60),
+        new SpawnBotEvent(0, 400, false, 0, BotType.CREEPER, creeperConfig, false, 190, -60),
+        new SpawnBotEvent(0, 400, false, 0, BotType.CREEPER, creeperConfig, false, 250, -60),
+        new SpawnBotEvent(0, 300, false, 0, BotType.CREEPER, creeperConfig, false, 310, -60),
+        new SpawnBotEvent(0, 200, false, 0, BotType.CREEPER, creeperConfig, false, 370, -60),
+        new SpawnBotEvent(0, 100, false, 0, BotType.CREEPER, creeperConfig, false, 430, -60)
+          ]),
+          new SpawnTimer(600, [
+        new SpawnBotEvent(0, 100, false, 0, BotType.SLIDER, sliderConfigLeft, false, -150, 50),
+        new SpawnBotEvent(0, 200, false, 0, BotType.SLIDER, sliderConfigRight, false, 520, 150),
+        new SpawnBotEvent(0, 300, false, 0, BotType.SLIDER, sliderConfigLeft, false, -150, 250),
+        new SpawnBotEvent(0, 400, false, 0, BotType.SLIDER, sliderConfigRight, false, 520, 350),
+        new SpawnBotEvent(0, 500, false, 0, BotType.SLIDER, sliderConfigLeft, false, -150, 450),
+    ]),
+    new SpawnTimer(400, [
+        new SpawnBotEvent(0, 120, false, 0, BotType.SLIDER, sliderConfigLeft, false, -150, 50),
+        new SpawnBotEvent(0, 240, false, 0, BotType.SLIDER, sliderConfigRight, false, 520, 150),
+        new SpawnBotEvent(0, 360, false, 0, BotType.SLIDER, sliderConfigLeft, false, -150, 250),
+        new SpawnBotEvent(0, 480, false, 0, BotType.SLIDER, sliderConfigRight, false, 520, 350),
+        new SpawnBotEvent(0, 600, false, 0, BotType.SLIDER, sliderConfigLeft, false, -150, 450),
+  new SpawnBotEvent(0, 80, false, 0, BotType.CREEPER, creeperConfig, false, 10, -60),
+        new SpawnBotEvent(0, 200, false, 0, BotType.CREEPER, creeperConfig, false, 70, -60),
+        new SpawnBotEvent(0, 325, false, 0, BotType.CREEPER, creeperConfig, false, 130, -60),
+        new SpawnBotEvent(0, 450, false, 0, BotType.CREEPER, creeperConfig, false, 190, -60),
+        new SpawnBotEvent(0, 450, false, 0, BotType.CREEPER, creeperConfig, false, 250, -60),
+        new SpawnBotEvent(0, 325, false, 0, BotType.CREEPER, creeperConfig, false, 310, -60),
+        new SpawnBotEvent(0, 200, false, 0, BotType.CREEPER, creeperConfig, false, 370, -60),
+        new SpawnBotEvent(0, 80, false, 0, BotType.CREEPER, creeperConfig, false, 430, -60)
+    ])
+      ];
       let finalBossAttr = {
           moveSpeed: 4,
-          score: 15000,
-          health: 300,
+          score: 1000000,
+          health: 1200,
           bTimerLimit: 60,
-          spawnTimer : finalBossSpawns
+          spawnTimer: finalBossSpawns
       };
       if (difficulty == 0) { // easy difficulty, so reducing the bots health
           // here I am overiding the fighters health and reducing it to one, and keeping all of the other values defined above.
