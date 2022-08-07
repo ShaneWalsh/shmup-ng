@@ -81,6 +81,12 @@
     <app-game-container [requestAnimFrame]="requestAnimFrame"></app-game-container>
   </div>
   <!-- Game over 50? -->
+  <div class="screen-container" *ngIf="screenId==47">
+    <img [src]="'assets/img/desc/ending-text-naomi.png'">
+  </div>
+  <div class="screen-container" *ngIf="screenId==48">
+    <img [src]="'assets/img/desc/ending-naomi.png'">
+  </div>
 
   <div class="screen-container" *ngIf="screenId==55">
     <app-game-container [requestAnimFrame]="requestAnimFrame"></app-game-container>

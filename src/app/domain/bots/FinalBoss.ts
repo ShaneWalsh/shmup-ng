@@ -92,20 +92,24 @@ export class FinalBoss extends BotInstanceImpl {
 
     updateSpawning(botManagerService: BotManagerService, levelInstance:LevelInstance) {
       this.spawnTimerCounter = this.spawnTimerCounter+1;
-      let spawnBot = this.spawnTimer.filter( ti => this.health < ti.healthLessThan)
-        .reduce((a,b) => a.healthLessThan < b.healthLessThan ? a:b)
-      let highestValue = 0;
-      spawnBot.spawnEvents.forEach( eve => {
-        if(eve.getHappenAfterTicks() > highestValue){
-          highestValue = eve.getHappenAfterTicks();
+      if(this.spawnTimer && this.spawnTimer.length > 0){
+        let spawnBot = this.spawnTimer.filter( ti => this.health < ti.healthLessThan)
+          .reduce((a,b) => a.healthLessThan < b.healthLessThan ? a:b)
+        let highestValue = 0;
+        if(spawnBot) {
+          spawnBot.spawnEvents.forEach( eve => {
+            if(eve.getHappenAfterTicks() > highestValue){
+              highestValue = eve.getHappenAfterTicks();
+            }
+            if(eve.getHappenAfterTicks() === this.spawnTimerCounter){
+              eve.triggerEventByLevel(botManagerService,levelInstance);
+            }
+          });
+          if(highestValue <= this.spawnTimerCounter){
+            this.spawnTimerCounter = 0;
+          }
         }
-        if(eve.getHappenAfterTicks() === this.spawnTimerCounter){
-          eve.triggerEventByLevel(botManagerService,levelInstance);
-        }
-      });
-      if(highestValue <= this.spawnTimerCounter){
-        this.spawnTimerCounter = 0;
-      } 
+      }
     }
 
     updateAnimation(ctx){
@@ -202,11 +206,11 @@ export class FinalBoss extends BotInstanceImpl {
     }
 
     getCenterX(): number {
-        return this.posX + (this.imageSizeX / 2);
+      return this.posX+105 + this.imageHeadSizeX/2;
     }
 
     getCenterY(): number {
-        return this.posY + (this.imageSizeY / 2);
+        return this.posY+65 + this.imageHeadSizeY/2;
     }
 
     isWithin(sourceX, tarX, distance): boolean {

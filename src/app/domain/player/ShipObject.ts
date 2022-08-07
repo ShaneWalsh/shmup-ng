@@ -20,6 +20,7 @@ export class ShipObject {
     public imageObjMuzzle:HTMLImageElement[]=[],
     public imageBullets:HTMLImageElement[]=[],
     public imageObjShadow:HTMLImageElement=null,
+    public imageObjInvincible:HTMLImageElement=null,
     public imageSizeX:number=90,
     public imageSizeY:number=70,
     public hitBox:HitBox=new HitBox((Math.floor(imageSizeX/2))-5,(Math.floor(imageSizeY/2))-5,10,10)
@@ -29,6 +30,10 @@ export class ShipObject {
 
   draw(ctx, posX: number, posY: number, levelInstance: LevelInstance, canvasContainer: CanvasContainer, bulletManagerService: BulletManagerService, botManagerService: BotManagerService) {
     ctx.drawImage(this.imageObj, 0, 0, this.imageSizeX, this.imageSizeY, posX, posY, this.imageSizeX, this.imageSizeY);
+  }
+
+  drawInvincibility(ctx, posX: number, posY: number, levelInstance: LevelInstance, canvasContainer: CanvasContainer, bulletManagerService: BulletManagerService, botManagerService: BotManagerService) {
+    ctx.drawImage(this.imageObjInvincible, 0, 0, this.imageSizeX, this.imageSizeY, posX, posY, this.imageSizeX, this.imageSizeY);
   }
 
   drawShadow(shadowCtx: CanvasRenderingContext2D, posX: number, posY: number, levelInstance: LevelInstance, canvasContainer: CanvasContainer, bulletManagerService: BulletManagerService, botManagerService: BotManagerService) {

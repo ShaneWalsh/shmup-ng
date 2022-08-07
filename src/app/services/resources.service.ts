@@ -231,10 +231,12 @@ export class ResourcesService {
           {code:"ground-enemy-1-1-example", path:"assets/img/bots/level-2/ground-enemy-1-1-example.png", type:ResourcesEnum.ImageRes},
           {code:"player-1-ship-shadow-separa", path:"assets/img/player/player-1-ship-shadow.png", type:ResourcesEnum.ImageRes},
           {code:"player-1-ship", path:"assets/img/player/player-1-ship.png", type:ResourcesEnum.ImageRes},
+          {code:"player-1-ship-invincibility", path:"assets/img/player/player-1-ship-invincibility.png", type:ResourcesEnum.ImageRes},
 
           {code:"player-2-ship", path:"assets/img/player/player2/player-2-ship-new.png", type:ResourcesEnum.ImageRes},
           {code:"player-2-bullets", path:"assets/img/player/player2/player-2-bullets.png", type:ResourcesEnum.ImageRes},
           {code:"player-2-ship-shadow", path:"assets/img/player/player2/player-2-ship-new-shadow.png", type:ResourcesEnum.ImageRes},
+          {code:"player-2-ship-invincibility", path:"assets/img/player/player2/player-2-ship-invincibility.png", type:ResourcesEnum.ImageRes},
 
           {code:"player-2-muzzle-flash-1", path:"assets/img/player/player2/player-2-muzzle-flash-1.png", type:ResourcesEnum.ImageRes},
           {code:"player-2-muzzle-flash-2", path:"assets/img/player/player2/player-2-muzzle-flash-2.png", type:ResourcesEnum.ImageRes},

@@ -164,9 +164,11 @@ export class PlayerObj implements ShieldBot {
       this.invincibilityTimer--;
       if (this.invincibilityTimer % 2 == 0) {// draw every second draw, to get an invincible effect
         this.selectedShip.draw(ctx, this.posX,this.posY, levelInstance, canvasContainer, bulletManagerService, botManagerService);
-        if (levelInstance.drawHitBox()) {
-          hitBox.drawBorder(this.posX + hitBox.hitBoxX, this.posY + hitBox.hitBoxY, hitBox.hitBoxSizeX, hitBox.hitBoxSizeY, ctx, "#FF0000");
-        }
+      } else {
+        this.selectedShip.drawInvincibility(ctx, this.posX,this.posY, levelInstance, canvasContainer, bulletManagerService, botManagerService);
+      }
+      if (levelInstance.drawHitBox()) {
+        hitBox.drawBorder(this.posX + hitBox.hitBoxX, this.posY + hitBox.hitBoxY, hitBox.hitBoxSizeX, hitBox.hitBoxSizeY, ctx, "#FF0000");
       }
     } else {
       this.selectedShip.draw(ctx, this.posX,this.posY, levelInstance, canvasContainer, bulletManagerService, botManagerService);

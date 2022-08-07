@@ -92,9 +92,13 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
             this.screenId = 45;
             this.playerService.initPlayer(false, this.playerScore, this.playerLives);
             this.levelManagerService.initLevel(LevelEnum.LevelThree);
-          } else if(this.screenId == 50) {
-
-            console.log("Should not be being called.");
+          } else if(this.screenId == 47) { // Game over for the whole game. P1
+            this.screenId = 48;
+          } else if(this.screenId == 48) { // Game over for the whole game. P2
+            this.profileService.checkMedals();
+            this.screenId = 1; // Return to main menu and let them play again!
+            this.levelManagerService.mainMenuIndex = 0;
+            this.landedOnTitleScreen();
           } else if(this.screenId == 60) {
             this.screenId = 65;
             this.playerService.initPlayer(false, this.playerScore, this.playerLives);
@@ -149,10 +153,12 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
           this.playerLives =  playerObj.lives;
           this.screenId = 20;
       }));
+      // Quitting from the options menu.
       this.subs.push(this.levelManagerService.getMenuQuitSubject().subscribe(bool => {
         this.levelManagerService.pauseGame(); // no point in it running for eternity
         this.profileService.checkMedals();
         this.screenId = 1;
+        this.levelManagerService.mainMenuIndex = 0;
         this.landedOnTitleScreen();
       }));
       this.subs.push(this.levelManagerService.getLevelCompleteSubject().subscribe(result => {
@@ -170,14 +176,14 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
           this.screenId = 40;
         } else if(this.levelManagerService.getCurrentLevelEnum() == LevelEnum.LevelThree){
           // game over? You win?
-          // 50?
+          this.screenId = 47;
         } else if(this.levelManagerService.getCurrentLevelEnum() == LevelEnum.LevelFour){
           this.screenId = 60;
         } else if(this.levelManagerService.getCurrentLevelEnum() == LevelEnum.LevelFive){
           this.screenId = 70;
         } else if(this.levelManagerService.getCurrentLevelEnum() == LevelEnum.LevelSix){
           // game over? You win?
-          // 80
+          this.screenId = 47;
         }
       }));
     }

@@ -80,6 +80,9 @@ export class LevelManagerService {
         } else if(customKeyboardEvent.event.keyCode == 13) { // enter
           if(this.showPauseMenuIndex == 2) { // quit
             this.menuQuitSubject.next(true);
+            this.showPauseMenuIndex = 0;
+            this.showPauseMenu = false;
+            this.showOptionsMenu = false;
           } else if(this.showPauseMenuIndex == 1) { // options
             this.showOptionsMenu = true;
           } else { // return
