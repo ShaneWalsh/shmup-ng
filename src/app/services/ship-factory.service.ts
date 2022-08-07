@@ -33,7 +33,7 @@ export class ShipFactoryService {
             this.resourcesService.getRes().get("player-2-muzzle-flash-2"),
             this.resourcesService.getRes().get("player-2-muzzle-flash-3")],
           [this.resourcesService.getRes().get("player-2-bullets")],
-          this.resourcesService.getRes().get("player-1-ship-shadow-separa")
+          this.resourcesService.getRes().get("player-2-ship-shadow")
         );
         break;
     }

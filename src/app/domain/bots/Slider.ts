@@ -9,6 +9,13 @@ import { LazerAttack, LazerSide } from "./LazerAttack";
 import { DeathDetails } from "../DeathDetails";
 import { HardRotationAngle, LogicService } from "src/app/services/logic.service";
 
+/**
+ * For testing
+ *
+      le.push(new SpawnBotEvent(0, 10, false, 0, BotType.SLIDER, sliderConfigLeft, false, -150, 50));
+      le.push(new SpawnBotEvent(0, 10, false, 0, BotType.SLIDER, sliderConfigRight, false, 520, 150));
+ */
+
 export class Slider extends BotInstanceImpl {
   public posXSpeed:number = 1.5;
   public posYSpeed:number = 1.5;
@@ -30,6 +37,9 @@ export class Slider extends BotInstanceImpl {
 
 	public firingPhasesComplete = 0;
 	public firingPhasesToComplete = 1;
+
+  public damAnaimationTimer:number = 8;
+	public damAnaimationTimerLimit:number =8;
 
 	public health:number=5;
 
@@ -87,9 +97,10 @@ export class Slider extends BotInstanceImpl {
         botManagerService.removeBotOOB(this);
     } else {
       LogicService.drawRotateImage(this.imageObj,ctx,this.rotationAngle,this.posX,this.posY,this.imageSizeX,this.imageSizeY,0,0,this.imageSizeX,this.imageSizeY);
-        if(levelInstance.drawShadow() && this.imageObjShadow != null) {
-          // this.drawShadow(canvasContainer.shadowCtx,this.imageObjShadow,this.posX,this.posY,this.imageSizeX, this.imageSizeY);
-        }
+      if(levelInstance.drawShadow() && this.imageObjShadow != null) {
+        // this.drawShadow(canvasContainer.shadowCtx,this.imageObjShadow,this.posX,this.posY,this.imageSizeX, this.imageSizeY);
+      }
+      this.updateDamageAnimation(ctx,this.rotationAngle);
     }
     if(levelInstance.drawHitBox()){
         this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");
@@ -116,9 +127,11 @@ export class Slider extends BotInstanceImpl {
 
   applyDamage(damage: number, botManagerService: BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService, levelInstance:LevelInstance) {
       this.health -= damage;
+      this.damAnaimationTimer = 1;
       if(this.health < 1){
           playerService.currentPlayer.addScore(this.score);
           botManagerService.removeBot(this);
+
       }
   }
 
@@ -149,5 +162,24 @@ export class Slider extends BotInstanceImpl {
     getDeathDetails() : DeathDetails {
       return new DeathDetails ( this.imageObj, this.posX, this.posY, this.imageSizeX, this.imageSizeY,
                     0,this.getCenterX(), this.getCenterY(), this.getDeathConfig() );
+    }
+
+    /**
+     * draw the damaged sprite over the parent sprite to indicate damage.
+     * @param ctx
+     * @param angle when provided the damaged image will be drawn at this angle
+     */
+    updateDamageAnimation(ctx,angle=null){
+      if(this.damAnaimationTimer < this.damAnaimationTimerLimit) {
+        this.damAnaimationTimer++;
+        if(this.damAnaimationTimer %2 == 1) {
+          var damImage = this.imageObjDamaged;
+          if(angle != null) {
+            LogicService.drawRotateImage(damImage,ctx,angle,this.posX,this.posY,this.imageSizeX,this.imageSizeY);
+          } else {
+            ctx.drawImage(damImage, 0, 0, this.imageSizeX, this.imageSizeY, this.posX, this.posY,this.imageSizeX, this.imageSizeY);
+          }
+        }
+      }
     }
 }

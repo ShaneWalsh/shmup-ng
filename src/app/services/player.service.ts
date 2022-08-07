@@ -16,6 +16,7 @@ import { PilotEnum, PilotObject } from '../domain/player/PilotObject';
 import { AudioServiceService } from './audio-service.service';
 import { DeathManagerService } from '../manager/death-manager.service';
 import { DeathDetails } from '../domain/DeathDetails';
+import { OptionsService } from './options.service';
 
 
 
@@ -30,6 +31,7 @@ export class PlayerService {
   public selectedPilot:PilotEnum = PilotEnum.NAOMI1;
 
   constructor(private keyboardEventService:KeyboardEventService, private levelManagerService:LevelManagerService,
+    private optionsService:OptionsService,
     private resourcesService:ResourcesService, private botManagerService:BotManagerService,
     private bulletManagerService:BulletManagerService, private deathManagerService:DeathManagerService,
     private shipFactoryService:ShipFactoryService, private pilotFactoryService:PilotFactoryService ) {
@@ -47,7 +49,7 @@ export class PlayerService {
 
   killCurrentPlayer(): any {
       this.currentPlayer.lives--;
-      this.currentPlayer.invincibilityTimer = 120;
+      this.currentPlayer.invincibilityTimer = this.optionsService.getInvincibilityTime();
       this.botManagerService.createPlayerDeath(this.currentPlayer.getCenterX(),this.currentPlayer.getCenterY());
       this.deathManagerService.addDynamicDeath(this.currentPlayer.getDeathDetails());
       if(this.currentPlayer.lives > 0){

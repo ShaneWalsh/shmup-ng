@@ -571,29 +571,29 @@ export class LevelEventsService {
       //#########################################################################################
       // trick of the eye here, by increasing the AATanks yspeed by .5 it will look like its driving down, or leave it at 1 and it will look parked.
       le.push(new SpawnBotEvent(0, 100, false, 0, BotType.SENTRY, sentryConfig, false, 140, -140));
-      le.push(new SpawnBotEvent(0, 40, false, 0, BotType.BUGGY, {...  buggyConfigMR,  moveRight: true }), false, -100, 0);
-      le.push(new SpawnBotEvent(0, 330, false, 0, BotType.AATANK, {...  AATankConfig,  moveToXCord: 230, posYSpeed: 1.5 }), false, 230, -150);
-      le.push(new SpawnBotEvent(0, 650, false, 0, BotType.AATANK, {...  AATankConfig,  moveToXCord: -100 }), false, 400, 80);
-      le.push(new SpawnBotEvent(0, 750, false, 0, BotType.AATANK, {...  AATankConfig,  moveToXCord: -150 }), false, 450, 80);
+      le.push(new SpawnBotEvent(0, 40, false, 0, BotType.BUGGY, {...  buggyConfigMR,  moveRight: true }, false, -100, 0));
+      le.push(new SpawnBotEvent(0, 330, false, 0, BotType.AATANK, {...  AATankConfig,  moveToXCord: 230, posYSpeed: 1.5 }, false, 230, -150));
+      le.push(new SpawnBotEvent(0, 650, false, 0, BotType.AATANK, {...  AATankConfig,  moveToXCord: -100 }, false, 400, 80));
+      le.push(new SpawnBotEvent(0, 750, false, 0, BotType.AATANK, {...  AATankConfig,  moveToXCord: -150 }, false, 450, 80));
       le.push(new SpawnBotEvent(0, 815, false, 0, BotType.SENTRY, sentryConfig, false, 225, -140));
       le.push(new SpawnBotEvent(0, 850, false, 0, BotType.DIVER, diverConfig, false, 5, -80));
       le.push(new SpawnBotEvent(0, 850, false, 0, BotType.DIVER, diverConfig, false, 355, -80));
-      le.push(new SpawnBotEvent(0, 1100, false, 0, BotType.AATANK, {...  AATankConfig,  moveToXCord: 130, posYSpeed: 1.5 }), false, 130, -150);
-      le.push(new SpawnBotEvent(0, 1365, false, 0, BotType.BUGGY, {...  buggyConfigMR,  moveRight: true }), false, -10, 0);
-      le.push(new SpawnBotEvent(0, 1520, false, 0, BotType.AATANK, {...  AATankConfig,  moveToXCord: 20, posYSpeed: 1.5 }), false, 20, -150);
-      le.push(new SpawnBotEvent(0, 1520, false, 0, BotType.AATANK, {...  AATankConfig,  moveToXCord: 350, posYSpeed: 1.5 }), false, 350, -150);
+      le.push(new SpawnBotEvent(0, 1100, false, 0, BotType.AATANK, {...  AATankConfig,  moveToXCord: 130, posYSpeed: 1.5 }, false, 130, -150));
+      le.push(new SpawnBotEvent(0, 1365, false, 0, BotType.BUGGY, {...  buggyConfigMR,  moveRight: true }, false, -10, 0));
+      le.push(new SpawnBotEvent(0, 1520, false, 0, BotType.AATANK, {...  AATankConfig,  moveToXCord: 20, posYSpeed: 1.5 }, false, 20, -150));
+      le.push(new SpawnBotEvent(0, 1520, false, 0, BotType.AATANK, {...  AATankConfig,  moveToXCord: 350, posYSpeed: 1.5 }, false, 350, -150));
       le.push(new SpawnBotEvent(0, 1700, false, 0, BotType.SENTRY, sentryConfig, false, 30, -140));
-      le.push(new SpawnBotEvent(0, 1920, false, 0, BotType.BUGGY, {...  buggyConfigMR,  moveRight: true }), false, -100, 0);
-      le.push(new SpawnBotEvent(0, 2000, false, 0, BotType.BUGGY, {...  buggyConfigMR,  moveRight: true }), false, -100, 0);
+      le.push(new SpawnBotEvent(0, 1920, false, 0, BotType.BUGGY, {...  buggyConfigMR,  moveRight: true }, false, -100, 0));
+      le.push(new SpawnBotEvent(0, 2000, false, 0, BotType.BUGGY, {...  buggyConfigMR,  moveRight: true }, false, -100, 0));
       le.push(new SpawnBotEvent(0, 2120, false, 0, BotType.SENTRY, sentryConfig, false, 330, -140));
       le.push(new SpawnBotEvent(0, 2270, false, 0, BotType.FIGHTER, fighterConfig, false, 10, -60));
       le.push(new SpawnBotEvent(0, 2270, false, 0, BotType.FIGHTER, fighterConfig, false, 420, -60));
       le.push(new SpawnBotEvent(0, 2330, false, 0, BotType.FIGHTER, fighterConfig, false, 70, -60));
       le.push(new SpawnBotEvent(0, 2330, false, 0, BotType.FIGHTER, fighterConfig, false, 360, -60));
-      le.push(new SpawnBotEvent(0, 2550, false, 0, BotType.AATANK, {...  AATankConfig,  moveToXCord: -200 }), false, 400, 80);
-      le.push(new SpawnBotEvent(0, 2630, false, 0, BotType.AATANK, {...  AATankConfig,  moveToXCord: 600 }), false, -100, 80);
-      le.push(new SpawnBotEvent(0, 2680, false, 0, BotType.AATANK, {...  AATankConfig,  moveToXCord: 130, posYSpeed: 1.5 }), false, 130, -150);
-      le.push(new SpawnBotEvent(0, 2800, false, 0, BotType.AATANK, {...  AATankConfig,  moveToXCord: 215, posYSpeed: 1.5 }), false, 215, -150);
+      le.push(new SpawnBotEvent(0, 2550, false, 0, BotType.AATANK, {...  AATankConfig,  moveToXCord: -200 }, false, 400, 80));
+      le.push(new SpawnBotEvent(0, 2630, false, 0, BotType.AATANK, {...  AATankConfig,  moveToXCord: 600 }, false, -100, 80));
+      le.push(new SpawnBotEvent(0, 2680, false, 0, BotType.AATANK, {...  AATankConfig,  moveToXCord: 130, posYSpeed: 1.5 }, false, 130, -150));
+      le.push(new SpawnBotEvent(0, 2800, false, 0, BotType.AATANK, {...  AATankConfig,  moveToXCord: 215, posYSpeed: 1.5 }, false, 215, -150));
       le.push(new SpawnBotEvent(0, 3200, false, 0, BotType.CAUTIONANIMATION, null, false, 108, 278));
       le.push(new SpawnBotEvent(0, 3300, false, 0, BotType.MINIBOSS1L2, level2MiniBoss1, false, 100, -300));
       //#########################################################################################

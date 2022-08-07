@@ -15,7 +15,7 @@ export class ResourcesService {
     private resources:Map<string,any>;// could be images, sounds, etc
     private loaderRun:boolean = false;
 
-    private useOffline:boolean = true;
+    private useOffline:boolean = false;
     private exportBase64:boolean = !this.useOffline; // will store base64 images and export for copy to file.
 
     constructor ( ) {
@@ -234,6 +234,7 @@ export class ResourcesService {
 
           {code:"player-2-ship", path:"assets/img/player/player2/player-2-ship-new.png", type:ResourcesEnum.ImageRes},
           {code:"player-2-bullets", path:"assets/img/player/player2/player-2-bullets.png", type:ResourcesEnum.ImageRes},
+          {code:"player-2-ship-shadow", path:"assets/img/player/player2/player-2-ship-new-shadow.png", type:ResourcesEnum.ImageRes},
 
           {code:"player-2-muzzle-flash-1", path:"assets/img/player/player2/player-2-muzzle-flash-1.png", type:ResourcesEnum.ImageRes},
           {code:"player-2-muzzle-flash-2", path:"assets/img/player/player2/player-2-muzzle-flash-2.png", type:ResourcesEnum.ImageRes},

@@ -23,8 +23,8 @@ export class OptionsService {
   * Default level order, Just change the index value to change the order they are played in.
   */
   private _levelOrder : {level:LevelEnum,levelIndex:number}[] = [
-    {level:LevelEnum.LevelOne, levelIndex:1},
-    {level:LevelEnum.LevelTwo, levelIndex:2},
+    {level:LevelEnum.LevelOne, levelIndex:2},
+    {level:LevelEnum.LevelTwo, levelIndex:1},
     {level:LevelEnum.LevelThree, levelIndex:3},
     {level:LevelEnum.LevelFour, levelIndex:4},
     {level:LevelEnum.LevelFive, levelIndex:5},
@@ -34,7 +34,7 @@ export class OptionsService {
   // logic for screen
   opsMenuIndex: number = 0;
   _skipIntro: boolean = true;
-  _drawHitBox: boolean = true;
+  _drawHitBox: boolean = false;
 
   constructor() { }
 
@@ -93,6 +93,10 @@ export class OptionsService {
       missileSpeed : 12,
       speed:5,
     };
+  }
+
+  getInvincibilityTime(): number {
+    return 180;
   }
 
   extraLifeOnLevelComplete(){
