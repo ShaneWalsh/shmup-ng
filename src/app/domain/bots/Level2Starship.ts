@@ -7,6 +7,7 @@ import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { LogicService } from "src/app/services/logic.service";
 import { LaserTurret, Turret } from "./Turret";
 import { CanvasContainer } from "../CanvasContainer";
+import { ProfileService, ProfileValuesEnum } from "src/app/services/profile.service";
 
 export class Level2Starship extends  FlyingBotImpl {
 
@@ -157,6 +158,7 @@ export class Level2Starship extends  FlyingBotImpl {
     if(this.weakPointHealth < 1){
       playerService.currentPlayer.addScore(this.score);
       botManagerService.removeBot(this,this.botSize);
+      ProfileService.setProfileValue(ProfileValuesEnum.BOTKILLER_LEVEL2_BOSS_STARSHIP,"true");
       levelInstance.updatePhaseCounter();
     }
   }
@@ -193,6 +195,19 @@ export class Level2Starship extends  FlyingBotImpl {
         if(angle != null){
           LogicService.drawRotateImage(this.starshipWeakpointDamage,ctx,this.lazerTurret.angleDirection.angle,this.posX+(-20),this.posY+(29),224,110, 0,0,224,110, this.posX+86,this.posY+ 87);
         }
+      }
+    }
+  }
+
+  pplyDamage(damage: number, botManagerService: BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService, levelInstance:LevelInstance) {
+    this.health -= damage;
+    this.triggerDamagedAnimation();
+    if(this.health < 1){
+      playerService.currentPlayer.addScore(this.score);
+      botManagerService.removeBot(this,this.botSize);
+      ProfileService.setProfileValue(ProfileValuesEnum.BOTKILLER_LEVEL2_BOSS_STARSHIP,"true");
+      if(this.isBoss){
+        levelInstance.updatePhaseCounter();
       }
     }
   }

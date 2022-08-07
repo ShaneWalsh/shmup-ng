@@ -3,6 +3,7 @@ import { LevelEvent } from "src/app/domain/events/level-events";
 import { AudioServiceService } from "src/app/services/audio-service.service";
 import { LogicService } from "src/app/services/logic.service";
 import { PlayerService } from "src/app/services/player.service";
+import { ProfileService, ProfileValuesEnum } from "src/app/services/profile.service";
 import { ResourcesService } from "src/app/services/resources.service";
 import { BotManagerService } from "../bot-manager.service";
 import { LevelEventsService } from "../level-events.service";
@@ -37,6 +38,10 @@ export class LevelOneInstance implements LevelInstance{
     this.backgroundImages.push(this.resourcesService.getRes().get("level-1-bg-2"));
     this.hudImage = this.resourcesService.getRes().get("HUD-resized");
     this.eventArr = this.levelEventsService.getLevel1Events(levelManagerService.difficulty);
+  }
+
+  unlockMedal() {
+    ProfileService.setProfileValue(ProfileValuesEnum.BOTKILLER_LEVEL1_COMPLETED,"true");
   }
 
   updateMusic(audioServiceService:AudioServiceService) {
@@ -173,4 +178,7 @@ export class LevelOneInstance implements LevelInstance{
   hasIntro():boolean { // Set to false for no intro 1/2
     return true;
   }
+
+
+
 }

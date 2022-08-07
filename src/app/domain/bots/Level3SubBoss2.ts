@@ -8,6 +8,7 @@ import { LogicService } from "src/app/services/logic.service";
 import { CanvasContainer } from "../CanvasContainer";
 import { Turret } from "./Turret";
 import { DeathDetails } from "../DeathDetails";
+import { ProfileService, ProfileValuesEnum } from "src/app/services/profile.service";
 
 export class Level3SubBoss2 extends  FlyingBotImpl {
     public phaseCounter = 0;
@@ -132,6 +133,7 @@ export class Level3SubBoss2 extends  FlyingBotImpl {
       if(this.health < 1){
         playerService.currentPlayer.addScore(this.score);
         botManagerService.removeBot(this,1);
+        ProfileService.setProfileValue(ProfileValuesEnum.BOTKILLER_LEVEL3_MINI_BOSS2_HUNTER,"true");
         levelInstance.updatePhaseCounter();
       }
   }

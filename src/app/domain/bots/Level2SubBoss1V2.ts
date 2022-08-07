@@ -9,7 +9,11 @@ import { Turret } from "./Turret";
 import { CanvasContainer } from "../CanvasContainer";
 import { LazerAttack } from "./LazerAttack";
 import { DeathConfig, DeathDetails } from "../DeathDetails";
+import { ProfileService, ProfileValuesEnum } from "src/app/services/profile.service";
 
+/**
+ * HellStream
+ */
 export class Level2SubBoss1V2 extends  BotInstanceImpl {
 	public imageObj:HTMLImageElement;
 
@@ -184,6 +188,7 @@ export class Level2SubBoss1V2 extends  BotInstanceImpl {
 		if(this.health < 1){
 			playerService.currentPlayer.addScore(this.score);
 			botManagerService.removeBot(this,1);
+      ProfileService.setProfileValue(ProfileValuesEnum.BOTKILLER_LEVEL2_MINI_BOSS1_HELLSTREAM,"true");
 			levelInstance.updatePhaseCounter();
 		} else if(this.missileAttack && this.health < this.halfHealth){
       this.missileAttack = false;

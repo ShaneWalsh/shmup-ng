@@ -50,7 +50,7 @@ export class OptionsScreenComponent implements OnInit, OnDestroy {
         // todo fix this deprecation.
         var key:any = customKeyboardEvent.event.keyCode;
         // Enter
-        if(key == 'Enter' || key == 13) { //  == 'Enter'
+        if(key == 'Enter' || key == 13 || key == 'Escape' || key == 27) { //  == 'Enter'
           this.optionsService.optionsQuitSubject.next(true);
         }
         if(key == 38 || key == 40 || key == 87 || key == 83) {

@@ -16,6 +16,10 @@ export class LevelSixInstance extends LevelOneInstance {
       this.eventArr = this.levelEventsService.getLevel6Events(levelManagerService.difficulty);
   }
 
+  unlockMedal() {
+    // TODO medal?
+  }
+
   updateMusic(audioServiceService:AudioServiceService) {
     audioServiceService.update();
     audioServiceService.playAudio("level1", true);

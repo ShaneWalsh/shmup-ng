@@ -57,7 +57,7 @@ export class LevelManagerService {
     private deathManagerService:DeathManagerService ) {
     this.loadEvents();
     keyboardEventService.getKeyUpEventSubject().subscribe(customKeyboardEvent => {
-      if(customKeyboardEvent.event.keyCode == 80 || customKeyboardEvent.event.keyCode == 27){ // p || esc
+      if(customKeyboardEvent.event.keyCode == 80){ // p
         if(this.getNotPaused()){
           this.pauseGame();
           this.showPauseMenu = true;
@@ -68,7 +68,7 @@ export class LevelManagerService {
           this.showOptionsMenu = false;
         }
       }
-      else if(this.getPaused()){
+      else if(this.getPaused() && this.showPauseMenu == true){
         if (customKeyboardEvent.event.keyCode == 87 || customKeyboardEvent.event.keyCode == 38) { // up
           let diff =  this.showPauseMenuIndex - 1 ;
           if(diff < 0) diff = 2;
@@ -172,6 +172,7 @@ export class LevelManagerService {
 }
 
 export interface LevelInstance {
+    unlockMedal();
     update(canvasContainer:CanvasContainer,playerService:PlayerService, levelManagerService:LevelManagerService,audioServiceService:AudioServiceService);
     updateBackground(canvasContainer:CanvasContainer,playerService:PlayerService, levelManagerService:LevelManagerService);
     updateHud(canvasContainer:CanvasContainer,playerService:PlayerService, levelManagerService:LevelManagerService);

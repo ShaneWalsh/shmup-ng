@@ -20,6 +20,10 @@ export class LevelFourInstance extends LevelOneInstance {
     this.scrollHeight = 3840;
   }
 
+  unlockMedal() {
+    // TODO medal?
+  }
+
   updateMusic(audioServiceService:AudioServiceService) {
     audioServiceService.update();
     audioServiceService.playAudio("level1", true);

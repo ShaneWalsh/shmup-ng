@@ -1,4 +1,5 @@
 import { AudioServiceService } from "src/app/services/audio-service.service";
+import { ProfileService, ProfileValuesEnum } from "src/app/services/profile.service";
 import { ResourcesService } from "src/app/services/resources.service";
 import { BotManagerService } from "../bot-manager.service";
 import { LevelEventsService } from "../level-events.service";
@@ -15,6 +16,10 @@ export class LevelTwoInstance extends LevelOneInstance {
       this.hudImage = this.resourcesService.getRes().get("HUD-resized");
       this.eventArr = this.levelEventsService.getLevel2Events(levelManagerService.difficulty);
       this.scrollHeight = 3840;
+  }
+
+  unlockMedal() {
+    ProfileService.setProfileValue(ProfileValuesEnum.BOTKILLER_LEVEL2_COMPLETED,"true");
   }
 
   updateMusic(audioServiceService:AudioServiceService) {

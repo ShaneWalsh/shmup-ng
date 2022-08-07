@@ -6,6 +6,7 @@ import { BulletManagerService, BulletDirection, TurretDirection } from "src/app/
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { LogicService } from "src/app/services/logic.service";
 import { CanvasContainer } from "../CanvasContainer";
+import { ProfileService, ProfileValuesEnum } from "src/app/services/profile.service";
 
 export class Judge extends FlyingBotImpl {
   public speed:number = 5;
@@ -161,5 +162,18 @@ export class Judge extends FlyingBotImpl {
 
   getPlayerCollisionHitBoxes(): HitBox[] {
     return [this.hitBox];
+  }
+
+  applyDamage(damage: number, botManagerService: BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService, levelInstance:LevelInstance) {
+    this.health -= damage;
+    this.triggerDamagedAnimation();
+    if(this.health < 1){
+      playerService.currentPlayer.addScore(this.score);
+      botManagerService.removeBot(this,this.botSize);
+      ProfileService.setProfileValue(ProfileValuesEnum.BOTKILLER_LEVEL2_MINI_BOSS2_JUDGE,"true");
+      if(this.isBoss){
+        levelInstance.updatePhaseCounter();
+      }
+    }
   }
 }

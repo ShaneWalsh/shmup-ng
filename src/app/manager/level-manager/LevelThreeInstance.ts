@@ -1,6 +1,7 @@
 import { CanvasContainer } from "src/app/domain/CanvasContainer";
 import { AudioServiceService } from "src/app/services/audio-service.service";
 import { PlayerService } from "src/app/services/player.service";
+import { ProfileService, ProfileValuesEnum } from "src/app/services/profile.service";
 import { ResourcesService } from "src/app/services/resources.service";
 import { BotManagerService } from "../bot-manager.service";
 import { LevelEventsService } from "../level-events.service";
@@ -32,6 +33,10 @@ export class LevelThreeInstance extends LevelOneInstance {
       this.eventArr = this.levelEventsService.getLevel3Events(levelManagerService.difficulty);
       this.scrollHeight = 640;
       this.scrollHeightSlowScroll = 640;
+  }
+
+  unlockMedal() {
+    ProfileService.setProfileValue(ProfileValuesEnum.BOTKILLER_LEVEL3_COMPLETED,"true");
   }
 
   updateMusic(audioServiceService:AudioServiceService) {

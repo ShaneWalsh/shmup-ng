@@ -7,6 +7,11 @@ import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { LogicService } from "src/app/services/logic.service";
 import { CanvasContainer } from "../CanvasContainer";
 import { DeathConfig, DeathDetails } from "../DeathDetails";
+import { ProfileService, ProfileValuesEnum } from "src/app/services/profile.service";
+
+/**
+ * Wasp
+ */
 
 export class Level1SubBoss2 extends  BotInstanceImpl {
     public phaseCounter = -1;
@@ -160,9 +165,10 @@ export class Level1SubBoss2 extends  BotInstanceImpl {
         this.health -= damage;
 		this.triggerDamagedAnimation();
         if(this.health < 1){
-            playerService.currentPlayer.addScore(this.score);
-            botManagerService.removeBot(this,1);
-			levelInstance.updatePhaseCounter();
+          playerService.currentPlayer.addScore(this.score);
+          botManagerService.removeBot(this,1);
+          ProfileService.setProfileValue(ProfileValuesEnum.BOTKILLER_LEVEL1_MINI_BOSS2_WASP,"true");
+          levelInstance.updatePhaseCounter();
         }
     }
 

@@ -12,6 +12,20 @@ export class ProfileService {
 
   constructor(private ngApiService:NgApiService) {
     this.lockedMedals.push(new MedalUnlock("Defeated Phantom",ProfileValuesEnum.BOTKILLER_LEVEL1_MINI_BOSS1_PHANTOM,CalculationEnum.STRINGEQ,"true"));
+    this.lockedMedals.push(new MedalUnlock("Defeated Wasp",ProfileValuesEnum.BOTKILLER_LEVEL1_MINI_BOSS2_WASP,CalculationEnum.STRINGEQ,"true"));
+    this.lockedMedals.push(new MedalUnlock("Defeated Shellhead",ProfileValuesEnum.BOTKILLER_LEVEL1_BOSS_SHELLHEAD,CalculationEnum.STRINGEQ,"true"));
+
+    this.lockedMedals.push(new MedalUnlock("Defeated HellStream",ProfileValuesEnum.BOTKILLER_LEVEL2_MINI_BOSS1_HELLSTREAM,CalculationEnum.STRINGEQ,"true"));
+    this.lockedMedals.push(new MedalUnlock("Defeated Judge",ProfileValuesEnum.BOTKILLER_LEVEL2_MINI_BOSS2_JUDGE,CalculationEnum.STRINGEQ,"true"));
+    this.lockedMedals.push(new MedalUnlock("Defeated Starship",ProfileValuesEnum.BOTKILLER_LEVEL2_BOSS_STARSHIP,CalculationEnum.STRINGEQ,"true"));
+
+    this.lockedMedals.push(new MedalUnlock("Defeated Pincer",ProfileValuesEnum.BOTKILLER_LEVEL3_MINI_BOSS1_PINCER,CalculationEnum.STRINGEQ,"true"));
+    this.lockedMedals.push(new MedalUnlock("Defeated Hunter",ProfileValuesEnum.BOTKILLER_LEVEL3_MINI_BOSS2_HUNTER,CalculationEnum.STRINGEQ,"true"));
+    this.lockedMedals.push(new MedalUnlock("Defeated Seer",ProfileValuesEnum.BOTKILLER_LEVEL3_BOSS_SEER,CalculationEnum.STRINGEQ,"true"));
+
+    this.lockedMedals.push(new MedalUnlock("Level 1 Complete",ProfileValuesEnum.BOTKILLER_LEVEL1_COMPLETED,CalculationEnum.STRINGEQ,"true"));
+    this.lockedMedals.push(new MedalUnlock("Level 2 Complete",ProfileValuesEnum.BOTKILLER_LEVEL2_COMPLETED,CalculationEnum.STRINGEQ,"true"));
+    this.lockedMedals.push(new MedalUnlock("Level 3 Complete",ProfileValuesEnum.BOTKILLER_LEVEL3_COMPLETED,CalculationEnum.STRINGEQ,"true"));
 
     this.checkMedals(false);// the medal would have already been unlocked in the last playthrough, so don't unlock it again, save calls to ng.
   }
@@ -50,15 +64,19 @@ export class ProfileService {
 
 export enum ProfileValuesEnum {
   BOTKILLER_KILLS="BOTKILLER_KILLS",
+
   BOTKILLER_LEVEL1_MINI_BOSS1_PHANTOM="BOTKILLER_LEVEL1_MINI_BOSS1_PHANTOM",
-  BOTKILLER_LEVEL1_MINI_BOSS2_PHANTOM="BOTKILLER_LEVEL1_MINI_BOSS2_PHANTOM",
-  BOTKILLER_LEVEL1_MINI_BOSS3_PHANTOM="BOTKILLER_LEVEL1_MINI_BOSS3_PHANTOM",
-  BOTKILLER_LEVEL2_MINI_BOSS1_PHANTOM="BOTKILLER_LEVEL2_MINI_BOSS1_PHANTOM",
-  BOTKILLER_LEVEL2_MINI_BOSS2_PHANTOM="BOTKILLER_LEVEL2_MINI_BOSS2_PHANTOM",
-  BOTKILLER_LEVEL2_MINI_BOSS3_PHANTOM="BOTKILLER_LEVEL2_MINI_BOSS3_PHANTOM",
-  BOTKILLER_LEVEL3_MINI_BOSS1_PHANTOM="BOTKILLER_LEVEL3_MINI_BOSS1_PHANTOM",
-  BOTKILLER_LEVEL3_MINI_BOSS2_PHANTOM="BOTKILLER_LEVEL3_MINI_BOSS2_PHANTOM",
-  BOTKILLER_LEVEL3_MINI_BOSS3_PHANTOM="BOTKILLER_LEVEL3_MINI_BOSS3_PHANTOM",
+  BOTKILLER_LEVEL1_MINI_BOSS2_WASP="BOTKILLER_LEVEL1_MINI_BOSS2_WASP",
+  BOTKILLER_LEVEL1_BOSS_SHELLHEAD="BOTKILLER_LEVEL1_BOSS_SHELLHEAD",
+
+  BOTKILLER_LEVEL2_MINI_BOSS1_HELLSTREAM="BOTKILLER_LEVEL2_MINI_BOSS1_HELLSTREAM",
+  BOTKILLER_LEVEL2_MINI_BOSS2_JUDGE="BOTKILLER_LEVEL2_MINI_BOSS2_JUDGE",
+  BOTKILLER_LEVEL2_BOSS_STARSHIP="BOTKILLER_LEVEL2_BOSS_STARSHIP",
+
+  BOTKILLER_LEVEL3_MINI_BOSS1_PINCER="BOTKILLER_LEVEL3_MINI_BOSS1_PINCER",
+  BOTKILLER_LEVEL3_MINI_BOSS2_HUNTER="BOTKILLER_LEVEL3_MINI_BOSS2_HUNTER",
+  BOTKILLER_LEVEL3_BOSS_SEER="BOTKILLER_LEVEL3_BOSS_SEER",
+
   BOTKILLER_LEVEL1_COMPLETED="BOTKILLER_LEVEL1_COMPLETED",
   BOTKILLER_LEVEL2_COMPLETED="BOTKILLER_LEVEL2_COMPLETED",
   BOTKILLER_LEVEL3_COMPLETED="BOTKILLER_LEVEL3_COMPLETED",
@@ -75,7 +93,7 @@ class MedalUnlock {
 
   public unlocked:boolean =false;
 
-  constructor(
+  constructor (
       public medalUnlockCode:string,
       public profileValue:ProfileValuesEnum,
       public calculationEnum:CalculationEnum,

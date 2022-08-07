@@ -6,7 +6,11 @@ import { BulletManagerService, BulletDirection } from "src/app/manager/bullet-ma
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { LogicService } from "src/app/services/logic.service";
 import { CanvasContainer } from "../CanvasContainer";
+import { ProfileService, ProfileValuesEnum } from "src/app/services/profile.service";
 
+/**
+ * Shellhead
+ */
 export class Level1Boss1 extends BotInstanceImpl {
     public boss1State: Boss1State = null;
 
@@ -102,6 +106,7 @@ export class Level1Boss1 extends BotInstanceImpl {
         if (this.health < 1) {
             playerService.currentPlayer.addScore(this.score);
             botManagerService.removeBot(this,1);
+            ProfileService.setProfileValue(ProfileValuesEnum.BOTKILLER_LEVEL1_BOSS_SHELLHEAD,"true");
             levelInstance.updatePhaseCounter();
         }
     }

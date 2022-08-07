@@ -29,6 +29,10 @@ export class LevelFiveInstance extends LevelOneInstance {
     this.scrollHeightSlowScroll = 640;
   }
 
+  unlockMedal() {
+    // TODO medal?
+  }
+
   updateMusic(audioServiceService:AudioServiceService) {
     audioServiceService.update();
     audioServiceService.playAudio("level1", true);

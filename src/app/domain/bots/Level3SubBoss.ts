@@ -6,6 +6,7 @@ import { BulletManagerService, BulletDirection } from "src/app/manager/bullet-ma
 import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { CanvasContainer } from "../CanvasContainer";
 import { Turret } from "./Turret";
+import { ProfileService, ProfileValuesEnum } from "src/app/services/profile.service";
 
 enum PhaseLaser {
   PHASE_LOADING,
@@ -315,6 +316,7 @@ export class Level3SubBoss extends  BotInstanceImpl {
     if(this.health < 1){
       playerService.currentPlayer.addScore(this.score);
       botManagerService.removeBot(this,1);
+      ProfileService.setProfileValue(ProfileValuesEnum.BOTKILLER_LEVEL3_MINI_BOSS1_PINCER,"true");
       levelInstance.updatePhaseCounter();
     }
   }

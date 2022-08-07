@@ -7,6 +7,7 @@ import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { LogicService } from "src/app/services/logic.service";
 import { CanvasContainer } from "../CanvasContainer";
 import { SpawnBotEvent, SpawnTimer } from "../events/level-events";
+import { ProfileService, ProfileValuesEnum } from "src/app/services/profile.service";
 
 export class FinalBoss extends BotInstanceImpl {
 
@@ -188,6 +189,7 @@ export class FinalBoss extends BotInstanceImpl {
         if (this.health < 1) {
             playerService.currentPlayer.addScore(this.score);
             botManagerService.removeBot(this,1);
+            ProfileService.setProfileValue(ProfileValuesEnum.BOTKILLER_LEVEL3_BOSS_SEER,"true");
             levelInstance.updatePhaseCounter();
         }
     }
