@@ -15,7 +15,7 @@ export class ResourcesService {
     private resources:Map<string,any>;// could be images, sounds, etc
     private loaderRun:boolean = false;
 
-    private useOffline:boolean = true;
+    private useOffline:boolean = false;
     private exportBase64:boolean = !this.useOffline; // will store base64 images and export for copy to file.
 
     constructor ( ) {
@@ -205,6 +205,7 @@ export class ResourcesService {
           {code:"shield-6", path:"assets/img/player/shield/shield-6.png", type:ResourcesEnum.ImageRes},
           {code:"shield-7", path:"assets/img/player/shield/shield-7.png", type:ResourcesEnum.ImageRes},
           {code:"shield-8", path:"assets/img/player/shield/shield-8.png", type:ResourcesEnum.ImageRes},
+          {code:"shield-action", path:"assets/img/player/shield/shield-action.png", type:ResourcesEnum.ImageRes},
 
           {code:"aa-tank-hull-horizontal", path:"assets/img/bots/aa-tank/aa-tank-hull-horizontal.png", type:ResourcesEnum.ImageRes},
           {code:"aa-tank-wreckage-horizontal", path:"assets/img/bots/aa-tank/aa-tank-wreckage-horizontal.png", type:ResourcesEnum.ImageRes},
@@ -242,7 +243,8 @@ export class ResourcesService {
           {code:"player-2-muzzle-flash-2", path:"assets/img/player/player2/player-2-muzzle-flash-2.png", type:ResourcesEnum.ImageRes},
           {code:"player-2-muzzle-flash-3", path:"assets/img/player/player2/player-2-muzzle-flash-3.png", type:ResourcesEnum.ImageRes},
 
-          {code:"HUD-resized", path:"assets/img/hud/hud-updated.png", type:ResourcesEnum.ImageRes},
+          // {code:"HUD-resized", path:"assets/img/hud/hud-updated.png", type:ResourcesEnum.ImageRes},
+          {code:"HUD-resized", path:"assets/img/hud/HUD-resized.png", type:ResourcesEnum.ImageRes},
           {code:"stage-1-complete", path:"assets/img/desc/stage-1-complete.png", type:ResourcesEnum.ImageRes},
 
           {code:"options-menu", path:"assets/img/hud/options-menu-v1.png", type:ResourcesEnum.ImageRes},

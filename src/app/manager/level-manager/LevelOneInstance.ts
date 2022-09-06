@@ -102,7 +102,8 @@ export class LevelOneInstance implements LevelInstance{
       LogicService.writeOnCanvas(400,60,this.phaseCounter,24,"#ff00ff",canvasContainer.topCtx);
     }
     if(levelManagerService.displayAbilityTimer()){
-      LogicService.writeOnCanvas(445,628,Math.round(playerService.currentPlayer.abilityCooldown/60),24,"#ff00ff",canvasContainer.topCtx);
+      // Draw the ship ability icon. e.g shield-action
+      playerService.currentPlayer.displayAbilityTimer(canvasContainer.topCtx);
     }
   }
   updateEvent(canvasContainer:CanvasContainer, playerService:PlayerService, levelManagerService:LevelManagerService) {

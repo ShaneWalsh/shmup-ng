@@ -17,6 +17,7 @@ import { AudioServiceService } from './audio-service.service';
 import { DeathManagerService } from '../manager/death-manager.service';
 import { DeathDetails } from '../domain/DeathDetails';
 import { OptionsService } from './options.service';
+import { LogicService } from './logic.service';
 
 
 
@@ -297,6 +298,14 @@ export class PlayerObj implements ShieldBot {
     }
   }
 
+  displayAbilityTimer(ctx: CanvasRenderingContext2D) {
+    ctx.drawImage(this.selectedShip.imageObjAbility, 0, 0, 64, 64, 415, 570, 64, 64);
+    if(this.abilityCooldown > 0) {
+      LogicService.drawOverlayBox(415, 570,64,64,ctx,255,119,255,0.3,'#FF00FF');
+      LogicService.writeOnCanvas(420,620,Math.round(this.abilityCooldown/60),60,"#ff00ff", ctx);
+    }
+  }
+
   getShieldX(): number {
     return this.getCenterX();
   }
@@ -314,5 +323,9 @@ export class PlayerObj implements ShieldBot {
 
   calculateSpeed() {
     this.speed = this.selectedPilot.getSpeed() + this.selectedShip.getSpeed();
+  }
+
+  endingCode(): number {
+    return this.selectedPilot.endingCode();
   }
 }

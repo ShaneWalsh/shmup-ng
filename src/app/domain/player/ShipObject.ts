@@ -21,6 +21,7 @@ export class ShipObject {
     public imageBullets:HTMLImageElement[]=[],
     public imageObjShadow:HTMLImageElement=null,
     public imageObjInvincible:HTMLImageElement=null,
+    public imageObjAbility:HTMLImageElement=null,
     public imageSizeX:number=90,
     public imageSizeY:number=70,
     public hitBox:HitBox=new HitBox((Math.floor(imageSizeX/2))-5,(Math.floor(imageSizeY/2))-5,10,10)

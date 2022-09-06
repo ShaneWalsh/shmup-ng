@@ -95,7 +95,14 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
             this.levelManagerService.initLevel(LevelEnum.LevelThree);
           } else if(this.screenId == 47) { // Game over for the whole game. P1
             this.setScreenId(48);
-          } else if(this.screenId == 48) { // Game over for the whole game. P2
+          } else if(this.screenId == 48) {
+            this.profileService.checkMedals();
+            this.setScreenId(1); // Return to main menu and let them play again!
+            this.levelManagerService.mainMenuIndex = 0;
+            this.landedOnTitleScreen();
+          } else if(this.screenId == 49) { // Game over for the whole game. P2
+            this.setScreenId(50);
+          } else if(this.screenId == 50) {
             this.profileService.checkMedals();
             this.setScreenId(1); // Return to main menu and let them play again!
             this.levelManagerService.mainMenuIndex = 0;
@@ -183,14 +190,14 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
           this.setScreenId(40);
         } else if(this.levelManagerService.getCurrentLevelEnum() == LevelEnum.LevelThree){
           // game over? You win?
-          this.setScreenId(47);
+          this.setScreenId(this.playerService.currentPlayer.endingCode());
         } else if(this.levelManagerService.getCurrentLevelEnum() == LevelEnum.LevelFour){
           this.setScreenId(60);
         } else if(this.levelManagerService.getCurrentLevelEnum() == LevelEnum.LevelFive){
           this.setScreenId(70);
         } else if(this.levelManagerService.getCurrentLevelEnum() == LevelEnum.LevelSix){
           // game over? You win?
-          this.setScreenId(47);
+          this.setScreenId(this.playerService.currentPlayer.endingCode());
         }
       }));
     }

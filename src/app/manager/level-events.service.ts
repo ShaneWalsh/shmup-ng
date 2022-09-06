@@ -9,6 +9,13 @@ export class LevelEventsService {
 
   constructor() { }
 
+  // Test level which i use for, well testing, please ignore :D
+  getLevelTestLevelEvents(difficulty:number):LevelEvent[] {
+    let le = [];
+    le.push(new LevelOverEvent(0, 200));
+    return le;
+  }
+
   getLevel1Events(difficulty:number):LevelEvent[] {
     let le = [];
 

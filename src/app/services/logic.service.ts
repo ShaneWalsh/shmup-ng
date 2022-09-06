@@ -107,6 +107,17 @@ public static moveBetweenPointsAtSpeed(speed,targetX,targetY,sourceX, sourceY){
     ctx.strokeRect(x,y,sX,sY);
   }
 
+  public static drawOverlayBox(x,y,sX,sY,ctx,rgba1,rgba2,rgba3,opacity,colour2){
+    ctx.save();
+    ctx.lineWidth = 2;
+    ctx.fillStyle = `rgba(${rgba1}, ${rgba2}, ${rgba3}, ${opacity})`;
+    ctx.fillRect(x, y, sX, sY);
+
+    ctx.strokeStyle = colour2;
+    ctx.strokeRect(x,y,sX,sY);
+    ctx.restore();
+  }
+
   public static writeOnCanvas(x,y,text,size,color1,ctx){
     ctx.font = size + "px 'Century Gothic'"; // Supertext 01
     ctx.fillStyle = color1;

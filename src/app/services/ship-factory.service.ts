@@ -23,19 +23,21 @@ export class ShipFactoryService {
             this.resourcesService.getRes().get("player-muzzle-flash-3")],
           [this.resourcesService.getRes().get("player-1-bullets")],
           this.resourcesService.getRes().get("player-1-ship-shadow-separa"),
-          this.resourcesService.getRes().get("player-1-ship-invincibility")
-        );
-        break;
-      case ShipEnum.SPEAR2:
-        ship = new ShipSpear (
-          this.optionsService.getSpearConfig(),
-          this.resourcesService.getRes().get("player-2-ship"),
-          [this.resourcesService.getRes().get("player-2-muzzle-flash-1"),
-            this.resourcesService.getRes().get("player-2-muzzle-flash-2"),
-            this.resourcesService.getRes().get("player-2-muzzle-flash-3")],
-          [this.resourcesService.getRes().get("player-2-bullets")],
-          this.resourcesService.getRes().get("player-2-ship-shadow"),
-          this.resourcesService.getRes().get("player-2-ship-invincibility")
+          this.resourcesService.getRes().get("player-1-ship-invincibility"),
+          this.resourcesService.getRes().get("shield-action")
+          );
+          break;
+          case ShipEnum.SPEAR2:
+            ship = new ShipSpear (
+              this.optionsService.getSpearConfig(),
+              this.resourcesService.getRes().get("player-2-ship"),
+              [this.resourcesService.getRes().get("player-2-muzzle-flash-1"),
+              this.resourcesService.getRes().get("player-2-muzzle-flash-2"),
+              this.resourcesService.getRes().get("player-2-muzzle-flash-3")],
+              [this.resourcesService.getRes().get("player-2-bullets")],
+              this.resourcesService.getRes().get("player-2-ship-shadow"),
+              this.resourcesService.getRes().get("player-2-ship-invincibility"),
+              this.resourcesService.getRes().get("shield-action")
         );
         break;
     }
