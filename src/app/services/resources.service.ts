@@ -15,7 +15,7 @@ export class ResourcesService {
     private resources:Map<string,any>;// could be images, sounds, etc
     private loaderRun:boolean = false;
 
-    private useOffline:boolean = false;
+    private useOffline:boolean = true;
     private exportBase64:boolean = !this.useOffline; // will store base64 images and export for copy to file.
 
     constructor ( ) {
