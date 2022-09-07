@@ -218,7 +218,7 @@ public static moveBetweenPointsAtSpeed(speed,targetX,targetY,sourceX, sourceY){
   public static moveBetweenArrays(fromArray: any[], toArray: any[], func:any) {
     for( let i = 0; i < fromArray.length; i++ ) {
       if(func(fromArray[i])){
-        toArray.push(fromArray.splice(i));
+        toArray.push(fromArray.splice(i,1)[0]);
         i--;
       }
     }
