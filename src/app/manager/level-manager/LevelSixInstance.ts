@@ -1,4 +1,5 @@
 import { AudioServiceService } from "src/app/services/audio-service.service";
+import { ProfileService, ProfileValuesEnum } from "src/app/services/profile.service";
 import { ResourcesService } from "src/app/services/resources.service";
 import { BotManagerService } from "../bot-manager.service";
 import { LevelEventsService } from "../level-events.service";
@@ -17,7 +18,7 @@ export class LevelSixInstance extends LevelOneInstance {
   }
 
   unlockMedal() {
-    // TODO medal?
+    ProfileService.setProfileValue(ProfileValuesEnum.BOSS_RUSH_COMPLETED,"true");
   }
 
   updateMusic(audioServiceService:AudioServiceService) {

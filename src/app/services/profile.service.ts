@@ -27,6 +27,10 @@ export class ProfileService {
     this.lockedMedals.push(new MedalUnlock("Level 2 Complete",ProfileValuesEnum.BOTKILLER_LEVEL2_COMPLETED,CalculationEnum.STRINGEQ,"true"));
     this.lockedMedals.push(new MedalUnlock("Level 3 Complete",ProfileValuesEnum.BOTKILLER_LEVEL3_COMPLETED,CalculationEnum.STRINGEQ,"true"));
 
+    this.lockedMedals.push(new MedalUnlock("Normal Mode Complete",ProfileValuesEnum.NORMAL_MODE_COMPLETED,CalculationEnum.STRINGEQ,"true"));
+    this.lockedMedals.push(new MedalUnlock("Hard Mode Complete",ProfileValuesEnum.HARD_MODE_COMPLETED,CalculationEnum.STRINGEQ,"true"));
+    this.lockedMedals.push(new MedalUnlock("Boss Rush Complete",ProfileValuesEnum.BOSS_RUSH_COMPLETED,CalculationEnum.STRINGEQ,"true"));
+
     this.checkMedals(false);// the medal would have already been unlocked in the last playthrough, so don't unlock it again, save calls to ng.
   }
 
@@ -80,6 +84,10 @@ export enum ProfileValuesEnum {
   BOTKILLER_LEVEL1_COMPLETED="BOTKILLER_LEVEL1_COMPLETED",
   BOTKILLER_LEVEL2_COMPLETED="BOTKILLER_LEVEL2_COMPLETED",
   BOTKILLER_LEVEL3_COMPLETED="BOTKILLER_LEVEL3_COMPLETED",
+
+  NORMAL_MODE_COMPLETED="NORMAL_MODE_COMPLETED",
+  HARD_MODE_COMPLETED="HARD_MODE_COMPLETED",
+  BOSS_RUSH_COMPLETED="BOSS_RUSH_COMPLETED",
 }
 
 enum CalculationEnum {

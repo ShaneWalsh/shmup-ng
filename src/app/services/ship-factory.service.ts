@@ -37,7 +37,7 @@ export class ShipFactoryService {
               [this.resourcesService.getRes().get("player-2-bullets")],
               this.resourcesService.getRes().get("player-2-ship-shadow"),
               this.resourcesService.getRes().get("player-2-ship-invincibility"),
-              this.resourcesService.getRes().get("shield-action")
+              this.resourcesService.getRes().get("missile-storm-ability_action")
         );
         break;
     }

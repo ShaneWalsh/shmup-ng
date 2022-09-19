@@ -37,6 +37,11 @@ export class LevelThreeInstance extends LevelOneInstance {
 
   unlockMedal() {
     ProfileService.setProfileValue(ProfileValuesEnum.BOTKILLER_LEVEL3_COMPLETED,"true");
+    if(this.levelManagerService.difficulty == 0){
+      ProfileService.setProfileValue(ProfileValuesEnum.NORMAL_MODE_COMPLETED,"true");
+    } else if(this.levelManagerService.difficulty == 1) {
+      ProfileService.setProfileValue(ProfileValuesEnum.HARD_MODE_COMPLETED,"true");
+    }
   }
 
   updateMusic(audioServiceService:AudioServiceService) {

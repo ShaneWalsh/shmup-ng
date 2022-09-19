@@ -302,7 +302,7 @@ export class PlayerObj implements ShieldBot {
     ctx.drawImage(this.selectedShip.imageObjAbility, 0, 0, 64, 64, 415, 570, 64, 64);
     if(this.abilityCooldown > 0) {
       LogicService.drawOverlayBox(415, 570,64,64,ctx,255,119,255,0.3,'#FF00FF');
-      LogicService.writeOnCanvas(420,620,Math.round(this.abilityCooldown/60),60,"#ff00ff", ctx);
+      LogicService.writeOnCanvas(440,565,Math.round(this.abilityCooldown/60),24,"#ff00ff", ctx);
     }
   }
 

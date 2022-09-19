@@ -56,6 +56,7 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
 
         if(key == 'Enter' || key == 13) { //  == 'Enter'
           if(this.screenId < 6) {
+            this.audioServiceService.playAudioNewInstance("menu-click-converted", true);
             if(this.screenId == 0) {
               this.landedOnTitleScreen();
               this.setScreenId(this.screenId+1);
@@ -80,6 +81,7 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
             }
           } else if(this.screenId == 10) { // ops screen, back to MM.
             // handled with subject.
+            this.audioServiceService.playAudioNewInstance("menu-click-converted", true);
             this.setScreenId(1);
             this.landedOnTitleScreen();
           }else if(this.screenId == 20) { // game over screen
@@ -93,6 +95,8 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
             this.setScreenId(45);
             this.playerService.initPlayer(false, this.playerScore, this.playerLives);
             this.levelManagerService.initLevel(LevelEnum.LevelThree);
+          } else if(this.screenId == 46) { // Game over baby
+            this.setScreenId(47);
           } else if(this.screenId == 47) { // Game over for the whole game. P1
             this.setScreenId(48);
           } else if(this.screenId == 48) {
@@ -102,7 +106,9 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
             this.landedOnTitleScreen();
           } else if(this.screenId == 49) { // Game over for the whole game. P2
             this.setScreenId(50);
-          } else if(this.screenId == 50) {
+          } else if(this.screenId == 50) { // Game over for the whole game. P2
+            this.setScreenId(51);
+          } else if(this.screenId == 51) {
             this.profileService.checkMedals();
             this.setScreenId(1); // Return to main menu and let them play again!
             this.levelManagerService.mainMenuIndex = 0;

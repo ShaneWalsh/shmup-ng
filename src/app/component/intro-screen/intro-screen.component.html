@@ -81,16 +81,26 @@
     <app-game-container [requestAnimFrame]="requestAnimFrame"></app-game-container>
   </div>
   <!-- Game over 50? -->
+  <div class="screen-container pink-text" *ngIf="screenId==46">
+    <img [src]="'assets/img/desc/game-complete.png'">
+    <h2 class="player-score-vic">{{playerScore}}</h2>
+    <h2 class="player-lives-vic">{{playerLives}}</h2>
+  </div>
   <div class="screen-container" *ngIf="screenId==47">
     <img [src]="'assets/img/desc/ending-text-naomi.png'">
   </div>
   <div class="screen-container" *ngIf="screenId==48">
     <img [src]="'assets/img/desc/ending-naomi.png'">
   </div>
-  <div class="screen-container" *ngIf="screenId==49">
-    <img [src]="'assets/img/desc/ending-text-myra.png'">
+  <div class="screen-container pink-text" *ngIf="screenId==49">
+    <img [src]="'assets/img/desc/game-complete.png'">
+    <h2 class="player-score-vic">{{playerScore}}</h2>
+    <h2 class="player-lives-vic">{{playerLives}}</h2>
   </div>
   <div class="screen-container" *ngIf="screenId==50">
+    <img [src]="'assets/img/desc/ending-text-myra.png'">
+  </div>
+  <div class="screen-container" *ngIf="screenId==51">
     <img [src]="'assets/img/desc/ending-myra.png'">
   </div>
 
@@ -106,7 +116,7 @@
     <app-game-container [requestAnimFrame]="requestAnimFrame"></app-game-container>
   </div>
   <div class="screen-container pink-text" *ngIf="screenId==70">
-    <img [src]="'assets/img/desc/stage-1-complete.png'">
+    <img [src]="'assets/img/desc/stage-2-complete.png'">
     <h2 class="player-score-vic">{{playerScore}}</h2>
     <h2 class="player-lives-vic">{{playerLives}}</h2>
   </div>

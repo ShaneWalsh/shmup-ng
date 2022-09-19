@@ -58,12 +58,13 @@ export class AudioServiceService {
 
   /**
    * Will probably be used for the sound effects
+   * Force true to ignore the wait map. The wait map does not run on the menus, it executed by game logic.
    */
-	playAudioNewInstance( name ) {
+	playAudioNewInstance( name, forcePlay=false ) {
     const audioObj = this.audioMap.find(audio => audio.name == name);
     if(audioObj){
       const waitTime = this.audioWaitMap.find(waitTime => waitTime.name == name);
-      if(!waitTime){
+      if(!waitTime || forcePlay){
         var tmp = new Audio();
         tmp.src = audioObj.audio.src;
         tmp.volume = this.getVolume(audioObj);

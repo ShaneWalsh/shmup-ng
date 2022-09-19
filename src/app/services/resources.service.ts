@@ -15,7 +15,7 @@ export class ResourcesService {
     private resources:Map<string,any>;// could be images, sounds, etc
     private loaderRun:boolean = false;
 
-    private useOffline:boolean = true;
+    private useOffline:boolean = false;
     private exportBase64:boolean = !this.useOffline; // will store base64 images and export for copy to file.
 
     constructor ( ) {
@@ -206,6 +206,7 @@ export class ResourcesService {
           {code:"shield-7", path:"assets/img/player/shield/shield-7.png", type:ResourcesEnum.ImageRes},
           {code:"shield-8", path:"assets/img/player/shield/shield-8.png", type:ResourcesEnum.ImageRes},
           {code:"shield-action", path:"assets/img/player/shield/shield-action.png", type:ResourcesEnum.ImageRes},
+          {code:"missile-storm-ability_action", path:"assets/img/player/missile-storm-ability_action.png", type:ResourcesEnum.ImageRes},
 
           {code:"aa-tank-hull-horizontal", path:"assets/img/bots/aa-tank/aa-tank-hull-horizontal.png", type:ResourcesEnum.ImageRes},
           {code:"aa-tank-wreckage-horizontal", path:"assets/img/bots/aa-tank/aa-tank-wreckage-horizontal.png", type:ResourcesEnum.ImageRes},
@@ -521,6 +522,13 @@ export class ResourcesService {
       this.audioResourcesToLoad.push({code:"snd_bigexplosion", path:"assets/sound/effects/snd_bigexplosion.mp3", type:ResourcesEnum.SoundRes, sound:SoundResEnum.TYPESOUND});
       this.audioResourcesToLoad.push({code:"snd_enemybullet", path:"assets/sound/effects/snd_enemybullet.mp3", type:ResourcesEnum.SoundRes, sound:SoundResEnum.TYPESOUND});
       this.audioResourcesToLoad.push({code:"snd_playerbullet", path:"assets/sound/effects/snd_playerbullet.mp3", type:ResourcesEnum.SoundRes, sound:SoundResEnum.TYPESOUND});
+
+
+      this.audioResourcesToLoad.push({code:"laser-charge-boss-converted", path:"assets/sound/effects/laser-charge-boss-converted.mp3", type:ResourcesEnum.SoundRes, sound:SoundResEnum.TYPESOUND});
+      this.audioResourcesToLoad.push({code:"laser-charge-enemy-converted", path:"assets/sound/effects/laser-charge-enemy-converted.mp3", type:ResourcesEnum.SoundRes, sound:SoundResEnum.TYPESOUND});
+      this.audioResourcesToLoad.push({code:"level-1-boss-laser-converted", path:"assets/sound/effects/level-1-boss-laser-converted.mp3", type:ResourcesEnum.SoundRes, sound:SoundResEnum.TYPESOUND});
+      this.audioResourcesToLoad.push({code:"menu-back-converted", path:"assets/sound/effects/menu-back-converted.mp3", type:ResourcesEnum.SoundRes, sound:SoundResEnum.TYPESOUND});
+      this.audioResourcesToLoad.push({code:"menu-click-converted", path:"assets/sound/effects/menu-click-converted.mp3", type:ResourcesEnum.SoundRes, sound:SoundResEnum.TYPESOUND});
 
       this.audioResourcesToLoad.push({code:"Trouble-on-Mercury", path:"assets/sound/bg/Trouble-on-Mercury_Looping.mp3", type:ResourcesEnum.SoundRes, sound:SoundResEnum.TYPEBG});
       this.audioResourcesToLoad.push({code:"level1", path:"assets/sound/bg/level1.mp3", type:ResourcesEnum.SoundRes, sound:SoundResEnum.TYPEBG});
