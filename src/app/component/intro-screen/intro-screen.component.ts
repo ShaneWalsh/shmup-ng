@@ -126,6 +126,7 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
         }
         if(key == 'Escape' || key == 27) {
           if(this.screenId < 6) {
+            this.audioServiceService.playAudioNewInstance("menu-back-converted", true);
             this.setScreenId((this.screenId > 1)? this.screenId -1 : 1);
           }
         }

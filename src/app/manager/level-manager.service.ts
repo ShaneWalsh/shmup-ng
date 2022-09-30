@@ -70,14 +70,17 @@ export class LevelManagerService {
       }
       else if(this.getPaused() && this.showPauseMenu == true){
         if (customKeyboardEvent.event.keyCode == 87 || customKeyboardEvent.event.keyCode == 38) { // up
+          this.audioServiceService.playAudioNewInstance("menu-click-converted", true);
           let diff =  this.showPauseMenuIndex - 1 ;
           if(diff < 0) diff = 2;
           this.showPauseMenuIndex = diff;
         } else if (customKeyboardEvent.event.keyCode == 83 || customKeyboardEvent.event.keyCode == 40){ //down 83 40
+          this.audioServiceService.playAudioNewInstance("menu-click-converted", true);
           let diff =  this.showPauseMenuIndex + 1;
           if(diff > 2) diff = 0;
           this.showPauseMenuIndex = diff;
         } else if(customKeyboardEvent.event.keyCode == 13) { // enter
+          this.audioServiceService.playAudioNewInstance("menu-back-converted", true);
           if(this.showPauseMenuIndex == 2) { // quit
             this.menuQuitSubject.next(true);
             this.showPauseMenuIndex = 0;

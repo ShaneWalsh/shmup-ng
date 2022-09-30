@@ -311,6 +311,10 @@ class Boss1StateCharging extends Boss1State {
   update(levelInstance: LevelInstance, ctx: CanvasRenderingContext2D, botManagerService: BotManagerService, bulletManagerService: BulletManagerService, playerService: PlayerService) {
       let level1Boss1 = this.level1Boss1;
 
+      if(this.armorTransitionTime == 0){
+         bulletManagerService.playAudioNewInstance("laser-charge-boss-converted");
+         bulletManagerService.playAudioNewInstance("level-1-boss-laser-converted");
+      }
       this.armorTransitionTime++;
       if(this.armorTransitionTime == this.armorTransitionTimeLimit){
         this.armorTransitionTime = 0;

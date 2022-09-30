@@ -50,7 +50,7 @@ export class LazerAttack {
     this.posX=posX;
     this.posY=posY;
     if(this.firingLoading) {
-      // if(this.bTimerLoading == this.bTimerLoadingLimit) this.audioServiceService.playAudioNewInstance("laser-charge-enemy-converted");
+      if(this.bTimerLoading == this.bTimerLoadingLimit-15) bulletManagerService.playAudioNewInstance("laser-charge-enemy-converted");
 			if(this.bTimerLoading < this.bTimerLoadingLimit) {
 				this.bTimerLoading++;
 				if(this.bTimerLoading % 3 == 0){
@@ -64,8 +64,7 @@ export class LazerAttack {
 				this.firingPhase2 = true;
 				this.loadingIndex = 0;
 			}
-		} else if(this.firingPhase2){
-      // if(this.bTimerFiring == this.bTimerFiringLimit) this.audioServiceService.playAudioNewInstance("laser-charge-enemy-converted");
+		} else if(this.firingPhase2) {
 			if(this.bTimerFiring < this.bTimerFiringLimit) {
 				this.bTimerFiring++;
 				if(this.bTimerFiring < this.bTimerFiringPase2){
@@ -94,6 +93,7 @@ export class LazerAttack {
 				this.bTimerFiring = 0;
 				this.loadingIndex = 0;
 				this.firingLoading = true;
+        bulletManagerService.playAudioNewInstance("laser-charge-enemy-converted");
 			}
 			else {
 				this.bTimer++;

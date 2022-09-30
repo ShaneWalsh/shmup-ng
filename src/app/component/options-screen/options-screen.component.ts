@@ -37,6 +37,7 @@ export class OptionsScreenComponent implements OnInit, OnDestroy {
                 private optionsService:OptionsService,
                 private resourcesService:ResourcesService,
                 protected levelManagerService:LevelManagerService,
+                protected audioServiceService:AudioServiceService,
                  private keyboardEventService:KeyboardEventService) {
       this.subs.push(this.levelManagerService.getGameTickSubject().subscribe(result => {
         if(this.tickComplete){
@@ -51,14 +52,17 @@ export class OptionsScreenComponent implements OnInit, OnDestroy {
         var key:any = customKeyboardEvent.event.keyCode;
         // Enter
         if(key == 'Enter' || key == 13 || key == 'Escape' || key == 27) { //  == 'Enter'
+          this.audioServiceService.playAudioNewInstance("menu-back-converted", true);
           this.optionsService.optionsQuitSubject.next(true);
         }
         if(key == 38 || key == 40 || key == 87 || key == 83) {
           if (key == 87 || key == 38) { // up
+            this.audioServiceService.playAudioNewInstance("menu-click-converted", true);
             let opsMenuSelection =  this.optionsService.opsMenuIndex - 1 ;
             if(opsMenuSelection < 0) opsMenuSelection = 3;
             this.optionsService.opsMenuIndex = opsMenuSelection;
           } else { //down 83 40
+            this.audioServiceService.playAudioNewInstance("menu-click-converted", true);
             let opsMenuSelection =  this.optionsService.opsMenuIndex + 1;
             if(opsMenuSelection > 3) opsMenuSelection = 0;
             this.optionsService.opsMenuIndex = opsMenuSelection;

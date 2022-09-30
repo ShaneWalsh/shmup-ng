@@ -52,8 +52,11 @@ export class BulletManagerService {
   }
 
   // for bullet noises
-  playAudioNewInstance(code: string) {
+  public playAudioNewInstance(code: string) {
     this.audioService.playAudioNewInstance(code);
+  }
+  public stopAudio(code: string) {
+    this.audioService.stopAudio(code, true);
   }
 
   generatePlayerLazer(levelInstance:LevelInstance, bulletDirection:BulletDirection, startX, startY, bulletImages, bulletImageSizeX=30, bulletImageSizeY= 22): any {
