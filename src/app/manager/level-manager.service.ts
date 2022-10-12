@@ -92,7 +92,9 @@ export class LevelManagerService {
             this.unPauseGame();
           }
           this.showPauseMenu = false;
-
+        } else if (customKeyboardEvent.event.key == 'Escape' || customKeyboardEvent.event.keyCode == 27){
+          this.unPauseGame();
+          this.showPauseMenu = false;
         }
       }
     });
