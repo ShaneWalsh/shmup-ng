@@ -6,7 +6,6 @@ import { NgApiService } from './ng-api.service';
   providedIn: 'root'
 })
 export class ProfileService {
-
   private lockedMedals:MedalUnlock[]=[];
   private unlockedMedals:MedalUnlock[]=[];
 
@@ -62,6 +61,10 @@ export class ProfileService {
     } else {
       this.setProfileValue(profileValuesEnum,value);
     }
+  }
+
+  setHighScore(boardName: string, playerScore: number) {
+    this.ngApiService.postScore(boardName,playerScore);
   }
 
 }

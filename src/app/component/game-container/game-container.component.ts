@@ -156,43 +156,6 @@ export class GameContainerComponent implements OnInit, OnDestroy {
             } else {
               this.introAnimationInstance.update(this.canvasContainer);
             }
-            // deprecated old introduction
-            // if (this.introAnimationTimer == this.introAnimationLimit) {
-            //     this.introAnimation++;
-            //     this.introAnimationTimer = 0;
-            // }
-            // this.introAnimationTimer++;
-            // this.introTicker++;
-            // if (this.introTicker > 250){ // 325
-            //     this.introOver = true;
-            //     this.levelManagerService.unPauseGame();
-            // } else {
-            //     cc.bgCtx.clearRect(0, 0, cc.canvasBGEl.width, cc.canvasBGEl.height);
-            //     cc.groundShadowCtx.clearRect(0, 0, cc.canvasGroundShadowEl.width, cc.canvasGroundShadowEl.height);
-            //     cc.groundCtx.clearRect(0, 0, cc.canvasGroundEl.width, cc.canvasGroundEl.height);
-            //     cc.shadowCtx.clearRect(0, 0, cc.canvasBGShadowEl.width, cc.canvasBGShadowEl.height);
-            //     cc.mainCtx.clearRect(0, 0, cc.canvasMainEl.width, cc.canvasMainEl.height);
-            //     cc.topCtx.clearRect(0, 0, cc.canvasMainEl.width, cc.canvasMainEl.height);
-            //     const currentLevel = this.levelManagerService.getCurrentLevel();
-            //     // have a level manager, that controls the background and the spawning, updates first. 4 levels, controls boss spawn.
-            //     currentLevel.updateIntro(cc.mainCtx);
-            //     if (this.introTicker < 200) {// 275
-            //       cc.mainCtx.fillRect(0, 0, 640, 640);
-            //       cc.mainCtx.fillRect(320, 240, 320, 240);
-            //     } else {
-            //       this.introAnimationBlackScreen += 5;
-            //       cc.mainCtx.fillRect((-1) * this.introAnimationBlackScreen, 0, 240, 640);
-            //       cc.mainCtx.fillRect(240 + this.introAnimationBlackScreen, 0, 240, 640);
-            //     }
-
-            //     let res = this.resourcesService.getRes().get("new-intro-1");
-            //     cc.mainCtx.drawImage(res, 70, 90, 500, 60, 70, 100, 500, 70);
-            //     let fullInit = this.resourcesService.getRes().get("new-intro-16");
-            //     const xSize = (70) + (this.introAnimation * 15);
-            //     cc.mainCtx.drawImage(fullInit, 70, 90, xSize, 60,    70, 100, xSize, 70);
-
-            //     this.playerService.currentPlayer.updateIntro(cc.mainCtx, this.introAnimation);
-            // }
         } else {
             if(this.levelManagerService.getNotPaused()) {
               //clear canvas

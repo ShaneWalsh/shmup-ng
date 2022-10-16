@@ -40,6 +40,7 @@ export class LevelManagerService {
 
   private paused:boolean = false;
   public difficulty:number = 0;
+  public playingBossRush:boolean = false;
   public mainMenuIndex:number = 0;
 
   public opsMenuIndex:number = 0;
@@ -119,16 +120,22 @@ export class LevelManagerService {
     let index = this.optionsService.getLevelIndex(level);
     if(index == 1) {
       this.currentLevel = new LevelOneInstance(this.resourcesService, this.botManagerService, this, this.levelEventsService);
+      this.playingBossRush = false;
     } else if(index == 2) {
       this.currentLevel = new LevelTwoInstance(this.resourcesService, this.botManagerService, this, this.levelEventsService);
+      this.playingBossRush = false;
     } else if(index == 3) {
       this.currentLevel = new LevelThreeInstance(this.resourcesService, this.botManagerService, this, this.levelEventsService);
+      this.playingBossRush = false;
     } else if(index == 4) {
       this.currentLevel = new LevelFourInstance(this.resourcesService, this.botManagerService, this, this.levelEventsService);
+      this.playingBossRush = true;
     } else if(index == 5) {
       this.currentLevel = new LevelFiveInstance(this.resourcesService, this.botManagerService, this, this.levelEventsService);
+      this.playingBossRush = true;
     } else if(index == 6) {
       this.currentLevel = new LevelSixInstance(this.resourcesService, this.botManagerService, this, this.levelEventsService);
+      this.playingBossRush = true;
     }
 
     this.levelLoaded.next(this.currentLevel);

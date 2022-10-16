@@ -171,12 +171,15 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
           this.profileService.checkMedals();
           this.playerScore =  playerObj.score;
           this.playerLives =  playerObj.lives;
+          this.setHighScore();
           this.setScreenId(20);
       }));
       // Quitting from the options menu.
       this.subs.push(this.levelManagerService.getMenuQuitSubject().subscribe(bool => {
         this.levelManagerService.pauseGame(); // no point in it running for eternity
         this.profileService.checkMedals();
+        this.playerScore = this.playerService.currentPlayer.score;
+        this.setHighScore();
         this.setScreenId(1);
         this.levelManagerService.mainMenuIndex = 0;
         this.landedOnTitleScreen();
@@ -197,6 +200,7 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
           this.setScreenId(40);
         } else if(this.levelManagerService.getCurrentLevelEnum() == LevelEnum.LevelThree){
           // game over? You win?
+          this.setHighScore();
           this.setScreenId(this.playerService.currentPlayer.endingCode());
         } else if(this.levelManagerService.getCurrentLevelEnum() == LevelEnum.LevelFour){
           this.setScreenId(60);
@@ -208,6 +212,17 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
         }
       }));
     }
+
+  setHighScore() {
+    if(!this.levelManagerService.playingBossRush){ // only when not playing boss rush we push the score.
+      if(this.levelManagerService.difficulty == 0) { // normal
+        this.profileService.setHighScore("Top Pilots",this.playerScore);
+      } else { // hard
+        this.profileService.setHighScore("Ace Pilots",this.playerScore);
+      }
+    }
+
+  }
 
     update() {
       this.gifTimer++;

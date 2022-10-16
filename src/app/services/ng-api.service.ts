@@ -16,8 +16,7 @@ export class NgApiService {
 
   public loggedIn: boolean;
   public medals: any;
-  public scoreboards: any;
-  public scoreboardId: number;
+  public scoreboards: ScoreBoard[];
   public session: any = null;
 
   constructor() {
@@ -60,7 +59,7 @@ export class NgApiService {
   public loadAll() {
     this.startSession();
     this.loadMedals();
-    //this.loadScoreBoards();
+    this.loadScoreBoards();
     //this.loadHighScores();
     this.initSession();
   }
@@ -78,15 +77,18 @@ export class NgApiService {
   /* handle loaded top 10 */
   onTopTen(result) {
     if (result.success) {
+      let board:ScoreBoard = this.scoreboards.find( v => v.id === result.scoreboard.id);
+      board.scores = result.scores;
       // window.setTopTen(result.scores);
     }
   }
 
-  postScore(topic, { score }) {
+  public postScore(boardName,score) {
     if (!this.ngio.user) return;
+    let board = this.scoreboards.find( v => v.name == boardName);
     this.ngio.callComponent(
       "ScoreBoard.postScore",
-      { id: this.scoreboardId, value: score },
+      { id: board.id, value: score },
       this.onPostedScore
     );
   }
@@ -139,9 +141,14 @@ export class NgApiService {
   /* handle loaded scores */
   onScoreboardsLoaded(result) {
     if (result.success) {
-      this.scoreboards = result.scoreboards;
-      //console.log(result.scoreboards);
-      this.loadHighScores();
+      this.scoreboards = [];
+      for(let board of result.scoreboards){
+        this.scoreboards.push(new ScoreBoard(board.id,board.name,[]))
+      }
+      console.log(this.scoreboards );
+      for(let board of this.scoreboards){
+        this.loadHighScores(board.id);
+      }
     }
   }
 
@@ -172,11 +179,21 @@ export class NgApiService {
     this.ngio.executeQueue();
   }
 
-  loadHighScores() {
+  loadHighScores(scoreboardId:number) {
     this.ngio.callComponent(
       "ScoreBoard.getScores",
-      { id: this.scoreboardId, period: "A" },
-      this.onTopTen
+      { id: scoreboardId, period: "A" },
+      this.onTopTen.bind(this)
     );
+  }
+}
+
+export class ScoreBoard {
+  constructor(
+    public id:number,
+    public name:string,
+    public scores:any[]
+  ){
+
   }
 }
