@@ -376,7 +376,7 @@ export class LevelEventsService {
       le.push(new SpawnBotEvent(2, 1400, false, 0, BotType.CAUTIONANIMATION, null, false, 108, 278));
       le.push(new SpawnBotEvent(2, 1500, false, 0, BotType.MAINBOSS1, level1MainBoss1, false, 0, -300));
       // after 100 ticks of Phase 2, level over is triggered.
-      le.push(new LevelOverEvent(3, 200));
+      le.push(new LevelOverEvent(3, 380));
       return le;
   };
   getLevel2Events(difficulty:number):LevelEvent[] {
@@ -691,7 +691,7 @@ export class LevelEventsService {
       le.push(new SpawnBotEvent(2, 2000, false, 0, BotType.CREEPER, creeperConfig, false, 430, -60));
       le.push(new SpawnBotEvent(2, 2400, false, 0, BotType.CAUTIONANIMATION, null, false, 108, 278));
       le.push(new SpawnBotEvent(2, 2500, false, 0, BotType.STARSHIPL2, level2Starship, false, 150, -300));
-      le.push(new LevelOverEvent(3, 200));
+      le.push(new LevelOverEvent(3, 380));
       return le;
   };
   getLevel3Events(difficulty:number):LevelEvent[] {
@@ -897,7 +897,7 @@ export class LevelEventsService {
         new SpawnBotEvent(0, 360, false, 0, BotType.SLIDER, sliderConfigLeft, false, -150, 250),
         new SpawnBotEvent(0, 480, false, 0, BotType.SLIDER, sliderConfigRight, false, 520, 350),
         new SpawnBotEvent(0, 600, false, 0, BotType.SLIDER, sliderConfigLeft, false, -150, 450),
-  new SpawnBotEvent(0, 80, false, 0, BotType.CREEPER, creeperConfig, false, 10, -60),
+        new SpawnBotEvent(0, 80, false, 0, BotType.CREEPER, creeperConfig, false, 10, -60),
         new SpawnBotEvent(0, 200, false, 0, BotType.CREEPER, creeperConfig, false, 70, -60),
         new SpawnBotEvent(0, 325, false, 0, BotType.CREEPER, creeperConfig, false, 130, -60),
         new SpawnBotEvent(0, 450, false, 0, BotType.CREEPER, creeperConfig, false, 190, -60),
@@ -1033,7 +1033,7 @@ export class LevelEventsService {
       le.push(new SpawnBotEvent(2, 1100, false, 0, BotType.CREEPER, creeperConfig, false, 370, -60));
       le.push(new SpawnBotEvent(2, 1150, false, 0, BotType.CREEPER, creeperConfig, false, 430, -60));
       le.push(new SpawnBotEvent(2, 1400, false, 0, BotType.FINALBOSS, finalBossAttr, false, 100, -645));
-      le.push(new LevelOverEvent(3, 100));
+      le.push(new LevelOverEvent(3, 380));
       return le;
   };
 
@@ -1096,7 +1096,7 @@ export class LevelEventsService {
     le.push(new SpawnBotEvent(2, 30, false, 0, BotType.CAUTIONANIMATION, null, false, 108, 278));
     le.push(new SpawnBotEvent(2, 80, false, 0, BotType.MAINBOSS1, level1MainBoss1, false, 0, -300));
     // after 100 ticks of Phase 2, level over is triggered.
-    le.push(new LevelOverEvent(3,100));
+    le.push(new LevelOverEvent(3,380));
     return le;
   }
 
@@ -1160,7 +1160,7 @@ export class LevelEventsService {
     le.push(new SpawnBotEvent(2, 30, false, 0, BotType.CAUTIONANIMATION, null, false, 108, 278));
     le.push(new SpawnBotEvent(2, 80, false, 0, BotType.STARSHIPL2, level2Starship, false, 150, -300));
 
-    le.push(new LevelOverEvent(3,100));
+    le.push(new LevelOverEvent(3,380));
     return le;
   }
 
@@ -1211,7 +1211,7 @@ export class LevelEventsService {
     le.push(new SpawnBotEvent(2, 30, false, 0, BotType.CAUTIONANIMATION, null, false, 108, 278));
     le.push(new SpawnBotEvent(2, 80, false, 0, BotType.FINALBOSS, finalBossAttr, false, 100, -645));
 
-    le.push(new LevelOverEvent(3,100));
+    le.push(new LevelOverEvent(3,380));
     return le;
   }
 

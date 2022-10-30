@@ -256,6 +256,7 @@ export class LaserTurret extends Turret {
 
     let currentPlayer = playerService.currentPlayer;
     if(this.firingLoading){
+      if(this.bTimerLoading == this.bTimerLoadingLimit-15) bulletManagerService.playAudioNewInstance("laser-charge-enemy-converted");
 			if(this.bTimerLoading < this.bTimerLoadingLimit) {
 				this.bTimerLoading++;
 				if(this.bTimerLoading % 3 == 0){
@@ -270,9 +271,10 @@ export class LaserTurret extends Turret {
 				this.firingPhase2 = true;
 				this.loadingIndex = 0;
 			}
-		} else if(this.firingPhase2){
+		} else if(this.firingPhase2) {
 			if(this.bTimerFiring < this.bTimerFiringLimit) {
 				this.bTimerFiring++;
+        if(this.bTimerFiring === 40) bulletManagerService.playAudioNewInstance("laser-charge-enemy-converted");
 				if(this.bTimerFiring < this.bTimerFiringPase2){
           LogicService.drawRotateImage(this.firingStartImage,ctx,this.angleDirection.angle,drawPosX, drawPosY, this.imageFiringSizeX, this.imageFiringSizeY, 0,0,this.imageFiringSizeX, this.imageFiringSizeY,drawPosX+laserRotationXOffset,drawPosY+laserRotationYOffset);
 					//ctx.drawImage(this.firingStartImage, 0, 0, this.imageFiringSizeX, this.imageFiringSizeY, drawPosX, drawPosY,this.imageFiringSizeX, this.imageFiringSizeY);

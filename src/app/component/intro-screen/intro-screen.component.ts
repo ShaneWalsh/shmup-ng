@@ -216,9 +216,9 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
   setHighScore() {
     if(!this.levelManagerService.playingBossRush){ // only when not playing boss rush we push the score.
       if(this.levelManagerService.difficulty == 0) { // normal
-        this.profileService.setHighScore("Top Pilots",this.playerScore);
+        this.profileService.setHighScore("Top Pilots - Normal",this.playerScore);
       } else { // hard
-        this.profileService.setHighScore("Ace Pilots",this.playerScore);
+        this.profileService.setHighScore("Ace Pilots - Hard",this.playerScore);
       }
     }
 

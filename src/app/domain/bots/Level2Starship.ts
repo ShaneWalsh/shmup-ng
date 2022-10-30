@@ -199,7 +199,7 @@ export class Level2Starship extends  FlyingBotImpl {
     }
   }
 
-  pplyDamage(damage: number, botManagerService: BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService, levelInstance:LevelInstance) {
+  applyDamage(damage: number, botManagerService: BotManagerService, bulletManagerService:BulletManagerService, playerService:PlayerService, levelInstance:LevelInstance) {
     this.health -= damage;
     this.triggerDamagedAnimation();
     if(this.health < 1){

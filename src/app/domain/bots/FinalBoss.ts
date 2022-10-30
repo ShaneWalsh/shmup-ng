@@ -63,6 +63,14 @@ export class FinalBoss extends BotInstanceImpl {
     ) {
       super(config);
       this.tryConfigValues(["bTimer", "bTimerLimit", "health", "score", "spawnBots", "spawnTimer"]);
+      // no score for Spawned bots.
+      this.spawnTimer.forEach(spawnT => {
+        if(spawnT.spawnEvents){
+          spawnT.spawnEvents.forEach( el => {
+            el.config = {...el.config, score:0}
+          });
+        }
+      });
       this.imageObjWing = this.imageObjWingsArr[0];
     }
 
