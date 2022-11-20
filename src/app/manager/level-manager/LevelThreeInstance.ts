@@ -22,7 +22,7 @@ export class LevelThreeInstance extends LevelOneInstance {
 
   protected scrollerYIncrementSlowScroll:number = 0;
   flipMusic: boolean = false;
-  musicTrack = "895136_Existence_lvl3";
+  musicTrack = "Level3_Hyper-Stone-Sifter";
 
   constructor(resourcesService:ResourcesService, botManagerService:BotManagerService, levelManagerService:LevelManagerService, levelEventsService:LevelEventsService){
       super(resourcesService,botManagerService,levelManagerService,levelEventsService);
@@ -46,7 +46,7 @@ export class LevelThreeInstance extends LevelOneInstance {
 
   updateMusic(audioServiceService:AudioServiceService) {
     if(this.flipMusic){
-      this.musicTrack = "1055567_Melody_boss";
+      this.musicTrack = "895136_Existence_lvl3";
       this.flipMusic = false;
       audioServiceService.stopAllAudio(true);
     }
