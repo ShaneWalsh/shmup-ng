@@ -43,3 +43,8 @@
   width: 480px;
   height: 640px;
 }
+
+.hidden-bg{
+  position: absolute;
+  z-index: -100;
+}

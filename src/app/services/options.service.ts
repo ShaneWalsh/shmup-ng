@@ -14,11 +14,11 @@ export class OptionsService {
   /**
    * Default sound effect volume.
    */
-  private _soundAffectVolume : number = 0.2; //.2
+  private _soundAffectVolume : number = 0.5; //.2
   /**
    * Default background volume.
    */
-  private _backgroundSoundVolume : number = .1; // .1
+  private _backgroundSoundVolume : number = .5; // .1
   /**
   * Default level order, Just change the index value to change the order they are played in.
   */
@@ -33,7 +33,7 @@ export class OptionsService {
 
   // logic for screen
   opsMenuIndex: number = 0;
-  _skipIntro: boolean = true;
+  _skipIntro: boolean = false;
   _drawHitBox: boolean = false;
 
   constructor() { }
@@ -56,7 +56,7 @@ export class OptionsService {
    * display the games ticks
    */
   isDisplayTicksAndPhases(): boolean {
-    return true;
+    return false;
   }
 
   /**

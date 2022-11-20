@@ -6,7 +6,7 @@ import { PlayerService} from '../../services/player.service';
 import { LevelEnum } from 'src/app/manager/level-manager/LevelEnum';
 import { NgApiService } from 'src/app/services/ng-api.service';
 import { AudioServiceService } from 'src/app/services/audio-service.service';
-import { ProfileService } from 'src/app/services/profile.service';
+import { ProfileService, ProfileValuesEnum } from 'src/app/services/profile.service';
 import { OptionsService } from 'src/app/services/options.service';
 
 @Component({
@@ -29,6 +29,8 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
     public playerScore:number = 0;
     public playerLives:number = 0;
     public requestAnimFrame:any; // have to ensure this is not created multiple times!
+
+    public bossRushUnlocked: boolean = false;
 
     constructor(private profileService:ProfileService, private keyboardEventService:KeyboardEventService, private levelManagerService: LevelManagerService, private playerService:PlayerService, private audioServiceService:AudioServiceService, private optionsService:OptionsService) {
         this.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || // this redraws the canvas when the browser is updating. Crome 18 is execllent for canvas, makes it much faster by using os
@@ -211,6 +213,7 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
           this.setScreenId(this.playerService.currentPlayer.endingCode());
         }
       }));
+      this.isbossRushUnlocked();
     }
 
   setHighScore() {
@@ -232,6 +235,7 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
     }
 
     landedOnTitleScreen(){
+      this.isbossRushUnlocked();
       this.audioServiceService.stopAllAudio(true);
       this.audioServiceService.update();
       this.audioServiceService.playAudio("titlescreen", true);
@@ -239,6 +243,10 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
 
     setScreenId(value:number) {
       this.screenId = value;
+    }
+
+    isbossRushUnlocked(){
+      this.bossRushUnlocked = this.profileService.isMedalUnlocked(ProfileValuesEnum.BOTKILLER_LEVEL3_COMPLETED);
     }
 
   // // load image

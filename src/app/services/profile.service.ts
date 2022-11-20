@@ -67,6 +67,11 @@ export class ProfileService {
     this.ngApiService.postScore(boardName,playerScore);
   }
 
+  isMedalUnlocked(code):boolean{
+    let med = this.unlockedMedals.find(med => med.profileValue === ProfileValuesEnum.BOTKILLER_LEVEL3_COMPLETED);
+    return (med && med.unlocked)?true:false;
+  }
+
 }
 
 export enum ProfileValuesEnum {

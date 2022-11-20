@@ -1,4 +1,5 @@
 <div class="black-out effect-container">
+  <img class="hidden-bg" [src]="'assets/img/desc/menu-pics-2/main-menu-bg.png'">
   <!-- <img class="grid-style" [src]="'assets/img/levels/title-grid-background.png'"> -->
   <div class="screen-container" *ngIf="screenId==0">
     <!-- <img class="grid-style" [src]="'assets/img/levels/title-grid-background.png'"> -->
@@ -6,16 +7,17 @@
   </div>
   <div class="screen-container" *ngIf="screenId==1">
     <span *ngIf="levelManagerService.mainMenuIndex==0">
-      <img [src]="'assets/img/desc/menu-pics/menu-start.png'">
+      <img [src]="'assets/img/desc/menu-pics-2/start-game.png'">
     </span>
     <span *ngIf="levelManagerService.mainMenuIndex==1">
-      <img [src]="'assets/img/desc/menu-pics/menu-boss-rush.png'">
+      <img  *ngIf="bossRushUnlocked== true" [src]="'assets/img/desc/menu-pics-2/boss-rush.png'">
+      <img  *ngIf="bossRushUnlocked== false" [src]="'assets/img/desc/menu-pics-2/boss-rush-locked.png'">
     </span>
     <span *ngIf="levelManagerService.mainMenuIndex==2">
-      <img [src]="'assets/img/desc/menu-pics/menu-options.png'">
+      <img [src]="'assets/img/desc/menu-pics-2/options.png'">
     </span>
     <span *ngIf="levelManagerService.mainMenuIndex==3">
-      <img [src]="'assets/img/desc/menu-pics/menu-credits.png'">
+      <img [src]="'assets/img/desc/menu-pics-2/credits.png'">
     </span>
   </div>
   <div class="screen-container" *ngIf="screenId==2">
@@ -39,7 +41,7 @@
   </div>
   <div class="screen-container" *ngIf="screenId==4">
     <span *ngIf="playerService.selectedPilot==0">
-      <img [src]="'assets/img/desc/character-select-player-1.png'">
+      <img [src]="'assets/img/desc/menu-pics-2/character-select-naomi.png'">
     </span>
     <span *ngIf="playerService.selectedPilot==1">
       <img [src]="'assets/img/desc/character-select-player-2.png'">
