@@ -1,8 +1,19 @@
 <div class="black-out effect-container">
+  <img class="tinyfloater" src="assets/img/desc/menu-pics-2/boss-rush.png">
+  <img class="tinyfloater" src="assets/img/desc/menu-pics-2/boss-rush-locked.png">
+  <img class="tinyfloater" src="assets/img/desc/menu-pics-2/character-select-naomi.png">
+  <img class="tinyfloater" src="assets/img/desc/menu-pics-2/credits.png">
+  <img class="tinyfloater" src="assets/img/desc/menu-pics-2/main-menu-bg.png">
+  <img class="tinyfloater" src="assets/img/desc/menu-pics-2/options.png">
+  <img class="tinyfloater" src="assets/img/desc/menu-pics-2/start-game.png">
+  <img class="tinyfloater" src="assets/img/desc/new-story.png">
+  <img class="tinyfloater" src="assets/img/desc/difficulty-select/normal-1.png">
+  <img class="tinyfloater" src="assets/img/desc/difficulty-select/normal-2.png">
+  <img class="tinyfloater" src="assets/img/desc/difficulty-select/hard-1.png">
+  <img class="tinyfloater" src="assets/img/desc/difficulty-select/hard-2.png">
+  <img class="tinyfloater" src="assets/img/desc/credits.png">
   <img class="hidden-bg" [src]="'assets/img/desc/menu-pics-2/main-menu-bg.png'">
-  <!-- <img class="grid-style" [src]="'assets/img/levels/title-grid-background.png'"> -->
   <div class="screen-container" *ngIf="screenId==0">
-    <!-- <img class="grid-style" [src]="'assets/img/levels/title-grid-background.png'"> -->
     <img [src]="'assets/img/desc/updated-title-2.gif'">
   </div>
   <div class="screen-container" *ngIf="screenId==1">
@@ -25,8 +36,6 @@
   </div>
   <div class="screen-container" *ngIf="screenId==3">
     <span *ngIf="levelManagerService.difficulty==0">
-        <!-- <img *ngIf="gifTimer < 40" [src]="'assets/img/desc/difficulty-select/easy-1.png'">
-        <img *ngIf="gifTimer >= 40" [src]="'assets/img/desc/difficulty-select/easy-2.png'"> -->
         <img *ngIf="gifTimer < 40" [src]="'assets/img/desc/difficulty-select/normal-1.png'">
         <img *ngIf="gifTimer >= 40" [src]="'assets/img/desc/difficulty-select/normal-2.png'">
     </span>
@@ -34,10 +43,6 @@
       <img *ngIf="gifTimer < 40" [src]="'assets/img/desc/difficulty-select/hard-1.png'">
       <img *ngIf="gifTimer >= 40" [src]="'assets/img/desc/difficulty-select/hard-2.png'">
     </span>
-    <!-- <span *ngIf="levelManagerService.difficulty==2">
-      <img *ngIf="gifTimer < 40" [src]="'assets/img/desc/difficulty-select/hard-1.png'">
-      <img *ngIf="gifTimer >= 40" [src]="'assets/img/desc/difficulty-select/hard-2.png'">
-  </span> -->
   </div>
   <div class="screen-container" *ngIf="screenId==4">
     <span *ngIf="playerService.selectedPilot==0">
@@ -60,6 +65,9 @@
   </div>
   <div class="screen-container" *ngIf="screenId==10">
       <app-options-screen [requestAnimFrame]="requestAnimFrame"></app-options-screen>
+  </div>
+  <div class="screen-container" *ngIf="screenId==12">
+    <img [src]="'assets/img/desc/credits.png'">
   </div>
 
   <div class="screen-container pink-text" *ngIf="screenId==20">

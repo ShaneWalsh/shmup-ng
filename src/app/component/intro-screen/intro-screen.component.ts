@@ -65,7 +65,11 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
             } else { // we are past the title screen, on one of the menus
               if(this.screenId == 1 && this.levelManagerService.mainMenuIndex == 2){
                 this.setScreenId(10);
-              } else { // will have to add credits at some point
+              } else if(this.screenId == 1 && this.levelManagerService.mainMenuIndex == 3){ // credits
+                this.setScreenId(12);
+              } else if(this.levelManagerService.mainMenuIndex == 1 && !this.bossRushUnlocked) {
+                // do nothing, its not unlocked.
+              } else {
                 this.setScreenId(this.screenId+1);
                 if(this.screenId == 6) { // used to be 6 for screen 4+5 but those have been removed
                   // lets assume the user picked a player here
@@ -81,7 +85,7 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
                 }
               }
             }
-          } else if(this.screenId == 10) { // ops screen, back to MM.
+          } else if(this.screenId == 10 || this.screenId == 12) { // ops screen, back to MM.
             // handled with subject.
             this.audioServiceService.playAudioNewInstance("menu-click-converted", true);
             this.setScreenId(1);

@@ -2,3 +2,10 @@
 .body {
   margin: 0px;
 }
+
+.tinyfloater {
+  float: left;
+  width: 2px;
+  height: 2px;
+  position: absolute;
+}
