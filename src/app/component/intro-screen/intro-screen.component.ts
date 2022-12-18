@@ -253,17 +253,5 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
       this.bossRushUnlocked = this.profileService.isMedalUnlocked(ProfileValuesEnum.BOTKILLER_LEVEL3_COMPLETED);
     }
 
-  // // load image
-  // try {
-  //     // get input stream
-  //     InputStream ims = getAssets().open("avatar.jpg");
-  //     // load image as Drawable
-  //     Drawable d = Drawable.createFromStream(ims, null);
-  //     // set image to ImageView
-  //     mImage.setImageDrawable(d);
-  // }
-  // catch(IOException ex) {
-  //     return;
-  // }
 
 }

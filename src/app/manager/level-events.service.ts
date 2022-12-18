@@ -1181,10 +1181,10 @@ export class LevelEventsService {
     };
 
     let level3MiniBoss2 = {
-			moveSpeed: 4,
-			score: 15000,
-			health: 300, // the turret will trigger at health/2 so 300/2 = 150
-      bTimerLimit: 60,
+      moveSpeed: 2.5,
+      score: 350000,
+      health: 300,
+      bTimerLimit: 100,
     };
 
     let finalBossAttr = {
@@ -1195,9 +1195,14 @@ export class LevelEventsService {
     };
 
     if(difficulty == 0){ // easy difficulty, so reducing the bots health
-      // todo
+
     } else if(difficulty == 1){ // normal, can just use the default settings above.
-      // use the defaults defined above
+      level3MiniBoss2 = {
+        moveSpeed: 3,
+        score: 350000,
+        health: 300,
+        bTimerLimit: 60
+      }
     } else { //todo hard one day I assume
       // todo
     }

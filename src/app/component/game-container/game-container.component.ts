@@ -148,7 +148,12 @@ export class GameContainerComponent implements OnInit, OnDestroy {
         let cc = this.canvasContainer;
         this.tickComplete = false;
         if(!this.introOver){
-            this.levelManagerService.pauseGame();
+            if(this.levelManagerService.getNotPaused()){
+              this.levelManagerService.pauseGame();
+            } else {
+              this.audioServiceService.update();
+              this.audioServiceService.playAudio("titlescreen", true);
+            }
             if(this.introAnimationInstance.isComplete()) {
               this.introOver = true;
               this.audioServiceService.stopAllAudio();

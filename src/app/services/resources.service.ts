@@ -527,6 +527,7 @@ export class ResourcesService {
       this.audioResourcesToLoad.push({code:"914831_Etherea_lvl1", path:"assets/sound/bg/914831_Etherea_lvl1.mp3", type:ResourcesEnum.SoundRes, sound:SoundResEnum.TYPEBG});
       this.audioResourcesToLoad.push({code:"1055571_Mellow-Freeze_lvl2", path:"assets/sound/bg/1055571_Mellow-Freeze_lvl2.mp3", type:ResourcesEnum.SoundRes, sound:SoundResEnum.TYPEBG});
       this.audioResourcesToLoad.push({code:"895136_Existence_lvl3", path:"assets/sound/bg/895136_Existence_lvl3.mp3", type:ResourcesEnum.SoundRes, sound:SoundResEnum.TYPEBG});
+      this.audioResourcesToLoad.push({code:"Level3_Hyper-Stone-Sifter", path:"assets/sound/bg/Level3_Hyper-Stone-Sifter.mp3", type:ResourcesEnum.SoundRes, sound:SoundResEnum.TYPEBG});
       //this.audioResourcesToLoad.push({code:"1055567_Melody_boss", path:"assets/sound/bg/1055567_Melody_boss.mp3", type:ResourcesEnum.SoundRes, sound:SoundResEnum.TYPEBG});
       this.audioResourcesToLoad.push({code:"titlescreen", path:"assets/sound/bg/titlescreen.mp3", type:ResourcesEnum.SoundRes, sound:SoundResEnum.TYPEBG});
     }
