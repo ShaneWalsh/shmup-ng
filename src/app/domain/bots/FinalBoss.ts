@@ -8,6 +8,7 @@ import { LogicService } from "src/app/services/logic.service";
 import { CanvasContainer } from "../CanvasContainer";
 import { SpawnBotEvent, SpawnTimer } from "../events/level-events";
 import { ProfileService, ProfileValuesEnum } from "src/app/services/profile.service";
+import { DeathConfig, DeathDetails } from "../DeathDetails";
 
 export class FinalBoss extends BotInstanceImpl {
 
@@ -236,6 +237,10 @@ export class FinalBoss extends BotInstanceImpl {
 
     isDeathOnColision():boolean{
       return false;
+    }
+
+    getDeathDetails():DeathDetails {
+      return new DeathDetails(this.imageObjWing = this.imageObjWingsArr[this.animationIndex], this.posX-165, this.posY-50,this.imageWingsSizeX, this.imageWingsSizeY, this.getCurrentAngle(),this.getCenterX(), this.getCenterY(),new DeathConfig(12,24));
     }
 }
 

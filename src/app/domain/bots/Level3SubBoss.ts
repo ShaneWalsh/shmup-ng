@@ -7,6 +7,7 @@ import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { CanvasContainer } from "../CanvasContainer";
 import { Turret } from "./Turret";
 import { ProfileService, ProfileValuesEnum } from "src/app/services/profile.service";
+import { DeathConfig, DeathDetails } from "../DeathDetails";
 
 enum PhaseLaser {
   PHASE_LOADING,
@@ -349,4 +350,12 @@ export class Level3SubBoss extends  BotInstanceImpl {
   isDeathOnColision():boolean{
     return false;
   }
+
+    /**
+   * Return the current image
+   */
+    getDeathDetails():DeathDetails {
+      return new DeathDetails(this.imageObj, this.posX, this.posY, this.imageSizeX, this.imageSizeY, this.getCurrentAngle(),this.getCenterX(), this.getCenterY(),new DeathConfig(12,24));
+    }
+
 }

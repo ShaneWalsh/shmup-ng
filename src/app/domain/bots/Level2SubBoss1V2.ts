@@ -225,6 +225,6 @@ export class Level2SubBoss1V2 extends  BotInstanceImpl {
 	}
 
   getDeathDetails():DeathDetails {
-    return new DeathDetails(this.imageObj2, this.posX, this.posY, this.imageSizeX, this.imageSizeY, this.getCurrentAngle(), this.getCenterX(), this.getCenterY(), new DeathConfig(6,24));
+    return new DeathDetails(this.imageObj2, this.posX, this.posY, this.imageSizeX, this.imageSizeY, this.getCurrentAngle(), this.getCenterX(), this.getCenterY(), new DeathConfig(12,24));
   }
 }

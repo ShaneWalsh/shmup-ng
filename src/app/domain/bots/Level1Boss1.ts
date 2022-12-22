@@ -7,6 +7,7 @@ import { PlayerObj, PlayerService } from "src/app/services/player.service";
 import { LogicService } from "src/app/services/logic.service";
 import { CanvasContainer } from "../CanvasContainer";
 import { ProfileService, ProfileValuesEnum } from "src/app/services/profile.service";
+import { DeathConfig, DeathDetails } from "../DeathDetails";
 
 /**
  * Shellhead
@@ -146,6 +147,13 @@ export class Level1Boss1 extends BotInstanceImpl {
     isDeathOnColision():boolean{
       return false;
     }
+
+  /**
+   * Return the current image
+   */
+  getDeathDetails():DeathDetails {
+    return new DeathDetails(this.imageObjWeakpoint, this.posX, this.posY, this.imageSizeX, this.imageSizeY, this.getCurrentAngle(),this.imageSizeX/2, this.imageSizeY/2,new DeathConfig(12,24));
+  }
 }
 
 class Boss1State {
