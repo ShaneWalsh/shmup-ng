@@ -53,6 +53,7 @@ export class ResourcesService {
         {code:"boss-9-bomb-2", path:"/assets/img/boss/boss-9-bomber/bomb-2.png", type:ResourcesEnum.ImageRes},
 
         {code:"boss-9", path:"/assets/img/boss/boss-9-bomber/boss-9.png", type:ResourcesEnum.ImageRes},
+        {code:"boss-9-damaged", path:"/assets/img/boss/boss-9-bomber/boss-9-damaged.png", type:ResourcesEnum.ImageRes},
         {code:"boss-9-turret", path:"assets/img/boss/boss-9-bomber/boss-9-turret.png", type:ResourcesEnum.ImageRes},
 
         {code:"boss-explosion-1", path:"src/assets/img/bots/explosion/boss-explosion-1.png", type:ResourcesEnum.ImageRes},

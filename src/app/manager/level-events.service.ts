@@ -1187,12 +1187,94 @@ export class LevelEventsService {
       bTimerLimit: 100,
     };
 
-    let finalBossAttr = {
-      moveSpeed: 4,
-      score: 15000,
-      health: 300, // the turret will trigger at health/2 so 300/2 = 150
+  let guardianCreeperConfig = {
+      bulletSpeed: 6,
+      posXSpeed: 1.5,
+      posYSpeed: 2,
+      bTimerLimit: 50,
+      score: 8000,
+      health: 30,
+      retreatAfterShotsFiredLimit: 5
+  };
+  // basic fast moving fast shooting redesigned fighter enemy-1-1
+  let fighterConfig = {
+      bulletSpeed: 6,
+      posXSpeed: 3,
+      posYSpeed: 3,
+      bTimerLimit: 90,
+      anaimationTimerLimit: 4,
+      score: 1000,
+      health: 5,
+  };
+  // top of the screen creeper enemy-07
+  let creeperConfig = {
+      posXSpeed: 1.5,
+      posYSpeed: 1.5,
       bTimerLimit: 60,
-    };
+      score: 4000,
+      health: 12,
+  };
+  // big fat slow guy, enemy-2-1
+  let sliderConfigLeft = {
+      posXSpeed: 2,
+      posYSpeed: 3,
+      score: 8000,
+      health: 40,
+      side: "LEFT"
+  };
+
+  let sliderConfigRight = {...  sliderConfigLeft,  side: "RIGHT", posXSpeed: -2 };
+
+    // The phase 0, is irrelevant
+    let finalBossSpawns = [
+      new SpawnTimer(1205, [
+      ]),
+      new SpawnTimer(990, [
+new SpawnBotEvent(0, 240, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 10, -60),
+    new SpawnBotEvent(0, 350, false, 0, BotType.FIGHTER, fighterConfig, false, 400, -60),
+    new SpawnBotEvent(0, 640, false, 0, BotType.GUARDIANCREEPER, guardianCreeperConfig, false, 375, -60),
+    new SpawnBotEvent(0, 750, false, 0, BotType.FIGHTER, fighterConfig, false, 30, -60)
+      ]),
+      new SpawnTimer(800, [
+new SpawnBotEvent(0, 100, false, 0, BotType.CREEPER, creeperConfig, false, 10, -60),
+    new SpawnBotEvent(0, 200, false, 0, BotType.CREEPER, creeperConfig, false, 70, -60),
+    new SpawnBotEvent(0, 300, false, 0, BotType.CREEPER, creeperConfig, false, 130, -60),
+    new SpawnBotEvent(0, 400, false, 0, BotType.CREEPER, creeperConfig, false, 190, -60),
+    new SpawnBotEvent(0, 400, false, 0, BotType.CREEPER, creeperConfig, false, 250, -60),
+    new SpawnBotEvent(0, 300, false, 0, BotType.CREEPER, creeperConfig, false, 310, -60),
+    new SpawnBotEvent(0, 200, false, 0, BotType.CREEPER, creeperConfig, false, 370, -60),
+    new SpawnBotEvent(0, 100, false, 0, BotType.CREEPER, creeperConfig, false, 430, -60)
+      ]),
+      new SpawnTimer(600, [
+    new SpawnBotEvent(0, 100, false, 0, BotType.SLIDER, sliderConfigLeft, false, -150, 50),
+    new SpawnBotEvent(0, 200, false, 0, BotType.SLIDER, sliderConfigRight, false, 520, 150),
+    new SpawnBotEvent(0, 300, false, 0, BotType.SLIDER, sliderConfigLeft, false, -150, 250),
+    new SpawnBotEvent(0, 400, false, 0, BotType.SLIDER, sliderConfigRight, false, 520, 350),
+    new SpawnBotEvent(0, 500, false, 0, BotType.SLIDER, sliderConfigLeft, false, -150, 450),
+]),
+new SpawnTimer(400, [
+    new SpawnBotEvent(0, 120, false, 0, BotType.SLIDER, sliderConfigLeft, false, -150, 50),
+    new SpawnBotEvent(0, 240, false, 0, BotType.SLIDER, sliderConfigRight, false, 520, 150),
+    new SpawnBotEvent(0, 360, false, 0, BotType.SLIDER, sliderConfigLeft, false, -150, 250),
+    new SpawnBotEvent(0, 480, false, 0, BotType.SLIDER, sliderConfigRight, false, 520, 350),
+    new SpawnBotEvent(0, 600, false, 0, BotType.SLIDER, sliderConfigLeft, false, -150, 450),
+    new SpawnBotEvent(0, 80, false, 0, BotType.CREEPER, creeperConfig, false, 10, -60),
+    new SpawnBotEvent(0, 200, false, 0, BotType.CREEPER, creeperConfig, false, 70, -60),
+    new SpawnBotEvent(0, 325, false, 0, BotType.CREEPER, creeperConfig, false, 130, -60),
+    new SpawnBotEvent(0, 450, false, 0, BotType.CREEPER, creeperConfig, false, 190, -60),
+    new SpawnBotEvent(0, 450, false, 0, BotType.CREEPER, creeperConfig, false, 250, -60),
+    new SpawnBotEvent(0, 325, false, 0, BotType.CREEPER, creeperConfig, false, 310, -60),
+    new SpawnBotEvent(0, 200, false, 0, BotType.CREEPER, creeperConfig, false, 370, -60),
+    new SpawnBotEvent(0, 80, false, 0, BotType.CREEPER, creeperConfig, false, 430, -60)
+])
+  ];
+  let finalBossAttr = {
+      moveSpeed: 4,
+      score: 1000000,
+      health: 1000,
+      bTimerLimit: 60,
+      spawnTimer: finalBossSpawns
+  };
 
     if(difficulty == 0){ // easy difficulty, so reducing the bots health
 
@@ -1203,9 +1285,14 @@ export class LevelEventsService {
         health: 300,
         bTimerLimit: 60
       }
-    } else { //todo hard one day I assume
-      // todo
-    }
+      finalBossAttr = {
+        moveSpeed: 4,
+        score: 1000000,
+        health: 1200,
+        bTimerLimit: 60,
+        spawnTimer: finalBossSpawns
+      };
+    } else {}
 
     le.push(new SpawnBotEvent(0, 30, false, 0, BotType.CAUTIONANIMATION, null, false, 108, 278));
     le.push(new SpawnBotEvent(0, 80, false, 0, BotType.MINIBOSS1L3, level3MiniBoss1, false, 0, -645));

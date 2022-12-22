@@ -531,7 +531,7 @@ export class BotManagerService {
     let hitz = new HitBox(0, 0, 118, 134);
     let newBot = new Level3SubBoss2( config, posObj.posX, posObj.posY,
         [this.resourcesService.getRes().get("boss-9")],
-        this.resourcesService.getRes().get("boss-9"),
+        this.resourcesService.getRes().get("boss-9-damaged"),
         this.resourcesService.getRes().get("boss-9-turret"),
         this.resourcesService.getRes().get("miniboss-3-muzzle-flash"),
         118, 134, hitz );
