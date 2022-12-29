@@ -180,6 +180,10 @@ export class LevelOneInstance implements LevelInstance{
     return true;
   }
 
+  hitboxColor(): string {
+    return "#FFFFFF"
+  }
+
 
 
 }

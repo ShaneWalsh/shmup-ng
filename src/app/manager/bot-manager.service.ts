@@ -234,7 +234,7 @@ export class BotManagerService {
   generateDrone(levelInstance: LevelInstance, randomPosition: boolean = true, posX: number = 0, posY: number = -60, config: any = {}): any {
     let posObj = this.getBotPostion(levelInstance, randomPosition, posX, posY);
     let newBot = new Drone(config, posObj.posX, posObj.posY, this.resourcesService.getRes().get("enemy-2-1"),
-    this.resourcesService.getRes().get("enemy-2-2"), 56, 78,new HitBox(0, 0, 56, 78),this.resourcesService.getRes().get("drone-damaged"));
+    this.resourcesService.getRes().get("enemy-2-2"), 56, 78,new HitBox(0, 0, 56, 78),this.resourcesService.getRes().get("enemy-2-1-old-damaged"));
 
     this.botsArr.push(newBot);
     this.botCreated.next(newBot);

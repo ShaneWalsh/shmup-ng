@@ -402,6 +402,8 @@ export class ResourcesService {
           {code:"enemy-1-2-v2", path:"assets/img/bots/redesign/enemy-1-2.png", type:ResourcesEnum.ImageRes},
           {code:"enemy-1-damaged-v2", path:"assets/img/bots/redesign/enemy-1-damaged.png", type:ResourcesEnum.ImageRes},
 
+          {code:"enemy-2-1-old-damaged", path:"assets/img/bots/enemy-2-1-old-damaged.png", type:ResourcesEnum.ImageRes},
+
           {code:"enemy-2-1-v2", path:"assets/img/bots/redesign/enemy-2-1.png", type:ResourcesEnum.ImageRes},
           {code:"enemy-2-2-v2", path:"assets/img/bots/redesign/enemy-2-2.png", type:ResourcesEnum.ImageRes},
           {code:"enemy-2-1-shadow-v2", path:"assets/img/bots/redesign/enemy-2-1-shadow.png", type:ResourcesEnum.ImageRes},

@@ -72,10 +72,10 @@ export class Judge extends FlyingBotImpl {
 		this.updateDamageAnimation(ctx, this.playerDirection.angle);
 
     if(levelInstance.drawHitBox()){
-      this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");
-      this.hitBox.drawBorder(this.getCenterX(),this.getCenterY(),5,5,ctx,"#FF0000");
+      this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,levelInstance.hitboxColor());
+      this.hitBox.drawBorder(this.getCenterX(),this.getCenterY(),5,5,ctx,levelInstance.hitboxColor());
       this.targetCords.forEach( cord => {
-        this.hitBox.drawBorder(cord.targetX,cord.targetY,5,5,ctx,"#FF0000");
+        this.hitBox.drawBorder(cord.targetX,cord.targetY,5,5,ctx,levelInstance.hitboxColor());
       });
     }
 

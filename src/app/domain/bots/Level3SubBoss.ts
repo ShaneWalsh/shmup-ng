@@ -202,9 +202,9 @@ export class Level3SubBoss extends  BotInstanceImpl {
       }
     }
     if(levelInstance.drawHitBox()){
-      this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");
-      this.hitBox2.drawBorder(this.posX+this.hitBox2.hitBoxX,this.posY+this.hitBox2.hitBoxY,this.hitBox2.hitBoxSizeX,this.hitBox2.hitBoxSizeY,ctx,"#FF0000");
-      this.hitBox3.drawBorder(this.posX+this.hitBox3.hitBoxX,this.posY+this.hitBox3.hitBoxY,this.hitBox3.hitBoxSizeX,this.hitBox3.hitBoxSizeY,ctx,"#FF0000");
+      this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,levelInstance.hitboxColor());
+      this.hitBox2.drawBorder(this.posX+this.hitBox2.hitBoxX,this.posY+this.hitBox2.hitBoxY,this.hitBox2.hitBoxSizeX,this.hitBox2.hitBoxSizeY,ctx,levelInstance.hitboxColor());
+      this.hitBox3.drawBorder(this.posX+this.hitBox3.hitBoxX,this.posY+this.hitBox3.hitBoxY,this.hitBox3.hitBoxSizeX,this.hitBox3.hitBoxSizeY,ctx,levelInstance.hitboxColor());
     }
 
     this.bulletTurret.update(this.posX+(102),this.posY+(8),currentPlayer,levelInstance, canvasContainer.mainCtx, canvasContainer.shadowCtx, botManagerService, bulletManagerService, playerService,( this.damAnaimationTimer %2 == 1));
@@ -285,7 +285,7 @@ export class Level3SubBoss extends  BotInstanceImpl {
           playerService.killCurrentPlayer();
         }
         if ( levelInstance.drawHitBox() ) {
-          hitty.drawBorder(drawX+hitty.hitBoxX,drawY+hitty.hitBoxY,hitty.hitBoxSizeX,hitty.hitBoxSizeY,canvasContainer.mainCtx,"#FF0000");
+          hitty.drawBorder(drawX+hitty.hitBoxX,drawY+hitty.hitBoxY,hitty.hitBoxSizeX,hitty.hitBoxSizeY,canvasContainer.mainCtx,levelInstance.hitboxColor());
         }
       }
     }

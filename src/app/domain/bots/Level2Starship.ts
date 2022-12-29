@@ -144,7 +144,7 @@ export class Level2Starship extends  FlyingBotImpl {
 
 
     if(levelInstance.drawHitBox()){
-      this.hitBoxHull.drawBorder(this.posX+this.hitBoxHull.hitBoxX,this.posY+this.hitBoxHull.hitBoxY,this.hitBoxHull.hitBoxSizeX,this.hitBoxHull.hitBoxSizeY,ctx,"#FF0000");
+      this.hitBoxHull.drawBorder(this.posX+this.hitBoxHull.hitBoxX,this.posY+this.hitBoxHull.hitBoxY,this.hitBoxHull.hitBoxSizeX,this.hitBoxHull.hitBoxSizeY,ctx,levelInstance.hitboxColor());
       this.hitBoxWeakpoint.drawBorder(this.posX+this.hitBoxWeakpoint.hitBoxX,this.posY+this.hitBoxWeakpoint.hitBoxY,this.hitBoxWeakpoint.hitBoxSizeX,this.hitBoxWeakpoint.hitBoxSizeY,ctx,"#FFF000");
     }
 

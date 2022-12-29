@@ -59,7 +59,7 @@ export class GuardianCreeper extends FlyingBotImpl {
 		this.updateDamageAnimation(ctx,this.angleDirection.angle);
 
 		if(levelInstance.drawHitBox()){
-			this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,"#FF0000");
+			this.hitBox.drawBorder(this.posX+this.hitBox.hitBoxX,this.posY+this.hitBox.hitBoxY,this.hitBox.hitBoxSizeX,this.hitBox.hitBoxSizeY,ctx,levelInstance.hitboxColor());
 		}
 
 		if(this.canShootNow){

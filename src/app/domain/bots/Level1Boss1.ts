@@ -209,9 +209,9 @@ class Boss1State {
             ctx.drawImage(level1Boss1.imageObjLazor, 0, 0, level1Boss1.imageSizeX, level1Boss1.imageSizeY, level1Boss1.posX, level1Boss1.posY, level1Boss1.imageSizeX, level1Boss1.imageSizeY);
       }
       if (levelInstance.drawHitBox()) {
-          level1Boss1.hitBoxWeakPoint.drawBorder(level1Boss1.posX + level1Boss1.hitBoxWeakPoint.hitBoxX, level1Boss1.posY + level1Boss1.hitBoxWeakPoint.hitBoxY, level1Boss1.hitBoxWeakPoint.hitBoxSizeX, level1Boss1.hitBoxWeakPoint.hitBoxSizeY, ctx, "#FF0000");
-          level1Boss1.hitBoxArmor1.drawBorder(level1Boss1.posX + level1Boss1.hitBoxArmor1.hitBoxX, level1Boss1.posY + level1Boss1.hitBoxArmor1.hitBoxY, level1Boss1.hitBoxArmor1.hitBoxSizeX, level1Boss1.hitBoxArmor1.hitBoxSizeY, ctx, "#FF0000");
-          level1Boss1.hitBoxArmor2.drawBorder(level1Boss1.posX + level1Boss1.hitBoxArmor2.hitBoxX, level1Boss1.posY + level1Boss1.hitBoxArmor2.hitBoxY, level1Boss1.hitBoxArmor2.hitBoxSizeX, level1Boss1.hitBoxArmor2.hitBoxSizeY, ctx, "#FF0000");
+          level1Boss1.hitBoxWeakPoint.drawBorder(level1Boss1.posX + level1Boss1.hitBoxWeakPoint.hitBoxX, level1Boss1.posY + level1Boss1.hitBoxWeakPoint.hitBoxY, level1Boss1.hitBoxWeakPoint.hitBoxSizeX, level1Boss1.hitBoxWeakPoint.hitBoxSizeY, ctx, levelInstance.hitboxColor());
+          level1Boss1.hitBoxArmor1.drawBorder(level1Boss1.posX + level1Boss1.hitBoxArmor1.hitBoxX, level1Boss1.posY + level1Boss1.hitBoxArmor1.hitBoxY, level1Boss1.hitBoxArmor1.hitBoxSizeX, level1Boss1.hitBoxArmor1.hitBoxSizeY, ctx, levelInstance.hitboxColor());
+          level1Boss1.hitBoxArmor2.drawBorder(level1Boss1.posX + level1Boss1.hitBoxArmor2.hitBoxX, level1Boss1.posY + level1Boss1.hitBoxArmor2.hitBoxY, level1Boss1.hitBoxArmor2.hitBoxSizeX, level1Boss1.hitBoxArmor2.hitBoxSizeY, ctx, levelInstance.hitboxColor());
           level1Boss1.hitBox.drawBorder(level1Boss1.posX + level1Boss1.hitBox.hitBoxX, level1Boss1.posY + level1Boss1.hitBox.hitBoxY, level1Boss1.hitBox.hitBoxSizeX, level1Boss1.hitBox.hitBoxSizeY, ctx, "#FFFF00");
       }
     }
@@ -387,7 +387,7 @@ class Boss1StateAttack extends Boss1State {
       this.defaultUpdate(levelInstance,ctx,botManagerService,bulletManagerService,playerService);
       // if we hit the player here, we need to kill them
       if (levelInstance.drawHitBox()) {
-          this.beamHitBox.drawBorder(level1Boss1.posX + this.beamHitBox.hitBoxX, level1Boss1.posY + this.beamHitBox.hitBoxY, this.beamHitBox.hitBoxSizeX, this.beamHitBox.hitBoxSizeY, ctx, "#FF0000");
+          this.beamHitBox.drawBorder(level1Boss1.posX + this.beamHitBox.hitBoxX, level1Boss1.posY + this.beamHitBox.hitBoxY, this.beamHitBox.hitBoxSizeX, this.beamHitBox.hitBoxSizeY, ctx, levelInstance.hitboxColor());
       }
       if(currentPlayer && currentPlayer.hasPlayerBeenHit(level1Boss1,this.beamHitBox)){
           playerService.killCurrentPlayer();

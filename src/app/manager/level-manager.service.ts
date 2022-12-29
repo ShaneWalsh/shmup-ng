@@ -200,4 +200,5 @@ export interface LevelInstance {
     drawShadow():boolean;
     hasIntro():boolean;
     updateMusic(audioServiceService:AudioServiceService);
+    hitboxColor():string;
 }

@@ -169,12 +169,12 @@ export class PlayerObj implements ShieldBot {
         this.selectedShip.drawInvincibility(ctx, this.posX,this.posY, levelInstance, canvasContainer, bulletManagerService, botManagerService);
       }
       if (levelInstance.drawHitBox()) {
-        hitBox.drawBorder(this.posX + hitBox.hitBoxX, this.posY + hitBox.hitBoxY, hitBox.hitBoxSizeX, hitBox.hitBoxSizeY, ctx, "#FF0000");
+        hitBox.drawBorder(this.posX + hitBox.hitBoxX, this.posY + hitBox.hitBoxY, hitBox.hitBoxSizeX, hitBox.hitBoxSizeY, ctx, levelInstance.hitboxColor());
       }
     } else {
       this.selectedShip.draw(ctx, this.posX,this.posY, levelInstance, canvasContainer, bulletManagerService, botManagerService);
       if (levelInstance.drawHitBox()) {
-        hitBox.drawBorder(this.posX + hitBox.hitBoxX, this.posY + hitBox.hitBoxY, hitBox.hitBoxSizeX, hitBox.hitBoxSizeY, ctx, "#FF0000");
+        hitBox.drawBorder(this.posX + hitBox.hitBoxX, this.posY + hitBox.hitBoxY, hitBox.hitBoxSizeX, hitBox.hitBoxSizeY, ctx, levelInstance.hitboxColor());
       }
     }
     if (this.activateAbilityNow && this.abilityCooldown < 1) { // can I activate my ability now? Cooldown?
