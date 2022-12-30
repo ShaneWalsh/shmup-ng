@@ -181,7 +181,7 @@ export class LevelOneInstance implements LevelInstance{
   }
 
   hitboxColor(): string {
-    return "#FFFFFF"
+    return "#00FFFF"
   }
 
 
