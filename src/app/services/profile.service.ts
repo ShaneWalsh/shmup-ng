@@ -30,7 +30,7 @@ export class ProfileService {
     this.lockedMedals.push(new MedalUnlock("Hard Mode Complete",ProfileValuesEnum.HARD_MODE_COMPLETED,CalculationEnum.STRINGEQ,"true"));
     this.lockedMedals.push(new MedalUnlock("Boss Rush Complete",ProfileValuesEnum.BOSS_RUSH_COMPLETED,CalculationEnum.STRINGEQ,"true"));
 
-    this.checkMedals(false);// the medal would have already been unlocked in the last playthrough, so don't unlock it again, save calls to ng.
+    this.checkMedals(true);// the medal would have already been unlocked in the last playthrough, so don't unlock it again, save calls to ng.
   }
 
   // when string value = another string value, unlock certain medal

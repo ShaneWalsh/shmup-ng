@@ -18,13 +18,17 @@ export class AppComponent {
 
   @HostListener('window:keyup', ['$event'])
   keyupEvent(event: KeyboardEvent) {
-      if(this.loaded)
-      this.keyboardEventService.publishKeyboardUpEvent(event);
+      if(this.loaded){
+        event.preventDefault();
+        this.keyboardEventService.publishKeyboardUpEvent(event);
+      }
   }
   @HostListener('window:keydown', ['$event'])
   keydownEvent(event: KeyboardEvent) {
-      if(this.loaded)
-      this.keyboardEventService.publishKeyboardDownEvent(event);
+      if(this.loaded){
+        event.preventDefault();
+        this.keyboardEventService.publishKeyboardDownEvent(event);
+      }
   }
 
   constructor(private keyboardEventService:KeyboardEventService, private resourcesService:ResourcesService, private audioServiceService:AudioServiceService, private ngApiService:NgApiService){
