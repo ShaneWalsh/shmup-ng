@@ -15,40 +15,50 @@ export class NgApiService {
   public ngio: any;
 
   public loggedIn: boolean;
-  public medals: any;
+  public medals: any = [];
   public scoreboards: ScoreBoard[];
   public session: any = null;
+  public setupComplete: boolean;
 
   constructor() {
     console.log("NgApiService: init");
+    const self = this;
+    try{
     this.ngio = new this.mylib.Newgrounds.io.core(
       "51636:KzSDZa4W",
       "ouWD8Gn7AjdZDKC8N969Xw=="
     );
+    } catch(e){ // non logged in users, this might fail, throwing an error breaking the game code.
+      self.setupComplete = false;
+      return;
+    }
+    this.setupComplete = true;
   }
 
   public initSession() {
     var self = this;
-    this.ngio.getValidSession(function () {
-      if (self.ngio.user) {
-        /*
-         * If we have a saved session, and it has not expired,
-         * we will also have a user object we can access.
-         * We can go ahead and run our onLoggedIn handler here.
-         */
-        console.log("NgApiService:have a saved session");
-        self.onLoggedIn();
-      } else {
-        /*
-         * If we didn't have a saved session, or it has expired
-         * we should have been given a new one at this point.
-         * This is where you would draw a 'sign in' button and
-         * have it execute the following requestLogin function.
-         */
-        // I dont have to do anything, becasuse its false by default.
-        console.log("NgApiService:didn't have a saved session");
-      }
-    });
+    if(this.setupComplete){
+      this.ngio.getValidSession(function () {
+        if (self.ngio.user) {
+          /*
+          * If we have a saved session, and it has not expired,
+          * we will also have a user object we can access.
+          * We can go ahead and run our onLoggedIn handler here.
+          */
+          console.log("NgApiService:have a saved session");
+          self.onLoggedIn();
+        } else {
+          /*
+          * If we didn't have a saved session, or it has expired
+          * we should have been given a new one at this point.
+          * This is where you would draw a 'sign in' button and
+          * have it execute the following requestLogin function.
+          */
+          // I dont have to do anything, becasuse its false by default.
+          console.log("NgApiService:didn't have a saved session");
+        }
+      });
+    }
   }
 
   onLoggedIn() {
@@ -57,11 +67,13 @@ export class NgApiService {
   }
 
   public loadAll() {
-    this.startSession();
-    this.loadMedals();
-    this.loadScoreBoards();
-    //this.loadHighScores();
-    this.initSession();
+    if(this.setupComplete){
+      this.startSession();
+      this.loadMedals();
+      this.loadScoreBoards();
+      //this.loadHighScores();
+      this.initSession();
+    }
   }
 
   /* handle loaded medals */
@@ -84,7 +96,7 @@ export class NgApiService {
   }
 
   public postScore(boardName,score) {
-    if (!this.ngio.user) return;
+    if (!this.setupComplete || !this.ngio.user) return;
     let board = this.scoreboards.find( v => v.name == boardName);
     this.ngio.callComponent(
       "ScoreBoard.postScore",
@@ -101,7 +113,7 @@ export class NgApiService {
     console.log("unlocking medal:", medal_name)
     var p = this;
     /* If there is no user attached to our ngio object, it means the user isn't logged in and we can't unlock anything */
-    if (!p.ngio.user) return;
+    if (!this.setupComplete || !p.ngio.user) return;
     var medal;
     for (var i = 0; i < p.medals.length; i++) {
       medal = p.medals[i];
@@ -153,38 +165,46 @@ export class NgApiService {
   }
 
   startSession() {
-    this.ngio.queueComponent(
-      "App.startSession",
-      {},
-      this.onSessionLoaded.bind(this)
-    );
-    this.ngio.executeQueue();
+    if(this.setupComplete){
+      this.ngio.queueComponent(
+        "App.startSession",
+        {},
+        this.onSessionLoaded.bind(this)
+      );
+      this.ngio.executeQueue();
+    }
   }
 
   loadMedals() {
-    this.ngio.queueComponent(
-      "Medal.getList",
-      {},
-      this.onMedalsLoaded.bind(this)
-    );
-    this.ngio.executeQueue();
+    if(this.setupComplete){
+      this.ngio.queueComponent(
+        "Medal.getList",
+        {},
+        this.onMedalsLoaded.bind(this)
+      );
+      this.ngio.executeQueue();
+    }
   }
 
   loadScoreBoards() {
-    this.ngio.queueComponent(
-      "ScoreBoard.getBoards",
-      {},
-      this.onScoreboardsLoaded.bind(this)
-    );
-    this.ngio.executeQueue();
+    if(this.setupComplete){
+      this.ngio.queueComponent(
+        "ScoreBoard.getBoards",
+        {},
+        this.onScoreboardsLoaded.bind(this)
+      );
+      this.ngio.executeQueue();
+    }
   }
 
   loadHighScores(scoreboardId:number) {
-    this.ngio.callComponent(
-      "ScoreBoard.getScores",
-      { id: scoreboardId, period: "A" },
-      this.onTopTen.bind(this)
-    );
+    if(this.setupComplete){
+      this.ngio.callComponent(
+        "ScoreBoard.getScores",
+        { id: scoreboardId, period: "A" },
+        this.onTopTen.bind(this)
+      );
+    }
   }
 }
 
