@@ -10,26 +10,27 @@ export class ProfileService {
   private unlockedMedals:MedalUnlock[]=[];
 
   constructor(private ngApiService:NgApiService) {
-    this.lockedMedals.push(new MedalUnlock("Defeated Phantom",ProfileValuesEnum.BOTKILLER_LEVEL1_MINI_BOSS1_PHANTOM,CalculationEnum.STRINGEQ,"true"));
-    this.lockedMedals.push(new MedalUnlock("Defeated Wasp",ProfileValuesEnum.BOTKILLER_LEVEL1_MINI_BOSS2_WASP,CalculationEnum.STRINGEQ,"true"));
-    this.lockedMedals.push(new MedalUnlock("Defeated Shellhead",ProfileValuesEnum.BOTKILLER_LEVEL1_BOSS_SHELLHEAD,CalculationEnum.STRINGEQ,"true"));
+    if(ngApiService.setupComplete){
+      this.lockedMedals.push(new MedalUnlock("Defeated Phantom",ProfileValuesEnum.BOTKILLER_LEVEL1_MINI_BOSS1_PHANTOM,CalculationEnum.STRINGEQ,"true"));
+      this.lockedMedals.push(new MedalUnlock("Defeated Wasp",ProfileValuesEnum.BOTKILLER_LEVEL1_MINI_BOSS2_WASP,CalculationEnum.STRINGEQ,"true"));
+      this.lockedMedals.push(new MedalUnlock("Defeated Shellhead",ProfileValuesEnum.BOTKILLER_LEVEL1_BOSS_SHELLHEAD,CalculationEnum.STRINGEQ,"true"));
 
-    this.lockedMedals.push(new MedalUnlock("Defeated HellStream",ProfileValuesEnum.BOTKILLER_LEVEL2_MINI_BOSS1_HELLSTREAM,CalculationEnum.STRINGEQ,"true"));
-    this.lockedMedals.push(new MedalUnlock("Defeated Judge",ProfileValuesEnum.BOTKILLER_LEVEL2_MINI_BOSS2_JUDGE,CalculationEnum.STRINGEQ,"true"));
-    this.lockedMedals.push(new MedalUnlock("Defeated Starship",ProfileValuesEnum.BOTKILLER_LEVEL2_BOSS_STARSHIP,CalculationEnum.STRINGEQ,"true"));
+      this.lockedMedals.push(new MedalUnlock("Defeated HellStream",ProfileValuesEnum.BOTKILLER_LEVEL2_MINI_BOSS1_HELLSTREAM,CalculationEnum.STRINGEQ,"true"));
+      this.lockedMedals.push(new MedalUnlock("Defeated Judge",ProfileValuesEnum.BOTKILLER_LEVEL2_MINI_BOSS2_JUDGE,CalculationEnum.STRINGEQ,"true"));
+      this.lockedMedals.push(new MedalUnlock("Defeated Starship",ProfileValuesEnum.BOTKILLER_LEVEL2_BOSS_STARSHIP,CalculationEnum.STRINGEQ,"true"));
 
-    this.lockedMedals.push(new MedalUnlock("Defeated Pincer",ProfileValuesEnum.BOTKILLER_LEVEL3_MINI_BOSS1_PINCER,CalculationEnum.STRINGEQ,"true"));
-    this.lockedMedals.push(new MedalUnlock("Defeated Hunter",ProfileValuesEnum.BOTKILLER_LEVEL3_MINI_BOSS2_HUNTER,CalculationEnum.STRINGEQ,"true"));
-    this.lockedMedals.push(new MedalUnlock("Defeated Seer",ProfileValuesEnum.BOTKILLER_LEVEL3_BOSS_SEER,CalculationEnum.STRINGEQ,"true"));
+      this.lockedMedals.push(new MedalUnlock("Defeated Pincer",ProfileValuesEnum.BOTKILLER_LEVEL3_MINI_BOSS1_PINCER,CalculationEnum.STRINGEQ,"true"));
+      this.lockedMedals.push(new MedalUnlock("Defeated Hunter",ProfileValuesEnum.BOTKILLER_LEVEL3_MINI_BOSS2_HUNTER,CalculationEnum.STRINGEQ,"true"));
+      this.lockedMedals.push(new MedalUnlock("Defeated Seer",ProfileValuesEnum.BOTKILLER_LEVEL3_BOSS_SEER,CalculationEnum.STRINGEQ,"true"));
 
-    this.lockedMedals.push(new MedalUnlock("Level 1 Complete",ProfileValuesEnum.BOTKILLER_LEVEL1_COMPLETED,CalculationEnum.STRINGEQ,"true"));
-    this.lockedMedals.push(new MedalUnlock("Level 2 Complete",ProfileValuesEnum.BOTKILLER_LEVEL2_COMPLETED,CalculationEnum.STRINGEQ,"true"));
-    this.lockedMedals.push(new MedalUnlock("Level 3 Complete",ProfileValuesEnum.BOTKILLER_LEVEL3_COMPLETED,CalculationEnum.STRINGEQ,"true"));
+      this.lockedMedals.push(new MedalUnlock("Level 1 Complete",ProfileValuesEnum.BOTKILLER_LEVEL1_COMPLETED,CalculationEnum.STRINGEQ,"true"));
+      this.lockedMedals.push(new MedalUnlock("Level 2 Complete",ProfileValuesEnum.BOTKILLER_LEVEL2_COMPLETED,CalculationEnum.STRINGEQ,"true"));
+      this.lockedMedals.push(new MedalUnlock("Level 3 Complete",ProfileValuesEnum.BOTKILLER_LEVEL3_COMPLETED,CalculationEnum.STRINGEQ,"true"));
 
-    this.lockedMedals.push(new MedalUnlock("Normal Mode Complete",ProfileValuesEnum.NORMAL_MODE_COMPLETED,CalculationEnum.STRINGEQ,"true"));
-    this.lockedMedals.push(new MedalUnlock("Hard Mode Complete",ProfileValuesEnum.HARD_MODE_COMPLETED,CalculationEnum.STRINGEQ,"true"));
-    this.lockedMedals.push(new MedalUnlock("Boss Rush Complete",ProfileValuesEnum.BOSS_RUSH_COMPLETED,CalculationEnum.STRINGEQ,"true"));
-
+      this.lockedMedals.push(new MedalUnlock("Normal Mode Complete",ProfileValuesEnum.NORMAL_MODE_COMPLETED,CalculationEnum.STRINGEQ,"true"));
+      this.lockedMedals.push(new MedalUnlock("Hard Mode Complete",ProfileValuesEnum.HARD_MODE_COMPLETED,CalculationEnum.STRINGEQ,"true"));
+      this.lockedMedals.push(new MedalUnlock("Boss Rush Complete",ProfileValuesEnum.BOSS_RUSH_COMPLETED,CalculationEnum.STRINGEQ,"true"));
+    }
     this.checkMedals(true);// the medal would have already been unlocked in the last playthrough, so don't unlock it again, save calls to ng.
   }
 
@@ -49,17 +50,27 @@ export class ProfileService {
 
   // String + boolean + number
   public static setProfileValue( profileValuesEnum:ProfileValuesEnum, value:any) {
-    localStorage.setItem(profileValuesEnum.toString(), ""+value);
+    try{
+      if(localStorage){
+        localStorage.setItem(profileValuesEnum.toString(), ""+value);
+      }
+    } catch(e){
+      console.warn("Cannot access local storage.");
+    }
   }
 
   // number increment
   public static increaseProfileValue( profileValuesEnum:ProfileValuesEnum, value:any) {
-    let val = localStorage.getItem(profileValuesEnum.toString());
-    if(val != undefined || val != null) {
-      val = Number(val)+value;
-      localStorage.setItem(profileValuesEnum.toString(), ""+val);
-    } else {
-      this.setProfileValue(profileValuesEnum,value);
+    try{
+      let val = localStorage.getItem(profileValuesEnum.toString());
+      if(val != undefined || val != null) {
+        val = Number(val)+value;
+        localStorage.setItem(profileValuesEnum.toString(), ""+val);
+      } else {
+        this.setProfileValue(profileValuesEnum,value);
+      }
+    } catch(e){
+      console.warn("Cannot access local storage.");
     }
   }
 

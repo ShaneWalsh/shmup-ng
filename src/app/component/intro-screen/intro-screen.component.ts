@@ -42,7 +42,7 @@ export class IntroScreenComponent implements OnInit, OnDestroy  {
     ngOnInit() {
       //this.landedOnTitleScreen();
       this.subs.push(this.keyboardEventService.getKeyDownEventSubject().subscribe(customKeyboardEvent => {
-        console.log("customKeyboardEvent",customKeyboardEvent);
+        // console.log("customKeyboardEvent",customKeyboardEvent);
         //var key = customKeyboardEvent.event.key || customKeyboardEvent.event.keyCode;
         // todo fix this deprecation.
         var key:any = customKeyboardEvent.event.keyCode;
